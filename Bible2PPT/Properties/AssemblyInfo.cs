@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Bible2PPT")]
-[assembly: AssemblyCopyright("Copyright 2014 BloodCat / data from GodPeople.com")]
+[assembly: AssemblyCopyright("Copyright 2015 BloodCat / data from GodPeople.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,5 +37,5 @@ using System.Resources;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.3.1")]
+[assembly: AssemblyFileVersion("1.0.3.2")]
 [assembly: NeutralResourcesLanguageAttribute("ko-KR")]

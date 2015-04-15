@@ -401,9 +401,9 @@ namespace Bible2PPT
                 Regex.Matches(
                     new WebClient().DownloadString(
                         SOURCE + HttpUtility.UrlEncode(bible, ENCODING) + page + "&vers=" + (easy ? "rvsn" : "ezsn")),
-                    @"bidx_listTd_phrase.+?>(?:<u.+?u>)?(.+?)</td")
+                    @"bidx_listTd_phrase.+?>(.+?)</td")
                     .Cast<Match>()
-                    .Select(i => Regex.Replace(i.Groups[1].Value, @"<.*?>", ""))
+                    .Select(i => Regex.Replace(i.Groups[1].Value, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline))
                     .ToList();
         }
 
