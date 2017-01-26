@@ -18,23 +18,15 @@ namespace Bible2PPT
 {
     internal partial class Main : Form
     {
-        private readonly string CONFIG = Application.ExecutablePath + ".cfg";
-        private readonly string TEMPLATE = Application.ExecutablePath + ".pptx";
-        private readonly Encoding ENCODING = Encoding.GetEncoding("EUC-KR");
-        private const string SOURCE = "http://find.godpeople.com/?page=bidx&kwrd=";
-
-        private readonly PowerPoint.Application POWERPNT;
+        private PPTBuilder builder;
+        private MainConfig cfg = new MainConfig(Application.ExecutablePath + ".cfg");
+        private DAO dao = new DAO();
 
         public Main()
         {
             try
             {
-                POWERPNT = new PowerPoint.Application();
-                try
-                {
-                    POWERPNT.Visible = MsoTriState.msoFalse;
-                }
-                catch {}
+                builder = new PPTBuilder("Bible2PPT.Template.pptx", Application.ExecutablePath + ".pptx");
             }
             catch
             {
@@ -45,73 +37,77 @@ namespace Bible2PPT
 
             InitializeComponent();
 
-            try
+            cfg.Load();
+            cmbLongTitle.SelectedIndex = cfg.cmbLongTitleIdx;
+            cmbShortTitle.SelectedIndex = cfg.cmbShortTitleIdx;
+            cmbChapNum.SelectedIndex = cfg.cmbChapNumIdx;
+            radEasy.Checked = cfg.radEasyChecked;
+            chkFragment.Checked = cfg.chkFragmentChecked;
+        }
+
+        private void AlterControl(bool enable, Control except)
+        {
+            Cursor = enable ? Cursors.Default : Cursors.AppStarting;
+            var toAlter = new Control[] {
+                lstBible,
+                txtSearch,
+                radRevision,
+                radEasy,
+                cmbChapNum,
+                cmbLongTitle,
+                cmbShortTitle,
+                txtKeyword,
+                btnMake,
+                chkFragment
+            };
+            foreach (var i in toAlter.Except(new Control[] { except }))
             {
-                var config = File.OpenRead(CONFIG).ReadByte();
-                cmbLongTitle.SelectedIndex = config & 1;
-                cmbShortTitle.SelectedIndex = config >> 1 & 1;
-                cmbChapNum.SelectedIndex = config >> 2 & 1;
-                radEasy.Checked = (config >> 3 & 1) == 1;
-            }
-            catch
-            {
-                cmbLongTitle.SelectedIndex = cmbShortTitle.SelectedIndex = cmbChapNum.SelectedIndex = 0;
+                i.Enabled = enable;
             }
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(
-                () => Regex.Matches(new WebClient().DownloadString(SOURCE), @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<"))
-                .ContinueWith(
-                    data =>
+            dao.getBiblesAsync()
+                .ContinueWith(t => Invoke(new MethodInvoker(() =>
+                {
+                    foreach (var bible in t.Result)
                     {
-                        if (data.Exception != null)
-                        {
-                            MessageBox.Show(@"인터넷에 연결되어 있나요?", @"목록 초기화 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Application.Exit();
-                            return;
-                        }
+                        var item = lstBible.Items.Add(bible.shortTitle);
+                        item.SubItems.Add(bible.longTitle);
+                        item.SubItems.Add(bible.chapterLength.ToString());
+                        item.Tag = bible;
+                    }
 
-                        foreach (Match bible in data.Result)
-                        {
-                            var item = lstBible.Items.Add(bible.Groups[1].Value);
-                            item.SubItems.Add(bible.Groups[3].Value);
-                            item.SubItems.Add(bible.Groups[2].Value);
-                        }
-                        txtKeyword.Clear();
-                        lstBible.Enabled = txtSearch.Enabled = txtKeyword.Enabled = btnMake.Enabled = btnAllMake.Enabled = true;
-                        Cursor = DefaultCursor;
-                    });
+                    txtKeyword.Clear();
+                    AlterControl(true, null);
+                })), TaskContinuationOptions.OnlyOnRanToCompletion)
+                .ContinueWith(t =>
+                {
+                    MessageBox.Show(@"인터넷에 연결되어 있나요?", @"목록 초기화 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (POWERPNT != null && POWERPNT.Presentations.Count == 0)
-            {
-                POWERPNT.Quit();
-            }
-            try
-            {
-                File.OpenWrite(CONFIG)
-                    .WriteByte(
-                        (byte)
-                            ((radEasy.Checked ? 8 : 0) + (cmbChapNum.SelectedIndex << 2) +
-                             (cmbShortTitle.SelectedIndex << 1) + cmbLongTitle.SelectedIndex));
-            }
-            catch {}
+            cfg.cmbLongTitleIdx = cmbLongTitle.SelectedIndex;
+            cfg.cmbShortTitleIdx = cmbShortTitle.SelectedIndex;
+            cfg.cmbChapNumIdx = cmbChapNum.SelectedIndex;
+            cfg.radEasyChecked = radEasy.Checked;
+            cfg.chkFragmentChecked = chkFragment.Checked;
+            cfg.Save();
         }
 
 
 
         private void AppendShortTitle()
         {
-            try
+            if (lstBible.SelectedItems.Count > 0)
             {
                 txtKeyword.AppendText((txtKeyword.Text.Length > 0 ? " " : "") + lstBible.SelectedItems[0].Text);
                 txtKeyword.Focus();
             }
-            catch {}
         }
 
         private void lstBible_MouseClick(object sender, MouseEventArgs e)
@@ -202,24 +198,10 @@ namespace Bible2PPT
 
 
 
-        private void ExtractTemplate()
-        {
-            if (File.Exists(TEMPLATE))
-            {
-                return;
-            }
-
-            using (var src = Assembly.GetExecutingAssembly().GetManifestResourceStream("Bible2PPT.Template.pptx"))
-            using (var dst = new FileStream(TEMPLATE, FileMode.Create))
-            {
-                src.CopyTo(dst);
-            }
-        }
 
         private void btnTemplate_Click(object sender, EventArgs e)
         {
-            ExtractTemplate();
-            Process.Start(TEMPLATE);
+            builder.OpenTemplate();
         }
 
         private void txtKeyword_KeyPress(object sender, KeyPressEventArgs e)
@@ -227,7 +209,6 @@ namespace Bible2PPT
             if (e.KeyChar == 13)
             {
                 btnMake.PerformClick();
-                btnAllMake.PerformClick();
             }
         }
 
@@ -241,173 +222,112 @@ namespace Bible2PPT
                 return;
             }
 
+            string destination;
+            using (var fd = new FolderBrowserDialog())
+            {
+                fd.Description = "PPT를 저장할 폴더를 선택하세요.";
+                if (chkFragment.Checked && fd.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+                destination = fd.SelectedPath;
+            }
+
             btnMake.Text = @"PPT 만드는 중...";
-
-            Cursor = Cursors.AppStarting;
-            lstBible.Enabled =
-                txtSearch.Enabled =
-                    radRevision.Enabled =
-                        radEasy.Enabled =
-                            cmbChapNum.Enabled =
-                                cmbLongTitle.Enabled = cmbShortTitle.Enabled = txtKeyword.Enabled = false;
-
-            var tmp = Path.GetTempFileName();            
-            ExtractTemplate();
-            File.Copy(TEMPLATE, tmp, true);
+            AlterControl(false, btnMake);
 
             CTS = new CancellationTokenSource();
-            Task.Factory.StartNew(
-                () =>
-                {   
-                    var ppt = POWERPNT.Presentations.Open(tmp, WithWindow: MsoTriState.msoFalse);
-                    var template = ppt.Slides[1];                    
-                    try
+            Task.Run(async () =>
+            {
+                builder.ApplyConfig(cmbChapNum.SelectedIndex == 0, cmbLongTitle.SelectedIndex == 0, cmbShortTitle.SelectedIndex == 0);
+                builder.BeginBuild();
+
+                foreach (var data in txtKeyword.Text.Split()
+                    .Select(keyword => Regex.Match(keyword, @"(?<bible>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?:(?<chapTo>\d+):)?(?<paraTo>\d+))?)?"))
+                    .Where(match => match.Success))
+                {
+                    Bible bible = null;
+                    Invoke(new MethodInvoker(() => bible = (Bible) lstBible.FindItemWithText(data.Groups["bible"].Value).Tag));
+
+                    var chapFrom = 1;
+                    var paraFrom = 1;
+                    var chapTo = bible.chapterLength;
+                    var paraTo = -1;
+                    if (!string.IsNullOrEmpty(data.Groups["range"].Value))
                     {
-                        var as1 = cmbChapNum.SelectedIndex == 0;
-                        var as2 = cmbLongTitle.SelectedIndex == 0;
-                        var as3 = cmbShortTitle.SelectedIndex == 0;
-
-                        foreach (var keyword in txtKeyword.Text.Split())
+                        chapFrom = Convert.ToInt32(data.Groups["chapFrom"].Value);
+                        if (string.IsNullOrEmpty(data.Groups["paraFrom"].Value))
                         {
-                            
-                            CTS.Token.ThrowIfCancellationRequested();
-
-                            var data = Regex.Match(
-                                keyword,
-                                @"(?<bible>[^\d\s]+)(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?:(?<chapTo>\d+):)?(?<paraTo>\d+))?");
-                            if (!data.Success)
+                            paraFrom = 1;
+                            if (string.IsNullOrEmpty(data.Groups["chapTo"].Value))
                             {
-                                continue;
-                            }
-                            var item = lstBible.FindItemWithText(data.Groups["bible"].Value);
-
-                            var title = item.SubItems[1].Text;
-                            var chapters = Convert.ToInt32(item.SubItems[2].Text);
-
-                            int chapFrom, paraFrom, chapTo, paraTo;
-
-                            chapFrom = Convert.ToInt32(data.Groups["chapFrom"].Value);
-                            if (chapFrom > chapters)
-                            {
-                                continue;
-                            }
-                            if (string.IsNullOrEmpty(data.Groups["paraFrom"].Value))
-                            {
-                                paraFrom = 1;
-                                if (string.IsNullOrEmpty(data.Groups["chapTo"].Value))
-                                {
-                                    chapTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value)
-                                        ? chapFrom
-                                        : Convert.ToInt32(data.Groups["paraTo"].Value);
-                                    paraTo = -1;
-                                }
-                                else
-                                {
-                                    chapTo = Convert.ToInt32(data.Groups["chapTo"].Value);
-                                    paraTo = Convert.ToInt32(data.Groups["paraTo"].Value);
-                                }
+                                chapTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value) ?
+                                    chapFrom :
+                                    Convert.ToInt32(data.Groups["paraTo"].Value);
+                                paraTo = -1;
                             }
                             else
                             {
-                                paraFrom = Convert.ToInt32(data.Groups["paraFrom"].Value);
-                                if (paraFrom < 1)
-                                {
-                                    paraFrom = 1;
-                                }
-                                chapTo = string.IsNullOrEmpty(data.Groups["chapTo"].Value)
-                                    ? chapFrom
-                                    : Convert.ToInt32(data.Groups["chapTo"].Value);
-                                paraTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value)
-                                    ? paraFrom
-                                    : Convert.ToInt32(data.Groups["paraTo"].Value);
+                                chapTo = Convert.ToInt32(data.Groups["chapTo"].Value);
+                                paraTo = Convert.ToInt32(data.Groups["paraTo"].Value);
                             }
-                            if (chapTo > chapters)
-                            {
-                                chapTo = chapters;
-                            }
-                            
-                            for ( var chapter = chapFrom; chapter <= chapTo; chapter++)
-                            {   
-                                var chapCon = chapter;
-                                Invoke(new MethodInvoker(() => Text = @"성경2PPT - " + title + " " + chapCon + "장"));
-
-                                var bible = DownloadBible(data.Groups["bible"].Value, chapter, radRevision.Checked);
-                                var paragraphs = chapter == chapTo && paraTo != -1 && paraTo < bible.Count
-                                    ? paraTo
-                                    : bible.Count;
-
-                                var isFirst = true;
-                                for (var paragraph = chapter == chapFrom ? paraFrom : 1;
-                                    paragraph <= paragraphs;
-                                    paragraph++)
-                                {
-                                    CTS.Token.ThrowIfCancellationRequested();
-
-                                    var slide = template.Duplicate();
-                                    slide.MoveTo(ppt.Slides.Count);
-                                    foreach (var textShape in
-                                        slide.Shapes.Cast<PowerPoint.Shape>()
-                                            .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
-                                            .Select(i => i.TextFrame.TextRange))
-                                    {
-                                        textShape.Text =
-                                            AddSuffix(
-                                                AddSuffix(
-                                                    AddSuffix(textShape.Text, @"CHAP", as1 || isFirst, chapter + ""),
-                                                    "STITLE", as3 || isFirst, data.Groups["bible"].Value), "TITLE",
-                                                as2 || isFirst, title)
-                                                .Replace("[PARA]", paragraph + "")
-                                                .Replace("[BODY]", bible[paragraph - 1]);
-                                    }
-                                    isFirst = false;
-                                }                                                          
-                            }                            
                         }
-                    }
-                    catch {}
-                    template.Delete();
-                    ppt.Save();                
-                    ppt.Close();
-                }, CTS.Token).ContinueWith(
-                    result =>
-                    {
-                        File.Move(tmp, tmp + ".pptx");
-                        Process.Start(tmp + ".pptx");
-
-                        lstBible.Enabled =
-                            txtSearch.Enabled =
-                                radRevision.Enabled =
-                                    radEasy.Enabled =
-                                        cmbChapNum.Enabled =
-                                            cmbLongTitle.Enabled = cmbShortTitle.Enabled = txtKeyword.Enabled = true;
-                        Cursor = DefaultCursor;
-
-                        btnMake.Text = @"PPT 만들기";
-                        Text = @"성경2PPT";
-
-                        if (result.Exception != null)
+                        else
                         {
-                            MessageBox.Show(result.Exception.GetBaseException() + "");
+                            paraFrom = Math.Max(1, Convert.ToInt32(data.Groups["paraFrom"].Value));
+                            chapTo = string.IsNullOrEmpty(data.Groups["chapTo"].Value) ?
+                                chapFrom :
+                                Convert.ToInt32(data.Groups["chapTo"].Value);
+                            paraTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value) ?
+                                paraFrom :
+                                Convert.ToInt32(data.Groups["paraTo"].Value);
                         }
-                    });
+                        chapTo = Math.Min(chapTo, bible.chapterLength);
+                    }
+                    
+                    for (var chapter = chapFrom; chapter <= chapTo; chapter++)
+                    {
+                        Invoke(new MethodInvoker(() => Text = "성경2PPT - " + bible.longTitle + " " + chapter + "장"));
+
+                        if (!string.IsNullOrEmpty(destination))
+                        {
+                            builder.CommitBuild();
+                            var parent = Path.Combine(destination, bible.longTitle);
+                            if (!Directory.Exists(parent))
+                            {
+                                Directory.CreateDirectory(parent);
+                            }
+                            builder.BeginBuild(Path.Combine(parent, chapter.ToString("000\\.pptx")));
+                        }
+
+                        var content = await dao.getBibleChapterAsync(bible.shortTitle, chapter, radRevision.Checked);
+                        if (chapter == chapTo && paraTo != -1)
+                        {
+                            content = content.Take(Math.Min(content.Count(), paraTo));
+                        }
+                        if (chapter == chapFrom)
+                        {
+                            content = content.Skip(paraFrom - 1);
+                        }
+                        builder.AppendChapter(bible, chapter, paraFrom, content, CTS.Token);
+                        paraFrom = 1;
+                    }
+                }
+            }, CTS.Token)
+                .ContinueWith(t => Invoke(new MethodInvoker(() =>
+                {
+                    builder.CommitBuild();
+
+                    AlterControl(true, btnMake);
+                    btnMake.Text = "PPT 만들기";
+                    Text = "성경2PPT";
+                })))
+                .ContinueWith(t =>
+                {
+                    builder.OpenLastBuild();
+                }, TaskContinuationOptions.NotOnFaulted);
         }
 
-        private static string AddSuffix(string str, string toFind, bool bReplace, string replace)
-        {
-            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", bReplace ? replace + "$1" : "");
-        }
-
-        private IList<string> DownloadBible(string bible, int page, bool easy)
-        {
-            return
-                Regex.Matches(
-                    new WebClient().DownloadString(
-                        SOURCE + HttpUtility.UrlEncode(bible, ENCODING) + page + "&vers=" + (easy ? "rvsn" : "ezsn")),
-                    @"bidx_listTd_phrase.+?>(.+?)</td")
-                    .Cast<Match>()
-                    .Select(i => Regex.Replace(i.Groups[1].Value, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline))
-                    .ToList();
-        }
 
         private void btnTemplate_MouseHover(object sender, EventArgs e)
         {
@@ -423,203 +343,12 @@ namespace Bible2PPT
 
         private void txtKeyword_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.Show(@"예) 창1   = 창세기 1장
-롬1-3     = 로마서 1장 - 3장
-레1-3:9   = 레위기 1장 - 3장 9절
+            toolTip1.Show(@"예) 창    = 창세기 전체
+창1       = 창세기 1장 전체
+롬1-3     = 로마서 1장 1절 - 3장 전체
+레1-3:9   = 레위기 1장 1절 - 3장 9절
 스1:3-9   = 에스라 1장 3절 - 1장 9절
 사1:3-3:9 = 이사야 1장 3절 - 3장 9절", txtKeyword, Int16.MaxValue);
-        }
-
-        private void btnAllMake_Click(object sender, EventArgs e)
-        {
-            if (btnAllMake.Text == @"PPT 만드는 중...")
-            {
-                CTS.Cancel();
-                return;
-            }
-
-            btnAllMake.Text = @"PPT 만드는 중...";
-
-            Cursor = Cursors.AppStarting;
-            lstBible.Enabled =
-                txtSearch.Enabled =
-                    radRevision.Enabled =
-                        radEasy.Enabled =
-                            cmbChapNum.Enabled =
-                                cmbLongTitle.Enabled = cmbShortTitle.Enabled = txtKeyword.Enabled = false;
-
-            var tmp = Path.GetTempFileName();
-            ExtractTemplate();
-            File.Copy(TEMPLATE, tmp, true);
-
-            CTS = new CancellationTokenSource();
-            Task.Factory.StartNew(
-                () =>
-                {
-                    //var ppt = POWERPNT.Presentations.Open(tmp, WithWindow: MsoTriState.msoFalse);
-                    //var template = ppt.Slides[1];                    
-                    try
-                    {
-                        var as1 = cmbChapNum.SelectedIndex == 0;
-                        var as2 = cmbLongTitle.SelectedIndex == 0;
-                        var as3 = cmbShortTitle.SelectedIndex == 0;
-
-                        foreach (var keyword in txtKeyword.Text.Split())
-                        {
-
-                            CTS.Token.ThrowIfCancellationRequested();
-
-                            bool OnlyTitle = false;
-                            var data = Regex.Match(
-                                keyword,
-                                @"(?<bible>[^\d\s]+)(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?:(?<chapTo>\d+):)?(?<paraTo>\d+))?");                            
-
-                            if (!data.Success)
-                            {
-                                var data1 = Regex.Match(
-                                keyword,
-                                @"(?<bible>[^\d\s]+)");
-                                if (!data1.Success)
-                                {   
-                                    continue;
-                                }
-                                OnlyTitle = true;
-                                data = data1;
-                            }
-                            var item = lstBible.FindItemWithText(data.Groups["bible"].Value);
-
-                            var title = item.SubItems[1].Text;
-                            var chapters = Convert.ToInt32(item.SubItems[2].Text);                            
-
-                            int chapFrom, paraFrom, chapTo, paraTo;
-
-                            if (OnlyTitle) {
-                                chapFrom = 1;                                
-                            }
-                            else chapFrom = Convert.ToInt32(data.Groups["chapFrom"].Value);
-                                                        
-                            if (chapFrom > chapters)
-                            {   
-                                continue;
-                            }
-                            if (string.IsNullOrEmpty(data.Groups["paraFrom"].Value))
-                            {
-                                paraFrom = 1;
-                                if (string.IsNullOrEmpty(data.Groups["chapTo"].Value))
-                                {
-                                    chapTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value)
-                                        ? chapFrom
-                                        : Convert.ToInt32(data.Groups["paraTo"].Value);
-                                    paraTo = -1;
-                                }
-                                else
-                                {
-                                    chapTo = Convert.ToInt32(data.Groups["chapTo"].Value);
-                                    paraTo = Convert.ToInt32(data.Groups["paraTo"].Value);
-                                }
-                            }
-                            else
-                            {
-                                paraFrom = Convert.ToInt32(data.Groups["paraFrom"].Value);
-                                if (paraFrom < 1)
-                                {
-                                    paraFrom = 1;
-                                }
-                                chapTo = string.IsNullOrEmpty(data.Groups["chapTo"].Value)
-                                    ? chapFrom
-                                    : Convert.ToInt32(data.Groups["chapTo"].Value);
-                                paraTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value)
-                                    ? paraFrom
-                                    : Convert.ToInt32(data.Groups["paraTo"].Value);
-                            }
-                            if (chapTo > chapters)
-                            {
-                                chapTo = chapters;
-                            }
-
-                            if (OnlyTitle)
-                            {                             
-                                chapTo = chapters;                             
-                            }
-
-                            for (var chapter = chapFrom; chapter <= chapTo; chapter++)
-                            {
-                                var ppt = POWERPNT.Presentations.Open(tmp, WithWindow: MsoTriState.msoFalse);
-                                var template = ppt.Slides[1];
-
-                                var chapCon = chapter;
-                                Invoke(new MethodInvoker(() => Text = @"성경2PPT - " + title + " " + chapCon + "장"));
-
-                                var bible = DownloadBible(data.Groups["bible"].Value, chapter, radRevision.Checked);
-                                var paragraphs = chapter == chapTo && paraTo != -1 && paraTo < bible.Count
-                                    ? paraTo
-                                    : bible.Count;
-
-                                var isFirst = true;
-                                for (var paragraph = chapter == chapFrom ? paraFrom : 1;
-                                    paragraph <= paragraphs;
-                                    paragraph++)
-                                {
-                                    CTS.Token.ThrowIfCancellationRequested();
-
-                                    var slide = template.Duplicate();
-                                    slide.MoveTo(ppt.Slides.Count);
-                                    foreach (var textShape in
-                                        slide.Shapes.Cast<PowerPoint.Shape>()
-                                            .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
-                                            .Select(i => i.TextFrame.TextRange))
-                                    {
-                                        textShape.Text =
-                                            AddSuffix(
-                                                AddSuffix(
-                                                    AddSuffix(textShape.Text, @"CHAP", as1 || isFirst, chapter + ""),
-                                                    "STITLE", as3 || isFirst, data.Groups["bible"].Value), "TITLE",
-                                                as2 || isFirst, title)
-                                                .Replace("[PARA]", paragraph + "")
-                                                .Replace("[BODY]", bible[paragraph - 1]);
-                                    }
-                                    isFirst = false;
-                                }                                
-                                template.Delete();                                
-
-                                string path = String.Format("{0}{1:D2} {2}\\", System.AppDomain.CurrentDomain.BaseDirectory, item.Index, title);                                
-                                if (!System.IO.Directory.Exists(path))
-                                {
-                                    System.IO.Directory.CreateDirectory(path);
-                                }
-                                path += String.Format("{0:D3}.pptx",chapter);
-                                ppt.SaveAs(path);
-                                ppt.Close();
-                            }
-
-                        }
-                    }
-                    catch { }
-                    //template.Delete();
-                    //ppt.Save();                    
-                    //ppt.Close();
-                }, CTS.Token).ContinueWith(
-                    result =>
-                    {
-                        File.Move(tmp, tmp + ".pptx");
-                        Process.Start(tmp + ".pptx");
-
-                        lstBible.Enabled =
-                            txtSearch.Enabled =
-                                radRevision.Enabled =
-                                    radEasy.Enabled =
-                                        cmbChapNum.Enabled =
-                                            cmbLongTitle.Enabled = cmbShortTitle.Enabled = txtKeyword.Enabled = true;
-                        Cursor = DefaultCursor;
-
-                        btnAllMake.Text = @"PPT 만들기";
-                        Text = @"성경2PPT";
-
-                        if (result.Exception != null)
-                        {
-                            MessageBox.Show(result.Exception.GetBaseException() + "");
-                        }
-                    });
         }
     }
 }
