@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bible2PPT</RootNamespace>
     <AssemblyName>Bible2PPT</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>게시\</PublishUrl>
     <Install>true</Install>
@@ -86,7 +86,7 @@
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
-      <VersionMinor>7</VersionMinor>
+      <VersionMinor>8</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
@@ -95,7 +95,7 @@
     <COMReference Include="Microsoft.Office.Interop.PowerPoint">
       <Guid>{91493440-5A91-11CF-8700-00AA0060263B}</Guid>
       <VersionMajor>2</VersionMajor>
-      <VersionMinor>11</VersionMinor>
+      <VersionMinor>12</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
@@ -126,9 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

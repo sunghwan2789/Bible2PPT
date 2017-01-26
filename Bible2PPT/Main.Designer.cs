@@ -290,7 +290,7 @@
             this.Name = "Main";
             this.Text = "성경2PPT";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
-            this.Load += new System.EventHandler(this.Main_Load);
+            this.Shown += new System.EventHandler(this.Main_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

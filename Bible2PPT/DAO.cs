@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
-using System.Windows.Forms;
 
 namespace Bible2PPT
 {
@@ -20,24 +19,32 @@ namespace Bible2PPT
         {
         }
 
-        public async Task<IEnumerable<Bible>> getBiblesAsync()
+        public Task<IEnumerable<Bible>> getBiblesAsync()
         {
-            var data = await loader.DownloadStringTaskAsync(SOURCE);
-            var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
-            return matches.Cast<Match>().Select(match =>
+            return Task.Factory.StartNew(() =>
             {
-                return new Bible(match.Groups[3].Value,
-                                 match.Groups[1].Value,
-                                 Convert.ToInt32(match.Groups[2].Value));
+                var data = loader.DownloadString(SOURCE);
+                var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
+                return matches.Cast<Match>().Select(match =>
+                {
+                    return new Bible(match.Groups[3].Value,
+                                     match.Groups[1].Value,
+                                     Convert.ToInt32(match.Groups[2].Value));
+                });
             });
         }
 
-        public async Task<IEnumerable<string>> getBibleChapterAsync(string bible, int chapter, bool easy)
+        public Task<IEnumerable<string>> getBibleChapterAsync(string bible, int chapter, bool easy)
         {
-            var data = await loader.DownloadStringTaskAsync(string.Format(
-                           SOURCE, HttpUtility.UrlEncode(bible + chapter, ENCODING), easy ? "rvsn" : "ezsn"));
-            var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
-            return matches.Cast<Match>().Select(i => Regex.Replace(i.Groups[1].Value, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline));
+            return Task.Factory.StartNew(() =>
+            {
+                var data = loader.DownloadString(string.Format(
+                    SOURCE,
+                    HttpUtility.UrlEncode(bible + chapter, ENCODING),
+                    easy ? "rvsn" : "ezsn"));
+                var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
+                return matches.Cast<Match>().Select(i => Regex.Replace(i.Groups[1].Value, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline));
+            });
         }
     }
 }

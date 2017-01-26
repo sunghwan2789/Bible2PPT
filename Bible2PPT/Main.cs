@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Forms;
-using Microsoft.Office.Core;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT
 {
@@ -31,8 +23,7 @@ namespace Bible2PPT
             catch
             {
                 MessageBox.Show(@"마이크로소프트 파워포인트가 설치되어 있나요?", @"프로그램 초기화 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-                return;
+                Environment.Exit(0);
             }
 
             InitializeComponent();
@@ -66,7 +57,7 @@ namespace Bible2PPT
             }
         }
 
-        private void Main_Load(object sender, EventArgs e)
+        private void Main_Shown(object sender, EventArgs e)
         {
             dao.getBiblesAsync()
                 .ContinueWith(t => Invoke(new MethodInvoker(() =>
@@ -237,14 +228,15 @@ namespace Bible2PPT
             AlterControl(false, btnMake);
 
             CTS = new CancellationTokenSource();
-            Task.Run(async () =>
+            Task.Factory.StartNew(() =>
             {
                 builder.ApplyConfig(cmbChapNum.SelectedIndex == 0, cmbLongTitle.SelectedIndex == 0, cmbShortTitle.SelectedIndex == 0);
                 builder.BeginBuild();
 
-                foreach (var data in txtKeyword.Text.Split()
-                    .Select(keyword => Regex.Match(keyword, @"(?<bible>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?:(?<chapTo>\d+):)?(?<paraTo>\d+))?)?"))
-                    .Where(match => match.Success))
+                foreach (var data in
+                    txtKeyword.Text.Split()
+                        .Select(keyword => Regex.Match(keyword, @"(?<bible>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?:(?<chapTo>\d+):)?(?<paraTo>\d+))?)?"))
+                        .Where(match => match.Success))
                 {
                     Bible bible = null;
                     Invoke(new MethodInvoker(() => bible = (Bible) lstBible.FindItemWithText(data.Groups["bible"].Value).Tag));
@@ -284,7 +276,7 @@ namespace Bible2PPT
                         }
                         chapTo = Math.Min(chapTo, bible.chapterLength);
                     }
-                    
+
                     for (var chapter = chapFrom; chapter <= chapTo; chapter++)
                     {
                         Invoke(new MethodInvoker(() => Text = "성경2PPT - " + bible.longTitle + " " + chapter + "장"));
@@ -300,7 +292,7 @@ namespace Bible2PPT
                             builder.BeginBuild(Path.Combine(parent, chapter.ToString("000\\.pptx")));
                         }
 
-                        var content = await dao.getBibleChapterAsync(bible.shortTitle, chapter, radRevision.Checked);
+                        var content = dao.getBibleChapterAsync(bible.shortTitle, chapter, radRevision.Checked).Result;
                         if (chapter == chapTo && paraTo != -1)
                         {
                             content = content.Take(Math.Min(content.Count(), paraTo));
@@ -316,11 +308,11 @@ namespace Bible2PPT
             }, CTS.Token)
                 .ContinueWith(t => Invoke(new MethodInvoker(() =>
                 {
-                    builder.CommitBuild();
-
                     AlterControl(true, btnMake);
                     btnMake.Text = "PPT 만들기";
                     Text = "성경2PPT";
+
+                    builder.CommitBuild();
                 })))
                 .ContinueWith(t =>
                 {
