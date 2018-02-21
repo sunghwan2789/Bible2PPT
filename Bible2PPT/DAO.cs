@@ -19,32 +19,31 @@ namespace Bible2PPT
         {
         }
 
-        public Task<IEnumerable<Bible>> getBiblesAsync()
+        public Task<IEnumerable<BibleInfo>> GetBiblesAsync() => Task.Factory.StartNew(() =>
         {
-            return Task.Factory.StartNew(() =>
+            var data = loader.DownloadString(SOURCE);
+            var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
+            return matches.Cast<Match>().Select(match => new BibleInfo
             {
-                var data = loader.DownloadString(SOURCE);
-                var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
-                return matches.Cast<Match>().Select(match =>
-                {
-                    return new Bible(match.Groups[3].Value,
-                                     match.Groups[1].Value,
-                                     Convert.ToInt32(match.Groups[2].Value));
-                });
+                Title = match.Groups[3].Value,
+                BibleId = match.Groups[1].Value,
+                ChapterCount = Convert.ToInt32(match.Groups[2].Value)
             });
-        }
+        });
 
-        public Task<IEnumerable<string>> getBibleChapterAsync(string bible, int chapter, bool easy)
+        public Task<BibleChapter> GetBibleChapterAsync(BibleInfo bible, int chapterNumber, bool easy) => Task.Factory.StartNew(() =>
         {
-            return Task.Factory.StartNew(() =>
+            var data = loader.DownloadString(string.Format(
+                SOURCE,
+                HttpUtility.UrlEncode(bible.BibleId + chapterNumber, ENCODING),
+                easy ? "rvsn" : "ezsn"));
+            var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
+            return new BibleChapter
             {
-                var data = loader.DownloadString(string.Format(
-                    SOURCE,
-                    HttpUtility.UrlEncode(bible + chapter, ENCODING),
-                    easy ? "rvsn" : "ezsn"));
-                var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
-                return matches.Cast<Match>().Select(i => Regex.Replace(i.Groups[1].Value, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline));
-            });
-        }
+                Bible = bible,
+                ChapterNumber = chapterNumber,
+                Verses = matches.Cast<Match>().Select(i => Regex.Replace(i.Groups[1].Value, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline)).ToList()
+            };
+        });
     }
 }

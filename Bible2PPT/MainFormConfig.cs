@@ -1,6 +1,6 @@
 ﻿namespace Bible2PPT
 {
-    class MainConfig : Config
+    class MainFormConfig : Config
     {
         public int cmbLongTitleIdx = 0;
         public int cmbShortTitleIdx = 0;
@@ -8,7 +8,7 @@
         public bool radEasyChecked = false;
         public bool chkFragmentChecked = false;
 
-        public MainConfig(string path) : base(path) {}
+        public MainFormConfig(string path) : base(path) {}
 
         public override byte Serialize()
         {

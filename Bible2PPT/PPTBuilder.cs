@@ -95,10 +95,21 @@ namespace Bible2PPT
             templateSlide = workingPPT.Slides[1];
         }
 
-        public void AppendChapter(Bible bible, int chapter, int paraNum, IEnumerable<string> chapterContent, CancellationToken token)
+        public void AppendChapter(BibleChapter chapter, CancellationToken token)
+        {
+            AppendChapter(chapter, 1, token);
+        }
+
+        public void AppendChapter(BibleChapter chapter, int startVerseNumber, CancellationToken token)
+        {
+            AppendChapter(chapter, startVerseNumber, chapter.Verses.Count, token);
+        }
+
+        public void AppendChapter(BibleChapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
             var isFirst = true;
-            foreach (var paragraph in chapterContent)
+            var paraNum = startVerseNumber;
+            foreach (var paragraph in chapter.Verses.Take(endVerseNumber).Skip(startVerseNumber - 1))
             {
                 token.ThrowIfCancellationRequested();
 
@@ -111,8 +122,8 @@ namespace Bible2PPT
                 {
                     var text = textShape.Text;
                     text = AddSuffix(text, "CHAP", everyChapter || isFirst, chapter + "");
-                    text = AddSuffix(text, "STITLE", everyShortTitle || isFirst, bible.shortTitle);
-                    text = AddSuffix(text, "TITLE", everyLongTitle || isFirst, bible.longTitle);
+                    text = AddSuffix(text, "STITLE", everyShortTitle || isFirst, chapter.Bible.BibleId);
+                    text = AddSuffix(text, "TITLE", everyLongTitle || isFirst, chapter.Bible.Title);
                     text = text.Replace("[PARA]", paraNum + "");
                     text = text.Replace("[BODY]", paragraph);
                     textShape.Text = text;

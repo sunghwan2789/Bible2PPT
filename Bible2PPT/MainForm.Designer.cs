@@ -1,6 +1,6 @@
 ﻿namespace Bible2PPT
 {
-    partial class Main
+    partial class MainForm
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cmbShortTitle = new System.Windows.Forms.ComboBox();
             this.cmbLongTitle = new System.Windows.Forms.ComboBox();

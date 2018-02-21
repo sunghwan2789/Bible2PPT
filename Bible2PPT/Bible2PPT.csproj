@@ -63,22 +63,23 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bible.cs" />
+    <Compile Include="BibleChapter.cs" />
+    <Compile Include="BibleInfo.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="DAO.cs" />
     <Compile Include="IConfig.cs" />
-    <Compile Include="Main.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainConfig.cs" />
+    <Compile Include="MainFormConfig.cs" />
     <Compile Include="PPTBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Template.pptx" />
   </ItemGroup>

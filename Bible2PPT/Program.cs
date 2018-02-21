@@ -13,7 +13,7 @@ namespace Bible2PPT
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            Application.Run(new MainForm());
         }
     }
 }
