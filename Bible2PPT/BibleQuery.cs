@@ -57,9 +57,9 @@ namespace Bible2PPT
                 q.EndVerseNumber = Convert.ToInt32(m.Groups["paraTo"].Value);
                 return q;
             }
-            
+
             // PPT 범위를 한 절로 설정했을 때
-            // 예) 창1:1     = 창세기 1장 1절
+            // 예) 전1:3     = 전도서 1장 3절
             q.EndVerseNumber = q.StartVerseNumber = Convert.ToInt32(m.Groups["paraFrom"].Value);
             if (string.IsNullOrEmpty(m.Groups["chapTo"].Value))
             {

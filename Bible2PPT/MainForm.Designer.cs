@@ -64,6 +64,7 @@
             this.cmbShortTitle.Name = "cmbShortTitle";
             this.cmbShortTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbShortTitle.TabIndex = 3;
+            this.cmbShortTitle.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
             // 
             // cmbLongTitle
             // 
@@ -78,6 +79,7 @@
             this.cmbLongTitle.Name = "cmbLongTitle";
             this.cmbLongTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbLongTitle.TabIndex = 2;
+            this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
             // 
             // btnMake
             // 
@@ -102,6 +104,7 @@
             this.radEasy.TabIndex = 5;
             this.radEasy.Text = "쉬운성경";
             this.radEasy.UseVisualStyleBackColor = true;
+            this.radEasy.CheckedChanged += new System.EventHandler(this.radEasy_CheckedChanged);
             // 
             // radRevision
             // 
@@ -128,6 +131,7 @@
             this.cmbChapNum.Name = "cmbChapNum";
             this.cmbChapNum.Size = new System.Drawing.Size(156, 20);
             this.cmbChapNum.TabIndex = 4;
+            this.cmbChapNum.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
             // 
             // txtKeyword
             // 
@@ -205,6 +209,7 @@
             this.chkFragment.TabIndex = 7;
             this.chkFragment.Text = "파일 장별로 나누기";
             this.chkFragment.UseVisualStyleBackColor = true;
+            this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
             // 
             // lstBible
             // 
@@ -278,7 +283,7 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(155, 249);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // Main
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -287,9 +292,9 @@
             this.Controls.Add(this.tableLayoutPanel2);
             this.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Main";
+            this.Name = "MainForm";
             this.Text = "성경2PPT";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

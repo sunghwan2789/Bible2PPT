@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System;
 
 namespace Bible2PPT
 {
@@ -73,17 +74,6 @@ namespace Bible2PPT
         private PowerPoint.Presentation workingPPT;
         private PowerPoint.Slide templateSlide;
 
-        private bool everyChapter;
-        private bool everyLongTitle;
-        private bool everyShortTitle;
-
-        public void ApplyConfig(bool everyChapter, bool everyLongTitle, bool everyShortTitle)
-        {
-            this.everyChapter = everyChapter;
-            this.everyLongTitle = everyLongTitle;
-            this.everyShortTitle = everyShortTitle;
-        }
-
         public void BeginBuild(string destination = null)
         {
             isTemporaryTask = string.IsNullOrEmpty(destination);
@@ -95,9 +85,11 @@ namespace Bible2PPT
             templateSlide = workingPPT.Slides[1];
         }
 
+        private bool isFirstVerseOfChapter;
+
         public void AppendChapter(BibleChapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
-            var isFirst = true;
+            isFirstVerseOfChapter = true;
             var paraNum = startVerseNumber;
             foreach (var paragraph in chapter.Verses.Take(endVerseNumber).Skip(startVerseNumber - 1))
             {
@@ -111,21 +103,34 @@ namespace Bible2PPT
                         .Select(i => i.TextFrame.TextRange))
                 {
                     var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", everyChapter || isFirst, chapter.ChapterNumber + "");
-                    text = AddSuffix(text, "STITLE", everyShortTitle || isFirst, chapter.Bible.BibleId);
-                    text = AddSuffix(text, "TITLE", everyLongTitle || isFirst, chapter.Bible.Title);
+                    text = AddSuffix(text, "CHAP", chapter.ChapterNumber + "", AppConfig.Context.ShowChapterNumber);
+                    text = AddSuffix(text, "STITLE", chapter.Bible.BibleId, AppConfig.Context.ShowShortTitle);
+                    text = AddSuffix(text, "TITLE", chapter.Bible.Title, AppConfig.Context.ShowLongTitle);
                     text = text.Replace("[PARA]", paraNum + "");
                     text = text.Replace("[BODY]", paragraph);
                     textShape.Text = text;
                 }
-                isFirst = false;
+                isFirstVerseOfChapter = false;
                 paraNum++;
             }
         }
 
-        private static string AddSuffix(string str, string toFind, bool bReplace, string replace)
+        private bool ShouldPrint(TemplateTextOptions templateOption)
         {
-            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", bReplace ? replace + "$1" : "");
+            switch (templateOption)
+            {
+                case TemplateTextOptions.Always:
+                    return true;
+                case TemplateTextOptions.FirstVerseOfChapter:
+                    return isFirstVerseOfChapter;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private string AddSuffix(string str, string toFind, string replace, TemplateTextOptions templateOption)
+        {
+            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", ShouldPrint(templateOption) ? replace + "$1" : "");
         }
 
         public string CommitBuild()

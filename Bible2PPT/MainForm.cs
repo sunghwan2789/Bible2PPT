@@ -10,14 +10,13 @@ namespace Bible2PPT
     internal partial class MainForm : Form
     {
         private PPTBuilder builder;
-        private MainFormConfig cfg = new MainFormConfig(Application.ExecutablePath + ".cfg");
         private DAO dao = new DAO();
 
         public MainForm()
         {
             try
             {
-                builder = new PPTBuilder("Bible2PPT.Template.pptx", Application.ExecutablePath + ".pptx");
+                builder = new PPTBuilder("Bible2PPT.Template.pptx", AppConfig.TemplatePath);
             }
             catch
             {
@@ -27,30 +26,31 @@ namespace Bible2PPT
 
             InitializeComponent();
 
-            cfg.Load();
-            cmbLongTitle.SelectedIndex = cfg.cmbLongTitleIdx;
-            cmbShortTitle.SelectedIndex = cfg.cmbShortTitleIdx;
-            cmbChapNum.SelectedIndex = cfg.cmbChapNumIdx;
-            radEasy.Checked = cfg.radEasyChecked;
-            chkFragment.Checked = cfg.chkFragmentChecked;
+            cmbLongTitle.SelectedIndex = (int) AppConfig.Context.ShowLongTitle;
+            cmbShortTitle.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
+            cmbChapNum.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
+            radEasy.Checked = AppConfig.Context.UseEasyBible;
+            chkFragment.Checked = AppConfig.Context.SeperateByChapter;
         }
 
-        private void AlterControl(bool enable, Control except)
+        private Control[] GetCriticalControls => new Control[]
+        {
+            lstBible,
+            txtSearch,
+            radRevision,
+            radEasy,
+            cmbChapNum,
+            cmbLongTitle,
+            cmbShortTitle,
+            txtKeyword,
+            btnMake,
+            chkFragment,
+        };
+
+        private void ToggleCriticalControls(bool enable, params Control[] except)
         {
             Cursor = enable ? Cursors.Default : Cursors.AppStarting;
-            var toAlter = new Control[] {
-                lstBible,
-                txtSearch,
-                radRevision,
-                radEasy,
-                cmbChapNum,
-                cmbLongTitle,
-                cmbShortTitle,
-                txtKeyword,
-                btnMake,
-                chkFragment
-            };
-            foreach (var i in toAlter.Except(new Control[] { except }))
+            foreach (var i in GetCriticalControls.Except(except))
             {
                 i.Enabled = enable;
             }
@@ -70,7 +70,7 @@ namespace Bible2PPT
                     }
 
                     txtKeyword.Clear();
-                    AlterControl(true, null);
+                    ToggleCriticalControls(true);
                 })), TaskContinuationOptions.OnlyOnRanToCompletion)
                 .ContinueWith(t =>
                 {
@@ -79,14 +79,9 @@ namespace Bible2PPT
                 }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
-        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            cfg.cmbLongTitleIdx = cmbLongTitle.SelectedIndex;
-            cfg.cmbShortTitleIdx = cmbShortTitle.SelectedIndex;
-            cfg.cmbChapNumIdx = cmbChapNum.SelectedIndex;
-            cfg.radEasyChecked = radEasy.Checked;
-            cfg.chkFragmentChecked = chkFragment.Checked;
-            cfg.Save();
+            AppConfig.Context.Save();
         }
 
 
@@ -139,7 +134,6 @@ namespace Bible2PPT
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                {
                     e.SuppressKeyPress = true;
                     try
                     {
@@ -153,9 +147,7 @@ namespace Bible2PPT
                         }
                     }
                     break;
-                }
                 case Keys.Down:
-                {
                     e.SuppressKeyPress = true;
                     try
                     {
@@ -169,7 +161,6 @@ namespace Bible2PPT
                         }
                     }
                     break;
-                }
             }
         }
 
@@ -224,13 +215,11 @@ namespace Bible2PPT
             }
 
             btnMake.Text = @"PPT 만드는 중...";
-            AlterControl(false, btnMake);
+            ToggleCriticalControls(false, btnMake);
 
             CTS = new CancellationTokenSource();
             Task.Factory.StartNew(() =>
             {
-                // TODO: FIX CROSS THREAD ISSUE
-                builder.ApplyConfig(cmbChapNum.SelectedIndex == 0, cmbLongTitle.SelectedIndex == 0, cmbShortTitle.SelectedIndex == 0);
                 builder.BeginBuild();
 
                 var bibles = dao.GetBiblesAsync().Result;
@@ -259,8 +248,7 @@ namespace Bible2PPT
                             builder.BeginBuild(Path.Combine(parent, chapNo.ToString("000\\.pptx")));
                         }
 
-                        // TODO: FIX CROSS THREAD ISSUE
-                        var chapter = dao.GetBibleChapterAsync(bible, chapNo, radRevision.Checked).Result;
+                        var chapter = dao.GetBibleChapterAsync(bible, chapNo).Result;
                         var startVerseNo = chapNo == query.StartChapterNumber ? query.StartVerseNumber : 1;
                         var endVerseNo = chapter.Verses.Count;
                         if (chapNo == query.EndChapterNumber && query.EndVerseNumber != null)
@@ -279,6 +267,8 @@ namespace Bible2PPT
                             MessageBox.Show(ex.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return true;
                         });
+                        // TODO: 영향성 확인하기
+                        // builder.CommitBuild();
                     }
                     else
                     {
@@ -288,7 +278,7 @@ namespace Bible2PPT
                 })
                 .ContinueWith(t => Invoke(new MethodInvoker(() =>
                 {
-                    AlterControl(true, btnMake);
+                    ToggleCriticalControls(true);
                     btnMake.Text = "PPT 만들기";
                     Text = "성경2PPT";
                 })));
@@ -316,6 +306,31 @@ namespace Bible2PPT
 전1:3     = 전도서 1장 3절
 스1:3-9   = 에스라 1장 3절 - 1장 9절
 사1:3-3:9 = 이사야 1장 3절 - 3장 9절", txtKeyword, Int16.MaxValue);
+        }
+
+        private void cmbLongTitle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.ShowLongTitle = (TemplateTextOptions) cmbLongTitle.SelectedIndex;
+        }
+
+        private void cmbShortTitle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.ShowShortTitle = (TemplateTextOptions) cmbShortTitle.SelectedIndex;
+        }
+
+        private void cmbChapNum_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.ShowChapterNumber = (TemplateTextOptions) cmbChapNum.SelectedIndex;
+        }
+
+        private void radEasy_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.UseEasyBible = radEasy.Checked;
+        }
+
+        private void chkFragment_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.SeperateByChapter = chkFragment.Checked;
         }
     }
 }
