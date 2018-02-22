@@ -287,18 +287,6 @@ namespace Bible2PPT
                     btnMake.Text = "PPT 만들기";
                     Text = "성경2PPT";
                 })));
-                //.ContinueWith(t => Invoke(new MethodInvoker(() =>
-                //{
-                //    AlterControl(true, btnMake);
-                //    btnMake.Text = "PPT 만들기";
-                //    Text = "성경2PPT";
-
-                //    builder.CommitBuild();
-                //})))
-                //.ContinueWith(t =>
-                //{
-                //    builder.OpenLastBuild();
-                //}, TaskContinuationOptions.NotOnFaulted);
         }
 
 
@@ -320,6 +308,7 @@ namespace Bible2PPT
 창1       = 창세기 1장 전체
 롬1-3     = 로마서 1장 1절 - 3장 전체
 레1-3:9   = 레위기 1장 1절 - 3장 9절
+전1:3     = 전도서 1장 3절
 스1:3-9   = 에스라 1장 3절 - 1장 9절
 사1:3-3:9 = 이사야 1장 3절 - 3장 9절", txtKeyword, Int16.MaxValue);
         }
