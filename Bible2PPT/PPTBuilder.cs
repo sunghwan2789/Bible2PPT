@@ -11,7 +11,7 @@ using System;
 
 namespace Bible2PPT
 {
-    class PPTBuilder
+    class PPTBuilder : IDisposable
     {
         private static PowerPoint.Application POWERPNT;
 
@@ -32,19 +32,6 @@ namespace Bible2PPT
 
             this.resourceName = resourceName;
             this.templatePath = templatePath;
-        }
-
-        ~PPTBuilder()
-        {
-            try
-            {
-                if (POWERPNT != null && POWERPNT.Presentations.Count == 0)
-                {
-                    POWERPNT.Quit();
-                    POWERPNT = null;
-                }
-            }
-            catch { }
         }
 
         private void ExtractTemplate()
@@ -69,87 +56,66 @@ namespace Bible2PPT
 
 
 
-        private bool isTemporaryTask;
-        private string workingFile;
-        private PowerPoint.Presentation workingPPT;
-        private PowerPoint.Slide templateSlide;
 
-        public void BeginBuild(string destination = null)
+        public PPTBuilderWork BeginBuild() => BeginBuild(Path.GetTempFileName() + ".pptx");
+
+        public PPTBuilderWork BeginBuild(string output)
         {
-            isTemporaryTask = string.IsNullOrEmpty(destination);
-            workingFile = isTemporaryTask ? Path.GetTempFileName() : destination;
             ExtractTemplate();
-            File.Copy(templatePath, workingFile, true);
+            File.Copy(templatePath, output, true);
 
-            workingPPT = POWERPNT.Presentations.Open(workingFile, WithWindow: MsoTriState.msoFalse);
-            templateSlide = workingPPT.Slides[1];
+            var workingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
+            return new PPTBuilderWork
+            {
+                Output = output,
+                WorkingPPT = workingPPT,
+                TemplateSlide = workingPPT.Slides[1],
+            };
         }
 
-        private bool isFirstVerseOfChapter;
 
-        public void AppendChapter(BibleChapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            isFirstVerseOfChapter = true;
-            var paraNum = startVerseNumber;
-            foreach (var paragraph in chapter.Verses.Take(endVerseNumber).Skip(startVerseNumber - 1))
+            if (!disposedValue)
             {
-                token.ThrowIfCancellationRequested();
-
-                var slide = templateSlide.Duplicate();
-                slide.MoveTo(workingPPT.Slides.Count);
-                foreach (var textShape in
-                    slide.Shapes.Cast<PowerPoint.Shape>()
-                        .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
-                        .Select(i => i.TextFrame.TextRange))
+                if (disposing)
                 {
-                    var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", chapter.ChapterNumber + "", AppConfig.Context.ShowChapterNumber);
-                    text = AddSuffix(text, "STITLE", chapter.Bible.BibleId, AppConfig.Context.ShowShortTitle);
-                    text = AddSuffix(text, "TITLE", chapter.Bible.Title, AppConfig.Context.ShowLongTitle);
-                    text = text.Replace("[PARA]", paraNum + "");
-                    text = text.Replace("[BODY]", paragraph);
-                    textShape.Text = text;
+                    // TODO: dispose managed state (managed objects).
+                    try
+                    {
+                        if (POWERPNT != null && POWERPNT.Presentations.Count == 0)
+                        {
+                            POWERPNT.Quit();
+                            POWERPNT = null;
+                        }
+                    }
+                    catch { }
                 }
-                isFirstVerseOfChapter = false;
-                paraNum++;
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
             }
         }
 
-        private bool ShouldPrint(TemplateTextOptions templateOption)
-        {
-            switch (templateOption)
-            {
-                case TemplateTextOptions.Always:
-                    return true;
-                case TemplateTextOptions.FirstVerseOfChapter:
-                    return isFirstVerseOfChapter;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~PPTBuilder() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
 
-        private string AddSuffix(string str, string toFind, string replace, TemplateTextOptions templateOption)
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
         {
-            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", ShouldPrint(templateOption) ? replace + "$1" : "");
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
         }
-
-        public string CommitBuild()
-        {
-            templateSlide.Delete();
-            workingPPT.Save();
-            workingPPT.Close();
-
-            if (isTemporaryTask)
-            {
-                File.Move(workingFile, workingFile + ".pptx");
-                workingFile += ".pptx";
-            }
-            return workingFile;
-        }
-
-        public void OpenLastBuild()
-        {
-            Process.Start(workingFile);
-        }
+        #endregion
     }
 }

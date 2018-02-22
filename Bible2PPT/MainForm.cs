@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -193,6 +194,14 @@ namespace Bible2PPT
             }
         }
 
+        private static void CreateDirectoryIfNotExists(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
         private CancellationTokenSource CTS;
 
         private void btnMake_Click(object sender, EventArgs e)
@@ -207,7 +216,7 @@ namespace Bible2PPT
             using (var fd = new FolderBrowserDialog())
             {
                 fd.Description = "PPT를 저장할 폴더를 선택하세요.";
-                if (chkFragment.Checked && fd.ShowDialog() != DialogResult.OK)
+                if (AppConfig.Context.SeperateByChapter && fd.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
@@ -218,9 +227,13 @@ namespace Bible2PPT
             ToggleCriticalControls(false, btnMake);
 
             CTS = new CancellationTokenSource();
+            PPTBuilderWork work = null;
             Task.Factory.StartNew(() =>
             {
-                builder.BeginBuild();
+                if (!AppConfig.Context.SeperateByChapter)
+                {
+                    work = builder.BeginBuild();
+                }
 
                 var bibles = dao.GetBiblesAsync().Result;
 
@@ -237,15 +250,12 @@ namespace Bible2PPT
                     {
                         Invoke(new MethodInvoker(() => Text = $"성경2PPT - {bible.Title} {chapNo}장"));
 
-                        if (!string.IsNullOrEmpty(destination))
+                        if (AppConfig.Context.SeperateByChapter)
                         {
-                            builder.CommitBuild();
-                            var parent = Path.Combine(destination, bible.Title);
-                            if (!Directory.Exists(parent))
-                            {
-                                Directory.CreateDirectory(parent);
-                            }
-                            builder.BeginBuild(Path.Combine(parent, chapNo.ToString("000\\.pptx")));
+                            work?.Save();
+                            var output = Path.Combine(destination, bible.Title, chapNo.ToString("000\\.pptx"));
+                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                            work = builder.BeginBuild(output);
                         }
 
                         var chapter = dao.GetBibleChapterAsync(bible, chapNo).Result;
@@ -255,25 +265,27 @@ namespace Bible2PPT
                         {
                             endVerseNo = query.EndVerseNumber.Value;
                         }
-                        builder.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
+                        work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
                     }
                 }
             }, CTS.Token)
-                .ContinueWith(t => {
+                .ContinueWith(t =>
+                {
                     if (t.IsFaulted)
                     {
-                        t.Exception.Handle(ex =>
-                        {
-                            MessageBox.Show(ex.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return true;
-                        });
-                        // TODO: 영향성 확인하기
-                        // builder.CommitBuild();
+                        work?.QuitAndCleanup();
+                        MessageBox.Show(t.Exception.GetBaseException().ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
-                    else
+
+                    work?.Save();
+                    if (AppConfig.Context.SeperateByChapter)
                     {
-                        builder.CommitBuild();
-                        builder.OpenLastBuild();
+                        Process.Start(destination);
+                    }
+                    else if (work != null)
+                    {
+                        Process.Start(work.Output);
                     }
                 })
                 .ContinueWith(t => Invoke(new MethodInvoker(() =>
