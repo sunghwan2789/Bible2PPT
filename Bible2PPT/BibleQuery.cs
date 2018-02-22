@@ -47,13 +47,14 @@ namespace Bible2PPT
                 // PPT 범위를 여러 장으로 설정했을 때
                 // 예) 롬1-3     = 로마서 1장 1절 - 3장 전체
                 q.EndChapterNumber = Convert.ToInt32(m.Groups["chapTo"].Value);
+                if (string.IsNullOrEmpty(m.Groups["paraTo"].Value))
+                {
+                    return q;
+                }
 
                 // PPT 범위를 여러 장과 여러 절을 설정했을 때
                 // 예) 레1-3:9   = 레위기 1장 1절 - 3장 9절
-                if (!string.IsNullOrEmpty(m.Groups["paraTo"].Value))
-                {
-                    q.EndVerseNumber = Convert.ToInt32(m.Groups["paraTo"].Value);
-                }
+                q.EndVerseNumber = Convert.ToInt32(m.Groups["paraTo"].Value);
                 return q;
             }
             
