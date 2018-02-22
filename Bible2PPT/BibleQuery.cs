@@ -19,7 +19,7 @@ namespace Bible2PPT
             var m = Regex.Match(s, @"(?<bible>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?<chapTo>\d+)(?::(?<paraTo>\d+))?)?)?");
             if (!m.Success)
             {
-                throw new FormatException("올바르지 않은 형식: " + s);
+                throw new FormatException($@"""{s}""은 잘못된 형식입니다.");
             }
 
             var q = new BibleQuery

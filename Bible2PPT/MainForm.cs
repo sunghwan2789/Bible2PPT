@@ -238,6 +238,11 @@ namespace Bible2PPT
                 foreach (var query in txtKeyword.Text.Split().Select(BibleQuery.ParseQuery))
                 {
                     var bible = bibles.FirstOrDefault(i => i.BibleId == query.BibleId);
+                    if (bible == null)
+                    {
+                        throw new EntryPointNotFoundException($@"""{query.BibleId}""에 해당하는 성경이 없습니다.");
+                    }
+
                     var chapters = (query.EndChapterNumber ?? bible.ChapterCount) - query.StartChapterNumber + 1;
                     foreach (var chapNo in Enumerable.Range(query.StartChapterNumber, chapters))
                     {
@@ -266,18 +271,34 @@ namespace Bible2PPT
                     }
                 }
             }, CTS.Token)
+                .ContinueWith(t => t.Exception.Handle(ex =>
+                {
+                    MessageBox.Show(ex.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }), TaskContinuationOptions.OnlyOnFaulted)
+                .ContinueWith(t =>
+                {
+                    builder.CommitBuild();
+                    builder.OpenLastBuild();
+                }, TaskContinuationOptions.NotOnFaulted)
                 .ContinueWith(t => Invoke(new MethodInvoker(() =>
                 {
                     AlterControl(true, btnMake);
                     btnMake.Text = "PPT 만들기";
                     Text = "성경2PPT";
+                })));
+                //.ContinueWith(t => Invoke(new MethodInvoker(() =>
+                //{
+                //    AlterControl(true, btnMake);
+                //    btnMake.Text = "PPT 만들기";
+                //    Text = "성경2PPT";
 
-                    builder.CommitBuild();
-                })))
-                .ContinueWith(t =>
-                {
-                    builder.OpenLastBuild();
-                }, TaskContinuationOptions.NotOnFaulted);
+                //    builder.CommitBuild();
+                //})))
+                //.ContinueWith(t =>
+                //{
+                //    builder.OpenLastBuild();
+                //}, TaskContinuationOptions.NotOnFaulted);
         }
 
 
