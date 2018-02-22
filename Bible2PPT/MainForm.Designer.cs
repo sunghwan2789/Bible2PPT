@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cmbShortTitle = new System.Windows.Forms.ComboBox();
             this.cmbLongTitle = new System.Windows.Forms.ComboBox();
@@ -232,7 +231,7 @@
             // 
             // btnGithub
             // 
-            this.btnGithub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnGithub.BackgroundImage")));
+            this.btnGithub.BackgroundImage = global::Bible2PPT.Properties.Resources.GitHub_Mark_32px;
             this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnGithub.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnGithub.Location = new System.Drawing.Point(127, 0);
@@ -323,7 +322,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = global::Bible2PPT.Properties.Resources.Icon;
             this.Name = "MainForm";
             this.Text = "성경2PPT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);

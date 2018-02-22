@@ -6,6 +6,7 @@ namespace Bible2PPT
     {
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
+        public static string ContactUrl { get; } = "https://github.com/sunghwan2789/Bible2PPT";
 
         public static AppConfig Context { get; } = new AppConfig();
 
