@@ -271,16 +271,21 @@ namespace Bible2PPT
                     }
                 }
             }, CTS.Token)
-                .ContinueWith(t => t.Exception.Handle(ex =>
-                {
-                    MessageBox.Show(ex.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }), TaskContinuationOptions.OnlyOnFaulted)
-                .ContinueWith(t =>
-                {
-                    builder.CommitBuild();
-                    builder.OpenLastBuild();
-                }, TaskContinuationOptions.NotOnFaulted)
+                .ContinueWith(t => {
+                    if (t.IsFaulted)
+                    {
+                        t.Exception.Handle(ex =>
+                        {
+                            MessageBox.Show(ex.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return true;
+                        });
+                    }
+                    else
+                    {
+                        builder.CommitBuild();
+                        builder.OpenLastBuild();
+                    }
+                })
                 .ContinueWith(t => Invoke(new MethodInvoker(() =>
                 {
                     AlterControl(true, btnMake);
