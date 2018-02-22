@@ -41,6 +41,8 @@
             this.btnTemplate = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chkFragment = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnGithub = new System.Windows.Forms.Button();
             this.lstBible = new System.Windows.Forms.ListView();
             this.id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -48,6 +50,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +66,7 @@
             this.cmbShortTitle.Margin = new System.Windows.Forms.Padding(0);
             this.cmbShortTitle.Name = "cmbShortTitle";
             this.cmbShortTitle.Size = new System.Drawing.Size(156, 20);
-            this.cmbShortTitle.TabIndex = 3;
+            this.cmbShortTitle.TabIndex = 2;
             this.cmbShortTitle.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
             // 
             // cmbLongTitle
@@ -78,7 +81,7 @@
             this.cmbLongTitle.Margin = new System.Windows.Forms.Padding(0);
             this.cmbLongTitle.Name = "cmbLongTitle";
             this.cmbLongTitle.Size = new System.Drawing.Size(156, 20);
-            this.cmbLongTitle.TabIndex = 2;
+            this.cmbLongTitle.TabIndex = 1;
             this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
             // 
             // btnMake
@@ -90,7 +93,7 @@
             this.btnMake.Margin = new System.Windows.Forms.Padding(0);
             this.btnMake.Name = "btnMake";
             this.btnMake.Size = new System.Drawing.Size(156, 29);
-            this.btnMake.TabIndex = 8;
+            this.btnMake.TabIndex = 7;
             this.btnMake.Text = "PPT 만들기";
             this.btnMake.UseVisualStyleBackColor = true;
             this.btnMake.Click += new System.EventHandler(this.btnMake_Click);
@@ -101,7 +104,7 @@
             this.radEasy.Location = new System.Drawing.Point(91, 123);
             this.radEasy.Name = "radEasy";
             this.radEasy.Size = new System.Drawing.Size(72, 16);
-            this.radEasy.TabIndex = 5;
+            this.radEasy.TabIndex = 4;
             this.radEasy.Text = "쉬운성경";
             this.radEasy.UseVisualStyleBackColor = true;
             this.radEasy.CheckedChanged += new System.EventHandler(this.radEasy_CheckedChanged);
@@ -113,7 +116,7 @@
             this.radRevision.Location = new System.Drawing.Point(13, 123);
             this.radRevision.Name = "radRevision";
             this.radRevision.Size = new System.Drawing.Size(72, 16);
-            this.radRevision.TabIndex = 5;
+            this.radRevision.TabIndex = 4;
             this.radRevision.TabStop = true;
             this.radRevision.Text = "개역개정";
             this.radRevision.UseVisualStyleBackColor = true;
@@ -130,7 +133,7 @@
             this.cmbChapNum.Margin = new System.Windows.Forms.Padding(0);
             this.cmbChapNum.Name = "cmbChapNum";
             this.cmbChapNum.Size = new System.Drawing.Size(156, 20);
-            this.cmbChapNum.TabIndex = 4;
+            this.cmbChapNum.TabIndex = 3;
             this.cmbChapNum.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
             // 
             // txtKeyword
@@ -143,19 +146,18 @@
             this.txtKeyword.Margin = new System.Windows.Forms.Padding(0);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Size = new System.Drawing.Size(156, 29);
-            this.txtKeyword.TabIndex = 6;
+            this.txtKeyword.TabIndex = 5;
             this.txtKeyword.Text = "목록 초기화 중...";
             this.txtKeyword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
             this.txtKeyword.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
             // 
             // btnTemplate
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.btnTemplate, 2);
             this.btnTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnTemplate.Location = new System.Drawing.Point(10, 10);
+            this.btnTemplate.Location = new System.Drawing.Point(0, 0);
             this.btnTemplate.Margin = new System.Windows.Forms.Padding(0);
             this.btnTemplate.Name = "btnTemplate";
-            this.btnTemplate.Size = new System.Drawing.Size(156, 29);
+            this.btnTemplate.Size = new System.Drawing.Size(125, 29);
             this.btnTemplate.TabIndex = 1;
             this.btnTemplate.Text = "템플릿 열기";
             this.btnTemplate.UseVisualStyleBackColor = true;
@@ -169,7 +171,6 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Controls.Add(this.btnTemplate, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtKeyword, 1, 9);
             this.tableLayoutPanel1.Controls.Add(this.cmbChapNum, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.radRevision, 1, 8);
@@ -178,6 +179,7 @@
             this.tableLayoutPanel1.Controls.Add(this.cmbLongTitle, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.cmbShortTitle, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.chkFragment, 1, 11);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(155, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -206,10 +208,38 @@
             this.chkFragment.Location = new System.Drawing.Point(13, 184);
             this.chkFragment.Name = "chkFragment";
             this.chkFragment.Size = new System.Drawing.Size(128, 16);
-            this.chkFragment.TabIndex = 7;
+            this.chkFragment.TabIndex = 6;
             this.chkFragment.Text = "파일 장별로 나누기";
             this.chkFragment.UseVisualStyleBackColor = true;
             this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel1.SetColumnSpan(this.tableLayoutPanel3, 2);
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 2F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel3.Controls.Add(this.btnTemplate, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnGithub, 2, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(10, 10);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(156, 29);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // btnGithub
+            // 
+            this.btnGithub.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnGithub.Location = new System.Drawing.Point(127, 0);
+            this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
+            this.btnGithub.Name = "btnGithub";
+            this.btnGithub.Size = new System.Drawing.Size(29, 29);
+            this.btnGithub.TabIndex = 2;
+            this.btnGithub.Text = "G";
+            this.btnGithub.UseVisualStyleBackColor = true;
             // 
             // lstBible
             // 
@@ -298,6 +328,7 @@
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
@@ -323,6 +354,8 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox chkFragment;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button btnGithub;
     }
 }
 
