@@ -232,14 +232,16 @@
             // 
             // btnGithub
             // 
+            this.btnGithub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnGithub.BackgroundImage")));
+            this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnGithub.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnGithub.Location = new System.Drawing.Point(127, 0);
             this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
             this.btnGithub.Name = "btnGithub";
             this.btnGithub.Size = new System.Drawing.Size(29, 29);
             this.btnGithub.TabIndex = 2;
-            this.btnGithub.Text = "G";
             this.btnGithub.UseVisualStyleBackColor = true;
+            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
             // 
             // lstBible
             // 

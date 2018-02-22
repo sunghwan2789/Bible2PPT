@@ -344,5 +344,10 @@ namespace Bible2PPT
         {
             AppConfig.Context.SeperateByChapter = chkFragment.Checked;
         }
+
+        private void btnGithub_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/sunghwan2789/Bible2PPT");
+        }
     }
 }
