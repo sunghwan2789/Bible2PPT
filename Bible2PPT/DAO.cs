@@ -11,9 +11,12 @@ namespace Bible2PPT
 {
     class DAO
     {
-        private WebClient loader = new WebClient();
+        private WebClient loader = new WebClient
+        {
+            Encoding = ENCODING
+        };
         private const string SOURCE = "http://find.godpeople.com/?page=bidx&kwrd={0}&vers={1}";
-        private readonly Encoding ENCODING = Encoding.GetEncoding("EUC-KR");
+        private static readonly Encoding ENCODING = Encoding.GetEncoding("EUC-KR");
 
         public Task<IEnumerable<BibleInfo>> GetBiblesAsync() => Task.Factory.StartNew(() =>
         {
@@ -27,11 +30,13 @@ namespace Bible2PPT
             });
         });
 
+        private static string EncodeString(string s) => string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
+
         public Task<BibleChapter> GetBibleChapterAsync(BibleInfo bible, int chapterNumber) => Task.Factory.StartNew(() =>
         {
             var data = loader.DownloadString(string.Format(
                 SOURCE,
-                HttpUtility.UrlEncode(bible.BibleId + chapterNumber, ENCODING),
+                EncodeString(bible.BibleId + chapterNumber),
                 !AppConfig.Context.UseEasyBible ? "rvsn" : "ezsn"));
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
             return new BibleChapter
