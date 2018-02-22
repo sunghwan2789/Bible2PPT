@@ -95,16 +95,6 @@ namespace Bible2PPT
             templateSlide = workingPPT.Slides[1];
         }
 
-        public void AppendChapter(BibleChapter chapter, CancellationToken token)
-        {
-            AppendChapter(chapter, 1, token);
-        }
-
-        public void AppendChapter(BibleChapter chapter, int startVerseNumber, CancellationToken token)
-        {
-            AppendChapter(chapter, startVerseNumber, chapter.Verses.Count, token);
-        }
-
         public void AppendChapter(BibleChapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
             var isFirst = true;
@@ -121,7 +111,7 @@ namespace Bible2PPT
                         .Select(i => i.TextFrame.TextRange))
                 {
                     var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", everyChapter || isFirst, chapter + "");
+                    text = AddSuffix(text, "CHAP", everyChapter || isFirst, chapter.ChapterNumber + "");
                     text = AddSuffix(text, "STITLE", everyShortTitle || isFirst, chapter.Bible.BibleId);
                     text = AddSuffix(text, "TITLE", everyLongTitle || isFirst, chapter.Bible.Title);
                     text = text.Replace("[PARA]", paraNum + "");

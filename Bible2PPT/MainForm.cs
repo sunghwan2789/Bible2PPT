@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -230,56 +229,19 @@ namespace Bible2PPT
             CTS = new CancellationTokenSource();
             Task.Factory.StartNew(() =>
             {
+                // TODO: FIX CROSS THREAD ISSUE
                 builder.ApplyConfig(cmbChapNum.SelectedIndex == 0, cmbLongTitle.SelectedIndex == 0, cmbShortTitle.SelectedIndex == 0);
                 builder.BeginBuild();
 
-                foreach (var data in
-                    txtKeyword.Text.Split()
-                        .Select(keyword => Regex.Match(keyword, @"(?<bible>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?:(?<chapTo>\d+):)?(?<paraTo>\d+))?)?"))
-                        .Where(match => match.Success))
+                var bibles = dao.GetBiblesAsync().Result;
+
+                foreach (var query in txtKeyword.Text.Split().Select(BibleQuery.ParseQuery))
                 {
-                    BibleInfo bible = null;
-                    Invoke(new MethodInvoker(() => bible = (BibleInfo) lstBible.FindItemWithText(data.Groups["bible"].Value).Tag));
-
-                    var chapFrom = 1;
-                    var paraFrom = 1;
-                    var chapTo = bible.ChapterCount;
-                    var paraTo = -1;
-                    if (!string.IsNullOrEmpty(data.Groups["range"].Value))
+                    var bible = bibles.FirstOrDefault(i => i.BibleId == query.BibleId);
+                    var chapters = (query.EndChapterNumber ?? bible.ChapterCount) - query.StartChapterNumber + 1;
+                    foreach (var chapNo in Enumerable.Range(query.StartChapterNumber, chapters))
                     {
-                        chapFrom = Convert.ToInt32(data.Groups["chapFrom"].Value);
-                        if (string.IsNullOrEmpty(data.Groups["paraFrom"].Value))
-                        {
-                            paraFrom = 1;
-                            if (string.IsNullOrEmpty(data.Groups["chapTo"].Value))
-                            {
-                                chapTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value) ?
-                                    chapFrom :
-                                    Convert.ToInt32(data.Groups["paraTo"].Value);
-                                paraTo = -1;
-                            }
-                            else
-                            {
-                                chapTo = Convert.ToInt32(data.Groups["chapTo"].Value);
-                                paraTo = Convert.ToInt32(data.Groups["paraTo"].Value);
-                            }
-                        }
-                        else
-                        {
-                            paraFrom = Math.Max(1, Convert.ToInt32(data.Groups["paraFrom"].Value));
-                            chapTo = string.IsNullOrEmpty(data.Groups["chapTo"].Value) ?
-                                chapFrom :
-                                Convert.ToInt32(data.Groups["chapTo"].Value);
-                            paraTo = string.IsNullOrEmpty(data.Groups["paraTo"].Value) ?
-                                paraFrom :
-                                Convert.ToInt32(data.Groups["paraTo"].Value);
-                        }
-                        chapTo = Math.Min(chapTo, bible.ChapterCount);
-                    }
-
-                    for (var chapter = chapFrom; chapter <= chapTo; chapter++)
-                    {
-                        Invoke(new MethodInvoker(() => Text = "성경2PPT - " + bible.Title + " " + chapter + "장"));
+                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {bible.Title} {chapNo}장"));
 
                         if (!string.IsNullOrEmpty(destination))
                         {
@@ -289,23 +251,18 @@ namespace Bible2PPT
                             {
                                 Directory.CreateDirectory(parent);
                             }
-                            builder.BeginBuild(Path.Combine(parent, chapter.ToString("000\\.pptx")));
+                            builder.BeginBuild(Path.Combine(parent, chapNo.ToString("000\\.pptx")));
                         }
 
-                        var content = dao.GetBibleChapterAsync(bible, chapter, radRevision.Checked).Result;
-                        if (chapter == chapTo && paraTo != -1)
+                        // TODO: FIX CROSS THREAD ISSUE
+                        var chapter = dao.GetBibleChapterAsync(bible, chapNo, radRevision.Checked).Result;
+                        var startVerseNo = chapNo == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                        var endVerseNo = chapter.Verses.Count;
+                        if (chapNo == query.EndChapterNumber && query.EndVerseNumber != null)
                         {
-                            builder.AppendChapter(content, paraFrom, Math.Min(content.Verses.Count, paraTo), CTS.Token);
+                            endVerseNo = query.EndVerseNumber.Value;
                         }
-                        else if (chapter == chapFrom)
-                        {
-                            builder.AppendChapter(content, paraFrom, CTS.Token);
-                        }
-                        else
-                        {
-                            builder.AppendChapter(content, CTS.Token);
-                        }
-                        paraFrom = 1;
+                        builder.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
                     }
                 }
             }, CTS.Token)
