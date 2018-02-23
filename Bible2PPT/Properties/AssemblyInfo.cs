@@ -10,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyDescription("성경이 궁금해")]
 [assembly: AssemblyCompany("BloodCat")]
 [assembly: AssemblyProduct("Bible2PPT")]
-[assembly: AssemblyCopyright("BloodCat 2015-2017 / data from GodPeople.com")]
+[assembly: AssemblyCopyright("BloodCat 2015-2018 / data from GodPeople.com")]
 
 // ComVisible을 false로 설정하면 이 어셈블리의 형식이 COM 구성 요소에 
 // 표시되지 않습니다.  COM에서 이 어셈블리의 형식에 액세스하려면 
@@ -34,5 +34,5 @@ using System.Resources;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.1.1")]
+[assembly: AssemblyFileVersion("1.1.2")]
 [assembly: NeutralResourcesLanguageAttribute("ko-KR")]
