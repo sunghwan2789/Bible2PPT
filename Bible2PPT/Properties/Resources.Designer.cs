@@ -71,12 +71,12 @@ namespace Bible2PPT.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static System.Drawing.Icon Icon {
+        internal static byte[] Template {
             get {
-                object obj = ResourceManager.GetObject("Icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                object obj = ResourceManager.GetObject("Template", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

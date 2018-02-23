@@ -15,10 +15,7 @@ namespace Bible2PPT
     {
         private static PowerPoint.Application POWERPNT;
 
-        public string resourceName { get; private set; }
-        public string templatePath { get; private set; }
-
-        public PPTBuilder(string resourceName, string templatePath)
+        public PPTBuilder()
         {
             if (POWERPNT == null)
             {
@@ -29,29 +26,26 @@ namespace Bible2PPT
                 }
                 catch { }
             }
-
-            this.resourceName = resourceName;
-            this.templatePath = templatePath;
         }
 
         private void ExtractTemplate()
         {
-            if (File.Exists(templatePath))
+            if (File.Exists(AppConfig.TemplatePath))
             {
                 return;
             }
 
-            using (var src = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-            using (var dst = new FileStream(templatePath, FileMode.Create))
+            using (var ms = new MemoryStream(Properties.Resources.Template))
+            using (var fs = File.OpenWrite(AppConfig.TemplatePath))
             {
-                src.CopyTo(dst);
+                ms.CopyTo(fs);
             }
         }
 
         public void OpenTemplate()
         {
             ExtractTemplate();
-            Process.Start(templatePath);
+            Process.Start(AppConfig.TemplatePath);
         }
 
 
@@ -62,7 +56,7 @@ namespace Bible2PPT
         public PPTBuilderWork BeginBuild(string output)
         {
             ExtractTemplate();
-            File.Copy(templatePath, output, true);
+            File.Copy(AppConfig.TemplatePath, output, true);
 
             var workingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
             return new PPTBuilderWork

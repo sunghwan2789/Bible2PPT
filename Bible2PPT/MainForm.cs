@@ -17,7 +17,7 @@ namespace Bible2PPT
         {
             try
             {
-                builder = new PPTBuilder("Bible2PPT.Template.pptx", AppConfig.TemplatePath);
+                builder = new PPTBuilder();
             }
             catch
             {
