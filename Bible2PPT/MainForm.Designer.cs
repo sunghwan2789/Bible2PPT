@@ -208,7 +208,7 @@
             this.chkFragment.Name = "chkFragment";
             this.chkFragment.Size = new System.Drawing.Size(128, 16);
             this.chkFragment.TabIndex = 6;
-            this.chkFragment.Text = "파일 장별로 나누기";
+            this.chkFragment.Text = "장별로 PPT 나누기";
             this.chkFragment.UseVisualStyleBackColor = true;
             this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
             // 
@@ -278,7 +278,7 @@
             // 
             // length
             // 
-            this.length.Text = "장 수";
+            this.length.Text = "장수";
             this.length.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.length.Width = 40;
             // 
