@@ -322,7 +322,6 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.Icon = global::Bible2PPT.Properties.Resources.Icon;
             this.Name = "MainForm";
             this.Text = "성경2PPT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);

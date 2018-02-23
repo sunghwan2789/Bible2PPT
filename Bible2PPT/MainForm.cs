@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Bible2PPT
 {
-    internal partial class MainForm : Form
+    internal partial class MainForm : AssemblyIconForm
     {
         private PPTBuilder builder;
         private DAO dao = new DAO();
