@@ -6,13 +6,21 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/4927894/36557220-072f3588-184b-11e8-85b4-05845fbe76c1.png" alt="성경2PPT로 만든 PPT 스크린샷"></p>
 
 
-## 성경 구절 입력 규칙
+## 성경 구절 입력 방법
 ![성경2PPT 성경 구절 입력칸 강조 스크린샷](https://user-images.githubusercontent.com/4927894/36576619-1bbd85aa-1895-11e8-9d3c-7b4a58cf807f.png)
 
+**성경2PPT**는 **성경 구절**을 PPT로 만들어줍니다. **성경 구절**은 아래와 같은 규칙에 따라 입력해야 합니다.
+
+### 규칙
+```
+짧은_제목[시작_장[:시작_절]][-마지막_장[:마지막_절]|마지막_절]
+```
+
+### 예시
 | 성경 구절 | 설명 |
 | --- | --- |
 | `창` | 창세기 전체 |
-| `창1`   | 창세기 1장 전체 |
+| `창1` | 창세기 1장 전체 |
 | `롬1-3` | 로마서 1장 1절 - 3장 전체 |
 | `레1-3:9` | 레위기 1장 1절 - 3장 9절 |
 | `전1:3` | 전도서 1장 3절 |
@@ -52,14 +60,14 @@
 ### .NET Framework 4 Client Profile 이상
 **성경2PPT**를 실행하기 위해 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받으세요.
 
-### Microsoft Office 2007 이상
+### Microsoft PowerPoint 2007 이상
 PPT를 만들고 PPT를 보기 위해 필요한 프로그램입니다. 프로그램 구성 요소로 **Office 공유 기능** - **Visual Basic for Applications**을 설치해야 합니다.
 
 ### 인터넷 연결
 성경 구절을 [갓피플](http://godpeople.com)에서 받아올 때 인터넷 연결이 필요합니다.
 
 
-## 기여
+## 기여 방법
 **성경2PPT**는 당신의 기여를 기다리고 있습니다~ 사용 중 발생한 오류 혹은 추가하고 싶은 기능을 [Issues](https://github.com/sunghwan2789/Bible2PPT/issues) 페이지에 올려주세요!
 
 
