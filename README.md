@@ -45,7 +45,7 @@
     | `[PARA]` | 절 번호 | X |
     | `[BODY]` | 내용 | X |
 
-- **접미사**: **치환자** `[CHAP:장]`을 `n장`으로 바꿔줍니다. 이 때, **치환자**를 표시하지 않을 경우에는 **접미사**도 같이 표시하지 않습니다.
+- **접미사**: **치환자** `[CHAP:장]`을 `n장`으로 바꿔줍니다. 이 때, **치환자**를 표시하지 않으면 **접미사**도 표시하지 않습니다.
 
 ### 기타 기능
 - **장별로 PPT 나누기**: `성경 제목/장 번호.pptx`의 구조로 PPT를 나누어 저장합니다.
@@ -58,10 +58,10 @@
 ## 실행 요구 사항
 
 ### .NET Framework 4 Client Profile 이상
-**성경2PPT**를 실행하기 위해 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받으세요.
+**성경2PPT**를 실행하는 데 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받으세요.
 
 ### Microsoft PowerPoint 2007 이상
-PPT를 만들고 PPT를 보기 위해 필요한 프로그램입니다. 프로그램 구성 요소로 **Office 공유 기능** - **Visual Basic for Applications**을 설치해야 합니다.
+PPT를 만들고 보는 데 필요한 프로그램입니다. 프로그램 구성 요소로 **Office 공유 기능** - **Visual Basic for Applications**를 설치해야 합니다.
 
 ### 인터넷 연결
 성경 구절을 [갓피플](http://godpeople.com)에서 받아올 때 인터넷 연결이 필요합니다.
