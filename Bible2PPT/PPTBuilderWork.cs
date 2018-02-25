@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using Bible2PPT.Bibles;
+using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,8 +37,8 @@ namespace Bible2PPT
                 {
                     var text = textShape.Text;
                     text = AddSuffix(text, "CHAP", chapter.ChapterNumber + "", AppConfig.Context.ShowChapterNumber);
-                    text = AddSuffix(text, "STITLE", chapter.Bible.BibleId, AppConfig.Context.ShowShortTitle);
-                    text = AddSuffix(text, "TITLE", chapter.Bible.Title, AppConfig.Context.ShowLongTitle);
+                    text = AddSuffix(text, "STITLE", chapter.Book.BookId, AppConfig.Context.ShowShortTitle);
+                    text = AddSuffix(text, "TITLE", chapter.Book.Title, AppConfig.Context.ShowLongTitle);
                     text = text.Replace("[PARA]", paraNum + "");
                     text = text.Replace("[CPAS]", startVerseNumber + "");
                     text = text.Replace("[CPAE]", endVerseNumber + "");

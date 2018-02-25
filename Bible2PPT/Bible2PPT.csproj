@@ -65,10 +65,13 @@
     <Compile Include="AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BibleChapter.cs" />
-    <Compile Include="BibleInfo.cs" />
-    <Compile Include="ByteConfig.cs" />
-    <Compile Include="DAO.cs" />
+    <Compile Include="Bibles\Bible.cs" />
+    <Compile Include="Bibles\BibleChapter.cs" />
+    <Compile Include="Bibles\BibleBook.cs" />
+    <Compile Include="Bibles\Sources\GodpeopleBible.cs" />
+    <Compile Include="Bibles\Sources\GodpiaBible.cs" />
+    <Compile Include="Bibles\Sources\BibleSource.cs" />
+    <Compile Include="BinaryConfig.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +79,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AppConfig.cs" />
+    <Compile Include="MainForm.Helper.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PPTBuilder.cs" />
     <Compile Include="PPTBuilderWork.cs" />
     <Compile Include="Program.cs" />
@@ -87,6 +93,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemplateTextOptions.cs" />
+    <Compile Include="TimeoutWebClient.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -145,6 +152,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

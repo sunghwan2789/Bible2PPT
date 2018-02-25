@@ -1,41 +1,76 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Bible2PPT
 {
-    class AppConfig : ByteConfig
+    class AppConfig : BinaryConfig
     {
+        public const int ConfigSize = 1 + 4 + 4;
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
         public static string ContactUrl { get; } = "https://github.com/sunghwan2789/Bible2PPT";
 
         public static AppConfig Context { get; } = new AppConfig();
-
+        
+        /// <summary>
+        /// Offset: 0,
+        /// Mask: 0b0000_0001,
+        /// </summary>
         public TemplateTextOptions ShowLongTitle { get; set; } = TemplateTextOptions.Always;
+        
+        /// <summary>
+        /// Offset: 0,
+        /// Mask: 0b0000_0010,
+        /// </summary>
         public TemplateTextOptions ShowShortTitle { get; set; } = TemplateTextOptions.Always;
+
+        /// <summary>
+        /// Offset: 0,
+        /// Mask: 0b0000_0100,
+        /// </summary>
         public TemplateTextOptions ShowChapterNumber { get; set; } = TemplateTextOptions.Always;
-        public bool UseEasyBible { get; set; } = false;
+
+        /// <summary>
+        /// Offset: 0,
+        /// Mask: 0b0001_0000,
+        /// </summary>
         public bool SeperateByChapter { get; set; } = false;
 
-        public AppConfig() : base(ConfigPath) {}
+        /// <summary>
+        /// Offset: 1,
+        /// Length: 4,
+        /// </summary>
+        public int BibleSourceSeq { get; set; } = 0;
 
-        protected override byte Serialize()
+        /// <summary>
+        /// Offset: 5,
+        /// Length: 4,
+        /// </summary>
+        public int BibleVersionSeq { get; set; } = 0;
+
+        public AppConfig() : base(ConfigPath, ConfigSize) {}
+
+        protected override byte[] Serialize()
         {
-            int ret = 0;
-            ret |= (int) ShowLongTitle;
-            ret |= ((int) ShowShortTitle) << 1;
-            ret |= ((int) ShowChapterNumber) << 2;
-            ret |= UseEasyBible ? 8 : 0;
-            ret |= SeperateByChapter ? 16 : 0;
-            return (byte) ret;
+            var b = new byte[ConfigSize];
+            b[0] = (byte) (int) ShowLongTitle;
+            b[0] |= (byte) ((int) ShowShortTitle << 1);
+            b[0] |= (byte) ((int) ShowChapterNumber << 2);
+            b[0] |= (byte) (SeperateByChapter ? 16 : 0);
+            BitConverter.GetBytes(BibleSourceSeq).CopyTo(b, 1);
+            BitConverter.GetBytes(BibleVersionSeq).CopyTo(b, 5);
+            return b;
         }
 
-        protected override void Deserialize(byte s)
+        protected override void Deserialize(byte[] s)
         {
-            ShowLongTitle = (TemplateTextOptions) (s & 1);
-            ShowShortTitle = (TemplateTextOptions) ((s & 2) >> 1);
-            ShowChapterNumber = (TemplateTextOptions) ((s & 4) >> 2);
-            UseEasyBible = (s & 8) == 8;
-            SeperateByChapter = (s & 16) == 16;
+            ShowLongTitle = (TemplateTextOptions) (s[0] & 1);
+            ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
+            ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
+            SeperateByChapter = (s[0] & 16) == 16;
+            BibleSourceSeq = BitConverter.ToInt32(s, 1);
+            BibleVersionSeq = BitConverter.ToInt32(s, 5);
         }
     }
 }
