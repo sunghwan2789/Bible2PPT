@@ -33,8 +33,6 @@
             this.cmbShortTitle = new System.Windows.Forms.ComboBox();
             this.cmbLongTitle = new System.Windows.Forms.ComboBox();
             this.btnMake = new System.Windows.Forms.Button();
-            this.radEasy = new System.Windows.Forms.RadioButton();
-            this.radRevision = new System.Windows.Forms.RadioButton();
             this.cmbChapNum = new System.Windows.Forms.ComboBox();
             this.txtKeyword = new System.Windows.Forms.TextBox();
             this.btnTemplate = new System.Windows.Forms.Button();
@@ -43,11 +41,12 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGithub = new System.Windows.Forms.Button();
             this.lstBible = new System.Windows.Forms.ListView();
-            this.id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmbBibleSource = new System.Windows.Forms.ComboBox();
+            this.cmbBibleVersion = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -92,7 +91,6 @@
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 2);
             this.btnMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMake.Enabled = false;
             this.btnMake.Location = new System.Drawing.Point(10, 203);
             this.btnMake.Margin = new System.Windows.Forms.Padding(0);
             this.btnMake.Name = "btnMake";
@@ -101,29 +99,6 @@
             this.btnMake.Text = "PPT 만들기";
             this.btnMake.UseVisualStyleBackColor = true;
             this.btnMake.Click += new System.EventHandler(this.btnMake_Click);
-            // 
-            // radEasy
-            // 
-            this.radEasy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radEasy.Location = new System.Drawing.Point(91, 123);
-            this.radEasy.Name = "radEasy";
-            this.radEasy.Size = new System.Drawing.Size(72, 16);
-            this.radEasy.TabIndex = 4;
-            this.radEasy.Text = "쉬운성경";
-            this.radEasy.UseVisualStyleBackColor = true;
-            this.radEasy.CheckedChanged += new System.EventHandler(this.radEasy_CheckedChanged);
-            // 
-            // radRevision
-            // 
-            this.radRevision.Checked = true;
-            this.radRevision.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radRevision.Location = new System.Drawing.Point(13, 123);
-            this.radRevision.Name = "radRevision";
-            this.radRevision.Size = new System.Drawing.Size(72, 16);
-            this.radRevision.TabIndex = 4;
-            this.radRevision.TabStop = true;
-            this.radRevision.Text = "개역개정";
-            this.radRevision.UseVisualStyleBackColor = true;
             // 
             // cmbChapNum
             // 
@@ -144,14 +119,12 @@
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.txtKeyword, 2);
             this.txtKeyword.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyword.Enabled = false;
             this.txtKeyword.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtKeyword.Location = new System.Drawing.Point(10, 142);
             this.txtKeyword.Margin = new System.Windows.Forms.Padding(0);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Size = new System.Drawing.Size(156, 29);
             this.txtKeyword.TabIndex = 5;
-            this.txtKeyword.Text = "목록 초기화 중...";
             this.txtKeyword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
             this.txtKeyword.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
             // 
@@ -177,8 +150,6 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.tableLayoutPanel1.Controls.Add(this.txtKeyword, 1, 9);
             this.tableLayoutPanel1.Controls.Add(this.cmbChapNum, 1, 7);
-            this.tableLayoutPanel1.Controls.Add(this.radRevision, 1, 8);
-            this.tableLayoutPanel1.Controls.Add(this.radEasy, 2, 8);
             this.tableLayoutPanel1.Controls.Add(this.btnMake, 1, 12);
             this.tableLayoutPanel1.Controls.Add(this.cmbLongTitle, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.cmbShortTitle, 1, 5);
@@ -252,29 +223,22 @@
             this.lstBible.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.lstBible.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstBible.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.id,
             this.title,
             this.length});
             this.lstBible.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBible.Enabled = false;
             this.lstBible.FullRowSelect = true;
             this.lstBible.GridLines = true;
             this.lstBible.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lstBible.HideSelection = false;
-            this.lstBible.Location = new System.Drawing.Point(0, 23);
+            this.lstBible.Location = new System.Drawing.Point(0, 73);
             this.lstBible.Margin = new System.Windows.Forms.Padding(0);
             this.lstBible.Name = "lstBible";
-            this.lstBible.Size = new System.Drawing.Size(151, 226);
+            this.lstBible.Size = new System.Drawing.Size(151, 176);
             this.lstBible.TabIndex = 0;
             this.lstBible.TabStop = false;
             this.lstBible.UseCompatibleStateImageBehavior = false;
             this.lstBible.View = System.Windows.Forms.View.Details;
             this.lstBible.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lstBible_MouseClick);
-            // 
-            // id
-            // 
-            this.id.Text = "id";
-            this.id.Width = 0;
             // 
             // title
             // 
@@ -292,7 +256,7 @@
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearch.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtSearch.Location = new System.Drawing.Point(0, 0);
+            this.txtSearch.Location = new System.Drawing.Point(0, 50);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(0);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(151, 22);
@@ -308,16 +272,48 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lstBible, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lstBible, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.cmbBibleSource, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbBibleVersion, 0, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 249);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // cmbBibleSource
+            // 
+            this.cmbBibleSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbBibleSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBibleSource.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbBibleSource.FormattingEnabled = true;
+            this.cmbBibleSource.Location = new System.Drawing.Point(0, 0);
+            this.cmbBibleSource.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbBibleSource.Name = "cmbBibleSource";
+            this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
+            this.cmbBibleSource.TabIndex = 1;
+            this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
+            // 
+            // cmbBibleVersion
+            // 
+            this.cmbBibleVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbBibleVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBibleVersion.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbBibleVersion.FormattingEnabled = true;
+            this.cmbBibleVersion.Location = new System.Drawing.Point(0, 25);
+            this.cmbBibleVersion.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbBibleVersion.Name = "cmbBibleVersion";
+            this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
+            this.cmbBibleVersion.TabIndex = 2;
+            this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
             // 
             // splitContainer1
             // 
@@ -345,11 +341,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 249);
             this.Controls.Add(this.splitContainer1);
-            this.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.Name = "MainForm";
             this.Text = "성경2PPT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
-            this.Shown += new System.EventHandler(this.Main_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -371,11 +365,8 @@
         private System.Windows.Forms.Button btnTemplate;
         private System.Windows.Forms.TextBox txtKeyword;
         private System.Windows.Forms.ComboBox cmbChapNum;
-        private System.Windows.Forms.RadioButton radRevision;
-        private System.Windows.Forms.RadioButton radEasy;
         private System.Windows.Forms.Button btnMake;
         private System.Windows.Forms.ComboBox cmbLongTitle;
-        private System.Windows.Forms.ColumnHeader id;
         private System.Windows.Forms.ColumnHeader title;
         private System.Windows.Forms.ColumnHeader length;
         private System.Windows.Forms.ListView lstBible;
@@ -385,6 +376,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button btnGithub;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ComboBox cmbBibleSource;
+        private System.Windows.Forms.ComboBox cmbBibleVersion;
     }
 }
 

@@ -61,6 +61,37 @@ namespace Bible2PPT.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 창,창세기,gen,Gen,Genesis
+        ///출,출애굽기,exo,Exo,Exodus
+        ///레,레위기,lev,Lev,Leviticus
+        ///민,민수기,num,Num,Numbers
+        ///신,신명기,deu,Deu,Deuteronomy
+        ///수,여호수아,jos,Jos,Joshua
+        ///삿,사사기,jdg,Jdg,Judges
+        ///룻,룻기,rut,Rut,Ruth
+        ///삼상,사무엘상,1sa,1Sa,1 Samuel
+        ///삼하,사무엘하,2sa,2Sa,2 Samuel
+        ///왕상,열왕기상,1ki,1Ki,1 Kings
+        ///왕하,열왕기하,2ki,2Ki,2 Kings
+        ///대상,역대상,1ch,1Ch,1 Chronicles
+        ///대하,역대하,2ch,2Ch,2 Chronicles
+        ///스,에스라,ezr,Ezr,Ezra
+        ///느,느헤미야,neh,Neh,Nehemiah
+        ///에,에스더,est,Est,Esther
+        ///욥,욥기,job,Job,Job
+        ///시,시편,psa,Psa,Psalms
+        ///잠,잠언,pro,Pro,Proverbs
+        ///전,전도서,ecc,Ecc,Ecclesiastes
+        ///아,아가,sng,Sol,Song of Solomon
+        ///사, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BibleBookAliases {
+            get {
+                return ResourceManager.GetString("BibleBookAliases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap GitHub_Mark_32px {
