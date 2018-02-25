@@ -9,7 +9,7 @@ namespace Bible2PPT.Bibles.Sources
         public static BibleSource[] AvailableSources = new BibleSource[]
         {
             new GodpeopleBible { SequenceId = 0 },
-            //new GodpiaBible { SequenceId = 1 },
+            new GodpiaBible { SequenceId = 1 },
         };
 
         public int SequenceId { get; set; }
