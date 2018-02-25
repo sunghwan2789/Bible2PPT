@@ -9,11 +9,12 @@ namespace Bible2PPT.Bibles.Sources
 {
     class GodpeopleBible : BibleSource
     {
-        private const string URL = "http://find.godpeople.com/?page=bidx";
+        private const string BASE_URL = "http://find.godpeople.com";
         private static readonly Encoding ENCODING = Encoding.GetEncoding("EUC-KR");
 
-        private WebClient client = new WebClient
+        private BetterWebClient client = new BetterWebClient
         {
+            BaseAddress = BASE_URL,
             Encoding = ENCODING,
         };
 
@@ -42,7 +43,7 @@ namespace Bible2PPT.Bibles.Sources
 
         public override List<BibleBook> GetBooks(Bible bible)
         {
-            var data = client.DownloadString(URL);
+            var data = client.DownloadString("/?page=bidx");
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
             return matches.Cast<Match>().Select(match => new BibleBook
             {
@@ -72,7 +73,7 @@ namespace Bible2PPT.Bibles.Sources
 
         public override List<string> GetVerses(BibleChapter chapter)
         {
-            var data = client.DownloadString($"{URL}&kwrd={EncodeString(chapter.Book.BookId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.BibleId}");
+            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.BookId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.BibleId}");
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
             return matches.Cast<Match>().Select(i => StripHtmlTags(i.Groups[1].Value)).ToList();
         }

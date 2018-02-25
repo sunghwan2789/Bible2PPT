@@ -43,15 +43,18 @@ namespace Bible2PPT
 
             InitializeComponent();
 
-            ToggleCriticalControls(false);
-
             cmbLongTitle.SelectedIndex = (int) AppConfig.Context.ShowLongTitle;
             cmbShortTitle.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
             cmbChapNum.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
 
+            ToggleCriticalControls(false);
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
             cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleSourceSeq);
+            if (cmbBibleSource.SelectedItem == null)
+            {
+                ToggleCriticalControls(true);
+            }
         }
 
         private void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -63,7 +66,7 @@ namespace Bible2PPT
                 throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
             }
 
-            AppConfig.Context.BibleSourceSeq = cmbBibleSource.SelectedIndex;
+            AppConfig.Context.BibleSourceSeq = source.SequenceId;
 
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
@@ -77,6 +80,10 @@ namespace Bible2PPT
                 cmbBibleVersion.Items.Clear();
                 cmbBibleVersion.Items.AddRange(t.Result.ToArray());
                 cmbBibleVersion.SelectedItem = t.Result.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleVersionSeq);
+                if (cmbBibleVersion.SelectedItem == null)
+                {
+                    ToggleCriticalControls(true);
+                }
             })));
         }
 
@@ -89,8 +96,8 @@ namespace Bible2PPT
                 throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
             }
 
-            AppConfig.Context.BibleVersionSeq = cmbBibleVersion.SelectedIndex;
-
+            AppConfig.Context.BibleVersionSeq = bible.SequenceId;
+            // TODO: 컨트롤 비활성화
             bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 if (t.IsFaulted)

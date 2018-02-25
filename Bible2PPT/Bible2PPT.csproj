@@ -93,7 +93,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemplateTextOptions.cs" />
-    <Compile Include="TimeoutWebClient.cs" />
+    <Compile Include="BetterWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
