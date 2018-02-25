@@ -49,6 +49,8 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.cmbBibleSource = new System.Windows.Forms.ComboBox();
+            this.cmbBibleVersion = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -261,10 +263,10 @@
             this.lstBible.GridLines = true;
             this.lstBible.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lstBible.HideSelection = false;
-            this.lstBible.Location = new System.Drawing.Point(0, 23);
+            this.lstBible.Location = new System.Drawing.Point(0, 73);
             this.lstBible.Margin = new System.Windows.Forms.Padding(0);
             this.lstBible.Name = "lstBible";
-            this.lstBible.Size = new System.Drawing.Size(151, 226);
+            this.lstBible.Size = new System.Drawing.Size(151, 176);
             this.lstBible.TabIndex = 0;
             this.lstBible.TabStop = false;
             this.lstBible.UseCompatibleStateImageBehavior = false;
@@ -292,7 +294,7 @@
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearch.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtSearch.Location = new System.Drawing.Point(0, 0);
+            this.txtSearch.Location = new System.Drawing.Point(0, 50);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(0);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(151, 22);
@@ -308,12 +310,18 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lstBible, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lstBible, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.cmbBibleSource, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbBibleVersion, 0, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 249);
@@ -338,6 +346,30 @@
             this.splitContainer1.Size = new System.Drawing.Size(334, 249);
             this.splitContainer1.SplitterDistance = 151;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // cmbBibleSource
+            // 
+            this.cmbBibleSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbBibleSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBibleSource.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbBibleSource.FormattingEnabled = true;
+            this.cmbBibleSource.Location = new System.Drawing.Point(0, 0);
+            this.cmbBibleSource.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbBibleSource.Name = "cmbBibleSource";
+            this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
+            this.cmbBibleSource.TabIndex = 1;
+            // 
+            // cmbBibleVersion
+            // 
+            this.cmbBibleVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbBibleVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBibleVersion.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbBibleVersion.FormattingEnabled = true;
+            this.cmbBibleVersion.Location = new System.Drawing.Point(0, 25);
+            this.cmbBibleVersion.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbBibleVersion.Name = "cmbBibleVersion";
+            this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
+            this.cmbBibleVersion.TabIndex = 2;
             // 
             // MainForm
             // 
@@ -385,6 +417,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button btnGithub;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ComboBox cmbBibleSource;
+        private System.Windows.Forms.ComboBox cmbBibleVersion;
     }
 }
 
