@@ -37,7 +37,7 @@ namespace Bible2PPT
                 {
                     var text = textShape.Text;
                     text = AddSuffix(text, "CHAP", chapter.ChapterNumber.ToString(), AppConfig.Context.ShowChapterNumber);
-                    text = AddSuffix(text, "STITLE", chapter.Book.BookId, AppConfig.Context.ShowShortTitle);
+                    text = AddSuffix(text, "STITLE", chapter.Book.ShortTitle, AppConfig.Context.ShowShortTitle);
                     text = AddSuffix(text, "TITLE", chapter.Book.Title, AppConfig.Context.ShowLongTitle);
                     text = text.Replace("[PARA]", paraNum.ToString());
                     text = text.Replace("[CPAS]", startVerseNumber.ToString());
