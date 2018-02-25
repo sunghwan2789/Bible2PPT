@@ -48,9 +48,14 @@
             this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbShortTitle
@@ -180,7 +185,7 @@
             this.tableLayoutPanel1.Controls.Add(this.chkFragment, 1, 11);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(155, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 14;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
@@ -259,7 +264,7 @@
             this.lstBible.Location = new System.Drawing.Point(0, 23);
             this.lstBible.Margin = new System.Windows.Forms.Padding(0);
             this.lstBible.Name = "lstBible";
-            this.lstBible.Size = new System.Drawing.Size(155, 226);
+            this.lstBible.Size = new System.Drawing.Size(151, 226);
             this.lstBible.TabIndex = 0;
             this.lstBible.TabStop = false;
             this.lstBible.UseCompatibleStateImageBehavior = false;
@@ -280,7 +285,7 @@
             // 
             this.length.Text = "장수";
             this.length.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.length.Width = 40;
+            this.length.Width = 36;
             // 
             // txtSearch
             // 
@@ -290,7 +295,7 @@
             this.txtSearch.Location = new System.Drawing.Point(0, 0);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(0);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(155, 22);
+            this.txtSearch.Size = new System.Drawing.Size(151, 22);
             this.txtSearch.TabIndex = 0;
             this.txtSearch.Text = "검색...";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -305,22 +310,41 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.lstBible, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(155, 249);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 249);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel2);
+            this.splitContainer1.Panel1MinSize = 0;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
+            this.splitContainer1.Panel2MinSize = 0;
+            this.splitContainer1.Size = new System.Drawing.Size(334, 249);
+            this.splitContainer1.SplitterDistance = 151;
+            this.splitContainer1.TabIndex = 2;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 249);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.tableLayoutPanel2);
+            this.Controls.Add(this.splitContainer1);
             this.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.Name = "MainForm";
             this.Text = "성경2PPT";
@@ -331,6 +355,10 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -356,6 +384,7 @@
         private System.Windows.Forms.CheckBox chkFragment;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button btnGithub;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 
