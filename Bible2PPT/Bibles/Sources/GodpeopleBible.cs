@@ -50,7 +50,8 @@ namespace Bible2PPT.Bibles.Sources
                 Bible = bible,
                 BookId = match.Groups[1].Value,
                 Title = match.Groups[3].Value,
-                ChapterCount = Convert.ToInt32(match.Groups[2].Value)
+                ShortTitle = match.Groups[1].Value,
+                ChapterCount = int.Parse(match.Groups[2].Value),
             }).ToList();
         }
 

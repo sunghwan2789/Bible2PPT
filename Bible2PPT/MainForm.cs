@@ -60,7 +60,7 @@ namespace Bible2PPT
             if (source == null)
             {
                 ToggleCriticalControls(true);
-                throw new IndexOutOfRangeException("올바르지 않은 소스입니다.");
+                throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
             }
 
             AppConfig.Context.BibleSourceSeq = cmbBibleSource.SelectedIndex;
@@ -86,7 +86,7 @@ namespace Bible2PPT
             if (bible == null)
             {
                 ToggleCriticalControls(true);
-                throw new IndexOutOfRangeException("올바르지 않은 성경입니다.");
+                throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
             }
 
             AppConfig.Context.BibleVersionSeq = cmbBibleVersion.SelectedIndex;
@@ -244,33 +244,35 @@ namespace Bible2PPT
                     work = builder.BeginBuild();
                 }
 
-                var bibles = dao.GetBiblesAsync().Result;
-
-                foreach (var query in txtKeyword.Text.Split().Select(BibleQuery.ParseQuery))
+                var books = lstBible.Tag as List<BibleBook>;
+                foreach (var query in
+                    txtKeyword.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(BibleQuery.ParseQuery))
                 {
-                    var bible = bibles.FirstOrDefault(i => i.BookId == query.BibleId);
-                    if (bible == null)
+                    var book = books.FirstOrDefault(i => i.ShortTitle == query.BibleId);
+                    if (book == null)
                     {
-                        throw new EntryPointNotFoundException($@"""{query.BibleId}""에 해당하는 성경이 없습니다.");
+                        throw new IndexOutOfRangeException($@"""{query.BibleId}""에 해당하는 성경이 없습니다.");
                     }
 
-                    var chapters = (query.EndChapterNumber ?? bible.ChapterCount) - query.StartChapterNumber + 1;
-                    foreach (var chapNo in Enumerable.Range(query.StartChapterNumber, chapters))
+                    // TODO: book.chaptercount maybe null
+                    foreach (var chapter in
+                        book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount)
+                            .Skip(query.StartChapterNumber - 1))
                     {
-                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {bible.Title} {chapNo}장"));
+                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.ChapterNumber}장"));
 
                         if (AppConfig.Context.SeperateByChapter)
                         {
                             work?.Save();
-                            var output = Path.Combine(destination, bible.Title, chapNo.ToString("000\\.pptx"));
+                            var output = Path.Combine(destination, book.Title, chapter.ChapterNumber.ToString("000\\.pptx"));
                             CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                             work = builder.BeginBuild(output);
                         }
 
-                        var chapter = dao.GetBibleChapterAsync(bible, chapNo).Result;
-                        var startVerseNo = chapNo == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                        var startVerseNo = chapter.ChapterNumber == query.StartChapterNumber ? query.StartVerseNumber : 1;
                         var endVerseNo = chapter.Verses.Count;
-                        if (chapNo == query.EndChapterNumber && query.EndVerseNumber != null)
+                        if (chapter.ChapterNumber == query.EndChapterNumber && query.EndVerseNumber != null)
                         {
                             endVerseNo = query.EndVerseNumber.Value;
                         }

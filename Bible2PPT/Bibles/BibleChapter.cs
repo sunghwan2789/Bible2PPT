@@ -8,6 +8,7 @@ namespace Bible2PPT.Bibles
         public BibleBook Book { get; set; }
 
         public int ChapterNumber { get; set; }
-        public List<string> Verses { get; set; }
+
+        public List<string> Verses => Source.GetVerses(this);
     }
 }

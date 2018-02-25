@@ -11,7 +11,9 @@ namespace Bible2PPT.Bibles
         public string Title { get; set; }
         // TODO: 자동 페치하기
         public string ShortTitle { get; set; }
+        // TODO: Maybe null on GodpiaBible
         public int ChapterCount { get; set; }
-        public List<BibleChapter> Chapters { get; set; }
+
+        public List<BibleChapter> Chapters => Source.GetChapters(this);
     }
 }
