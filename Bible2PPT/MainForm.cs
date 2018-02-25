@@ -48,13 +48,8 @@ namespace Bible2PPT
             cmbChapNum.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
 
-            ToggleCriticalControls(false);
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
             cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleSourceSeq);
-            if (cmbBibleSource.SelectedItem == null)
-            {
-                ToggleCriticalControls(true);
-            }
         }
 
         private void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -62,17 +57,18 @@ namespace Bible2PPT
             var source = cmbBibleSource.SelectedItem as BibleSource;
             if (source == null)
             {
-                ToggleCriticalControls(true);
                 throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
             }
 
             AppConfig.Context.BibleSourceSeq = source.SequenceId;
 
+            ToggleCriticalControls(false);
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
+                ToggleCriticalControls(true);
+
                 if (t.IsFaulted)
                 {
-                    ToggleCriticalControls(true);
                     throw t.Exception;
                 }
 
@@ -80,10 +76,6 @@ namespace Bible2PPT
                 cmbBibleVersion.Items.Clear();
                 cmbBibleVersion.Items.AddRange(t.Result.ToArray());
                 cmbBibleVersion.SelectedItem = t.Result.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleVersionSeq);
-                if (cmbBibleVersion.SelectedItem == null)
-                {
-                    ToggleCriticalControls(true);
-                }
             })));
         }
 
@@ -97,12 +89,14 @@ namespace Bible2PPT
             }
 
             AppConfig.Context.BibleVersionSeq = bible.SequenceId;
-            // TODO: 컨트롤 비활성화
+
+            ToggleCriticalControls(false);
             bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
+                ToggleCriticalControls(true);
+
                 if (t.IsFaulted)
                 {
-                    ToggleCriticalControls(true);
                     throw t.Exception;
                 }
 
@@ -114,8 +108,6 @@ namespace Bible2PPT
                     item.SubItems.Add((book.ChapterCount ?? book.Chapters.Count).ToString());
                     item.Tag = book;
                 }
-
-                ToggleCriticalControls(true);
             })));
         }
 

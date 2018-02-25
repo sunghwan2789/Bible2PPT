@@ -91,7 +91,6 @@
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 2);
             this.btnMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMake.Enabled = false;
             this.btnMake.Location = new System.Drawing.Point(10, 203);
             this.btnMake.Margin = new System.Windows.Forms.Padding(0);
             this.btnMake.Name = "btnMake";
@@ -120,7 +119,6 @@
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.txtKeyword, 2);
             this.txtKeyword.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyword.Enabled = false;
             this.txtKeyword.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtKeyword.Location = new System.Drawing.Point(10, 142);
             this.txtKeyword.Margin = new System.Windows.Forms.Padding(0);
@@ -228,7 +226,6 @@
             this.title,
             this.length});
             this.lstBible.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBible.Enabled = false;
             this.lstBible.FullRowSelect = true;
             this.lstBible.GridLines = true;
             this.lstBible.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -344,7 +341,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 249);
             this.Controls.Add(this.splitContainer1);
-            this.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.Name = "MainForm";
             this.Text = "성경2PPT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
