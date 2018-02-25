@@ -37,9 +37,8 @@
             this.txtKeyword = new System.Windows.Forms.TextBox();
             this.btnTemplate = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.chkFragment = new System.Windows.Forms.CheckBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGithub = new System.Windows.Forms.Button();
+            this.chkFragment = new System.Windows.Forms.CheckBox();
             this.lstBible = new System.Windows.Forms.ListView();
             this.title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -49,7 +48,6 @@
             this.cmbBibleVersion = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -59,7 +57,7 @@
             // 
             // cmbShortTitle
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbShortTitle, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.cmbShortTitle, 3);
             this.cmbShortTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbShortTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbShortTitle.Items.AddRange(new object[] {
@@ -74,7 +72,7 @@
             // 
             // cmbLongTitle
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbLongTitle, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.cmbLongTitle, 3);
             this.cmbLongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbLongTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLongTitle.Items.AddRange(new object[] {
@@ -89,20 +87,20 @@
             // 
             // btnMake
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 3);
             this.btnMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMake.Location = new System.Drawing.Point(10, 203);
+            this.btnMake.Location = new System.Drawing.Point(10, 191);
             this.btnMake.Margin = new System.Windows.Forms.Padding(0);
             this.btnMake.Name = "btnMake";
             this.btnMake.Size = new System.Drawing.Size(156, 29);
-            this.btnMake.TabIndex = 7;
+            this.btnMake.TabIndex = 6;
             this.btnMake.Text = "PPT 만들기";
             this.btnMake.UseVisualStyleBackColor = true;
             this.btnMake.Click += new System.EventHandler(this.btnMake_Click);
             // 
             // cmbChapNum
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbChapNum, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.cmbChapNum, 3);
             this.cmbChapNum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbChapNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbChapNum.Items.AddRange(new object[] {
@@ -117,25 +115,25 @@
             // 
             // txtKeyword
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.txtKeyword, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.txtKeyword, 3);
             this.txtKeyword.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtKeyword.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtKeyword.Location = new System.Drawing.Point(10, 142);
+            this.txtKeyword.Location = new System.Drawing.Point(10, 130);
             this.txtKeyword.Margin = new System.Windows.Forms.Padding(0);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Size = new System.Drawing.Size(156, 29);
-            this.txtKeyword.TabIndex = 5;
+            this.txtKeyword.TabIndex = 4;
             this.txtKeyword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
             this.txtKeyword.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
             // 
             // btnTemplate
             // 
             this.btnTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnTemplate.Location = new System.Drawing.Point(0, 0);
+            this.btnTemplate.Location = new System.Drawing.Point(10, 10);
             this.btnTemplate.Margin = new System.Windows.Forms.Padding(0);
             this.btnTemplate.Name = "btnTemplate";
-            this.btnTemplate.Size = new System.Drawing.Size(125, 29);
-            this.btnTemplate.TabIndex = 1;
+            this.btnTemplate.Size = new System.Drawing.Size(124, 29);
+            this.btnTemplate.TabIndex = 0;
             this.btnTemplate.Text = "템플릿 열기";
             this.btnTemplate.UseVisualStyleBackColor = true;
             this.btnTemplate.Click += new System.EventHandler(this.btnTemplate_Click);
@@ -143,18 +141,20 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 5;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 13F));
+            this.tableLayoutPanel1.Controls.Add(this.btnGithub, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnTemplate, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtKeyword, 1, 9);
             this.tableLayoutPanel1.Controls.Add(this.cmbChapNum, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.btnMake, 1, 12);
             this.tableLayoutPanel1.Controls.Add(this.cmbLongTitle, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.cmbShortTitle, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.chkFragment, 1, 11);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -167,7 +167,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
@@ -176,47 +176,30 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(179, 249);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // chkFragment
-            // 
-            this.chkFragment.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.chkFragment, 2);
-            this.chkFragment.Location = new System.Drawing.Point(13, 184);
-            this.chkFragment.Name = "chkFragment";
-            this.chkFragment.Size = new System.Drawing.Size(128, 16);
-            this.chkFragment.TabIndex = 6;
-            this.chkFragment.Text = "장별로 PPT 나누기";
-            this.chkFragment.UseVisualStyleBackColor = true;
-            this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel1.SetColumnSpan(this.tableLayoutPanel3, 2);
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 2F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel3.Controls.Add(this.btnTemplate, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.btnGithub, 2, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(10, 10);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(156, 29);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
             // btnGithub
             // 
             this.btnGithub.BackgroundImage = global::Bible2PPT.Properties.Resources.GitHub_Mark_32px;
             this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnGithub.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGithub.Location = new System.Drawing.Point(127, 0);
+            this.btnGithub.Location = new System.Drawing.Point(137, 10);
             this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
             this.btnGithub.Name = "btnGithub";
             this.btnGithub.Size = new System.Drawing.Size(29, 29);
-            this.btnGithub.TabIndex = 2;
+            this.btnGithub.TabIndex = 0;
             this.btnGithub.UseVisualStyleBackColor = true;
             this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
+            // 
+            // chkFragment
+            // 
+            this.chkFragment.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.chkFragment, 3);
+            this.chkFragment.Location = new System.Drawing.Point(13, 172);
+            this.chkFragment.Name = "chkFragment";
+            this.chkFragment.Size = new System.Drawing.Size(128, 16);
+            this.chkFragment.TabIndex = 5;
+            this.chkFragment.Text = "장별로 PPT 나누기";
+            this.chkFragment.UseVisualStyleBackColor = true;
+            this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
             // 
             // lstBible
             // 
@@ -260,7 +243,7 @@
             this.txtSearch.Margin = new System.Windows.Forms.Padding(0);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(151, 22);
-            this.txtSearch.TabIndex = 0;
+            this.txtSearch.TabIndex = 2;
             this.txtSearch.Text = "검색...";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
@@ -299,7 +282,7 @@
             this.cmbBibleSource.Margin = new System.Windows.Forms.Padding(0);
             this.cmbBibleSource.Name = "cmbBibleSource";
             this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
-            this.cmbBibleSource.TabIndex = 1;
+            this.cmbBibleSource.TabIndex = 0;
             this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
             // 
             // cmbBibleVersion
@@ -312,7 +295,7 @@
             this.cmbBibleVersion.Margin = new System.Windows.Forms.Padding(0);
             this.cmbBibleVersion.Name = "cmbBibleVersion";
             this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
-            this.cmbBibleVersion.TabIndex = 2;
+            this.cmbBibleVersion.TabIndex = 1;
             this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
             // 
             // splitContainer1
@@ -346,7 +329,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -373,7 +355,6 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox chkFragment;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button btnGithub;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox cmbBibleSource;
