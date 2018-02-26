@@ -23,7 +23,6 @@ namespace Bible2PPT
         public void AppendChapter(BibleChapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
-            var paraNum = startVerseNumber;
             foreach (var paragraph in chapter.Verses.Take(endVerseNumber).Skip(startVerseNumber - 1))
             {
                 token.ThrowIfCancellationRequested();
@@ -39,14 +38,13 @@ namespace Bible2PPT
                     text = AddSuffix(text, "CHAP", chapter.ChapterNumber.ToString(), AppConfig.Context.ShowChapterNumber);
                     text = AddSuffix(text, "STITLE", chapter.Book.ShortTitle, AppConfig.Context.ShowShortTitle);
                     text = AddSuffix(text, "TITLE", chapter.Book.Title, AppConfig.Context.ShowLongTitle);
-                    text = text.Replace("[PARA]", paraNum.ToString());
+                    text = text.Replace("[PARA]", paragraph.VerseNumber.ToString());
                     text = text.Replace("[CPAS]", startVerseNumber.ToString());
                     text = text.Replace("[CPAE]", endVerseNumber.ToString());
-                    text = text.Replace("[BODY]", paragraph);
+                    text = text.Replace("[BODY]", paragraph.Text);
                     textShape.Text = text;
                 }
                 isFirstVerseOfChapter = false;
-                paraNum++;
             }
         }
 

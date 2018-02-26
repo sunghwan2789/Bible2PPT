@@ -18,12 +18,12 @@ namespace Bible2PPT.Bibles.Sources
         public abstract List<Bible> GetBibles();
         public abstract List<BibleBook> GetBooks(Bible bible);
         public abstract List<BibleChapter> GetChapters(BibleBook book);
-        public abstract List<string> GetVerses(BibleChapter chapter);
+        public abstract List<BibleVerse> GetVerses(BibleChapter chapter);
 
         public Task<List<Bible>> GetBiblesAsync() => Task.Factory.StartNew(GetBibles);
         public Task<List<BibleBook>> GetBooksAsync(Bible bible) => Task.Factory.StartNew(() => GetBooks(bible));
         public Task<List<BibleChapter>> GetChaptersAsync(BibleBook book) => Task.Factory.StartNew(() => GetChapters(book));
-        public Task<List<string>> GetVersesAsync(BibleChapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
+        public Task<List<BibleVerse>> GetVersesAsync(BibleChapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
 
         public override string ToString() => Name ?? base.ToString();
     }

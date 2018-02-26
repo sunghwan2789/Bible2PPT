@@ -105,7 +105,7 @@ namespace Bible2PPT
                 foreach (var book in t.Result)
                 {
                     var item = lstBible.Items.Add(book.Title);
-                    item.SubItems.Add((book.ChapterCount ?? book.Chapters.Count).ToString());
+                    item.SubItems.Add(book.ChapterCount.ToString());
                     item.Tag = book;
                 }
             })));
@@ -256,7 +256,7 @@ namespace Bible2PPT
 
                     // TODO: book.chaptercount maybe null
                     foreach (var chapter in
-                        book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount ?? book.Chapters.Count)
+                        book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount)
                             .Skip(query.StartChapterNumber - 1))
                     {
                         Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.ChapterNumber}장"));

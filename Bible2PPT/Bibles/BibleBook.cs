@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Bible2PPT.Bibles
 {
     class BibleBook
     {
+        [IgnoreDataMember]
         public Sources.BibleSource Source { get; set; }
+
+        [IgnoreDataMember]
         public Bible Bible { get; set; }
 
         public string BookId { get; set; }
@@ -19,7 +23,12 @@ namespace Bible2PPT.Bibles
         }
 
         // TODO: Maybe null on GodpiaBible
-        public int? ChapterCount { get; set; }
+        private int? chapterCount;
+        public int ChapterCount
+        {
+            get => chapterCount ?? Chapters.Count;
+            set => chapterCount = value;
+        }
 
         public List<BibleChapter> Chapters => Source.GetChapters(this);
     }

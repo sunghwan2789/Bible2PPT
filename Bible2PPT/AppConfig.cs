@@ -9,6 +9,8 @@ namespace Bible2PPT
         public const int ConfigSize = 1 + 4 + 4;
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
+        public static string DatabaseWorkingDirectory { get; } = Application.UserAppDataPath;
+        public static string DatabasePath { get; } = Application.ExecutablePath + ".edb";
         public static string ContactUrl { get; } = "https://github.com/sunghwan2789/Bible2PPT";
 
         public static AppConfig Context { get; } = new AppConfig();

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Bible2PPT.Bibles
 {
     class Bible
     {
+        [IgnoreDataMember]
         public Sources.BibleSource Source { get; set; }
 
         public int SequenceId { get; set; }

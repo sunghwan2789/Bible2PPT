@@ -63,11 +63,18 @@ namespace Bible2PPT.Bibles.Sources
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        public override List<string> GetVerses(BibleChapter chapter)
+        public override List<BibleVerse> GetVerses(BibleChapter chapter)
         {
             var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.BibleId}&vol={chapter.Book.BookId}&chap={chapter.ChapterNumber}");
             var matches = Regex.Matches(data, @"class=""num"".*?</span>(.*?)</p>");
-            return matches.Cast<Match>().Select(i => StripHtmlTags(i.Groups[1].Value)).ToList();
+            var verseNum = 0;
+            return matches.Cast<Match>().Select(i => new BibleVerse
+            {
+                Source = this,
+                Chapter = chapter,
+                VerseNumber = ++verseNum,
+                Text = StripHtmlTags(i.Groups[1].Value),
+            }).ToList();
         }
     }
 }

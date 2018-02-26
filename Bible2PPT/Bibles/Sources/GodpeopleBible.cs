@@ -60,7 +60,7 @@ namespace Bible2PPT.Bibles.Sources
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
 
         public override List<BibleChapter> GetChapters(BibleBook book) =>
-            Enumerable.Range(1, book.ChapterCount.Value)
+            Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new BibleChapter
                 {
                     Source = this,
@@ -70,11 +70,18 @@ namespace Bible2PPT.Bibles.Sources
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        public override List<string> GetVerses(BibleChapter chapter)
+        public override List<BibleVerse> GetVerses(BibleChapter chapter)
         {
             var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.BookId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.BibleId}");
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
-            return matches.Cast<Match>().Select(i => StripHtmlTags(i.Groups[1].Value)).ToList();
+            var verseNum = 0;
+            return matches.Cast<Match>().Select(i => new BibleVerse
+            {
+                Source = this,
+                Chapter = chapter,
+                VerseNumber = ++verseNum,
+                Text = StripHtmlTags(i.Groups[1].Value),
+            }).ToList();
         }
     }
 }
