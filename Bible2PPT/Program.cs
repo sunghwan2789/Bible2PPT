@@ -11,12 +11,9 @@ namespace Bible2PPT
         [STAThread]
         private static void Main()
         {
-            using (new BibleDb())
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm());
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
         }
     }
 }

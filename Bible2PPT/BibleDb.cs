@@ -17,6 +17,8 @@ namespace Bible2PPT
         public IsamSession Session;
         public IsamDatabase Database;
 
+        public IsamTransaction Transaction => new IsamTransaction(Session);
+
         public Cursor Bibles => Database.OpenCursor(typeof(Bible).Name);
         public Cursor Books => Database.OpenCursor(typeof(BibleBook).Name);
         public Cursor Chapters => Database.OpenCursor(typeof(BibleChapter).Name);
@@ -43,6 +45,24 @@ namespace Bible2PPT
             InitializeTable(typeof(BibleVerse));
         }
 
+        public static T MapEntity<T>(FieldCollection record) where T : new()
+        {
+            var entity = new T();
+            foreach (var field in record)
+            {
+                typeof(T).GetProperty(field.Name).SetValue(entity, field[0], null);
+            }
+            return entity;
+        }
+
+        public static void MapEntity<T>(Cursor cursor, T entity)
+        {
+            foreach (var property in GetStorableProperties(typeof(T)))
+            {
+                cursor.EditRecord[property.Name] = property.GetValue(entity, null);
+            }
+        }
+
         private bool IsMetadataHealthy(Type type)
         {
             using (var cursor = Database.OpenCursor(type.Name))
@@ -53,7 +73,7 @@ namespace Bible2PPT
             }
         }
 
-        private IEnumerable<PropertyInfo> GetStorableProperties(Type type) =>
+        private static IEnumerable<PropertyInfo> GetStorableProperties(Type type) =>
             type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(p => !Attribute.IsDefined(p, typeof(IgnoreDataMemberAttribute)))
                 .Where(p => p.GetGetMethod(true)?.IsPublic == true)
