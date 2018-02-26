@@ -68,8 +68,7 @@ namespace Bible2PPT
             using (var cursor = Database.OpenCursor(type.Name))
             {
                 var columns = cursor.TableDefinition.Columns.Cast<ColumnDefinition>();
-                return GetStorableProperties(type).Select(i => Tuple.Create(i.Name, i.PropertyType))
-                    .SequenceEqual(columns.Select(i => Tuple.Create(i.Name, i.Type)));
+                return !GetStorableProperties(type).Select(i => i.Name).Except(columns.Select(i => i.Name)).Any();
             }
         }
 

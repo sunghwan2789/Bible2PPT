@@ -12,6 +12,9 @@ namespace Bible2PPT.Bibles
         [IgnoreDataMember]
         public Bible Bible { get; set; }
 
+        public int BibleSeq { get; set; }
+
+        public int SequenceId { get; set; }
         public string BookId { get; set; }
         public string Title { get; set; }
 

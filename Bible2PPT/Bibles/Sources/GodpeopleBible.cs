@@ -49,6 +49,8 @@ namespace Bible2PPT.Bibles.Sources
             {
                 Source = this,
                 Bible = bible,
+                BibleSeq = bible.SequenceId,
+                SequenceId = match.Groups[1].Value.GetHashCode(),
                 BookId = match.Groups[1].Value,
                 Title = match.Groups[3].Value,
                 ShortTitle = match.Groups[1].Value,

@@ -7,7 +7,6 @@ namespace Bible2PPT.Bibles
     {
         [IgnoreDataMember]
         public Sources.BibleSource Source { get; set; }
-
         [IgnoreDataMember]
         public BibleBook Book { get; set; }
 

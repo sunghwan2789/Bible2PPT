@@ -31,6 +31,11 @@ namespace Bible2PPT.Bibles.Sources
                     bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).ToList();
                     if (bibles.Any())
                     {
+                        // ANNOYING LOOPS
+                        foreach (var bible in bibles)
+                        {
+                            bible.Source = this;
+                        }
                         return bibles;
                     }
                 }
@@ -52,12 +57,49 @@ namespace Bible2PPT.Bibles.Sources
             }
         }
 
-        public List<BibleBook> GetBooksC(Bible bible) => GetBooks(bible);
+        public List<BibleBook> GetBooksC(Bible bible)
+        {
+            List<BibleBook> books;
+            using (var db = new BibleDb())
+            {
+                using (var cursor = db.Books)
+                {
+                    books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>)
+                        .Where(i => i.BibleSeq == bible.SequenceId).ToList();
+                    if (books.Any())
+                    {
+                        // ANNOYING LOOPS
+                        foreach (var book in books)
+                        {
+                            book.Source = this;
+                            book.Bible = bible;
+                        }
+                        return books;
+                    }
+                }
+
+                books = GetBooks(bible);
+
+                using (var tx = db.Transaction)
+                using (var cursor = db.Books)
+                {
+                    foreach (var book in books)
+                    {
+                        cursor.BeginEditForInsert();
+                        BibleDb.MapEntity(cursor, book);
+                        cursor.AcceptChanges();
+                    }
+                    tx.Commit();
+                }
+                return books;
+            }
+        }
+
         public List<BibleChapter> GetChaptersC(BibleBook book) => GetChapters(book);
         public List<BibleVerse> GetVersesC(BibleChapter chapter) => GetVerses(chapter);
 
         public Task<List<Bible>> GetBiblesAsync() => Task.Factory.StartNew(GetBiblesC);
-        public Task<List<BibleBook>> GetBooksAsync(Bible bible) => Task.Factory.StartNew(() => GetBooks(bible));
+        public Task<List<BibleBook>> GetBooksAsync(Bible bible) => Task.Factory.StartNew(() => GetBooksC(bible));
         public Task<List<BibleChapter>> GetChaptersAsync(BibleBook book) => Task.Factory.StartNew(() => GetChapters(book));
         public Task<List<BibleVerse>> GetVersesAsync(BibleChapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
 
