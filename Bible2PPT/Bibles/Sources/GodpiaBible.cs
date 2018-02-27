@@ -27,8 +27,6 @@ namespace Bible2PPT.Bibles.Sources
             var matches = Regex.Matches(data, @"#(.+?)"" class=""clickReadBible"">(.+?)</");
             return matches.Cast<Match>().Select(i => new BibleVersion
             {
-                Source = this,
-                SourceId = Id,
                 OnlineId = i.Groups[1].Value,
                 Name = i.Groups[2].Value,
             }).ToList();
@@ -41,10 +39,6 @@ namespace Bible2PPT.Bibles.Sources
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
             return matches.Cast<Match>().Select(i => new BibleBook
             {
-                Source = this,
-                SourceId = Id,
-                Bible = bible,
-                BibleId = bible.Id,
                 OnlineId = i.Groups[1].Value,
                 Title = i.Groups[2].Value,
             }).ToList();
@@ -57,9 +51,6 @@ namespace Bible2PPT.Bibles.Sources
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
             return matches.Cast<Match>().Select(i => new BibleChapter
             {
-                Source = this,
-                SourceId = Id,
-                Book = book,
                 Number = int.Parse(i.Groups[1].Value),
             }).ToList();
         }
@@ -73,9 +64,6 @@ namespace Bible2PPT.Bibles.Sources
             var verseNum = 0;
             return matches.Cast<Match>().Select(i => new BibleVerse
             {
-                Source = this,
-                SourceId = Id,
-                Chapter = chapter,
                 Number = ++verseNum,
                 Text = StripHtmlTags(i.Groups[1].Value),
             }).ToList();

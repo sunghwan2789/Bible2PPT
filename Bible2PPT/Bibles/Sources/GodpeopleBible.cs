@@ -27,13 +27,11 @@ namespace Bible2PPT.Bibles.Sources
         {
             new BibleVersion
             {
-                Source = this,
                 OnlineId = "rvsn",
                 Name = "개역개정",
             },
             new BibleVersion
             {
-                Source = this,
                 OnlineId = "ezsn",
                 Name = "쉬운성경",
             },
@@ -45,9 +43,6 @@ namespace Bible2PPT.Bibles.Sources
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
             return matches.Cast<Match>().Select(match => new BibleBook
             {
-                Source = this,
-                Bible = bible,
-                BibleId = bible.Id,
                 OnlineId = match.Groups[1].Value,
                 Title = match.Groups[3].Value,
                 ShortTitle = match.Groups[1].Value,
@@ -62,8 +57,6 @@ namespace Bible2PPT.Bibles.Sources
             Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new BibleChapter
                 {
-                    Source = this,
-                    Book = book,
                     Number = i,
                 }).ToList();
 
@@ -76,8 +69,6 @@ namespace Bible2PPT.Bibles.Sources
             var verseNum = 0;
             return matches.Cast<Match>().Select(i => new BibleVerse
             {
-                Source = this,
-                Chapter = chapter,
                 Number = ++verseNum,
                 Text = StripHtmlTags(i.Groups[1].Value),
             }).ToList();
