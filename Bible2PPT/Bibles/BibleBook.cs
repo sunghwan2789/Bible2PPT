@@ -21,13 +21,7 @@ namespace Bible2PPT.Bibles
             set => shortTitle = value;
         }
 
-        // TODO: Maybe null on GodpiaBible
-        private int? chapterCount;
-        public int ChapterCount
-        {
-            get => chapterCount ?? Chapters.Count;
-            set => chapterCount = value;
-        }
+        public int ChapterCount { get; set; }
 
         public List<BibleChapter> Chapters => Source.GetChapters(this);
     }

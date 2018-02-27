@@ -55,156 +55,152 @@ namespace Bible2PPT.Bibles.Sources
         {
             List<BibleVersion> bibles;
             using (var db = new BibleDb())
+            using (var cursor = db.Bibles)
             {
-                using (var cursor = db.Bibles)
+                bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVersion>)
+                    .Where(i => i.SourceId == Id).ToList();
+                if (bibles.Any())
                 {
-                    bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVersion>)
-                        .Where(i => i.SourceId == Id).ToList();
-                    if (bibles.Any())
-                    {
-                        // ANNOYING LOOPS
-                        foreach (var bible in bibles)
-                        {
-                            LinkForeigns(bible);
-                        }
-                        return bibles;
-                    }
-                }
-
-                bibles = GetBiblesOnline();
-
-                using (var tx = db.Transaction)
-                using (var cursor = db.Bibles)
-                {
+                    // ANNOYING LOOPS
                     foreach (var bible in bibles)
                     {
                         LinkForeigns(bible);
-
-                        cursor.BeginEditForInsert();
-                        BibleDb.MapEntity(cursor, bible);
-                        cursor.AcceptChanges();
                     }
-                    tx.Commit();
+                    return bibles;
                 }
-                return bibles;
             }
+
+            bibles = GetBiblesOnline();
+
+            using (var db = new BibleDb())
+            using (var tx = db.Transaction)
+            using (var cursor = db.Bibles)
+            {
+                foreach (var bible in bibles)
+                {
+                    LinkForeigns(bible);
+
+                    cursor.BeginEditForInsert();
+                    BibleDb.MapEntity(cursor, bible);
+                    cursor.AcceptChanges();
+                }
+                tx.Commit();
+            }
+            return bibles;
         }
 
         public List<BibleBook> GetBooks(BibleVersion bible)
         {
             List<BibleBook> books;
             using (var db = new BibleDb())
+            using (var cursor = db.Books)
             {
-                using (var cursor = db.Books)
+                books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>)
+                    .Where(i => i.BibleId == bible.Id).ToList();
+                if (books.Any())
                 {
-                    books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>)
-                        .Where(i => i.BibleId == bible.Id).ToList();
-                    if (books.Any())
-                    {
-                        // ANNOYING LOOPS
-                        foreach (var book in books)
-                        {
-                            LinkForeigns(book, bible);
-                        }
-                        return books;
-                    }
-                }
-
-                books = GetBooksOnline(bible);
-
-                using (var tx = db.Transaction)
-                using (var cursor = db.Books)
-                {
+                    // ANNOYING LOOPS
                     foreach (var book in books)
                     {
                         LinkForeigns(book, bible);
-
-                        cursor.BeginEditForInsert();
-                        BibleDb.MapEntity(cursor, book);
-                        cursor.AcceptChanges();
                     }
-                    tx.Commit();
+                    return books;
                 }
-                return books;
             }
+
+            books = GetBooksOnline(bible);
+
+            using (var db = new BibleDb())
+            using (var tx = db.Transaction)
+            using (var cursor = db.Books)
+            {
+                foreach (var book in books)
+                {
+                    LinkForeigns(book, bible);
+
+                    cursor.BeginEditForInsert();
+                    BibleDb.MapEntity(cursor, book);
+                    cursor.AcceptChanges();
+                }
+                tx.Commit();
+            }
+            return books;
         }
 
         public List<BibleChapter> GetChapters(BibleBook book)
         {
             List<BibleChapter> chapters;
             using (var db = new BibleDb())
+            using (var cursor = db.Chapters)
             {
-                using (var cursor = db.Chapters)
+                chapters = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleChapter>)
+                    .Where(i => i.BookId == book.Id).ToList();
+                if (chapters.Any())
                 {
-                    chapters = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleChapter>)
-                        .Where(i => i.BookId == book.Id).ToList();
-                    if (chapters.Any())
-                    {
-                        // ANNOYING LOOPS
-                        foreach (var chapter in chapters)
-                        {
-                            LinkForeigns(chapter, book);
-                        }
-                        return chapters;
-                    }
-                }
-
-                chapters = GetChaptersOnline(book);
-
-                using (var tx = db.Transaction)
-                using (var cursor = db.Chapters)
-                {
+                    // ANNOYING LOOPS
                     foreach (var chapter in chapters)
                     {
                         LinkForeigns(chapter, book);
-
-                        cursor.BeginEditForInsert();
-                        BibleDb.MapEntity(cursor, chapter);
-                        cursor.AcceptChanges();
                     }
-                    tx.Commit();
+                    return chapters;
                 }
-                return chapters;
             }
+
+            chapters = GetChaptersOnline(book);
+
+            using (var db = new BibleDb())
+            using (var tx = db.Transaction)
+            using (var cursor = db.Chapters)
+            {
+                foreach (var chapter in chapters)
+                {
+                    LinkForeigns(chapter, book);
+
+                    cursor.BeginEditForInsert();
+                    BibleDb.MapEntity(cursor, chapter);
+                    cursor.AcceptChanges();
+                }
+                tx.Commit();
+            }
+            return chapters;
         }
 
         public List<BibleVerse> GetVerses(BibleChapter chapter)
         {
             List<BibleVerse> verses;
             using (var db = new BibleDb())
+            using (var cursor = db.Verses)
             {
-                using (var cursor = db.Verses)
+                verses = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVerse>)
+                    .Where(i => i.ChapterId == chapter.Id).ToList();
+                if (verses.Any())
                 {
-                    verses = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVerse>)
-                        .Where(i => i.ChapterId == chapter.Id).ToList();
-                    if (verses.Any())
-                    {
-                        // ANNOYING LOOPS
-                        foreach (var verse in verses)
-                        {
-                            LinkForeigns(verse, chapter);
-                        }
-                        return verses;
-                    }
-                }
-
-                verses = GetVersesOnline(chapter);
-
-                using (var tx = db.Transaction)
-                using (var cursor = db.Verses)
-                {
+                    // ANNOYING LOOPS
                     foreach (var verse in verses)
                     {
                         LinkForeigns(verse, chapter);
-
-                        cursor.BeginEditForInsert();
-                        BibleDb.MapEntity(cursor, verse);
-                        cursor.AcceptChanges();
                     }
-                    tx.Commit();
+                    return verses;
                 }
-                return verses;
             }
+
+            verses = GetVersesOnline(chapter);
+
+            using (var db = new BibleDb())
+            using (var tx = db.Transaction)
+            using (var cursor = db.Verses)
+            {
+                foreach (var verse in verses)
+                {
+                    LinkForeigns(verse, chapter);
+
+                    cursor.BeginEditForInsert();
+                    BibleDb.MapEntity(cursor, verse);
+                    cursor.AcceptChanges();
+                }
+                tx.Commit();
+            }
+            return verses;
         }
 
         public Task<List<BibleVersion>> GetBiblesAsync() => Task.Factory.StartNew(GetBibles);

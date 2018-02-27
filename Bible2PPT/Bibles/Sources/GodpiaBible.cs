@@ -41,6 +41,11 @@ namespace Bible2PPT.Bibles.Sources
             {
                 OnlineId = i.Groups[1].Value,
                 Title = i.Groups[2].Value,
+            }).Select(i =>
+            {
+                i.Bible = bible;
+                i.ChapterCount = GetChapters(i).Count;
+                return i;
             }).ToList();
         }
 
