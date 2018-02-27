@@ -68,6 +68,7 @@
             this.cmbShortTitle.Name = "cmbShortTitle";
             this.cmbShortTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbShortTitle.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.cmbShortTitle, "짧은 제목 표시 설정");
             this.cmbShortTitle.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
             // 
             // cmbLongTitle
@@ -83,6 +84,7 @@
             this.cmbLongTitle.Name = "cmbLongTitle";
             this.cmbLongTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbLongTitle.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.cmbLongTitle, "긴 제목 표시 설정");
             this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
             // 
             // btnMake
@@ -111,6 +113,7 @@
             this.cmbChapNum.Name = "cmbChapNum";
             this.cmbChapNum.Size = new System.Drawing.Size(156, 20);
             this.cmbChapNum.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.cmbChapNum, "장 번호 표시 설정");
             this.cmbChapNum.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
             // 
             // txtKeyword
@@ -283,6 +286,7 @@
             this.cmbBibleSource.Name = "cmbBibleSource";
             this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
             this.cmbBibleSource.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.cmbBibleSource, "성경 소스 선택");
             this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
             // 
             // cmbBibleVersion
@@ -296,6 +300,7 @@
             this.cmbBibleVersion.Name = "cmbBibleVersion";
             this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
             this.cmbBibleVersion.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 책 선택");
             this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
             // 
             // splitContainer1
