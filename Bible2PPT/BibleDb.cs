@@ -4,11 +4,8 @@ using Microsoft.Isam.Esent.Interop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace Bible2PPT
 {
@@ -91,7 +88,7 @@ namespace Bible2PPT
 
         private static IEnumerable<PropertyInfo> GetStorableProperties(Type type) =>
             type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => !Attribute.IsDefined(p, typeof(IgnoreDataMemberAttribute)))
+                .Where(p => !p.GetAccessors()[0].IsVirtual)
                 .Where(p => p.GetGetMethod(true)?.IsPublic == true)
                 .Where(p => p.GetSetMethod(true)?.IsPublic == true);
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace Bible2PPT.Bibles
 {
     class BibleBook : Bible
     {
-        [IgnoreDataMember]
         public virtual BibleVersion Bible { get; set; }
         public Guid BibleId { get; set; }
 
