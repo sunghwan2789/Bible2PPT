@@ -58,12 +58,25 @@ namespace Bible2PPT
             InitializeTable(typeof(BibleVerse));
         }
 
+        private static Dictionary<Type, List<PropertyInfo>> PropertiesMap = new Dictionary<Type, List<PropertyInfo>>();
+
+        private static List<PropertyInfo> GetCachedProperties(Type type)
+        {
+            if (PropertiesMap.TryGetValue(type, out var properties) == false)
+            {
+                properties = type.GetProperties().ToList();
+                PropertiesMap.Add(type, properties);
+            }
+            return properties;
+        }
+
         public static T MapEntity<T>(FieldCollection record) where T : new()
         {
             var entity = new T();
+            var properties = GetCachedProperties(typeof(T));
             foreach (var field in record)
             {
-                typeof(T).GetProperty(field.Name).SetValue(entity, field[0], null);
+                properties.Find(i => i.Name == field.Name).SetValue(entity, field[0], null);
             }
             return entity;
         }
@@ -80,14 +93,14 @@ namespace Bible2PPT
         {
             using (var cursor = Database.OpenCursor(type.Name))
             {
-                var columns = cursor.TableDefinition.Columns.Cast<ColumnDefinition>();
-                return !GetStorableProperties(type).Select(i => Tuple.Create(i.Name, i.PropertyType))
-                    .Except(columns.Select(i => Tuple.Create(i.Name, i.Type))).Any();
+                var columns = cursor.TableDefinition.Columns.Cast<ColumnDefinition>().Select(i => Tuple.Create(i.Name, i.Type));
+                var properties = GetStorableProperties(type).Select(i => Tuple.Create(i.Name, i.PropertyType));
+                return !properties.Except(columns).Any() && !columns.Except(properties).Any();
             }
         }
 
         private static IEnumerable<PropertyInfo> GetStorableProperties(Type type) =>
-            type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            GetCachedProperties(type)
                 .Where(p => !p.GetAccessors()[0].IsVirtual)
                 .Where(p => p.GetGetMethod(true)?.IsPublic == true)
                 .Where(p => p.GetSetMethod(true)?.IsPublic == true);
