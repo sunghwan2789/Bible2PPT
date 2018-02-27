@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Bible2PPT.Bibles
 {
     class Bible
     {
-        public Sources.BibleSource Source { get; set; }
+        [IndexKey(Name = nameof(SourceId))]
+        public int SourceId { get; set; }
+        public virtual Sources.BibleSource Source { get; set; } //Sources.BibleSource.AvailableSources.FirstOrDefault(i => i.Id == SourceId)
 
-        public int SequenceId { get; set; }
-        public string BibleId { get; set; }
-        public string Version { get; set; }
-
-        public List<BibleBook> Books => Source.GetBooks(this);
-
-        public override string ToString() => Version ?? base.ToString();
+        public Guid Id { get; set; } = Guid.NewGuid();
     }
 }

@@ -19,7 +19,7 @@ namespace Bible2PPT
         {
             cmbBibleSource,
             cmbBibleVersion,
-            lstBible,
+            lstBooks,
             txtSearch,
             cmbChapNum,
             cmbLongTitle,
@@ -49,7 +49,7 @@ namespace Bible2PPT
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
 
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
-            cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleSourceSeq);
+            cmbBibleSource.SelectedItem = BibleSource.Find(AppConfig.Context.BibleSourceId);
         }
 
         private void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -60,9 +60,11 @@ namespace Bible2PPT
                 throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
             }
 
-            AppConfig.Context.BibleSourceSeq = source.SequenceId;
+            AppConfig.Context.BibleSourceId = source.Id;
 
             ToggleCriticalControls(false);
+            cmbBibleVersion.Tag = null;
+            cmbBibleVersion.Items.Clear();
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 ToggleCriticalControls(true);
@@ -72,25 +74,27 @@ namespace Bible2PPT
                     throw t.Exception;
                 }
 
-                cmbBibleVersion.Tag = t.Result;
-                cmbBibleVersion.Items.Clear();
-                cmbBibleVersion.Items.AddRange(t.Result.ToArray());
-                cmbBibleVersion.SelectedItem = t.Result.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleVersionSeq);
+                var bibles = t.Result;
+                cmbBibleVersion.Tag = bibles;
+                cmbBibleVersion.Items.AddRange(bibles.ToArray());
+                cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
             })));
         }
 
         private void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var bible = cmbBibleVersion.SelectedItem as Bible;
+            var bible = cmbBibleVersion.SelectedItem as BibleVersion;
             if (bible == null)
             {
                 ToggleCriticalControls(true);
                 throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
             }
 
-            AppConfig.Context.BibleVersionSeq = bible.SequenceId;
+            AppConfig.Context.BibleVersionId = bible.Id;
 
             ToggleCriticalControls(false);
+            lstBooks.Tag = null;
+            lstBooks.Items.Clear();
             bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 ToggleCriticalControls(true);
@@ -100,12 +104,11 @@ namespace Bible2PPT
                     throw t.Exception;
                 }
 
-                lstBible.Tag = t.Result;
-                lstBible.Items.Clear();
+                lstBooks.Tag = t.Result;
                 foreach (var book in t.Result)
                 {
-                    var item = lstBible.Items.Add(book.Title);
-                    item.SubItems.Add((book.ChapterCount ?? book.Chapters.Count).ToString());
+                    var item = lstBooks.Items.Add(book.Title);
+                    item.SubItems.Add(book.ChapterCount.ToString());
                     item.Tag = book;
                 }
             })));
@@ -119,7 +122,7 @@ namespace Bible2PPT
 
 
 
-        private void lstBible_MouseClick(object sender, MouseEventArgs e)
+        private void lstBooks_MouseClick(object sender, MouseEventArgs e)
         {
             AppendShortTitle();
         }
@@ -136,7 +139,7 @@ namespace Bible2PPT
                 return;
             }
 
-            foreach (ListViewItem bookItem in lstBible.Items)
+            foreach (ListViewItem bookItem in lstBooks.Items)
             {
                 if (bookItem.Text.StartsWith(txtSearch.Text))
                 {
@@ -154,13 +157,13 @@ namespace Bible2PPT
                     e.SuppressKeyPress = true;
                     try
                     {
-                        HighlightBookItem(lstBible.Items[lstBible.SelectedIndices[0] - 1]);
+                        HighlightBookItem(lstBooks.Items[lstBooks.SelectedIndices[0] - 1]);
                     }
                     catch
                     {
-                        if (lstBible.Items.Count > 0)
+                        if (lstBooks.Items.Count > 0)
                         {
-                            HighlightBookItem(lstBible.Items[lstBible.Items.Count - 1]);
+                            HighlightBookItem(lstBooks.Items[lstBooks.Items.Count - 1]);
                         }
                     }
                     break;
@@ -168,13 +171,13 @@ namespace Bible2PPT
                     e.SuppressKeyPress = true;
                     try
                     {
-                        HighlightBookItem(lstBible.Items[lstBible.SelectedIndices[0] + 1]);
+                        HighlightBookItem(lstBooks.Items[lstBooks.SelectedIndices[0] + 1]);
                     }
                     catch
                     {
-                        if (lstBible.Items.Count > 0)
+                        if (lstBooks.Items.Count > 0)
                         {
-                            HighlightBookItem(lstBible.Items[0]);
+                            HighlightBookItem(lstBooks.Items[0]);
                         }
                     }
                     break;
@@ -243,7 +246,7 @@ namespace Bible2PPT
                     work = builder.BeginBuild();
                 }
 
-                var books = lstBible.Tag as List<BibleBook>;
+                var books = lstBooks.Tag as List<BibleBook>;
                 foreach (var query in
                     txtKeyword.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(BibleQuery.ParseQuery))
@@ -256,22 +259,22 @@ namespace Bible2PPT
 
                     // TODO: book.chaptercount maybe null
                     foreach (var chapter in
-                        book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount ?? book.Chapters.Count)
+                        book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount)
                             .Skip(query.StartChapterNumber - 1))
                     {
-                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.ChapterNumber}장"));
+                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
 
                         if (AppConfig.Context.SeperateByChapter)
                         {
                             work?.Save();
-                            var output = Path.Combine(destination, book.Title, chapter.ChapterNumber.ToString("000\\.pptx"));
+                            var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
                             CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                             work = builder.BeginBuild(output);
                         }
 
-                        var startVerseNo = chapter.ChapterNumber == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                        var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
                         var endVerseNo = chapter.Verses.Count;
-                        if (chapter.ChapterNumber == query.EndChapterNumber && query.EndVerseNumber != null)
+                        if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
                         {
                             endVerseNo = query.EndVerseNumber.Value;
                         }

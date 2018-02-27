@@ -39,7 +39,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGithub = new System.Windows.Forms.Button();
             this.chkFragment = new System.Windows.Forms.CheckBox();
-            this.lstBible = new System.Windows.Forms.ListView();
+            this.lstBooks = new System.Windows.Forms.ListView();
             this.title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -68,6 +68,7 @@
             this.cmbShortTitle.Name = "cmbShortTitle";
             this.cmbShortTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbShortTitle.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.cmbShortTitle, "짧은 제목 표시 설정");
             this.cmbShortTitle.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
             // 
             // cmbLongTitle
@@ -83,6 +84,7 @@
             this.cmbLongTitle.Name = "cmbLongTitle";
             this.cmbLongTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbLongTitle.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.cmbLongTitle, "긴 제목 표시 설정");
             this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
             // 
             // btnMake
@@ -111,6 +113,7 @@
             this.cmbChapNum.Name = "cmbChapNum";
             this.cmbChapNum.Size = new System.Drawing.Size(156, 20);
             this.cmbChapNum.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.cmbChapNum, "장 번호 표시 설정");
             this.cmbChapNum.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
             // 
             // txtKeyword
@@ -201,27 +204,27 @@
             this.chkFragment.UseVisualStyleBackColor = true;
             this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
             // 
-            // lstBible
+            // lstBooks
             // 
-            this.lstBible.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lstBible.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstBible.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstBooks.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.lstBooks.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstBooks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.title,
             this.length});
-            this.lstBible.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBible.FullRowSelect = true;
-            this.lstBible.GridLines = true;
-            this.lstBible.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lstBible.HideSelection = false;
-            this.lstBible.Location = new System.Drawing.Point(0, 73);
-            this.lstBible.Margin = new System.Windows.Forms.Padding(0);
-            this.lstBible.Name = "lstBible";
-            this.lstBible.Size = new System.Drawing.Size(151, 176);
-            this.lstBible.TabIndex = 0;
-            this.lstBible.TabStop = false;
-            this.lstBible.UseCompatibleStateImageBehavior = false;
-            this.lstBible.View = System.Windows.Forms.View.Details;
-            this.lstBible.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lstBible_MouseClick);
+            this.lstBooks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstBooks.FullRowSelect = true;
+            this.lstBooks.GridLines = true;
+            this.lstBooks.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lstBooks.HideSelection = false;
+            this.lstBooks.Location = new System.Drawing.Point(0, 73);
+            this.lstBooks.Margin = new System.Windows.Forms.Padding(0);
+            this.lstBooks.Name = "lstBooks";
+            this.lstBooks.Size = new System.Drawing.Size(151, 176);
+            this.lstBooks.TabIndex = 0;
+            this.lstBooks.TabStop = false;
+            this.lstBooks.UseCompatibleStateImageBehavior = false;
+            this.lstBooks.View = System.Windows.Forms.View.Details;
+            this.lstBooks.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lstBooks_MouseClick);
             // 
             // title
             // 
@@ -255,7 +258,7 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lstBible, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.lstBooks, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.cmbBibleSource, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmbBibleVersion, 0, 2);
@@ -283,6 +286,7 @@
             this.cmbBibleSource.Name = "cmbBibleSource";
             this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
             this.cmbBibleSource.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.cmbBibleSource, "성경 소스 선택");
             this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
             // 
             // cmbBibleVersion
@@ -296,6 +300,7 @@
             this.cmbBibleVersion.Name = "cmbBibleVersion";
             this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
             this.cmbBibleVersion.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 책 선택");
             this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
             // 
             // splitContainer1
@@ -351,7 +356,7 @@
         private System.Windows.Forms.ComboBox cmbLongTitle;
         private System.Windows.Forms.ColumnHeader title;
         private System.Windows.Forms.ColumnHeader length;
-        private System.Windows.Forms.ListView lstBible;
+        private System.Windows.Forms.ListView lstBooks;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox chkFragment;

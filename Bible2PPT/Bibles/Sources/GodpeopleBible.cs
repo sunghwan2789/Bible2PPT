@@ -23,33 +23,27 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피플 성경";
         }
 
-        public override List<Bible> GetBibles() => new List<Bible>
+        protected override List<BibleVersion> GetBiblesOnline() => new List<BibleVersion>
         {
-            new Bible
+            new BibleVersion
             {
-                Source = this,
-                SequenceId = 0,
-                BibleId = "rvsn",
-                Version = "개역개정",
+                OnlineId = "rvsn",
+                Name = "개역개정",
             },
-            new Bible
+            new BibleVersion
             {
-                Source = this,
-                SequenceId = 1,
-                BibleId = "ezsn",
-                Version = "쉬운성경",
+                OnlineId = "ezsn",
+                Name = "쉬운성경",
             },
         };
 
-        public override List<BibleBook> GetBooks(Bible bible)
+        protected override List<BibleBook> GetBooksOnline(BibleVersion bible)
         {
             var data = client.DownloadString("/?page=bidx");
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
             return matches.Cast<Match>().Select(match => new BibleBook
             {
-                Source = this,
-                Bible = bible,
-                BookId = match.Groups[1].Value,
+                OnlineId = match.Groups[1].Value,
                 Title = match.Groups[3].Value,
                 ShortTitle = match.Groups[1].Value,
                 ChapterCount = int.Parse(match.Groups[2].Value),
@@ -59,22 +53,25 @@ namespace Bible2PPT.Bibles.Sources
         private static string EncodeString(string s) =>
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
 
-        public override List<BibleChapter> GetChapters(BibleBook book) =>
-            Enumerable.Range(1, book.ChapterCount.Value)
+        protected override List<BibleChapter> GetChaptersOnline(BibleBook book) =>
+            Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new BibleChapter
                 {
-                    Source = this,
-                    Book = book,
-                    ChapterNumber = i,
+                    Number = i,
                 }).ToList();
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        public override List<string> GetVerses(BibleChapter chapter)
+        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
         {
-            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.BookId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.BibleId}");
+            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}");
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
-            return matches.Cast<Match>().Select(i => StripHtmlTags(i.Groups[1].Value)).ToList();
+            var verseNum = 0;
+            return matches.Cast<Match>().Select(i => new BibleVerse
+            {
+                Number = ++verseNum,
+                Text = StripHtmlTags(i.Groups[1].Value),
+            }).ToList();
         }
     }
 }

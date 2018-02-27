@@ -27,6 +27,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,6 +58,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Esent.Interop, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedEsent.1.9.4\lib\net40\Esent.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Esent.Isam, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Database.Isam.1.9.4\lib\net40\Esent.Isam.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -65,10 +73,13 @@
     <Compile Include="AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="BibleDb.cs" />
     <Compile Include="Bibles\Bible.cs" />
+    <Compile Include="Bibles\BibleVersion.cs" />
     <Compile Include="Bibles\BibleBookAliases.cs" />
     <Compile Include="Bibles\BibleChapter.cs" />
     <Compile Include="Bibles\BibleBook.cs" />
+    <Compile Include="Bibles\BibleVerse.cs" />
     <Compile Include="Bibles\Sources\GodpeopleBible.cs" />
     <Compile Include="Bibles\Sources\GodpiaBible.cs" />
     <Compile Include="Bibles\Sources\BibleSource.cs" />
@@ -83,6 +94,7 @@
     <Compile Include="MainForm.Helper.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="IndexKeyAttribute.cs" />
     <Compile Include="PPTBuilder.cs" />
     <Compile Include="PPTBuilderWork.cs" />
     <Compile Include="Program.cs" />
@@ -104,6 +116,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Template.pptx" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +171,7 @@
   <ItemGroup>
     <None Include="BibleBookAliases.csv" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
