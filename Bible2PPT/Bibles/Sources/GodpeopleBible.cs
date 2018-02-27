@@ -60,7 +60,7 @@ namespace Bible2PPT.Bibles.Sources
                     Number = i,
                 }).ToList();
 
-        private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
+        private static string StripHtmlTags(string s) => Regex.Replace(s, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline);
 
         protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
         {
