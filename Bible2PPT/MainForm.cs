@@ -65,6 +65,8 @@ namespace Bible2PPT
             ToggleCriticalControls(false);
             cmbBibleVersion.Tag = null;
             cmbBibleVersion.Items.Clear();
+            lstBooks.Tag = null;
+            lstBooks.Items.Clear();
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 ToggleCriticalControls(true);
