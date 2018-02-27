@@ -23,7 +23,7 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피플 성경";
         }
 
-        public override List<BibleVersion> GetBibles() => new List<BibleVersion>
+        protected override List<BibleVersion> GetBiblesOnline() => new List<BibleVersion>
         {
             new BibleVersion
             {
@@ -37,7 +37,7 @@ namespace Bible2PPT.Bibles.Sources
             },
         };
 
-        public override List<BibleBook> GetBooks(BibleVersion bible)
+        protected override List<BibleBook> GetBooksOnline(BibleVersion bible)
         {
             var data = client.DownloadString("/?page=bidx");
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
@@ -53,7 +53,7 @@ namespace Bible2PPT.Bibles.Sources
         private static string EncodeString(string s) =>
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
 
-        public override List<BibleChapter> GetChapters(BibleBook book) =>
+        protected override List<BibleChapter> GetChaptersOnline(BibleBook book) =>
             Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new BibleChapter
                 {
@@ -62,7 +62,7 @@ namespace Bible2PPT.Bibles.Sources
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        public override List<BibleVerse> GetVerses(BibleChapter chapter)
+        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
         {
             var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}");
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");

@@ -19,10 +19,10 @@ namespace Bible2PPT.Bibles.Sources
 
         public static BibleSource Find(int sourceId) => AvailableSources.FirstOrDefault(i => i.Id == sourceId);
 
-        public abstract List<BibleVersion> GetBibles();
-        public abstract List<BibleBook> GetBooks(BibleVersion bible);
-        public abstract List<BibleChapter> GetChapters(BibleBook book);
-        public abstract List<BibleVerse> GetVerses(BibleChapter chapter);
+        protected abstract List<BibleVersion> GetBiblesOnline();
+        protected abstract List<BibleBook> GetBooksOnline(BibleVersion bible);
+        protected abstract List<BibleChapter> GetChaptersOnline(BibleBook book);
+        protected abstract List<BibleVerse> GetVersesOnline(BibleChapter chapter);
 
         protected void LinkForeigns(Bible bible)
         {
@@ -51,7 +51,7 @@ namespace Bible2PPT.Bibles.Sources
             verse.ChapterId = chapter.Id;
         }
 
-        public List<BibleVersion> GetBiblesC()
+        public List<BibleVersion> GetBibles()
         {
             List<BibleVersion> bibles;
             using (var db = new BibleDb())
@@ -71,7 +71,7 @@ namespace Bible2PPT.Bibles.Sources
                     }
                 }
 
-                bibles = GetBibles();
+                bibles = GetBiblesOnline();
 
                 using (var tx = db.Transaction)
                 using (var cursor = db.Bibles)
@@ -90,7 +90,7 @@ namespace Bible2PPT.Bibles.Sources
             }
         }
 
-        public List<BibleBook> GetBooksC(BibleVersion bible)
+        public List<BibleBook> GetBooks(BibleVersion bible)
         {
             List<BibleBook> books;
             using (var db = new BibleDb())
@@ -110,7 +110,7 @@ namespace Bible2PPT.Bibles.Sources
                     }
                 }
 
-                books = GetBooks(bible);
+                books = GetBooksOnline(bible);
 
                 using (var tx = db.Transaction)
                 using (var cursor = db.Books)
@@ -129,7 +129,7 @@ namespace Bible2PPT.Bibles.Sources
             }
         }
 
-        public List<BibleChapter> GetChaptersC(BibleBook book)
+        public List<BibleChapter> GetChapters(BibleBook book)
         {
             List<BibleChapter> chapters;
             using (var db = new BibleDb())
@@ -149,7 +149,7 @@ namespace Bible2PPT.Bibles.Sources
                     }
                 }
 
-                chapters = GetChapters(book);
+                chapters = GetChaptersOnline(book);
 
                 using (var tx = db.Transaction)
                 using (var cursor = db.Chapters)
@@ -168,7 +168,7 @@ namespace Bible2PPT.Bibles.Sources
             }
         }
 
-        public List<BibleVerse> GetVersesC(BibleChapter chapter)
+        public List<BibleVerse> GetVerses(BibleChapter chapter)
         {
             List<BibleVerse> verses;
             using (var db = new BibleDb())
@@ -188,7 +188,7 @@ namespace Bible2PPT.Bibles.Sources
                     }
                 }
 
-                verses = GetVerses(chapter);
+                verses = GetVersesOnline(chapter);
 
                 using (var tx = db.Transaction)
                 using (var cursor = db.Verses)
@@ -207,10 +207,10 @@ namespace Bible2PPT.Bibles.Sources
             }
         }
 
-        public Task<List<BibleVersion>> GetBiblesAsync() => Task.Factory.StartNew(GetBiblesC);
-        public Task<List<BibleBook>> GetBooksAsync(BibleVersion bible) => Task.Factory.StartNew(() => GetBooksC(bible));
-        public Task<List<BibleChapter>> GetChaptersAsync(BibleBook book) => Task.Factory.StartNew(() => GetChaptersC(book));
-        public Task<List<BibleVerse>> GetVersesAsync(BibleChapter chapter) => Task.Factory.StartNew(() => GetVersesC(chapter));
+        public Task<List<BibleVersion>> GetBiblesAsync() => Task.Factory.StartNew(GetBibles);
+        public Task<List<BibleBook>> GetBooksAsync(BibleVersion bible) => Task.Factory.StartNew(() => GetBooks(bible));
+        public Task<List<BibleChapter>> GetChaptersAsync(BibleBook book) => Task.Factory.StartNew(() => GetChapters(book));
+        public Task<List<BibleVerse>> GetVersesAsync(BibleChapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
 
         public override string ToString() => Name ?? base.ToString();
     }
