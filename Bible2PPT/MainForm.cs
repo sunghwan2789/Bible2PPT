@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -249,15 +250,13 @@ namespace Bible2PPT
                 }
 
                 var books = lstBooks.Tag as List<BibleBook>;
-                foreach (var query in
-                    txtKeyword.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(BibleQuery.ParseQuery))
+                foreach (var t in
+                    Regex.Replace(txtKeyword.Text.Trim(), @"\s+", "").Split()
+                        .Select(BibleQuery.ParseQuery)
+                        .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
                 {
-                    var book = books.FirstOrDefault(i => i.ShortTitle == query.BibleId);
-                    if (book == null)
-                    {
-                        throw new IndexOutOfRangeException($@"""{query.BibleId}""에 해당하는 성경이 없습니다.");
-                    }
+                    var query = t.Item1;
+                    var book = t.Item2;
 
                     // TODO: book.chaptercount maybe null
                     foreach (var chapter in
