@@ -6,15 +6,13 @@ using System.Text;
 
 namespace Bible2PPT.Bibles
 {
-    class BibleVerse
+    class BibleVerse : Bible
     {
         [IgnoreDataMember]
-        public Sources.BibleSource Source { get; set; }
+        public virtual BibleChapter Chapter { get; set; }
+        public Guid ChapterId { get; set; }
 
-        [IgnoreDataMember]
-        public BibleChapter Chapter { get; set; }
-
-        public int VerseNumber { get; set; }
+        public int Number { get; set; }
         public string Text { get; set; }
     }
 }

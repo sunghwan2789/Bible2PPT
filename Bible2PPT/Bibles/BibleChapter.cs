@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Bible2PPT.Bibles
 {
-    class BibleChapter
+    class BibleChapter : Bible
     {
         [IgnoreDataMember]
-        public Sources.BibleSource Source { get; set; }
-        [IgnoreDataMember]
-        public BibleBook Book { get; set; }
+        public virtual BibleBook Book { get; set; }
+        public Guid BookId { get; set; }
 
-        public int ChapterNumber { get; set; }
+        public int Number { get; set; }
 
         public List<BibleVerse> Verses => Source.GetVerses(this);
     }

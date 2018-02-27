@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="BibleDb.cs" />
     <Compile Include="Bibles\Bible.cs" />
+    <Compile Include="Bibles\BibleVersion.cs" />
     <Compile Include="Bibles\BibleBookAliases.cs" />
     <Compile Include="Bibles\BibleChapter.cs" />
     <Compile Include="Bibles\BibleBook.cs" />

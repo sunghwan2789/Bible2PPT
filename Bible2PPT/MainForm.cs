@@ -49,7 +49,7 @@ namespace Bible2PPT
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
 
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
-            cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
+            cmbBibleSource.SelectedItem = BibleSource.Find(AppConfig.Context.BibleSourceId);
         }
 
         private void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -63,6 +63,7 @@ namespace Bible2PPT
             AppConfig.Context.BibleSourceId = source.Id;
 
             ToggleCriticalControls(false);
+            cmbBibleVersion.Items.Clear();
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 ToggleCriticalControls(true);
@@ -72,25 +73,26 @@ namespace Bible2PPT
                     throw t.Exception;
                 }
 
-                cmbBibleVersion.Tag = t.Result;
-                cmbBibleVersion.Items.Clear();
-                cmbBibleVersion.Items.AddRange(t.Result.ToArray());
-                cmbBibleVersion.SelectedItem = t.Result.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionSeq);
+                var bibles = t.Result;
+                cmbBibleVersion.Tag = bibles;
+                cmbBibleVersion.Items.AddRange(bibles.ToArray());
+                cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
             })));
         }
 
         private void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var bible = cmbBibleVersion.SelectedItem as Bible;
+            var bible = cmbBibleVersion.SelectedItem as BibleVersion;
             if (bible == null)
             {
                 ToggleCriticalControls(true);
                 throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
             }
 
-            AppConfig.Context.BibleVersionSeq = bible.Id;
+            AppConfig.Context.BibleVersionId = bible.Id;
 
             ToggleCriticalControls(false);
+            lstBible.Items.Clear();
             bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 ToggleCriticalControls(true);
@@ -101,7 +103,6 @@ namespace Bible2PPT
                 }
 
                 lstBible.Tag = t.Result;
-                lstBible.Items.Clear();
                 foreach (var book in t.Result)
                 {
                     var item = lstBible.Items.Add(book.Title);
@@ -259,19 +260,19 @@ namespace Bible2PPT
                         book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount)
                             .Skip(query.StartChapterNumber - 1))
                     {
-                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.ChapterNumber}장"));
+                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
 
                         if (AppConfig.Context.SeperateByChapter)
                         {
                             work?.Save();
-                            var output = Path.Combine(destination, book.Title, chapter.ChapterNumber.ToString("000\\.pptx"));
+                            var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
                             CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                             work = builder.BeginBuild(output);
                         }
 
-                        var startVerseNo = chapter.ChapterNumber == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                        var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
                         var endVerseNo = chapter.Verses.Count;
-                        if (chapter.ChapterNumber == query.EndChapterNumber && query.EndVerseNumber != null)
+                        if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
                         {
                             endVerseNo = query.EndVerseNumber.Value;
                         }

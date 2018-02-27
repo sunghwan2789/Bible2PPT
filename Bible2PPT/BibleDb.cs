@@ -26,7 +26,7 @@ namespace Bible2PPT
 
         public IsamTransaction Transaction => new IsamTransaction(Session);
 
-        public Cursor Bibles => Database.OpenCursor(typeof(Bible).Name);
+        public Cursor Bibles => Database.OpenCursor(typeof(BibleVersion).Name);
         public Cursor Books => Database.OpenCursor(typeof(BibleBook).Name);
         public Cursor Chapters => Database.OpenCursor(typeof(BibleChapter).Name);
         public Cursor Verses => Database.OpenCursor(typeof(BibleVerse).Name);
@@ -55,7 +55,7 @@ namespace Bible2PPT
 
             Database = Session.OpenDatabase(AppConfig.DatabasePath);
 
-            InitializeTable(typeof(Bible));
+            InitializeTable(typeof(BibleVersion));
             InitializeTable(typeof(BibleBook));
             InitializeTable(typeof(BibleChapter));
             InitializeTable(typeof(BibleVerse));

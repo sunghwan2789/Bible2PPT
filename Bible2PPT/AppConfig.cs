@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -50,7 +51,7 @@ namespace Bible2PPT
         /// Offset: 5,
         /// Length: 16,
         /// </summary>
-        public Guid BibleVersionSeq { get; set; }
+        public Guid BibleVersionId { get; set; }
 
         public AppConfig() : base(ConfigPath, ConfigSize) {}
 
@@ -62,7 +63,7 @@ namespace Bible2PPT
             b[0] |= (byte) ((int) ShowChapterNumber << 2);
             b[0] |= (byte) (SeperateByChapter ? 16 : 0);
             BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
-            BibleVersionSeq.ToByteArray().CopyTo(b, 5);
+            BibleVersionId.ToByteArray().CopyTo(b, 5);
             return b;
         }
 
@@ -73,7 +74,7 @@ namespace Bible2PPT
             ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
             SeperateByChapter = (s[0] & 16) == 16;
             BibleSourceId = BitConverter.ToInt32(s, 1);
-            BibleVersionSeq = new Guid(new ArraySegment<byte>(s, 5, 16).Array);
+            BibleVersionId = new Guid(s.Skip(5).Take(16).ToArray());
         }
     }
 }

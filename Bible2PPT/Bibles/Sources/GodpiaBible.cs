@@ -21,19 +21,20 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피아 성경";
         }
 
-        public override List<Bible> GetBibles()
+        public override List<BibleVersion> GetBibles()
         {
             var data = client.DownloadString($"/index.asp");
             var matches = Regex.Matches(data, @"#(.+?)"" class=""clickReadBible"">(.+?)</");
-            return matches.Cast<Match>().Select(i => new Bible
+            return matches.Cast<Match>().Select(i => new BibleVersion
             {
                 Source = this,
+                SourceId = Id,
                 OnlineId = i.Groups[1].Value,
-                Version = i.Groups[2].Value,
+                Name = i.Groups[2].Value,
             }).ToList();
         }
 
-        public override List<BibleBook> GetBooks(Bible bible)
+        public override List<BibleBook> GetBooks(BibleVersion bible)
         {
             var data = client.DownloadString($"/read/reading.asp?ver={bible.OnlineId}");
             data = string.Join("", Regex.Matches(data, @"<select id=""selectBibleSub[12]"".+?</select>", RegexOptions.Singleline).Cast<Match>().Select(i => i.Groups[0].Value));
@@ -41,6 +42,7 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(i => new BibleBook
             {
                 Source = this,
+                SourceId = Id,
                 Bible = bible,
                 BibleId = bible.Id,
                 OnlineId = i.Groups[1].Value,
@@ -56,8 +58,9 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(i => new BibleChapter
             {
                 Source = this,
+                SourceId = Id,
                 Book = book,
-                ChapterNumber = int.Parse(i.Groups[1].Value),
+                Number = int.Parse(i.Groups[1].Value),
             }).ToList();
         }
 
@@ -65,14 +68,15 @@ namespace Bible2PPT.Bibles.Sources
 
         public override List<BibleVerse> GetVerses(BibleChapter chapter)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.ChapterNumber}");
+            var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.Number}");
             var matches = Regex.Matches(data, @"class=""num"".*?</span>(.*?)</p>");
             var verseNum = 0;
             return matches.Cast<Match>().Select(i => new BibleVerse
             {
                 Source = this,
+                SourceId = Id,
                 Chapter = chapter,
-                VerseNumber = ++verseNum,
+                Number = ++verseNum,
                 Text = StripHtmlTags(i.Groups[1].Value),
             }).ToList();
         }

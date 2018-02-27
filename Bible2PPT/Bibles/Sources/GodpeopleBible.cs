@@ -23,23 +23,23 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피플 성경";
         }
 
-        public override List<Bible> GetBibles() => new List<Bible>
+        public override List<BibleVersion> GetBibles() => new List<BibleVersion>
         {
-            new Bible
+            new BibleVersion
             {
                 Source = this,
                 OnlineId = "rvsn",
-                Version = "개역개정",
+                Name = "개역개정",
             },
-            new Bible
+            new BibleVersion
             {
                 Source = this,
                 OnlineId = "ezsn",
-                Version = "쉬운성경",
+                Name = "쉬운성경",
             },
         };
 
-        public override List<BibleBook> GetBooks(Bible bible)
+        public override List<BibleBook> GetBooks(BibleVersion bible)
         {
             var data = client.DownloadString("/?page=bidx");
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
@@ -64,21 +64,21 @@ namespace Bible2PPT.Bibles.Sources
                 {
                     Source = this,
                     Book = book,
-                    ChapterNumber = i,
+                    Number = i,
                 }).ToList();
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
         public override List<BibleVerse> GetVerses(BibleChapter chapter)
         {
-            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.OnlineId}");
+            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}");
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
             var verseNum = 0;
             return matches.Cast<Match>().Select(i => new BibleVerse
             {
                 Source = this,
                 Chapter = chapter,
-                VerseNumber = ++verseNum,
+                Number = ++verseNum,
                 Text = StripHtmlTags(i.Groups[1].Value),
             }).ToList();
         }

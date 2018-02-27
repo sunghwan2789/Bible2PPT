@@ -5,17 +5,12 @@ using System.Runtime.Serialization;
 
 namespace Bible2PPT.Bibles
 {
-    class BibleBook
+    class BibleBook : Bible
     {
         [IgnoreDataMember]
-        public Sources.BibleSource Source { get; set; }
-
-        [IgnoreDataMember]
-        public Bible Bible { get; set; }
-
+        public virtual BibleVersion Bible { get; set; }
         public Guid BibleId { get; set; }
 
-        public Guid Id { get; set; }
         public string OnlineId { get; set; }
         public string Title { get; set; }
 
