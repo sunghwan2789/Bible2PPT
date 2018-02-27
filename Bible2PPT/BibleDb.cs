@@ -107,12 +107,33 @@ namespace Bible2PPT
                 }
 
                 var table = new TableDefinition(type.Name);
+                var indices = new Dictionary<string, List<Tuple<IndexKeyAttribute, PropertyInfo>>>();
                 foreach (var property in GetStorableProperties(type))
                 {
                     table.Columns.Add(new ColumnDefinition(property.Name)
                     {
                         Type = property.PropertyType,
                     });
+
+                    switch (property.GetCustomAttributes(true).FirstOrDefault())
+                    {
+                        case IndexKeyAttribute idx:
+                            if (!indices.ContainsKey(idx.Name))
+                            {
+                                indices.Add(idx.Name, new List<Tuple<IndexKeyAttribute, PropertyInfo>>());
+                            }
+                            indices[idx.Name].Add(Tuple.Create(idx, property));
+                            break;
+                    }
+                }
+                foreach (var idx in indices)
+                {
+                    var index = new IndexDefinition(idx.Key);
+                    foreach (var i in idx.Value.OrderBy(i => i.Item1.Order))
+                    {
+                        index.KeyColumns.Add(new KeyColumn(i.Item2.Name, i.Item1.Ascending));
+                    }
+                    table.Indices.Add(index);
                 }
 
                 Database.CreateTable(table);

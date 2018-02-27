@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bible2PPT.Bibles
 {
     class Bible
     {
-        public virtual Sources.BibleSource Source { get; set; } //Sources.BibleSource.AvailableSources.FirstOrDefault(i => i.Id == SourceId)
+        [IndexKey(Name = nameof(SourceId))]
         public int SourceId { get; set; }
+        public virtual Sources.BibleSource Source { get; set; } //Sources.BibleSource.AvailableSources.FirstOrDefault(i => i.Id == SourceId)
 
         public Guid Id { get; set; } = Guid.NewGuid();
     }

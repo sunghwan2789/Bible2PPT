@@ -57,8 +57,9 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Bibles)
             {
-                bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVersion>)
-                    .Where(i => i.SourceId == Id).ToList();
+                cursor.SetCurrentIndex("SourceId");
+                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(Id));
+                bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVersion>).ToList();
                 if (bibles.Any())
                 {
                     // ANNOYING LOOPS
@@ -95,8 +96,9 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Books)
             {
-                books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>)
-                    .Where(i => i.BibleId == bible.Id).ToList();
+                cursor.SetCurrentIndex("BibleId");
+                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(bible.Id));
+                books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>).ToList();
                 if (books.Any())
                 {
                     // ANNOYING LOOPS
@@ -133,8 +135,9 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Chapters)
             {
-                chapters = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleChapter>)
-                    .Where(i => i.BookId == book.Id).ToList();
+                cursor.SetCurrentIndex("BookId");
+                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(book.Id));
+                chapters = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleChapter>).ToList();
                 if (chapters.Any())
                 {
                     // ANNOYING LOOPS
@@ -171,8 +174,9 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Verses)
             {
-                verses = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVerse>)
-                    .Where(i => i.ChapterId == chapter.Id).ToList();
+                cursor.SetCurrentIndex("ChapterId");
+                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(chapter.Id));
+                verses = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVerse>).ToList();
                 if (verses.Any())
                 {
                     // ANNOYING LOOPS

@@ -94,6 +94,7 @@
     <Compile Include="MainForm.Helper.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="IndexKeyAttribute.cs" />
     <Compile Include="PPTBuilder.cs" />
     <Compile Include="PPTBuilderWork.cs" />
     <Compile Include="Program.cs" />

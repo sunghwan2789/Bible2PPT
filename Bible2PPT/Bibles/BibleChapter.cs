@@ -5,8 +5,9 @@ namespace Bible2PPT.Bibles
 {
     class BibleChapter : Bible
     {
-        public virtual BibleBook Book { get; set; }
+        [IndexKey(Name = nameof(BookId))]
         public Guid BookId { get; set; }
+        public virtual BibleBook Book { get; set; }
 
         public int Number { get; set; }
 
