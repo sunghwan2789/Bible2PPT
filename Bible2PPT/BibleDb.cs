@@ -1,7 +1,9 @@
 ﻿using Bible2PPT.Bibles;
 using Microsoft.Database.Isam;
+using Microsoft.Isam.Esent.Interop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,9 +12,14 @@ using System.Text;
 
 namespace Bible2PPT
 {
+    /// <summary>
+    /// 하나 이상의 인스턴스를 만들지 않도록 주의할 것!
+    /// </summary>
     class BibleDb : IDisposable
     {
-        public IsamInstance Instance = new IsamInstance(null);
+        private static BibleDb instance = null;
+
+        public IsamInstance Instance;
 
         public IsamSession Session;
         public IsamDatabase Database;
@@ -26,13 +33,22 @@ namespace Bible2PPT
 
         public BibleDb()
         {
+            // Pre-condition Check
+            Debug.Assert(instance == null);
+            instance = this;
+
+            // 주의!!
+            // Instance 생성 시 매개변수로 Directory들과 BaseName, EventSource 등은
+            // 고유한 값이어야 하며, 동시에 사용할 수 없음!
+            Instance = new IsamInstance(AppConfig.DatabaseWorkingDirectory);
+
             Session = Instance.CreateSession();
 
-            if (Session.Exists(AppConfig.DatabasePath))
+            try
             {
                 Session.AttachDatabase(AppConfig.DatabasePath);
             }
-            else
+            catch (EsentFileNotFoundException)
             {
                 Session.CreateDatabase(AppConfig.DatabasePath);
             }
@@ -68,7 +84,8 @@ namespace Bible2PPT
             using (var cursor = Database.OpenCursor(type.Name))
             {
                 var columns = cursor.TableDefinition.Columns.Cast<ColumnDefinition>();
-                return !GetStorableProperties(type).Select(i => i.Name).Except(columns.Select(i => i.Name)).Any();
+                return !GetStorableProperties(type).Select(i => Tuple.Create(i.Name, i.PropertyType))
+                    .Except(columns.Select(i => Tuple.Create(i.Name, i.Type))).Any();
             }
         }
 
@@ -120,6 +137,8 @@ namespace Bible2PPT
                     Database.Dispose();
                     Session.Dispose();
                     Instance.Dispose();
+
+                    instance = null;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
