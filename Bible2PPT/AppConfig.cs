@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -6,10 +7,10 @@ namespace Bible2PPT
 {
     class AppConfig : BinaryConfig
     {
-        public const int ConfigSize = 1 + 4 + 4;
+        public const int ConfigSize = 1 + 4 + 16;
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
-        public static string DatabaseWorkingDirectory { get; } = Application.UserAppDataPath;
+        public static string DatabaseWorkingDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar;
         public static string DatabasePath { get; } = Application.ExecutablePath + ".edb";
         public static string ContactUrl { get; } = "https://github.com/sunghwan2789/Bible2PPT";
 
@@ -43,13 +44,13 @@ namespace Bible2PPT
         /// Offset: 1,
         /// Length: 4,
         /// </summary>
-        public int BibleSourceSeq { get; set; } = 0;
+        public int BibleSourceId { get; set; } = 0;
 
         /// <summary>
         /// Offset: 5,
-        /// Length: 4,
+        /// Length: 16,
         /// </summary>
-        public int BibleVersionSeq { get; set; } = 0;
+        public Guid BibleVersionSeq { get; set; }
 
         public AppConfig() : base(ConfigPath, ConfigSize) {}
 
@@ -60,8 +61,8 @@ namespace Bible2PPT
             b[0] |= (byte) ((int) ShowShortTitle << 1);
             b[0] |= (byte) ((int) ShowChapterNumber << 2);
             b[0] |= (byte) (SeperateByChapter ? 16 : 0);
-            BitConverter.GetBytes(BibleSourceSeq).CopyTo(b, 1);
-            BitConverter.GetBytes(BibleVersionSeq).CopyTo(b, 5);
+            BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
+            BibleVersionSeq.ToByteArray().CopyTo(b, 5);
             return b;
         }
 
@@ -71,8 +72,8 @@ namespace Bible2PPT
             ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
             ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
             SeperateByChapter = (s[0] & 16) == 16;
-            BibleSourceSeq = BitConverter.ToInt32(s, 1);
-            BibleVersionSeq = BitConverter.ToInt32(s, 5);
+            BibleSourceId = BitConverter.ToInt32(s, 1);
+            BibleVersionSeq = new Guid(new ArraySegment<byte>(s, 5, 16).Array);
         }
     }
 }

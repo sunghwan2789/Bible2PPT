@@ -28,31 +28,29 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(i => new Bible
             {
                 Source = this,
-                SequenceId = i.Groups[1].Value.GetHashCode(),
-                BibleId = i.Groups[1].Value,
+                OnlineId = i.Groups[1].Value,
                 Version = i.Groups[2].Value,
             }).ToList();
         }
 
         public override List<BibleBook> GetBooks(Bible bible)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={bible.BibleId}");
+            var data = client.DownloadString($"/read/reading.asp?ver={bible.OnlineId}");
             data = string.Join("", Regex.Matches(data, @"<select id=""selectBibleSub[12]"".+?</select>", RegexOptions.Singleline).Cast<Match>().Select(i => i.Groups[0].Value));
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
             return matches.Cast<Match>().Select(i => new BibleBook
             {
                 Source = this,
                 Bible = bible,
-                BibleSeq = bible.SequenceId,
-                SequenceId = i.Groups[1].Value.GetHashCode(),
-                BookId = i.Groups[1].Value,
+                BibleId = bible.Id,
+                OnlineId = i.Groups[1].Value,
                 Title = i.Groups[2].Value,
             }).ToList();
         }
 
         public override List<BibleChapter> GetChapters(BibleBook book)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={book.Bible.BibleId}&vol={book.BookId}");
+            var data = client.DownloadString($"/read/reading.asp?ver={book.Bible.OnlineId}&vol={book.OnlineId}");
             data = Regex.Match(data, @"<select id=""selectBibleSub3"".+?</select>", RegexOptions.Singleline).Groups[0].Value;
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
             return matches.Cast<Match>().Select(i => new BibleChapter
@@ -67,7 +65,7 @@ namespace Bible2PPT.Bibles.Sources
 
         public override List<BibleVerse> GetVerses(BibleChapter chapter)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.BibleId}&vol={chapter.Book.BookId}&chap={chapter.ChapterNumber}");
+            var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.ChapterNumber}");
             var matches = Regex.Matches(data, @"class=""num"".*?</span>(.*?)</p>");
             var verseNum = 0;
             return matches.Cast<Match>().Select(i => new BibleVerse

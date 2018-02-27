@@ -49,7 +49,7 @@ namespace Bible2PPT
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
 
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
-            cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleSourceSeq);
+            cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
         }
 
         private void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace Bible2PPT
                 throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
             }
 
-            AppConfig.Context.BibleSourceSeq = source.SequenceId;
+            AppConfig.Context.BibleSourceId = source.Id;
 
             ToggleCriticalControls(false);
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
@@ -75,7 +75,7 @@ namespace Bible2PPT
                 cmbBibleVersion.Tag = t.Result;
                 cmbBibleVersion.Items.Clear();
                 cmbBibleVersion.Items.AddRange(t.Result.ToArray());
-                cmbBibleVersion.SelectedItem = t.Result.FirstOrDefault(i => i.SequenceId == AppConfig.Context.BibleVersionSeq);
+                cmbBibleVersion.SelectedItem = t.Result.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionSeq);
             })));
         }
 
@@ -88,7 +88,7 @@ namespace Bible2PPT
                 throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
             }
 
-            AppConfig.Context.BibleVersionSeq = bible.SequenceId;
+            AppConfig.Context.BibleVersionSeq = bible.Id;
 
             ToggleCriticalControls(false);
             bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>

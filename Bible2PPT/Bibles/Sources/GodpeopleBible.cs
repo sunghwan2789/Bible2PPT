@@ -28,15 +28,13 @@ namespace Bible2PPT.Bibles.Sources
             new Bible
             {
                 Source = this,
-                SequenceId = 0,
-                BibleId = "rvsn",
+                OnlineId = "rvsn",
                 Version = "개역개정",
             },
             new Bible
             {
                 Source = this,
-                SequenceId = 1,
-                BibleId = "ezsn",
+                OnlineId = "ezsn",
                 Version = "쉬운성경",
             },
         };
@@ -49,9 +47,8 @@ namespace Bible2PPT.Bibles.Sources
             {
                 Source = this,
                 Bible = bible,
-                BibleSeq = bible.SequenceId,
-                SequenceId = match.Groups[1].Value.GetHashCode(),
-                BookId = match.Groups[1].Value,
+                BibleId = bible.Id,
+                OnlineId = match.Groups[1].Value,
                 Title = match.Groups[3].Value,
                 ShortTitle = match.Groups[1].Value,
                 ChapterCount = int.Parse(match.Groups[2].Value),
@@ -74,7 +71,7 @@ namespace Bible2PPT.Bibles.Sources
 
         public override List<BibleVerse> GetVerses(BibleChapter chapter)
         {
-            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.BookId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.BibleId}");
+            var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.ChapterNumber}&vers={chapter.Book.Bible.OnlineId}");
             var matches = Regex.Matches(data, @"bidx_listTd_phrase.+?>(.+?)</td");
             var verseNum = 0;
             return matches.Cast<Match>().Select(i => new BibleVerse

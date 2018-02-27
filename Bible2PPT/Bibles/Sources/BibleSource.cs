@@ -1,4 +1,5 @@
 ﻿using Microsoft.Database.Isam;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +10,11 @@ namespace Bible2PPT.Bibles.Sources
     {
         public static BibleSource[] AvailableSources = new BibleSource[]
         {
-            new GodpeopleBible { SequenceId = 0 },
-            new GodpiaBible { SequenceId = 1 },
+            new GodpeopleBible { Id = 0 },
+            new GodpiaBible { Id = 1 },
         };
 
-        public int SequenceId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public abstract List<Bible> GetBibles();
@@ -65,7 +66,7 @@ namespace Bible2PPT.Bibles.Sources
                 using (var cursor = db.Books)
                 {
                     books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>)
-                        .Where(i => i.BibleSeq == bible.SequenceId).ToList();
+                        .Where(i => i.BibleId == bible.Id).ToList();
                     if (books.Any())
                     {
                         // ANNOYING LOOPS
