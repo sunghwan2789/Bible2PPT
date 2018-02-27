@@ -19,7 +19,7 @@ namespace Bible2PPT
         {
             cmbBibleSource,
             cmbBibleVersion,
-            lstBible,
+            lstBooks,
             txtSearch,
             cmbChapNum,
             cmbLongTitle,
@@ -63,6 +63,7 @@ namespace Bible2PPT
             AppConfig.Context.BibleSourceId = source.Id;
 
             ToggleCriticalControls(false);
+            cmbBibleVersion.Tag = null;
             cmbBibleVersion.Items.Clear();
             source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
@@ -92,7 +93,8 @@ namespace Bible2PPT
             AppConfig.Context.BibleVersionId = bible.Id;
 
             ToggleCriticalControls(false);
-            lstBible.Items.Clear();
+            lstBooks.Tag = null;
+            lstBooks.Items.Clear();
             bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
             {
                 ToggleCriticalControls(true);
@@ -102,10 +104,10 @@ namespace Bible2PPT
                     throw t.Exception;
                 }
 
-                lstBible.Tag = t.Result;
+                lstBooks.Tag = t.Result;
                 foreach (var book in t.Result)
                 {
-                    var item = lstBible.Items.Add(book.Title);
+                    var item = lstBooks.Items.Add(book.Title);
                     item.SubItems.Add(book.ChapterCount.ToString());
                     item.Tag = book;
                 }
@@ -120,7 +122,7 @@ namespace Bible2PPT
 
 
 
-        private void lstBible_MouseClick(object sender, MouseEventArgs e)
+        private void lstBooks_MouseClick(object sender, MouseEventArgs e)
         {
             AppendShortTitle();
         }
@@ -137,7 +139,7 @@ namespace Bible2PPT
                 return;
             }
 
-            foreach (ListViewItem bookItem in lstBible.Items)
+            foreach (ListViewItem bookItem in lstBooks.Items)
             {
                 if (bookItem.Text.StartsWith(txtSearch.Text))
                 {
@@ -155,13 +157,13 @@ namespace Bible2PPT
                     e.SuppressKeyPress = true;
                     try
                     {
-                        HighlightBookItem(lstBible.Items[lstBible.SelectedIndices[0] - 1]);
+                        HighlightBookItem(lstBooks.Items[lstBooks.SelectedIndices[0] - 1]);
                     }
                     catch
                     {
-                        if (lstBible.Items.Count > 0)
+                        if (lstBooks.Items.Count > 0)
                         {
-                            HighlightBookItem(lstBible.Items[lstBible.Items.Count - 1]);
+                            HighlightBookItem(lstBooks.Items[lstBooks.Items.Count - 1]);
                         }
                     }
                     break;
@@ -169,13 +171,13 @@ namespace Bible2PPT
                     e.SuppressKeyPress = true;
                     try
                     {
-                        HighlightBookItem(lstBible.Items[lstBible.SelectedIndices[0] + 1]);
+                        HighlightBookItem(lstBooks.Items[lstBooks.SelectedIndices[0] + 1]);
                     }
                     catch
                     {
-                        if (lstBible.Items.Count > 0)
+                        if (lstBooks.Items.Count > 0)
                         {
-                            HighlightBookItem(lstBible.Items[0]);
+                            HighlightBookItem(lstBooks.Items[0]);
                         }
                     }
                     break;
@@ -244,7 +246,7 @@ namespace Bible2PPT
                     work = builder.BeginBuild();
                 }
 
-                var books = lstBible.Tag as List<BibleBook>;
+                var books = lstBooks.Tag as List<BibleBook>;
                 foreach (var query in
                     txtKeyword.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(BibleQuery.ParseQuery))

@@ -21,9 +21,9 @@ namespace Bible2PPT
 
         private void AppendShortTitle()
         {
-            if (lstBible.SelectedItems.Count > 0)
+            if (lstBooks.SelectedItems.Count > 0)
             {
-                var book = lstBible.SelectedItems[0].Tag as BibleBook;
+                var book = lstBooks.SelectedItems[0].Tag as BibleBook;
                 txtKeyword.AppendText((txtKeyword.Text.Length > 0 ? " " : "") + book.ShortTitle);
                 txtKeyword.Focus();
             }
@@ -31,9 +31,9 @@ namespace Bible2PPT
 
         private void HighlightBookItem(ListViewItem bookItem)
         {
-            lstBible.SelectedItems.Clear();
+            lstBooks.SelectedItems.Clear();
             bookItem.Selected = true;
-            lstBible.TopItem = bookItem;
+            lstBooks.TopItem = bookItem;
         }
 
         private static void CreateDirectoryIfNotExists(string path)
