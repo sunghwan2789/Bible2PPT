@@ -129,7 +129,7 @@
             this.cmbBibleVersion.Name = "cmbBibleVersion";
             this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
             this.cmbBibleVersion.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 책 선택");
+            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 선택");
             this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
             // 
             // btnMake
