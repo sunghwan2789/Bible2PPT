@@ -59,7 +59,11 @@ namespace Bible2PPT
             var source = cmbBibleSource.SelectedItem as BibleSource;
             if (source == null)
             {
-                throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
+                cmbBibleVersion.Tag = null;
+                cmbBibleVersion.Items.Clear();
+                lstBooks.Tag = null;
+                lstBooks.Items.Clear();
+                return;
             }
 
             AppConfig.Context.BibleSourceId = source.Id;
@@ -363,10 +367,11 @@ namespace Bible2PPT
         private void chkUseCache_CheckedChanged(object sender, EventArgs e)
         {
             AppConfig.Context.UseCache = chkUseCache.Checked;
-            if (!chkUseCache.Checked && MessageBox.Show("캐시를 삭제할까요?", Text, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (!chkUseCache.Checked)
             {
-                // TODO: bibledb.reset();
+                BibleDb.Reset();
             }
+            cmbBibleSource.SelectedItem = null;
         }
     }
 }
