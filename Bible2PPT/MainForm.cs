@@ -257,7 +257,7 @@ namespace Bible2PPT
 
                 var books = lstBooks.Tag as List<BibleBook>;
                 foreach (var t in
-                    Regex.Replace(txtKeyword.Text.Trim(), @"\s+", "").Split()
+                    Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
                         .Select(BibleQuery.ParseQuery)
                         .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
                 {
