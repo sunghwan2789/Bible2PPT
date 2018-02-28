@@ -27,6 +27,7 @@ namespace Bible2PPT
             txtKeyword,
             btnMake,
             chkFragment,
+            chkUseCache,
         };
 
         public MainForm()
@@ -47,6 +48,7 @@ namespace Bible2PPT
             cmbShortTitle.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
             cmbChapNum.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
+            chkUseCache.Checked = AppConfig.Context.UseCache;
 
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
             cmbBibleSource.SelectedItem = BibleSource.Find(AppConfig.Context.BibleSourceId);
@@ -356,6 +358,15 @@ namespace Bible2PPT
         private void btnGithub_Click(object sender, EventArgs e)
         {
             Process.Start(AppConfig.ContactUrl);
+        }
+
+        private void chkUseCache_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.UseCache = chkUseCache.Checked;
+            if (!chkUseCache.Checked && MessageBox.Show("캐시를 삭제할까요?", Text, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                // TODO: bibledb.reset();
+            }
         }
     }
 }

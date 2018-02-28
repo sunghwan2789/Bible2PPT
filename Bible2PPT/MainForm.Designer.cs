@@ -32,8 +32,10 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cmbShortTitle = new System.Windows.Forms.ComboBox();
             this.cmbLongTitle = new System.Windows.Forms.ComboBox();
-            this.btnMake = new System.Windows.Forms.Button();
             this.cmbChapNum = new System.Windows.Forms.ComboBox();
+            this.cmbBibleSource = new System.Windows.Forms.ComboBox();
+            this.cmbBibleVersion = new System.Windows.Forms.ComboBox();
+            this.btnMake = new System.Windows.Forms.Button();
             this.txtKeyword = new System.Windows.Forms.TextBox();
             this.btnTemplate = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -44,8 +46,7 @@
             this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmbBibleSource = new System.Windows.Forms.ComboBox();
-            this.cmbBibleVersion = new System.Windows.Forms.ComboBox();
+            this.chkUseCache = new System.Windows.Forms.CheckBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -87,19 +88,6 @@
             this.toolTip1.SetToolTip(this.cmbLongTitle, "긴 제목 표시 설정");
             this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
             // 
-            // btnMake
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 3);
-            this.btnMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMake.Location = new System.Drawing.Point(10, 191);
-            this.btnMake.Margin = new System.Windows.Forms.Padding(0);
-            this.btnMake.Name = "btnMake";
-            this.btnMake.Size = new System.Drawing.Size(156, 29);
-            this.btnMake.TabIndex = 6;
-            this.btnMake.Text = "PPT 만들기";
-            this.btnMake.UseVisualStyleBackColor = true;
-            this.btnMake.Click += new System.EventHandler(this.btnMake_Click);
-            // 
             // cmbChapNum
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.cmbChapNum, 3);
@@ -115,6 +103,47 @@
             this.cmbChapNum.TabIndex = 3;
             this.toolTip1.SetToolTip(this.cmbChapNum, "장 번호 표시 설정");
             this.cmbChapNum.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
+            // 
+            // cmbBibleSource
+            // 
+            this.cmbBibleSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbBibleSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBibleSource.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbBibleSource.FormattingEnabled = true;
+            this.cmbBibleSource.Location = new System.Drawing.Point(0, 22);
+            this.cmbBibleSource.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbBibleSource.Name = "cmbBibleSource";
+            this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
+            this.cmbBibleSource.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.cmbBibleSource, "성경 소스 선택");
+            this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
+            // 
+            // cmbBibleVersion
+            // 
+            this.cmbBibleVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbBibleVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBibleVersion.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cmbBibleVersion.FormattingEnabled = true;
+            this.cmbBibleVersion.Location = new System.Drawing.Point(0, 47);
+            this.cmbBibleVersion.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbBibleVersion.Name = "cmbBibleVersion";
+            this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
+            this.cmbBibleVersion.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 책 선택");
+            this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
+            // 
+            // btnMake
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 3);
+            this.btnMake.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMake.Location = new System.Drawing.Point(10, 191);
+            this.btnMake.Margin = new System.Windows.Forms.Padding(0);
+            this.btnMake.Name = "btnMake";
+            this.btnMake.Size = new System.Drawing.Size(156, 29);
+            this.btnMake.TabIndex = 6;
+            this.btnMake.Text = "PPT 만들기";
+            this.btnMake.UseVisualStyleBackColor = true;
+            this.btnMake.Click += new System.EventHandler(this.btnMake_Click);
             // 
             // txtKeyword
             // 
@@ -216,10 +245,10 @@
             this.lstBooks.GridLines = true;
             this.lstBooks.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lstBooks.HideSelection = false;
-            this.lstBooks.Location = new System.Drawing.Point(0, 73);
+            this.lstBooks.Location = new System.Drawing.Point(0, 95);
             this.lstBooks.Margin = new System.Windows.Forms.Padding(0);
             this.lstBooks.Name = "lstBooks";
-            this.lstBooks.Size = new System.Drawing.Size(151, 176);
+            this.lstBooks.Size = new System.Drawing.Size(151, 154);
             this.lstBooks.TabIndex = 0;
             this.lstBooks.TabStop = false;
             this.lstBooks.UseCompatibleStateImageBehavior = false;
@@ -242,11 +271,11 @@
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearch.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtSearch.Location = new System.Drawing.Point(0, 50);
+            this.txtSearch.Location = new System.Drawing.Point(0, 72);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(0);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(151, 22);
-            this.txtSearch.TabIndex = 2;
+            this.txtSearch.TabIndex = 0;
             this.txtSearch.Text = "검색...";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
@@ -258,50 +287,36 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lstBooks, 0, 5);
-            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 4);
-            this.tableLayoutPanel2.Controls.Add(this.cmbBibleSource, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmbBibleVersion, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.chkUseCache, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lstBooks, 0, 6);
+            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.cmbBibleSource, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.cmbBibleVersion, 0, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowCount = 7;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 249);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // cmbBibleSource
+            // chkUseCache
             // 
-            this.cmbBibleSource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbBibleSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBibleSource.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbBibleSource.FormattingEnabled = true;
-            this.cmbBibleSource.Location = new System.Drawing.Point(0, 0);
-            this.cmbBibleSource.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbBibleSource.Name = "cmbBibleSource";
-            this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
-            this.cmbBibleSource.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.cmbBibleSource, "성경 소스 선택");
-            this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
-            // 
-            // cmbBibleVersion
-            // 
-            this.cmbBibleVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbBibleVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBibleVersion.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbBibleVersion.FormattingEnabled = true;
-            this.cmbBibleVersion.Location = new System.Drawing.Point(0, 25);
-            this.cmbBibleVersion.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbBibleVersion.Name = "cmbBibleVersion";
-            this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
-            this.cmbBibleVersion.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 책 선택");
-            this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
+            this.chkUseCache.AutoSize = true;
+            this.chkUseCache.Location = new System.Drawing.Point(3, 3);
+            this.chkUseCache.Name = "chkUseCache";
+            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
+            this.chkUseCache.TabIndex = 1;
+            this.chkUseCache.Text = "오프라인 캐시 사용";
+            this.chkUseCache.UseVisualStyleBackColor = true;
+            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
             // 
             // splitContainer1
             // 
@@ -364,6 +379,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox cmbBibleSource;
         private System.Windows.Forms.ComboBox cmbBibleVersion;
+        private System.Windows.Forms.CheckBox chkUseCache;
     }
 }
 
