@@ -28,6 +28,7 @@ namespace Bible2PPT
             txtKeyword,
             btnMake,
             chkFragment,
+            chkUseCache,
         };
 
         public MainForm()
@@ -48,6 +49,7 @@ namespace Bible2PPT
             cmbShortTitle.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
             cmbChapNum.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
             chkFragment.Checked = AppConfig.Context.SeperateByChapter;
+            chkUseCache.Checked = AppConfig.Context.UseCache;
 
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
             cmbBibleSource.SelectedItem = BibleSource.Find(AppConfig.Context.BibleSourceId);
@@ -58,7 +60,11 @@ namespace Bible2PPT
             var source = cmbBibleSource.SelectedItem as BibleSource;
             if (source == null)
             {
-                throw new EntryPointNotFoundException("사용할 수 없는 소스입니다.");
+                cmbBibleVersion.Tag = null;
+                cmbBibleVersion.Items.Clear();
+                lstBooks.Tag = null;
+                lstBooks.Items.Clear();
+                return;
             }
 
             AppConfig.Context.BibleSourceId = source.Id;
@@ -357,6 +363,16 @@ namespace Bible2PPT
         private void btnGithub_Click(object sender, EventArgs e)
         {
             Process.Start(AppConfig.ContactUrl);
+        }
+
+        private void chkUseCache_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.UseCache = chkUseCache.Checked;
+            if (!chkUseCache.Checked)
+            {
+                BibleDb.Reset();
+            }
+            cmbBibleSource.SelectedItem = null;
         }
     }
 }

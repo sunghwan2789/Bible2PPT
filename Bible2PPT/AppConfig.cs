@@ -42,6 +42,12 @@ namespace Bible2PPT
         public bool SeperateByChapter { get; set; } = false;
 
         /// <summary>
+        /// Offset: 0,
+        /// Mask: 0b0010_0000,
+        /// </summary>
+        public bool UseCache { get; set; } = true;
+
+        /// <summary>
         /// Offset: 1,
         /// Length: 4,
         /// </summary>
@@ -62,6 +68,7 @@ namespace Bible2PPT
             b[0] |= (byte) ((int) ShowShortTitle << 1);
             b[0] |= (byte) ((int) ShowChapterNumber << 2);
             b[0] |= (byte) (SeperateByChapter ? 16 : 0);
+            b[0] |= (byte) (UseCache ? 32 : 0);
             BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
             BibleVersionId.ToByteArray().CopyTo(b, 5);
             return b;
@@ -73,6 +80,7 @@ namespace Bible2PPT
             ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
             ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
             SeperateByChapter = (s[0] & 16) == 16;
+            UseCache = (s[0] & 32) == 32;
             BibleSourceId = BitConverter.ToInt32(s, 1);
             BibleVersionId = new Guid(s.Skip(5).Take(16).ToArray());
         }

@@ -4,6 +4,7 @@ using Microsoft.Isam.Esent.Interop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -23,10 +24,10 @@ namespace Bible2PPT
 
         public IsamTransaction Transaction => new IsamTransaction(Session);
 
-        public Cursor Bibles => Database.OpenCursor(typeof(BibleVersion).Name);
-        public Cursor Books => Database.OpenCursor(typeof(BibleBook).Name);
-        public Cursor Chapters => Database.OpenCursor(typeof(BibleChapter).Name);
-        public Cursor Verses => Database.OpenCursor(typeof(BibleVerse).Name);
+        public Cursor Bibles => Database.OpenCursor(nameof(BibleVersion));
+        public Cursor Books => Database.OpenCursor(nameof(BibleBook));
+        public Cursor Chapters => Database.OpenCursor(nameof(BibleChapter));
+        public Cursor Verses => Database.OpenCursor(nameof(BibleVerse));
 
         public BibleDb()
         {
@@ -56,6 +57,11 @@ namespace Bible2PPT
             InitializeTable(typeof(BibleBook));
             InitializeTable(typeof(BibleChapter));
             InitializeTable(typeof(BibleVerse));
+        }
+
+        public static void Reset()
+        {
+            File.Delete(AppConfig.DatabasePath);
         }
 
         private static Dictionary<Type, List<PropertyInfo>> PropertiesMap = new Dictionary<Type, List<PropertyInfo>>();

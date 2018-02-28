@@ -54,6 +54,14 @@ namespace Bible2PPT.Bibles.Sources
         public List<BibleVersion> GetBibles()
         {
             List<BibleVersion> bibles;
+
+            if (!AppConfig.Context.UseCache)
+            {
+                bibles = GetBiblesOnline();
+                bibles.ForEach(bible => LinkForeigns(bible));
+                return bibles;
+            }
+
             using (var db = new BibleDb())
             using (var cursor = db.Bibles)
             {
@@ -93,6 +101,14 @@ namespace Bible2PPT.Bibles.Sources
         public List<BibleBook> GetBooks(BibleVersion bible)
         {
             List<BibleBook> books;
+
+            if (!AppConfig.Context.UseCache)
+            {
+                books = GetBooksOnline(bible);
+                books.ForEach(book => LinkForeigns(book, bible));
+                return books;
+            }
+
             using (var db = new BibleDb())
             using (var cursor = db.Books)
             {
@@ -132,6 +148,14 @@ namespace Bible2PPT.Bibles.Sources
         public List<BibleChapter> GetChapters(BibleBook book)
         {
             List<BibleChapter> chapters;
+
+            if (!AppConfig.Context.UseCache)
+            {
+                chapters = GetChaptersOnline(book);
+                chapters.ForEach(chapter => LinkForeigns(chapter, book));
+                return chapters;
+            }
+
             using (var db = new BibleDb())
             using (var cursor = db.Chapters)
             {
@@ -171,6 +195,14 @@ namespace Bible2PPT.Bibles.Sources
         public List<BibleVerse> GetVerses(BibleChapter chapter)
         {
             List<BibleVerse> verses;
+
+            if (!AppConfig.Context.UseCache)
+            {
+                verses = GetVersesOnline(chapter);
+                verses.ForEach(verse => LinkForeigns(verse, chapter));
+                return verses;
+            }
+
             using (var db = new BibleDb())
             using (var cursor = db.Verses)
             {
