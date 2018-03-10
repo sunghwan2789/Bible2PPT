@@ -19,19 +19,19 @@ namespace Bible2PPT
         
         /// <summary>
         /// Offset: 0,
-        /// Mask: 0b0000_0001,
+        /// Mask: 0b0000_1001,
         /// </summary>
         public TemplateTextOptions ShowLongTitle { get; set; } = TemplateTextOptions.Always;
         
         /// <summary>
         /// Offset: 0,
-        /// Mask: 0b0000_0010,
+        /// Mask: 0b0100_0010,
         /// </summary>
         public TemplateTextOptions ShowShortTitle { get; set; } = TemplateTextOptions.Always;
 
         /// <summary>
         /// Offset: 0,
-        /// Mask: 0b0000_0100,
+        /// Mask: 0b1000_0100,
         /// </summary>
         public TemplateTextOptions ShowChapterNumber { get; set; } = TemplateTextOptions.Always;
 
@@ -64,11 +64,11 @@ namespace Bible2PPT
         protected override byte[] Serialize()
         {
             var b = new byte[ConfigSize];
-            b[0] = (byte) (int) ShowLongTitle;
-            b[0] |= (byte) ((int) ShowShortTitle << 1);
-            b[0] |= (byte) ((int) ShowChapterNumber << 2);
-            b[0] |= (byte) (SeperateByChapter ? 16 : 0);
-            b[0] |= (byte) (UseCache ? 32 : 0);
+            b[0] = Pack((int)ShowLongTitle, 0, 3);
+            b[0] |= Pack((int)ShowShortTitle, 1, 6);
+            b[0] |= Pack((int)ShowChapterNumber, 2, 7);
+            b[0] |= Pack(SeperateByChapter, 4);
+            b[0] |= Pack(UseCache, 5);
             BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
             BibleVersionId.ToByteArray().CopyTo(b, 5);
             return b;
@@ -76,13 +76,35 @@ namespace Bible2PPT
 
         protected override void Deserialize(byte[] s)
         {
-            ShowLongTitle = (TemplateTextOptions) (s[0] & 1);
-            ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
-            ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
-            SeperateByChapter = (s[0] & 16) == 16;
-            UseCache = (s[0] & 32) == 32;
+            ShowLongTitle = (TemplateTextOptions) Unpack(s[0], 0, 3);
+            ShowShortTitle = (TemplateTextOptions) Unpack(s[0], 1, 6);
+            ShowChapterNumber = (TemplateTextOptions) Unpack(s[0], 2, 7);
+            SeperateByChapter = Unpack(s[0], 4) != 0;
+            UseCache = Unpack(s[0], 5) != 0;
             BibleSourceId = BitConverter.ToInt32(s, 1);
             BibleVersionId = new Guid(s.Skip(5).Take(16).ToArray());
+        }
+
+        private static byte Pack(int obj, params int[] t)
+        {
+            var ret = 0;
+            for (var i = 0; i < t.Length; i++)
+            {
+                ret |= ((obj & (1 << i)) >> i) << t[i];
+            }
+            return (byte)ret;
+        }
+
+        private static byte Pack(bool obj, params int[] t) => Pack(obj ? 1 : 0, t);
+
+        private static byte Unpack(byte obj, params int[] t)
+        {
+            var ret = 0;
+            for (var i = 0; i < t.Length; i++)
+            {
+                ret |= ((obj & (1 << t[i])) >> t[i]) << i;
+            }
+            return (byte)ret;
         }
     }
 }

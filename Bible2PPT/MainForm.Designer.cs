@@ -62,14 +62,15 @@
             this.cmbShortTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbShortTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbShortTitle.Items.AddRange(new object[] {
-            "짧은 제목 표시",
-            "각 장의 첫 절에만 표시"});
+            "책 이름 약자 표시",
+            "각 장의 첫 절에만 표시",
+            "책 이름 약자 숨기기"});
             this.cmbShortTitle.Location = new System.Drawing.Point(10, 74);
             this.cmbShortTitle.Margin = new System.Windows.Forms.Padding(0);
             this.cmbShortTitle.Name = "cmbShortTitle";
             this.cmbShortTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbShortTitle.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.cmbShortTitle, "짧은 제목 표시 설정");
+            this.toolTip1.SetToolTip(this.cmbShortTitle, "책 이름 약자 표시 설정");
             this.cmbShortTitle.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
             // 
             // cmbLongTitle
@@ -78,14 +79,15 @@
             this.cmbLongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbLongTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLongTitle.Items.AddRange(new object[] {
-            "긴 제목 표시",
-            "각 장의 첫 절에만 표시"});
+            "책 이름 표시",
+            "각 장의 첫 절에만 표시",
+            "책 이름 숨기기"});
             this.cmbLongTitle.Location = new System.Drawing.Point(10, 49);
             this.cmbLongTitle.Margin = new System.Windows.Forms.Padding(0);
             this.cmbLongTitle.Name = "cmbLongTitle";
             this.cmbLongTitle.Size = new System.Drawing.Size(156, 20);
             this.cmbLongTitle.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.cmbLongTitle, "긴 제목 표시 설정");
+            this.toolTip1.SetToolTip(this.cmbLongTitle, "책 이름 표시 설정");
             this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
             // 
             // cmbChapNum
@@ -95,7 +97,8 @@
             this.cmbChapNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbChapNum.Items.AddRange(new object[] {
             "장 번호 표시",
-            "각 장의 첫 절에만 표시"});
+            "각 장의 첫 절에만 표시",
+            "장 번호 숨기기"});
             this.cmbChapNum.Location = new System.Drawing.Point(10, 99);
             this.cmbChapNum.Margin = new System.Windows.Forms.Padding(0);
             this.cmbChapNum.Name = "cmbChapNum";

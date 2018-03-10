@@ -69,6 +69,8 @@ namespace Bible2PPT
                     return true;
                 case TemplateTextOptions.FirstVerseOfChapter:
                     return isFirstVerseOfChapter;
+                case TemplateTextOptions.Never:
+                    return false;
                 default:
                     throw new NotImplementedException();
             }
