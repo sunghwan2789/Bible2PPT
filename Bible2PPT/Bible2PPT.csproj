@@ -81,6 +81,7 @@
     <Compile Include="Bibles\BibleChapter.cs" />
     <Compile Include="Bibles\BibleBook.cs" />
     <Compile Include="Bibles\BibleVerse.cs" />
+    <Compile Include="Bibles\Sources\BibleTekaBible.cs" />
     <Compile Include="Bibles\Sources\GodpeopleBible.cs" />
     <Compile Include="Bibles\Sources\GodpiaBible.cs" />
     <Compile Include="Bibles\Sources\BibleSource.cs" />
