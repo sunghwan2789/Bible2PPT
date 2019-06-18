@@ -54,7 +54,32 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override List<BibleChapter> GetChaptersOnline(BibleBook book) => throw new NotImplementedException();
-        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter) => throw new NotImplementedException();
+        protected override List<BibleChapter> GetChaptersOnline(BibleBook book) =>
+            Enumerable.Range(1, book.ChapterCount)
+                .Select(i => new BibleChapter
+                {
+                    Number = i,
+                }).ToList();
+        private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
+
+        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
+        {
+            var data = Encoding.UTF8.GetString(client.UploadValues("/bible.asp", new System.Collections.Specialized.NameValueCollection
+            {
+                { "bible_idx", chapter.Book.OnlineId },
+                { "jang_idx", chapter.Number.ToString() },
+                { "bible_version_1", chapter.Book.Bible.OnlineId },
+                { "bible_version_2", "0" },
+                { "bible_version_3", "0" },
+                { "count", "1" },
+            }));
+            data = Regex.Match(data, @"<p id=""one_jang""><b>([\s\S]+?)</b></p>").Groups[1].Value;
+            var matches = Regex.Matches(data, @"<b>(\d+).*?</b>(.*?)<br>");
+            return matches.Cast<Match>().Select(i => new BibleVerse
+            {
+                Number = int.Parse(i.Groups[1].Value),
+                Text = StripHtmlTags(i.Groups[2].Value),
+            }).ToList();
+        }
     }
 }
