@@ -168,6 +168,9 @@
     <None Include="BibleBookAliases.csv" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.Async">
+      <Version>1.0.168</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Database.Isam">
       <Version>1.9.4</Version>
     </PackageReference>
