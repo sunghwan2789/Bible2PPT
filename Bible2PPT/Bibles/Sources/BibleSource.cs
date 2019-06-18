@@ -12,6 +12,7 @@ namespace Bible2PPT.Bibles.Sources
         {
             new GodpeopleBible { Id = 0 },
             new GodpiaBible { Id = 1 },
+            new GoodtvBible { Id = 2 },
         };
 
         public int Id { get; set; }
