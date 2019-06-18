@@ -280,7 +280,7 @@ namespace Bible2PPT
                         }
 
                         var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                        var endVerseNo = chapter.Verses.Count;
+                        var endVerseNo = chapter.Verses.Max(i => i.Number);
                         if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
                         {
                             endVerseNo = query.EndVerseNumber.Value;

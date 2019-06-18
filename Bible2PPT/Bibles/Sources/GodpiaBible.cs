@@ -65,12 +65,11 @@ namespace Bible2PPT.Bibles.Sources
         protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
         {
             var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.Number}");
-            var matches = Regex.Matches(data, @"class=""num"".*?</span>(.*?)</p>");
-            var verseNum = 0;
+            var matches = Regex.Matches(data, @"class=""num"">(\d+).*?</span>(.*?)</p>");
             return matches.Cast<Match>().Select(i => new BibleVerse
             {
-                Number = ++verseNum,
-                Text = StripHtmlTags(i.Groups[1].Value),
+                Number = int.Parse(i.Groups[1].Value),
+                Text = StripHtmlTags(i.Groups[2].Value),
             }).ToList();
         }
     }
