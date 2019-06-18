@@ -65,7 +65,7 @@ namespace Bible2PPT.Bibles.Sources
         protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
         {
             var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}");
-            var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+).+?bidx_listTd_phrase.+?>(.+?)</td");
+            var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+)[\s\S]+?bidx_listTd_phrase.+?>(.+?)</td");
             return matches.Cast<Match>().Select(i => new BibleVerse
             {
                 Number = int.Parse(i.Groups[1].Value),
