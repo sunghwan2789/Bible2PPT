@@ -55,7 +55,7 @@ namespace Bible2PPT
             cmbBibleSource.SelectedItem = BibleSource.Find(AppConfig.Context.BibleSourceId);
         }
 
-        private void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
         {
             var source = cmbBibleSource.SelectedItem as BibleSource;
             if (source == null)
@@ -74,23 +74,15 @@ namespace Bible2PPT
             cmbBibleVersion.Items.Clear();
             lstBooks.Tag = null;
             lstBooks.Items.Clear();
-            source.GetBiblesAsync().ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
-            {
-                ToggleCriticalControls(true);
 
-                if (t.IsFaulted)
-                {
-                    throw t.Exception;
-                }
-
-                var bibles = t.Result;
-                cmbBibleVersion.Tag = bibles;
-                cmbBibleVersion.Items.AddRange(bibles.ToArray());
-                cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
-            })));
+            var bibles = await source.GetBiblesAsync();
+            ToggleCriticalControls(true);
+            cmbBibleVersion.Tag = bibles;
+            cmbBibleVersion.Items.AddRange(bibles.ToArray());
+            cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
         }
 
-        private void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
             var bible = cmbBibleVersion.SelectedItem as BibleVersion;
             if (bible == null)
@@ -104,23 +96,16 @@ namespace Bible2PPT
             ToggleCriticalControls(false);
             lstBooks.Tag = null;
             lstBooks.Items.Clear();
-            bible.Source.GetBooksAsync(bible).ContinueWith(t => BeginInvoke(new MethodInvoker(() =>
+
+            var books = await bible.Source.GetBooksAsync(bible);
+            ToggleCriticalControls(true);
+            lstBooks.Tag = books;
+            foreach (var book in books)
             {
-                ToggleCriticalControls(true);
-
-                if (t.IsFaulted)
-                {
-                    throw t.Exception;
-                }
-
-                lstBooks.Tag = t.Result;
-                foreach (var book in t.Result)
-                {
-                    var item = lstBooks.Items.Add(book.Title);
-                    item.SubItems.Add(book.ChapterCount.ToString());
-                    item.Tag = book;
-                }
-            })));
+                var item = lstBooks.Items.Add(book.Title);
+                item.SubItems.Add(book.ChapterCount.ToString());
+                item.Tag = book;
+            }
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -224,7 +209,7 @@ namespace Bible2PPT
 
         private CancellationTokenSource CTS;
 
-        private void btnMake_Click(object sender, EventArgs e)
+        private async void btnMake_Click(object sender, EventArgs e)
         {
             if (btnMake.Text == @"PPT 만드는 중...")
             {
@@ -248,72 +233,79 @@ namespace Bible2PPT
 
             CTS = new CancellationTokenSource();
             PPTBuilderWork work = null;
-            Task.Factory.StartNew(() =>
+            try
             {
-                if (!AppConfig.Context.SeperateByChapter)
+                await Task.Factory.StartNew(() =>
                 {
-                    work = builder.BeginBuild();
-                }
-
-                var books = lstBooks.Tag as List<BibleBook>;
-                foreach (var t in
-                    Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
-                        .Select(BibleQuery.ParseQuery)
-                        .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
-                {
-                    var query = t.Item1;
-                    var book = t.Item2;
-
-                    // TODO: book.chaptercount maybe null
-                    foreach (var chapter in
-                        book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount)
-                            .Skip(query.StartChapterNumber - 1))
+                    if (!AppConfig.Context.SeperateByChapter)
                     {
-                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
-
-                        if (AppConfig.Context.SeperateByChapter)
-                        {
-                            work?.Save();
-                            var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
-                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            work = builder.BeginBuild(output);
-                        }
-
-                        var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                        var endVerseNo = chapter.Verses.Max(i => i.Number);
-                        if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
-                        {
-                            endVerseNo = query.EndVerseNumber.Value;
-                        }
-                        work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
-                    }
-                }
-            }, CTS.Token)
-                .ContinueWith(t =>
-                {
-                    if (t.IsFaulted)
-                    {
-                        work?.QuitAndCleanup();
-                        MessageBox.Show(t.Exception.GetBaseException().ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        work = builder.BeginBuild();
                     }
 
-                    work?.Save();
+                    var books = lstBooks.Tag as List<BibleBook>;
+                    foreach (var t in
+                        Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
+                            .Select(BibleQuery.ParseQuery)
+                            .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
+                    {
+                        var query = t.Item1;
+                        var book = t.Item2;
+
+                        // TODO: book.chaptercount maybe null
+                        foreach (var chapter in
+                                book.Chapters.Take(query.EndChapterNumber ?? book.ChapterCount)
+                                    .Skip(query.StartChapterNumber - 1))
+                        {
+                            Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
+
+                            if (AppConfig.Context.SeperateByChapter)
+                            {
+                                work?.Save();
+                                var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
+                                CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                                work = builder.BeginBuild(output);
+                            }
+
+                            var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                            var endVerseNo = chapter.Verses.Max(i => i.Number);
+                            if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
+                            {
+                                endVerseNo = query.EndVerseNumber.Value;
+                            }
+                            work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
+                        }
+                    }
+                }, CTS.Token);
+            }
+            catch (TaskCanceledException) { }
+            catch (Exception ex)
+            {
+                if (work != null)
+                {
+                    work.QuitAndCleanup();
+                    work = null;
+                }
+                MessageBox.Show(ex.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (work != null)
+                {
+                    work.Save();
                     if (AppConfig.Context.SeperateByChapter)
                     {
                         Process.Start(destination);
                     }
-                    else if (work != null)
+                    else
                     {
                         Process.Start(work.Output);
                     }
-                })
-                .ContinueWith(t => Invoke(new MethodInvoker(() =>
-                {
-                    ToggleCriticalControls(true);
-                    btnMake.Text = "PPT 만들기";
-                    Text = "성경2PPT";
-                })));
+                }
+            }
+
+            ToggleCriticalControls(true);
+            btnMake.Text = "PPT 만들기";
+            Text = "성경2PPT";
         }
 
 
