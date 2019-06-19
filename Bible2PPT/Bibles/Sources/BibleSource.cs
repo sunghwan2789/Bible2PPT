@@ -23,27 +23,27 @@ namespace Bible2PPT.Bibles.Sources
         protected abstract List<Chapter> GetChaptersOnline(Book book);
         protected abstract List<Verse> GetVersesOnline(Chapter chapter);
 
-        protected void LinkForeigns(BibleBase bible)
+        private void LinkForeigns(BibleBase bible)
         {
             bible.Source = this;
             bible.SourceId = Id;
         }
 
-        protected void LinkForeigns(Book book, Bible bible)
+        private void LinkForeigns(Book book, Bible bible)
         {
             LinkForeigns(book);
             book.Bible = bible;
             book.BibleId = bible.Id;
         }
 
-        protected void LinkForeigns(Chapter chapter, Book book)
+        private void LinkForeigns(Chapter chapter, Book book)
         {
             LinkForeigns(chapter);
             chapter.Book = book;
             chapter.BookId = book.Id;
         }
 
-        protected void LinkForeigns(Verse verse, Chapter chapter)
+        private void LinkForeigns(Verse verse, Chapter chapter)
         {
             LinkForeigns(verse);
             verse.Chapter = chapter;
