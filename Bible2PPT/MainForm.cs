@@ -247,7 +247,7 @@ namespace Bible2PPT
             PPTBuilderWork work = null;
             try
             {
-                await Task.Factory.StartNew(async () =>
+                await Task.Factory.StartNew(() =>
                 {
                     if (!AppConfig.Context.SeperateByChapter)
                     {
@@ -265,7 +265,7 @@ namespace Bible2PPT
 
                         // TODO: book.chaptercount maybe null
                         foreach (var chapter in
-                                (await book.Source.GetChaptersAsync(book))
+                                (book.Source.GetChaptersAsync(book).Result)
                                     .Where(i => i.Number >= query.StartChapterNumber && i.Number <= (query.EndChapterNumber ?? book.ChapterCount)))
                         {
                             Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
@@ -279,7 +279,7 @@ namespace Bible2PPT
                             }
 
                             var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                            var endVerseNo = (await chapter.Source.GetVersesAsync(chapter)).Max(i => i.Number);
+                            var endVerseNo = (chapter.Source.GetVersesAsync(chapter).Result).Max(i => i.Number);
                             if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
                             {
                                 endVerseNo = query.EndVerseNumber.Value;

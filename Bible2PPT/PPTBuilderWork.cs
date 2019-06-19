@@ -24,7 +24,7 @@ namespace Bible2PPT
         {
             isFirstVerseOfChapter = true;
             foreach (var paragraph in
-                chapter.Source.GetVerses(chapter)
+                chapter.Source.GetVersesAsync(chapter).Result
                     .Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber))
             {
                 token.ThrowIfCancellationRequested();
