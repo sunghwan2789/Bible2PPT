@@ -18,8 +18,6 @@ namespace Bible2PPT.Bibles.Sources
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public static BibleSource Find(int sourceId) => AvailableSources.FirstOrDefault(i => i.Id == sourceId);
-
         protected abstract List<Bible> GetBiblesOnline();
         protected abstract List<Book> GetBooksOnline(Bible bible);
         protected abstract List<Chapter> GetChaptersOnline(Book book);

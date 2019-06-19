@@ -52,7 +52,7 @@ namespace Bible2PPT
             chkUseCache.Checked = AppConfig.Context.UseCache;
 
             cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
-            cmbBibleSource.SelectedItem = BibleSource.Find(AppConfig.Context.BibleSourceId);
+            cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
         }
 
         private async void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
