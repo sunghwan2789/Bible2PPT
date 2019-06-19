@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,10 +12,10 @@ namespace Bible2PPT.Bibles.Sources
     {
         private const string BASE_URL = "http://goodtvbible.goodtv.co.kr";
 
-        private BetterWebClient client = new BetterWebClient
+        private static readonly HttpClient client = new HttpClient
         {
-            BaseAddress = BASE_URL,
-            Encoding = Encoding.UTF8,
+            BaseAddress = new Uri(BASE_URL),
+            Timeout = TimeSpan.FromSeconds(5),
         };
 
         public GoodtvBible()
@@ -24,7 +25,7 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Bible>> GetBiblesOnlineAsync()
         {
-            var data = await client.DownloadStringTaskAsync("/bible.asp");
+            var data = await client.GetStringAsync("/bible.asp");
             var matches = Regex.Matches(data, @"bible_check"".+?value=""(\d+)""[\s\S]+?<span.+?>(.+?)<");
             return matches.Cast<Match>().Select(i => new Bible
             {
@@ -35,17 +36,26 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
-            var oldData = Task.Factory.StartNew(() => client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
+            var tasks = new[]
             {
-                { "bible_idx", "1" },
-                { "otnt", "1" },
-            }));
-            var newData = Task.Factory.StartNew(() => client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
+                client.PostAsync("/bible_otnt_exc.asp", new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("bible_idx", "1"),
+                    new KeyValuePair<string, string>("otnt", "1"),
+                })),
+                client.PostAsync("/bible_otnt_exc.asp", new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("bible_idx", "1"),
+                    new KeyValuePair<string, string>("otnt", "2"),
+                })),
+            };
+            var data = "";
+            foreach (var task in tasks)
             {
-                { "bible_idx", "1" },
-                { "otnt", "2" },
-            }));
-            var data = Encoding.UTF8.GetString(await oldData) + Encoding.UTF8.GetString(await newData);
+                var response = await task;
+                response.EnsureSuccessStatusCode();
+                data += await response.Content.ReadAsStringAsync();
+            }
             var matches = Regex.Matches(data, @"""idx"":(\d+).+?""bible_name"":""(.+?)"".+?""max_jang"":(\d+)");
             return matches.Cast<Match>().Select(i => new Book
             {
@@ -66,15 +76,17 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var data = Encoding.UTF8.GetString(client.UploadValues("/bible.asp", new System.Collections.Specialized.NameValueCollection
+            var response = await client.PostAsync("/bible.asp", new FormUrlEncodedContent(new[]
             {
-                { "bible_idx", chapter.Book.OnlineId },
-                { "jang_idx", chapter.Number.ToString() },
-                { "bible_version_1", chapter.Book.Bible.OnlineId },
-                { "bible_version_2", "0" },
-                { "bible_version_3", "0" },
-                { "count", "1" },
+                new KeyValuePair<string, string>("bible_idx", chapter.Book.OnlineId),
+                new KeyValuePair<string, string>("jang_idx", $"{chapter.Number}"),
+                new KeyValuePair<string, string>("bible_version_1", chapter.Book.Bible.OnlineId),
+                new KeyValuePair<string, string>("bible_version_2", "0"),
+                new KeyValuePair<string, string>("bible_version_3", "0"),
+                new KeyValuePair<string, string>("count", "1"),
             }));
+            response.EnsureSuccessStatusCode();
+            var data = await response.Content.ReadAsStringAsync();
             data = Regex.Match(data, @"<p id=""one_jang""><b>([\s\S]+?)</b></p>").Groups[1].Value;
             var matches = Regex.Matches(data, @"<b>(\d+).*?</b>(.*?)<br>");
             return matches.Cast<Match>().Select(i => new Verse

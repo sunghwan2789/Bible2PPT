@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,10 +14,10 @@ namespace Bible2PPT.Bibles.Sources
         private const string BASE_URL = "http://find.godpeople.com";
         private static readonly Encoding ENCODING = Encoding.GetEncoding("EUC-KR");
 
-        private BetterWebClient client = new BetterWebClient
+        private static readonly HttpClient client = new HttpClient
         {
-            BaseAddress = BASE_URL,
-            Encoding = ENCODING,
+            BaseAddress = new Uri(BASE_URL),
+            Timeout = TimeSpan.FromSeconds(5),
         };
 
         public GodpeopleBible()
@@ -40,7 +41,7 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
-            var data = await client.DownloadStringTaskAsync("/?page=bidx");
+            var data = ENCODING.GetString(await client.GetByteArrayAsync("/?page=bidx"));
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
             return matches.Cast<Match>().Select(match => new Book
             {
@@ -65,7 +66,7 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var data = await client.DownloadStringTaskAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}");
+            var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}"));
             var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+).+?bidx_listTd_phrase.+?>(.+?)</td");
             return matches.Cast<Match>().Select(i => new Verse
             {
