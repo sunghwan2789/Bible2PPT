@@ -22,6 +22,6 @@ namespace Bible2PPT.Bibles
 
         public int ChapterCount { get; set; }
 
-        public List<Chapter> Chapters => Source.GetChapters(this);
+        //public List<Chapter> Chapters => Source.GetChapters(this);
     }
 }

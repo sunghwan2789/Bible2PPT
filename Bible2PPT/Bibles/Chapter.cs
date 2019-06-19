@@ -11,6 +11,6 @@ namespace Bible2PPT.Bibles
 
         public int Number { get; set; }
 
-        public List<Verse> Verses => Source.GetVerses(this);
+        //public List<Verse> Verses => Source.GetVerses(this);
     }
 }

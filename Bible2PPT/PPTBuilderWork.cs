@@ -23,7 +23,9 @@ namespace Bible2PPT
         public void AppendChapter(Chapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
-            foreach (var paragraph in chapter.Verses.Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber))
+            foreach (var paragraph in
+                chapter.Source.GetVerses(chapter)
+                    .Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber))
             {
                 token.ThrowIfCancellationRequested();
 
