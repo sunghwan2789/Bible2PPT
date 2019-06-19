@@ -20,7 +20,7 @@ namespace Bible2PPT
 
         private bool isFirstVerseOfChapter;
 
-        public void AppendChapter(BibleChapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
+        public void AppendChapter(Chapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
             foreach (var paragraph in chapter.Verses.Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber))

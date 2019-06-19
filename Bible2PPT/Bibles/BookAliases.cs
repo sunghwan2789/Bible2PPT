@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Bible2PPT.Bibles
 {
-    class BibleBookAliases
+    class BookAliases
     {
         public static List<List<string>> Map = new List<List<string>>();
 
-        static BibleBookAliases()
+        static BookAliases()
         {
             using (var reader = new StringReader(Properties.Resources.BibleBookAliases))
             {

@@ -20,41 +20,41 @@ namespace Bible2PPT.Bibles.Sources
 
         public static BibleSource Find(int sourceId) => AvailableSources.FirstOrDefault(i => i.Id == sourceId);
 
-        protected abstract List<BibleVersion> GetBiblesOnline();
-        protected abstract List<BibleBook> GetBooksOnline(BibleVersion bible);
-        protected abstract List<BibleChapter> GetChaptersOnline(BibleBook book);
-        protected abstract List<BibleVerse> GetVersesOnline(BibleChapter chapter);
+        protected abstract List<Bible> GetBiblesOnline();
+        protected abstract List<Book> GetBooksOnline(Bible bible);
+        protected abstract List<Chapter> GetChaptersOnline(Book book);
+        protected abstract List<Verse> GetVersesOnline(Chapter chapter);
 
-        protected void LinkForeigns(Bible bible)
+        protected void LinkForeigns(BibleBase bible)
         {
             bible.Source = this;
             bible.SourceId = Id;
         }
 
-        protected void LinkForeigns(BibleBook book, BibleVersion bible)
+        protected void LinkForeigns(Book book, Bible bible)
         {
             LinkForeigns(book);
             book.Bible = bible;
             book.BibleId = bible.Id;
         }
 
-        protected void LinkForeigns(BibleChapter chapter, BibleBook book)
+        protected void LinkForeigns(Chapter chapter, Book book)
         {
             LinkForeigns(chapter);
             chapter.Book = book;
             chapter.BookId = book.Id;
         }
 
-        protected void LinkForeigns(BibleVerse verse, BibleChapter chapter)
+        protected void LinkForeigns(Verse verse, Chapter chapter)
         {
             LinkForeigns(verse);
             verse.Chapter = chapter;
             verse.ChapterId = chapter.Id;
         }
 
-        public List<BibleVersion> GetBibles()
+        public List<Bible> GetBibles()
         {
-            List<BibleVersion> bibles;
+            List<Bible> bibles;
 
             if (!AppConfig.Context.UseCache)
             {
@@ -68,7 +68,7 @@ namespace Bible2PPT.Bibles.Sources
             {
                 cursor.SetCurrentIndex("SourceId");
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(Id));
-                bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVersion>).ToList();
+                bibles = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).ToList();
                 if (bibles.Any())
                 {
                     // ANNOYING LOOPS
@@ -99,9 +99,9 @@ namespace Bible2PPT.Bibles.Sources
             return bibles;
         }
 
-        public List<BibleBook> GetBooks(BibleVersion bible)
+        public List<Book> GetBooks(Bible bible)
         {
-            List<BibleBook> books;
+            List<Book> books;
 
             if (!AppConfig.Context.UseCache)
             {
@@ -115,7 +115,7 @@ namespace Bible2PPT.Bibles.Sources
             {
                 cursor.SetCurrentIndex("BibleId");
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(bible.Id));
-                books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleBook>).ToList();
+                books = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Book>).ToList();
                 if (books.Any())
                 {
                     // ANNOYING LOOPS
@@ -146,9 +146,9 @@ namespace Bible2PPT.Bibles.Sources
             return books;
         }
 
-        public List<BibleChapter> GetChapters(BibleBook book)
+        public List<Chapter> GetChapters(Book book)
         {
-            List<BibleChapter> chapters;
+            List<Chapter> chapters;
 
             if (!AppConfig.Context.UseCache)
             {
@@ -162,7 +162,7 @@ namespace Bible2PPT.Bibles.Sources
             {
                 cursor.SetCurrentIndex("BookId");
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(book.Id));
-                chapters = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleChapter>).ToList();
+                chapters = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Chapter>).ToList();
                 if (chapters.Any())
                 {
                     // ANNOYING LOOPS
@@ -193,9 +193,9 @@ namespace Bible2PPT.Bibles.Sources
             return chapters;
         }
 
-        public List<BibleVerse> GetVerses(BibleChapter chapter)
+        public List<Verse> GetVerses(Chapter chapter)
         {
-            List<BibleVerse> verses;
+            List<Verse> verses;
 
             if (!AppConfig.Context.UseCache)
             {
@@ -209,7 +209,7 @@ namespace Bible2PPT.Bibles.Sources
             {
                 cursor.SetCurrentIndex("ChapterId");
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(chapter.Id));
-                verses = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<BibleVerse>).ToList();
+                verses = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Verse>).ToList();
                 if (verses.Any())
                 {
                     // ANNOYING LOOPS
@@ -240,10 +240,10 @@ namespace Bible2PPT.Bibles.Sources
             return verses;
         }
 
-        public Task<List<BibleVersion>> GetBiblesAsync() => Task.Factory.StartNew(GetBibles);
-        public Task<List<BibleBook>> GetBooksAsync(BibleVersion bible) => Task.Factory.StartNew(() => GetBooks(bible));
-        public Task<List<BibleChapter>> GetChaptersAsync(BibleBook book) => Task.Factory.StartNew(() => GetChapters(book));
-        public Task<List<BibleVerse>> GetVersesAsync(BibleChapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
+        public Task<List<Bible>> GetBiblesAsync() => Task.Factory.StartNew(GetBibles);
+        public Task<List<Book>> GetBooksAsync(Bible bible) => Task.Factory.StartNew(() => GetBooks(bible));
+        public Task<List<Chapter>> GetChaptersAsync(Book book) => Task.Factory.StartNew(() => GetChapters(book));
+        public Task<List<Verse>> GetVersesAsync(Chapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
 
         public override string ToString() => Name ?? base.ToString();
     }

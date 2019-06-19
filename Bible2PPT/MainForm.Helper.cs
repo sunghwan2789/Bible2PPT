@@ -23,7 +23,7 @@ namespace Bible2PPT
         {
             if (lstBooks.SelectedItems.Count > 0)
             {
-                var book = lstBooks.SelectedItems[0].Tag as BibleBook;
+                var book = lstBooks.SelectedItems[0].Tag as Book;
                 txtKeyword.AppendText((txtKeyword.Text.Length > 0 ? " " : "") + book.ShortTitle);
                 txtKeyword.Focus();
             }

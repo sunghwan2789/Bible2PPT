@@ -21,18 +21,18 @@ namespace Bible2PPT.Bibles.Sources
             Name = "GOODTV 성경";
         }
 
-        protected override List<BibleVersion> GetBiblesOnline()
+        protected override List<Bible> GetBiblesOnline()
         {
             var data = client.DownloadString("/bible.asp");
             var matches = Regex.Matches(data, @"bible_check"".+?value=""(\d+)""[\s\S]+?<span.+?>(.+?)<");
-            return matches.Cast<Match>().Select(i => new BibleVersion
+            return matches.Cast<Match>().Select(i => new Bible
             {
                 OnlineId = i.Groups[1].Value,
-                Name = i.Groups[2].Value,
+                Version = i.Groups[2].Value,
             }).ToList();
         }
 
-        protected override List<BibleBook> GetBooksOnline(BibleVersion bible)
+        protected override List<Book> GetBooksOnline(Bible bible)
         {
             var oldData = client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
             {
@@ -46,7 +46,7 @@ namespace Bible2PPT.Bibles.Sources
             });
             var data = Encoding.UTF8.GetString(oldData) + Encoding.UTF8.GetString(newData);
             var matches = Regex.Matches(data, @"""idx"":(\d+).+?""bible_name"":""(.+?)"".+?""max_jang"":(\d+)");
-            return matches.Cast<Match>().Select(i => new BibleBook
+            return matches.Cast<Match>().Select(i => new Book
             {
                 OnlineId = i.Groups[1].Value,
                 Title = i.Groups[2].Value,
@@ -54,15 +54,15 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override List<BibleChapter> GetChaptersOnline(BibleBook book) =>
+        protected override List<Chapter> GetChaptersOnline(Book book) =>
             Enumerable.Range(1, book.ChapterCount)
-                .Select(i => new BibleChapter
+                .Select(i => new Chapter
                 {
                     Number = i,
                 }).ToList();
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
+        protected override List<Verse> GetVersesOnline(Chapter chapter)
         {
             var data = Encoding.UTF8.GetString(client.UploadValues("/bible.asp", new System.Collections.Specialized.NameValueCollection
             {
@@ -75,7 +75,7 @@ namespace Bible2PPT.Bibles.Sources
             }));
             data = Regex.Match(data, @"<p id=""one_jang""><b>([\s\S]+?)</b></p>").Groups[1].Value;
             var matches = Regex.Matches(data, @"<b>(\d+).*?</b>(.*?)<br>");
-            return matches.Cast<Match>().Select(i => new BibleVerse
+            return matches.Cast<Match>().Select(i => new Verse
             {
                 Number = int.Parse(i.Groups[1].Value),
                 Text = StripHtmlTags(i.Groups[2].Value),

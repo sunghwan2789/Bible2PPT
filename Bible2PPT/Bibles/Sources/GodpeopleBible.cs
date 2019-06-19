@@ -23,25 +23,25 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피플 성경";
         }
 
-        protected override List<BibleVersion> GetBiblesOnline() => new List<BibleVersion>
+        protected override List<Bible> GetBiblesOnline() => new List<Bible>
         {
-            new BibleVersion
+            new Bible
             {
                 OnlineId = "rvsn",
-                Name = "개역개정",
+                Version = "개역개정",
             },
-            new BibleVersion
+            new Bible
             {
                 OnlineId = "ezsn",
-                Name = "쉬운성경",
+                Version = "쉬운성경",
             },
         };
 
-        protected override List<BibleBook> GetBooksOnline(BibleVersion bible)
+        protected override List<Book> GetBooksOnline(Bible bible)
         {
             var data = client.DownloadString("/?page=bidx");
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
-            return matches.Cast<Match>().Select(match => new BibleBook
+            return matches.Cast<Match>().Select(match => new Book
             {
                 OnlineId = match.Groups[1].Value,
                 Title = match.Groups[3].Value,
@@ -53,20 +53,20 @@ namespace Bible2PPT.Bibles.Sources
         private static string EncodeString(string s) =>
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
 
-        protected override List<BibleChapter> GetChaptersOnline(BibleBook book) =>
+        protected override List<Chapter> GetChaptersOnline(Book book) =>
             Enumerable.Range(1, book.ChapterCount)
-                .Select(i => new BibleChapter
+                .Select(i => new Chapter
                 {
                     Number = i,
                 }).ToList();
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline);
 
-        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
+        protected override List<Verse> GetVersesOnline(Chapter chapter)
         {
             var data = client.DownloadString($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}");
             var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+).+?bidx_listTd_phrase.+?>(.+?)</td");
-            return matches.Cast<Match>().Select(i => new BibleVerse
+            return matches.Cast<Match>().Select(i => new Verse
             {
                 Number = int.Parse(i.Groups[1].Value),
                 Text = StripHtmlTags(i.Groups[2].Value),

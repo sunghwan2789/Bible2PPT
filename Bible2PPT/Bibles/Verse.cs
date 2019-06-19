@@ -2,11 +2,11 @@
 
 namespace Bible2PPT.Bibles
 {
-    class BibleVerse : Bible
+    class Verse : BibleBase
     {
         [IndexKey(Name = nameof(ChapterId))]
         public Guid ChapterId { get; set; }
-        public virtual BibleChapter Chapter { get; set; }
+        public virtual Chapter Chapter { get; set; }
 
         public int Number { get; set; }
         public string Text { get; set; }

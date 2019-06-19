@@ -84,7 +84,7 @@ namespace Bible2PPT
 
         private async void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var bible = cmbBibleVersion.SelectedItem as BibleVersion;
+            var bible = cmbBibleVersion.SelectedItem as Bibles.Bible;
             if (bible == null)
             {
                 ToggleCriticalControls(true);
@@ -242,7 +242,7 @@ namespace Bible2PPT
                         work = builder.BeginBuild();
                     }
 
-                    var books = lstBooks.Tag as List<BibleBook>;
+                    var books = lstBooks.Tag as List<Book>;
                     foreach (var t in
                         Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
                             .Select(BibleQuery.ParseQuery)
