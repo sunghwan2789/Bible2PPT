@@ -75,11 +75,17 @@ namespace Bible2PPT
             lstBooks.Tag = null;
             lstBooks.Items.Clear();
 
-            var bibles = await source.GetBiblesAsync();
-            ToggleCriticalControls(true);
-            cmbBibleVersion.Tag = bibles;
-            cmbBibleVersion.Items.AddRange(bibles.ToArray());
-            cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
+            try
+            {
+                var bibles = await source.GetBiblesAsync();
+                cmbBibleVersion.Tag = bibles;
+                cmbBibleVersion.Items.AddRange(bibles.ToArray());
+                cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
+            }
+            finally
+            {
+                ToggleCriticalControls(true);
+            }
         }
 
         private async void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,14 +103,20 @@ namespace Bible2PPT
             lstBooks.Tag = null;
             lstBooks.Items.Clear();
 
-            var books = await bible.Source.GetBooksAsync(bible);
-            ToggleCriticalControls(true);
-            lstBooks.Tag = books;
-            foreach (var book in books)
+            try
             {
-                var item = lstBooks.Items.Add(book.Title);
-                item.SubItems.Add(book.ChapterCount.ToString());
-                item.Tag = book;
+                var books = await bible.Source.GetBooksAsync(bible);
+                lstBooks.Tag = books;
+                foreach (var book in books)
+                {
+                    var item = lstBooks.Items.Add(book.Title);
+                    item.SubItems.Add(book.ChapterCount.ToString());
+                    item.Tag = book;
+                }
+            }
+            finally
+            {
+                ToggleCriticalControls(true);
             }
         }
 
