@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Bible2PPT.Bibles.Sources
 {
@@ -21,9 +22,9 @@ namespace Bible2PPT.Bibles.Sources
             Name = "GOODTV 성경";
         }
 
-        protected override List<Bible> GetBiblesOnline()
+        protected override async Task<List<Bible>> GetBiblesOnlineAsync()
         {
-            var data = client.DownloadString("/bible.asp");
+            var data = await client.DownloadStringTaskAsync("/bible.asp");
             var matches = Regex.Matches(data, @"bible_check"".+?value=""(\d+)""[\s\S]+?<span.+?>(.+?)<");
             return matches.Cast<Match>().Select(i => new Bible
             {
@@ -32,19 +33,19 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override List<Book> GetBooksOnline(Bible bible)
+        protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
-            var oldData = client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
+            var oldData = Task.Factory.StartNew(() => client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
             {
                 { "bible_idx", "1" },
                 { "otnt", "1" },
-            });
-            var newData = client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
+            }));
+            var newData = Task.Factory.StartNew(() => client.UploadValues("/bible_otnt_exc.asp", new System.Collections.Specialized.NameValueCollection
             {
                 { "bible_idx", "1" },
                 { "otnt", "2" },
-            });
-            var data = Encoding.UTF8.GetString(oldData) + Encoding.UTF8.GetString(newData);
+            }));
+            var data = Encoding.UTF8.GetString(await oldData) + Encoding.UTF8.GetString(await newData);
             var matches = Regex.Matches(data, @"""idx"":(\d+).+?""bible_name"":""(.+?)"".+?""max_jang"":(\d+)");
             return matches.Cast<Match>().Select(i => new Book
             {
@@ -54,15 +55,16 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override List<Chapter> GetChaptersOnline(Book book) =>
+        protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
             Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
                     Number = i,
                 }).ToList();
+
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        protected override List<Verse> GetVersesOnline(Chapter chapter)
+        protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
             var data = Encoding.UTF8.GetString(client.UploadValues("/bible.asp", new System.Collections.Specialized.NameValueCollection
             {

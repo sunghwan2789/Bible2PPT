@@ -18,10 +18,10 @@ namespace Bible2PPT.Bibles.Sources
         public int Id { get; set; }
         public string Name { get; set; }
 
-        protected abstract List<Bible> GetBiblesOnline();
-        protected abstract List<Book> GetBooksOnline(Bible bible);
-        protected abstract List<Chapter> GetChaptersOnline(Book book);
-        protected abstract List<Verse> GetVersesOnline(Chapter chapter);
+        protected abstract Task<List<Bible>> GetBiblesOnlineAsync();
+        protected abstract Task<List<Book>> GetBooksOnlineAsync(Bible bible);
+        protected abstract Task<List<Chapter>> GetChaptersOnlineAsync(Book book);
+        protected abstract Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter);
 
         private void LinkForeigns(BibleBase bible)
         {
@@ -160,13 +160,13 @@ namespace Bible2PPT.Bibles.Sources
         }
 
 
-        public List<Bible> GetBibles()
+        public async Task<List<Bible>> GetBiblesAsync()
         {
             List<Bible> bibles;
             // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
             if (!AppConfig.Context.UseCache)
             {
-                bibles = GetBiblesOnline();
+                bibles = await GetBiblesOnlineAsync();
                 bibles.ForEach(LinkForeigns);
                 return bibles;
             }
@@ -178,19 +178,19 @@ namespace Bible2PPT.Bibles.Sources
                 return bibles;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            bibles = GetBiblesOnline();
+            bibles = await GetBiblesOnlineAsync();
             bibles.ForEach(LinkForeigns);
             CacheBibles(bibles);
             return bibles;
         }
 
-        public List<Book> GetBooks(Bible bible)
+        public async Task<List<Book>> GetBooksAsync(Bible bible)
         {
             List<Book> books;
             // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
             if (!AppConfig.Context.UseCache)
             {
-                books = GetBooksOnline(bible);
+                books = await GetBooksOnlineAsync(bible);
                 books.ForEach(book => LinkForeigns(book, bible));
                 return books;
             }
@@ -202,19 +202,19 @@ namespace Bible2PPT.Bibles.Sources
                 return books;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            books = GetBooksOnline(bible);
+            books = await GetBooksOnlineAsync(bible);
             books.ForEach(book => LinkForeigns(book, bible));
             CacheBooks(books);
             return books;
         }
 
-        public List<Chapter> GetChapters(Book book)
+        public async Task<List<Chapter>> GetChaptersAsync(Book book)
         {
             List<Chapter> chapters;
             // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
             if (!AppConfig.Context.UseCache)
             {
-                chapters = GetChaptersOnline(book);
+                chapters = await GetChaptersOnlineAsync(book);
                 chapters.ForEach(chapter => LinkForeigns(chapter, book));
                 return chapters;
             }
@@ -226,19 +226,19 @@ namespace Bible2PPT.Bibles.Sources
                 return chapters;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            chapters = GetChaptersOnline(book);
+            chapters = await GetChaptersOnlineAsync(book);
             chapters.ForEach(chapter => LinkForeigns(chapter, book));
             CacheChapters(chapters);
             return chapters;
         }
 
-        public List<Verse> GetVerses(Chapter chapter)
+        public async Task<List<Verse>> GetVersesAsync(Chapter chapter)
         {
             List<Verse> verses;
             // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
             if (!AppConfig.Context.UseCache)
             {
-                verses = GetVersesOnline(chapter);
+                verses = await GetVersesOnlineAsync(chapter);
                 verses.ForEach(verse => LinkForeigns(verse, chapter));
                 return verses;
             }
@@ -250,17 +250,12 @@ namespace Bible2PPT.Bibles.Sources
                 return verses;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            verses = GetVersesOnline(chapter);
+            verses = await GetVersesOnlineAsync(chapter);
             verses.ForEach(verse => LinkForeigns(verse, chapter));
             CacheVerses(verses);
             return verses;
         }
 
-
-        public Task<List<Bible>> GetBiblesAsync() => Task.Factory.StartNew(GetBibles);
-        public Task<List<Book>> GetBooksAsync(Bible bible) => Task.Factory.StartNew(() => GetBooks(bible));
-        public Task<List<Chapter>> GetChaptersAsync(Book book) => Task.Factory.StartNew(() => GetChapters(book));
-        public Task<List<Verse>> GetVersesAsync(Chapter chapter) => Task.Factory.StartNew(() => GetVerses(chapter));
 
         public override string ToString() => Name ?? base.ToString();
     }
