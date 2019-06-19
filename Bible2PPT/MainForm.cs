@@ -289,7 +289,7 @@ namespace Bible2PPT
                     }
                 }, CTS.Token);
             }
-            catch (TaskCanceledException) { }
+            catch (OperationCanceledException) { }
             catch (Exception ex)
             {
                 if (work != null)
