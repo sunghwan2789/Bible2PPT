@@ -10,14 +10,10 @@ using System.Reflection;
 
 namespace Bible2PPT
 {
-    /// <summary>
-    /// 하나 이상의 인스턴스를 만들지 않도록 주의할 것!
-    /// </summary>
     class BibleDb : IDisposable
     {
-        private static BibleDb instance = null;
-
-        public IsamInstance Instance;
+        private static IsamInstance Instance = null;
+        private static int InstanceRefs = 0;
 
         public IsamSession Session;
         public IsamDatabase Database;
@@ -31,16 +27,16 @@ namespace Bible2PPT
 
         public BibleDb()
         {
-            // Pre-condition Check
-            Debug.Assert(instance == null);
-            instance = this;
-
             // 주의!!
             // Instance 생성 시 매개변수로 Directory들과 BaseName, EventSource 등은
             // 고유한 값이어야 하며, 동시에 사용할 수 없음!
-            Instance = new IsamInstance(AppConfig.DatabaseWorkingDirectory);
+            if (Instance == null)
+            {
+                Instance = new IsamInstance(AppConfig.DatabaseWorkingDirectory);
+            }
 
             Session = Instance.CreateSession();
+            InstanceRefs++;
 
             try
             {
@@ -59,8 +55,16 @@ namespace Bible2PPT
             InitializeTable(typeof(Verse));
         }
 
+        private static void DisposeInstance()
+        {
+            Instance?.Dispose();
+            InstanceRefs = 0;
+            Instance = null;
+        }
+
         public static void Reset()
         {
+            DisposeInstance();
             File.Delete(AppConfig.DatabasePath);
         }
 
@@ -173,9 +177,11 @@ namespace Bible2PPT
                     // TODO: dispose managed state (managed objects).
                     Database.Dispose();
                     Session.Dispose();
-                    Instance.Dispose();
 
-                    instance = null;
+                    if (--InstanceRefs == 0)
+                    {
+                        DisposeInstance();
+                    }
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
