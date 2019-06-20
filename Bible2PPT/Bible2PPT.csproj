@@ -95,6 +95,13 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IndexKeyAttribute.cs" />
+    <Compile Include="MultiPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MultiPanelPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MultiPanelPagesCollection.cs" />
     <Compile Include="PPTBuilder.cs" />
     <Compile Include="PPTBuilderWork.cs" />
     <Compile Include="Program.cs" />
