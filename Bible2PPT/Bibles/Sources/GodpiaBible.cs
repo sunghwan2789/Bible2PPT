@@ -39,19 +39,11 @@ namespace Bible2PPT.Bibles.Sources
             var data = await client.GetStringAsync($"/read/reading.asp?ver={bible.OnlineId}");
             data = string.Join("", Regex.Matches(data, @"<select id=""selectBibleSub[12]"".+?</select>", RegexOptions.Singleline).Cast<Match>().Select(i => i.Groups[0].Value));
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
-            var books = matches.Cast<Match>().Select(i => new Book
+            return matches.Cast<Match>().Select(i => new Book
             {
                 OnlineId = i.Groups[1].Value,
                 Title = i.Groups[2].Value,
-                // TODO: ChapterCount 필요하지 않게 만들기
-                Bible = bible,
             }).ToList();
-            var chapters = books.Select(GetChaptersAsync).ToList();
-            for (var i = 0; i < books.Count; i++)
-            {
-                books[i].ChapterCount = (await chapters[i]).Count;
-            }
-            return books;
         }
 
         protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book)
@@ -61,6 +53,7 @@ namespace Bible2PPT.Bibles.Sources
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
             return matches.Cast<Match>().Select(i => new Chapter
             {
+                OnlineId = i.Groups[1].Value,
                 Number = int.Parse(i.Groups[1].Value),
             }).ToList();
         }
@@ -69,7 +62,7 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var data = await client.GetStringAsync($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.Number}");
+            var data = await client.GetStringAsync($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.OnlineId}");
             var matches = Regex.Matches(data, @"class=""num"">(\d+).*?</span>(.*?)</p>");
             return matches.Cast<Match>().Select(i => new Verse
             {

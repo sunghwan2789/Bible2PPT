@@ -59,6 +59,7 @@ namespace Bible2PPT.Bibles.Sources
             Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
+                    OnlineId = $"{i}",
                     Number = i,
                 }).ToList();
 
@@ -66,7 +67,7 @@ namespace Bible2PPT.Bibles.Sources
 
         protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.Number}&vers={chapter.Book.Bible.OnlineId}"));
+            var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.OnlineId}&vers={chapter.Book.Bible.OnlineId}"));
             var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+).+?bidx_listTd_phrase.+?>(.+?)</td");
             return matches.Cast<Match>().Select(i => new Verse
             {

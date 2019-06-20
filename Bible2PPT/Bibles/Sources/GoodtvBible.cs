@@ -69,6 +69,7 @@ namespace Bible2PPT.Bibles.Sources
             Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
+                    OnlineId = $"{i}",
                     Number = i,
                 }).ToList();
 
@@ -79,7 +80,7 @@ namespace Bible2PPT.Bibles.Sources
             var response = await client.PostAsync("/bible.asp", new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("bible_idx", chapter.Book.OnlineId),
-                new KeyValuePair<string, string>("jang_idx", $"{chapter.Number}"),
+                new KeyValuePair<string, string>("jang_idx", chapter.OnlineId),
                 new KeyValuePair<string, string>("bible_version_1", chapter.Book.Bible.OnlineId),
                 new KeyValuePair<string, string>("bible_version_2", "0"),
                 new KeyValuePair<string, string>("bible_version_3", "0"),
