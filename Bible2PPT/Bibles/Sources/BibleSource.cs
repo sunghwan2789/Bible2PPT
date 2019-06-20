@@ -120,7 +120,7 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Bibles)
             {
-                cursor.SetCurrentIndex("SourceId");
+                cursor.SetCurrentIndex(nameof(Bible.SourceId));
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(Id));
                 return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).ToList();
             }
@@ -131,7 +131,7 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Books)
             {
-                cursor.SetCurrentIndex("BibleId");
+                cursor.SetCurrentIndex(nameof(Book.BibleId));
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(bible.Id));
                 return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Book>).ToList();
             }
@@ -142,7 +142,7 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Chapters)
             {
-                cursor.SetCurrentIndex("BookId");
+                cursor.SetCurrentIndex(nameof(Chapter.BookId));
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(book.Id));
                 return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Chapter>).ToList();
             }
@@ -153,7 +153,7 @@ namespace Bible2PPT.Bibles.Sources
             using (var db = new BibleDb())
             using (var cursor = db.Verses)
             {
-                cursor.SetCurrentIndex("ChapterId");
+                cursor.SetCurrentIndex(nameof(Verse.ChapterId));
                 cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(chapter.Id));
                 return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Verse>).ToList();
             }
