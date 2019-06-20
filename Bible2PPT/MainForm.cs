@@ -247,47 +247,46 @@ namespace Bible2PPT
             PPTBuilderWork work = null;
             try
             {
-                await Task.Factory.StartNew(() =>
+                if (!AppConfig.Context.SeperateByChapter)
                 {
-                    if (!AppConfig.Context.SeperateByChapter)
-                    {
-                        work = builder.BeginBuild();
-                    }
+                    work = builder.BeginBuild();
+                }
 
-                    var books = lstBooks.Tag as List<Book>;
-                    foreach (var t in
-                        Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
-                            .Select(BibleQuery.ParseQuery)
-                            .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
-                    {
-                        var query = t.Item1;
-                        var book = t.Item2;
+                var books = lstBooks.Tag as List<Book>;
+                foreach (var t in
+                    Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
+                        .Select(BibleQuery.ParseQuery)
+                        .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
+                {
+                    var query = t.Item1;
+                    var book = t.Item2;
 
-                        // TODO: book.chaptercount maybe null
-                        foreach (var chapter in
-                                (book.Source.GetChaptersAsync(book).Result)
-                                    .Where(i => i.Number >= query.StartChapterNumber && i.Number <= (query.EndChapterNumber ?? book.ChapterCount)))
+                    var chapters = await book.Source.GetChaptersAsync(book);
+                    foreach (var chapter in
+                        chapters.Where(i =>
+                            (query.EndChapterNumber != null)
+                            ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
+                            : (i.Number >= query.StartChapterNumber)))
+                    {
+                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
+
+                        if (AppConfig.Context.SeperateByChapter)
                         {
-                            Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
-
-                            if (AppConfig.Context.SeperateByChapter)
-                            {
-                                work?.Save();
-                                var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
-                                CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                                work = builder.BeginBuild(output);
-                            }
-
-                            var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                            var endVerseNo = (chapter.Source.GetVersesAsync(chapter).Result).Max(i => i.Number);
-                            if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
-                            {
-                                endVerseNo = query.EndVerseNumber.Value;
-                            }
-                            work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
+                            work?.Save();
+                            var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
+                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                            work = builder.BeginBuild(output);
                         }
+
+                        var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                        var endVerseNo = (await chapter.Source.GetVersesAsync(chapter)).Max(i => i.Number);
+                        if (chapter.Number == query.EndChapterNumber)
+                        {
+                            endVerseNo = query.EndVerseNumber.Value;
+                        }
+                        work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
                     }
-                }, CTS.Token);
+                }
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
