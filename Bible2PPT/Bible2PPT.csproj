@@ -41,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>CS1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,13 +59,10 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Esent.Interop, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedEsent.1.9.4\lib\net40\Esent.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="Esent.Isam, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Database.Isam.1.9.4\lib\net40\Esent.Isam.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -75,12 +73,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BibleDb.cs" />
+    <Compile Include="Bibles\BibleBase.cs" />
     <Compile Include="Bibles\Bible.cs" />
-    <Compile Include="Bibles\BibleVersion.cs" />
-    <Compile Include="Bibles\BibleBookAliases.cs" />
-    <Compile Include="Bibles\BibleChapter.cs" />
-    <Compile Include="Bibles\BibleBook.cs" />
-    <Compile Include="Bibles\BibleVerse.cs" />
+    <Compile Include="Bibles\BookAliases.cs" />
+    <Compile Include="Bibles\Chapter.cs" />
+    <Compile Include="Bibles\Book.cs" />
+    <Compile Include="Bibles\Verse.cs" />
     <Compile Include="Bibles\Sources\GodpeopleBible.cs" />
     <Compile Include="Bibles\Sources\GodpiaBible.cs" />
     <Compile Include="Bibles\Sources\BibleSource.cs" />
@@ -108,9 +106,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemplateTextOptions.cs" />
-    <Compile Include="BetterWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,7 +113,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Template.pptx" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +167,17 @@
   <ItemGroup>
     <None Include="BibleBookAliases.csv" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.Async">
+      <Version>1.0.168</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Database.Isam">
+      <Version>1.9.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Http">
+      <Version>2.2.29</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
