@@ -68,8 +68,8 @@ namespace Bible2PPT.Bibles.Sources
         protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
             var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.OnlineId}&vers={chapter.Book.Bible.OnlineId}"));
-            var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+).+?bidx_listTd_phrase.+?>(.+?)</td");
-            return matches.Cast<Match>().Select(i => new Verse
+            var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+)[\s\S]+?bidx_listTd_phrase.+?>(.+?)</td");
+            return matches.Cast<Match>().Select(i => new BibleVerse
             {
                 Number = int.Parse(i.Groups[1].Value),
                 Text = StripHtmlTags(i.Groups[2].Value),
