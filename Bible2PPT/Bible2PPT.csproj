@@ -115,6 +115,7 @@
     <Compile Include="TemplateTextOptions.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -175,6 +176,9 @@
     <None Include="BibleBookAliases.csv" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp">
+      <Version>5.8.3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Bcl.Async">
       <Version>1.0.168</Version>
     </PackageReference>
