@@ -24,8 +24,8 @@ namespace Bible2PPT
             if (booksListView.SelectedItems.Count > 0)
             {
                 var book = booksListView.SelectedItems[0].Tag as Book;
-                buildKeywordTextBox.AppendText((buildKeywordTextBox.Text.Length > 0 ? " " : "") + book.ShortTitle);
-                buildKeywordTextBox.Focus();
+                versesTextBox.AppendText((versesTextBox.Text.Length > 0 ? " " : "") + book.ShortTitle);
+                versesTextBox.Focus();
             }
         }
 

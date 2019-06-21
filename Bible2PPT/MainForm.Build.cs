@@ -23,7 +23,7 @@ namespace Bible2PPT
             templateChaperNumberComboBox,
             templateBookNameComboBox,
             templateBookAbbrComboBox,
-            buildKeywordTextBox,
+            versesTextBox,
             buildButton,
             buildFragmentCheckBox,
             chkUseCache,
@@ -201,7 +201,7 @@ namespace Bible2PPT
 레1-3:9   = 레위기 1장 1절 - 3장 9절
 전1:3     = 전도서 1장 3절
 스1:3-9   = 에스라 1장 3절 - 1장 9절
-사1:3-3:9 = 이사야 1장 3절 - 3장 9절", buildKeywordTextBox, Int16.MaxValue);
+사1:3-3:9 = 이사야 1장 3절 - 3장 9절", versesTextBox, Int16.MaxValue);
         }
 
         private void cmbLongTitle_SelectedIndexChanged(object sender, EventArgs e)
@@ -259,7 +259,7 @@ namespace Bible2PPT
 
                 var books = booksListView.Tag as List<Book>;
                 foreach (var t in
-                    Regex.Replace(buildKeywordTextBox.Text.Trim(), @"\s+", " ").Split()
+                    Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
                         .Select(BibleQuery.ParseQuery)
                         .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
                 {
