@@ -36,22 +36,7 @@
             this.menuMake = new FontAwesome.Sharp.IconButton();
             this.menuHistory = new FontAwesome.Sharp.IconButton();
             this.menuTemplate = new FontAwesome.Sharp.IconButton();
-            this.multiPanel1 = new Bible2PPT.MultiPanel();
-            this.multiPanelPageMake = new Bible2PPT.MultiPanelPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.iconButton4 = new FontAwesome.Sharp.IconButton();
-            this.iconButton3 = new FontAwesome.Sharp.IconButton();
-            this.iconButton2 = new FontAwesome.Sharp.IconButton();
-            this.iconButton1 = new FontAwesome.Sharp.IconButton();
-            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.multiPanelMain = new Bible2PPT.MultiPanel();
             this.multiPanelPageHistory = new Bible2PPT.MultiPanelPage();
             this.multiPanelPageTemplate = new Bible2PPT.MultiPanelPage();
             this.multiPanelPageSetting = new Bible2PPT.MultiPanelPage();
@@ -74,22 +59,44 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.chkUseCache = new System.Windows.Forms.CheckBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
+            this.iconPictureBox3 = new FontAwesome.Sharp.IconPictureBox();
+            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
+            this.iconButton1 = new FontAwesome.Sharp.IconButton();
+            this.iconButton2 = new FontAwesome.Sharp.IconButton();
+            this.iconButton3 = new FontAwesome.Sharp.IconButton();
+            this.iconButton4 = new FontAwesome.Sharp.IconButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.multiPanelPageMake = new Bible2PPT.MultiPanelPage();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
             tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             tableLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            this.multiPanel1.SuspendLayout();
-            this.multiPanelPageMake.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
+            this.multiPanelMain.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
+            this.multiPanelPageMake.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel3
@@ -99,7 +106,7 @@
             tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             tableLayoutPanel3.Controls.Add(flowLayoutPanel2, 0, 1);
             tableLayoutPanel3.Controls.Add(flowLayoutPanel1, 0, 0);
-            tableLayoutPanel3.Controls.Add(this.multiPanel1, 1, 0);
+            tableLayoutPanel3.Controls.Add(this.multiPanelMain, 1, 0);
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Left;
             tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -196,7 +203,7 @@
             this.menuTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.menuTemplate.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.menuTemplate.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.menuTemplate.IconChar = FontAwesome.Sharp.IconChar.Edit;
+            this.menuTemplate.IconChar = FontAwesome.Sharp.IconChar.Images;
             this.menuTemplate.IconColor = System.Drawing.SystemColors.MenuText;
             this.menuTemplate.IconSize = 36;
             this.menuTemplate.Location = new System.Drawing.Point(0, 96);
@@ -208,193 +215,20 @@
             this.menuTemplate.TabIndex = 3;
             this.menuTemplate.UseVisualStyleBackColor = true;
             // 
-            // multiPanel1
+            // multiPanelMain
             // 
-            this.multiPanel1.Controls.Add(this.multiPanelPageMake);
-            this.multiPanel1.Controls.Add(this.multiPanelPageHistory);
-            this.multiPanel1.Controls.Add(this.multiPanelPageTemplate);
-            this.multiPanel1.Controls.Add(this.multiPanelPageSetting);
-            this.multiPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanel1.Location = new System.Drawing.Point(48, 0);
-            this.multiPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.multiPanel1.Name = "multiPanel1";
-            tableLayoutPanel3.SetRowSpan(this.multiPanel1, 2);
-            this.multiPanel1.SelectedPage = null;
-            this.multiPanel1.Size = new System.Drawing.Size(479, 385);
-            this.multiPanel1.TabIndex = 1;
-            // 
-            // multiPanelPageMake
-            // 
-            this.multiPanelPageMake.Controls.Add(this.label2);
-            this.multiPanelPageMake.Controls.Add(this.label1);
-            this.multiPanelPageMake.Controls.Add(this.iconButton4);
-            this.multiPanelPageMake.Controls.Add(this.iconButton3);
-            this.multiPanelPageMake.Controls.Add(this.iconButton2);
-            this.multiPanelPageMake.Controls.Add(this.iconButton1);
-            this.multiPanelPageMake.Controls.Add(this.iconPictureBox2);
-            this.multiPanelPageMake.Controls.Add(this.iconPictureBox1);
-            this.multiPanelPageMake.Controls.Add(this.listView1);
-            this.multiPanelPageMake.Controls.Add(this.comboBox2);
-            this.multiPanelPageMake.Controls.Add(this.comboBox1);
-            this.multiPanelPageMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanelPageMake.Location = new System.Drawing.Point(0, 0);
-            this.multiPanelPageMake.Name = "multiPanelPageMake";
-            this.multiPanelPageMake.Size = new System.Drawing.Size(479, 385);
-            this.multiPanelPageMake.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 12);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "성경";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "소스";
-            // 
-            // iconButton4
-            // 
-            this.iconButton4.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton4.IconChar = FontAwesome.Sharp.IconChar.Minus;
-            this.iconButton4.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton4.IconSize = 24;
-            this.iconButton4.Location = new System.Drawing.Point(206, 211);
-            this.iconButton4.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton4.Name = "iconButton4";
-            this.iconButton4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton4.Rotation = 0D;
-            this.iconButton4.Size = new System.Drawing.Size(32, 32);
-            this.iconButton4.TabIndex = 6;
-            this.iconButton4.UseVisualStyleBackColor = true;
-            // 
-            // iconButton3
-            // 
-            this.iconButton3.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton3.IconChar = FontAwesome.Sharp.IconChar.Plus;
-            this.iconButton3.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton3.IconSize = 24;
-            this.iconButton3.Location = new System.Drawing.Point(174, 211);
-            this.iconButton3.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton3.Name = "iconButton3";
-            this.iconButton3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton3.Rotation = 0D;
-            this.iconButton3.Size = new System.Drawing.Size(32, 32);
-            this.iconButton3.TabIndex = 6;
-            this.iconButton3.UseVisualStyleBackColor = true;
-            // 
-            // iconButton2
-            // 
-            this.iconButton2.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.AngleDown;
-            this.iconButton2.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton2.IconSize = 24;
-            this.iconButton2.Location = new System.Drawing.Point(50, 210);
-            this.iconButton2.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton2.Name = "iconButton2";
-            this.iconButton2.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton2.Rotation = 0D;
-            this.iconButton2.Size = new System.Drawing.Size(32, 32);
-            this.iconButton2.TabIndex = 6;
-            this.iconButton2.UseVisualStyleBackColor = true;
-            // 
-            // iconButton1
-            // 
-            this.iconButton1.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.AngleUp;
-            this.iconButton1.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton1.IconSize = 24;
-            this.iconButton1.Location = new System.Drawing.Point(18, 210);
-            this.iconButton1.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton1.Name = "iconButton1";
-            this.iconButton1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton1.Rotation = 0D;
-            this.iconButton1.Size = new System.Drawing.Size(32, 32);
-            this.iconButton1.TabIndex = 6;
-            this.iconButton1.UseVisualStyleBackColor = true;
-            // 
-            // iconPictureBox2
-            // 
-            this.iconPictureBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.iconPictureBox2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Database;
-            this.iconPictureBox2.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox2.IconSize = 24;
-            this.iconPictureBox2.Location = new System.Drawing.Point(17, 19);
-            this.iconPictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.iconPictureBox2.Name = "iconPictureBox2";
-            this.iconPictureBox2.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconPictureBox2.Size = new System.Drawing.Size(24, 24);
-            this.iconPictureBox2.TabIndex = 5;
-            this.iconPictureBox2.TabStop = false;
-            // 
-            // iconPictureBox1
-            // 
-            this.iconPictureBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.iconPictureBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Bible;
-            this.iconPictureBox1.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox1.IconSize = 24;
-            this.iconPictureBox1.Location = new System.Drawing.Point(17, 54);
-            this.iconPictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.iconPictureBox1.Name = "iconPictureBox1";
-            this.iconPictureBox1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconPictureBox1.Size = new System.Drawing.Size(24, 24);
-            this.iconPictureBox1.TabIndex = 5;
-            this.iconPictureBox1.TabStop = false;
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(17, 95);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(220, 112);
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "순서";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "소스";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "성경";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(79, 58);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(158, 20);
-            this.comboBox2.TabIndex = 3;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(80, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(158, 20);
-            this.comboBox1.TabIndex = 1;
+            this.multiPanelMain.Controls.Add(this.multiPanelPageMake);
+            this.multiPanelMain.Controls.Add(this.multiPanelPageHistory);
+            this.multiPanelMain.Controls.Add(this.multiPanelPageTemplate);
+            this.multiPanelMain.Controls.Add(this.multiPanelPageSetting);
+            this.multiPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.multiPanelMain.Location = new System.Drawing.Point(48, 0);
+            this.multiPanelMain.Margin = new System.Windows.Forms.Padding(0);
+            this.multiPanelMain.Name = "multiPanelMain";
+            tableLayoutPanel3.SetRowSpan(this.multiPanelMain, 2);
+            this.multiPanelMain.SelectedPage = null;
+            this.multiPanelMain.Size = new System.Drawing.Size(479, 385);
+            this.multiPanelMain.TabIndex = 1;
             // 
             // multiPanelPageHistory
             // 
@@ -701,6 +535,252 @@
             this.splitContainer1.SplitterDistance = 151;
             this.splitContainer1.TabIndex = 2;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(80, 19);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(158, 20);
+            this.comboBox1.TabIndex = 1;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(79, 58);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(158, 20);
+            this.comboBox2.TabIndex = 3;
+            // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(17, 95);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(220, 112);
+            this.listView1.TabIndex = 4;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "순서";
+            this.columnHeader1.Width = 40;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "소스";
+            this.columnHeader2.Width = 80;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "성경";
+            this.columnHeader3.Width = 80;
+            // 
+            // iconPictureBox1
+            // 
+            this.iconPictureBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.iconPictureBox1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Bible;
+            this.iconPictureBox1.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox1.IconSize = 24;
+            this.iconPictureBox1.Location = new System.Drawing.Point(17, 54);
+            this.iconPictureBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.iconPictureBox1.Name = "iconPictureBox1";
+            this.iconPictureBox1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.iconPictureBox1.Size = new System.Drawing.Size(24, 24);
+            this.iconPictureBox1.TabIndex = 5;
+            this.iconPictureBox1.TabStop = false;
+            // 
+            // iconPictureBox3
+            // 
+            this.iconPictureBox3.BackColor = System.Drawing.SystemColors.Window;
+            this.iconPictureBox3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox3.IconChar = FontAwesome.Sharp.IconChar.Image;
+            this.iconPictureBox3.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox3.IconSize = 24;
+            this.iconPictureBox3.Location = new System.Drawing.Point(26, 279);
+            this.iconPictureBox3.Margin = new System.Windows.Forms.Padding(0);
+            this.iconPictureBox3.Name = "iconPictureBox3";
+            this.iconPictureBox3.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.iconPictureBox3.Size = new System.Drawing.Size(24, 24);
+            this.iconPictureBox3.TabIndex = 5;
+            this.iconPictureBox3.TabStop = false;
+            // 
+            // iconPictureBox2
+            // 
+            this.iconPictureBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.iconPictureBox2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Database;
+            this.iconPictureBox2.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconPictureBox2.IconSize = 24;
+            this.iconPictureBox2.Location = new System.Drawing.Point(17, 19);
+            this.iconPictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.iconPictureBox2.Name = "iconPictureBox2";
+            this.iconPictureBox2.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.iconPictureBox2.Size = new System.Drawing.Size(24, 24);
+            this.iconPictureBox2.TabIndex = 5;
+            this.iconPictureBox2.TabStop = false;
+            // 
+            // iconButton1
+            // 
+            this.iconButton1.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.AngleUp;
+            this.iconButton1.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconButton1.IconSize = 24;
+            this.iconButton1.Location = new System.Drawing.Point(18, 210);
+            this.iconButton1.Margin = new System.Windows.Forms.Padding(0);
+            this.iconButton1.Name = "iconButton1";
+            this.iconButton1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.iconButton1.Rotation = 0D;
+            this.iconButton1.Size = new System.Drawing.Size(32, 32);
+            this.iconButton1.TabIndex = 6;
+            this.iconButton1.UseVisualStyleBackColor = true;
+            // 
+            // iconButton2
+            // 
+            this.iconButton2.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.AngleDown;
+            this.iconButton2.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconButton2.IconSize = 24;
+            this.iconButton2.Location = new System.Drawing.Point(50, 210);
+            this.iconButton2.Margin = new System.Windows.Forms.Padding(0);
+            this.iconButton2.Name = "iconButton2";
+            this.iconButton2.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.iconButton2.Rotation = 0D;
+            this.iconButton2.Size = new System.Drawing.Size(32, 32);
+            this.iconButton2.TabIndex = 6;
+            this.iconButton2.UseVisualStyleBackColor = true;
+            // 
+            // iconButton3
+            // 
+            this.iconButton3.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.iconButton3.IconChar = FontAwesome.Sharp.IconChar.Plus;
+            this.iconButton3.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconButton3.IconSize = 24;
+            this.iconButton3.Location = new System.Drawing.Point(174, 211);
+            this.iconButton3.Margin = new System.Windows.Forms.Padding(0);
+            this.iconButton3.Name = "iconButton3";
+            this.iconButton3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.iconButton3.Rotation = 0D;
+            this.iconButton3.Size = new System.Drawing.Size(32, 32);
+            this.iconButton3.TabIndex = 6;
+            this.iconButton3.UseVisualStyleBackColor = true;
+            // 
+            // iconButton4
+            // 
+            this.iconButton4.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.iconButton4.IconChar = FontAwesome.Sharp.IconChar.Minus;
+            this.iconButton4.IconColor = System.Drawing.SystemColors.ControlText;
+            this.iconButton4.IconSize = 24;
+            this.iconButton4.Location = new System.Drawing.Point(206, 211);
+            this.iconButton4.Margin = new System.Windows.Forms.Padding(0);
+            this.iconButton4.Name = "iconButton4";
+            this.iconButton4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.iconButton4.Rotation = 0D;
+            this.iconButton4.Size = new System.Drawing.Size(32, 32);
+            this.iconButton4.TabIndex = 6;
+            this.iconButton4.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(44, 27);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "소스";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(44, 61);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 12);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "성경";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(55, 287);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "템플릿";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(127, 279);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(110, 20);
+            this.comboBox3.TabIndex = 9;
+            // 
+            // multiPanelPageMake
+            // 
+            this.multiPanelPageMake.Controls.Add(this.comboBox6);
+            this.multiPanelPageMake.Controls.Add(this.comboBox5);
+            this.multiPanelPageMake.Controls.Add(this.comboBox4);
+            this.multiPanelPageMake.Controls.Add(this.comboBox3);
+            this.multiPanelPageMake.Controls.Add(this.label3);
+            this.multiPanelPageMake.Controls.Add(this.label2);
+            this.multiPanelPageMake.Controls.Add(this.label1);
+            this.multiPanelPageMake.Controls.Add(this.iconButton4);
+            this.multiPanelPageMake.Controls.Add(this.iconButton3);
+            this.multiPanelPageMake.Controls.Add(this.iconButton2);
+            this.multiPanelPageMake.Controls.Add(this.iconButton1);
+            this.multiPanelPageMake.Controls.Add(this.iconPictureBox2);
+            this.multiPanelPageMake.Controls.Add(this.iconPictureBox3);
+            this.multiPanelPageMake.Controls.Add(this.iconPictureBox1);
+            this.multiPanelPageMake.Controls.Add(this.listView1);
+            this.multiPanelPageMake.Controls.Add(this.comboBox2);
+            this.multiPanelPageMake.Controls.Add(this.comboBox1);
+            this.multiPanelPageMake.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.multiPanelPageMake.Location = new System.Drawing.Point(0, 0);
+            this.multiPanelPageMake.Name = "multiPanelPageMake";
+            this.multiPanelPageMake.Size = new System.Drawing.Size(479, 385);
+            this.multiPanelPageMake.TabIndex = 0;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(26, 310);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(212, 20);
+            this.comboBox4.TabIndex = 10;
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(26, 336);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(211, 20);
+            this.comboBox5.TabIndex = 11;
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Location = new System.Drawing.Point(26, 362);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(211, 20);
+            this.comboBox6.TabIndex = 12;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -715,11 +795,7 @@
             tableLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
-            this.multiPanel1.ResumeLayout(false);
-            this.multiPanelPageMake.ResumeLayout(false);
-            this.multiPanelPageMake.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
+            this.multiPanelMain.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -728,6 +804,11 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
+            this.multiPanelPageMake.ResumeLayout(false);
+            this.multiPanelPageMake.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -754,28 +835,34 @@
         private System.Windows.Forms.ComboBox cmbBibleVersion;
         private System.Windows.Forms.CheckBox chkUseCache;
         private FontAwesome.Sharp.IconButton menuMake;
-        private MultiPanel multiPanel1;
-        private MultiPanelPage multiPanelPageMake;
+        private MultiPanel multiPanelMain;
         private MultiPanelPage multiPanelPageHistory;
         private MultiPanelPage multiPanelPageTemplate;
         private MultiPanelPage multiPanelPageSetting;
         private FontAwesome.Sharp.IconButton menuHistory;
         private FontAwesome.Sharp.IconButton menuSetting;
         private FontAwesome.Sharp.IconButton menuTemplate;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private MultiPanelPage multiPanelPageMake;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private FontAwesome.Sharp.IconButton iconButton4;
+        private FontAwesome.Sharp.IconButton iconButton3;
+        private FontAwesome.Sharp.IconButton iconButton2;
+        private FontAwesome.Sharp.IconButton iconButton1;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox3;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
-        private FontAwesome.Sharp.IconButton iconButton1;
-        private FontAwesome.Sharp.IconButton iconButton2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private FontAwesome.Sharp.IconButton iconButton3;
-        private FontAwesome.Sharp.IconButton iconButton4;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
