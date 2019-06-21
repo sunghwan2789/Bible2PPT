@@ -32,7 +32,7 @@
             System.Windows.Forms.TableLayoutPanel mainTableLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
             System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-            System.Windows.Forms.TableLayoutPanel makeLeftTableLayoutPanel;
+            System.Windows.Forms.TableLayoutPanel buildLeftTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel biblesTableLayoutPanel;
             System.Windows.Forms.ColumnHeader columnHeader1;
             System.Windows.Forms.ColumnHeader columnHeader2;
@@ -46,7 +46,7 @@
             FontAwesome.Sharp.IconPictureBox sourceIconPictureBox;
             System.Windows.Forms.TableLayoutPanel templateTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox templateIconPictureBox;
-            System.Windows.Forms.TableLayoutPanel makeRightTableLayoutPanel;
+            System.Windows.Forms.TableLayoutPanel buildRightTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel booksTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel booksSearchTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox booksSearchIconPictureBox;
@@ -54,12 +54,12 @@
             System.Windows.Forms.ColumnHeader length;
             System.Windows.Forms.ColumnHeader columnHeader4;
             this.settingsNav = new FontAwesome.Sharp.IconButton();
-            this.makeNav = new FontAwesome.Sharp.IconButton();
+            this.buildNav = new FontAwesome.Sharp.IconButton();
             this.historyNav = new FontAwesome.Sharp.IconButton();
             this.templatesNav = new FontAwesome.Sharp.IconButton();
             this.mainMultiPanel = new Bible2PPT.MultiPanel();
-            this.makeMultiPanelPage = new Bible2PPT.MultiPanelPage();
-            this.makeSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.buildMultiPanelPage = new Bible2PPT.MultiPanelPage();
+            this.buildSplitContainer = new System.Windows.Forms.SplitContainer();
             this.biblesListView = new System.Windows.Forms.ListView();
             this.biblesUpIconButton = new FontAwesome.Sharp.IconButton();
             this.biblesDownIconButton = new FontAwesome.Sharp.IconButton();
@@ -72,9 +72,9 @@
             this.templateLongTitleComboBox = new System.Windows.Forms.ComboBox();
             this.templateLabel = new System.Windows.Forms.Label();
             this.templateComboBox = new System.Windows.Forms.ComboBox();
-            this.makeFragmentCheckBox = new System.Windows.Forms.CheckBox();
-            this.makeButton = new System.Windows.Forms.Button();
-            this.makeKeywordTextBox = new System.Windows.Forms.TextBox();
+            this.buildFragmentCheckBox = new System.Windows.Forms.CheckBox();
+            this.buildButton = new System.Windows.Forms.Button();
+            this.buildKeywordTextBox = new System.Windows.Forms.TextBox();
             this.booksSearchTextBox = new System.Windows.Forms.TextBox();
             this.booksListView = new System.Windows.Forms.ListView();
             this.historyMultiPanelPage = new Bible2PPT.MultiPanelPage();
@@ -87,7 +87,7 @@
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            makeLeftTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            buildLeftTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             biblesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -101,7 +101,7 @@
             sourceIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
             templateTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             templateIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
-            makeRightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            buildRightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             booksTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             booksSearchTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             booksSearchIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
@@ -112,12 +112,12 @@
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             this.mainMultiPanel.SuspendLayout();
-            this.makeMultiPanelPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.makeSplitContainer)).BeginInit();
-            this.makeSplitContainer.Panel1.SuspendLayout();
-            this.makeSplitContainer.Panel2.SuspendLayout();
-            this.makeSplitContainer.SuspendLayout();
-            makeLeftTableLayoutPanel.SuspendLayout();
+            this.buildMultiPanelPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buildSplitContainer)).BeginInit();
+            this.buildSplitContainer.Panel1.SuspendLayout();
+            this.buildSplitContainer.Panel2.SuspendLayout();
+            this.buildSplitContainer.SuspendLayout();
+            buildLeftTableLayoutPanel.SuspendLayout();
             biblesTableLayoutPanel.SuspendLayout();
             biblesButtonTableLayoutPanel.SuspendLayout();
             bibleTableLayoutPanel.SuspendLayout();
@@ -126,7 +126,7 @@
             ((System.ComponentModel.ISupportInitialize)(sourceIconPictureBox)).BeginInit();
             templateTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(templateIconPictureBox)).BeginInit();
-            makeRightTableLayoutPanel.SuspendLayout();
+            buildRightTableLayoutPanel.SuspendLayout();
             booksTableLayoutPanel.SuspendLayout();
             booksSearchTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(booksSearchIconPictureBox)).BeginInit();
@@ -189,7 +189,7 @@
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.BackColor = System.Drawing.SystemColors.MenuBar;
-            flowLayoutPanel1.Controls.Add(this.makeNav);
+            flowLayoutPanel1.Controls.Add(this.buildNav);
             flowLayoutPanel1.Controls.Add(this.historyNav);
             flowLayoutPanel1.Controls.Add(this.templatesNav);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -202,25 +202,25 @@
             // 
             // makeNav
             // 
-            this.makeNav.BackColor = System.Drawing.SystemColors.Menu;
-            this.makeNav.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.makeNav.FlatAppearance.BorderSize = 0;
-            this.makeNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.makeNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.makeNav.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.makeNav.IconChar = FontAwesome.Sharp.IconChar.Desktop;
-            this.makeNav.IconColor = System.Drawing.SystemColors.MenuText;
-            this.makeNav.IconSize = 36;
-            this.makeNav.Location = new System.Drawing.Point(0, 0);
-            this.makeNav.Margin = new System.Windows.Forms.Padding(0);
-            this.makeNav.Name = "makeNav";
-            this.makeNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.makeNav.Rotation = 0D;
-            this.makeNav.Size = new System.Drawing.Size(48, 48);
-            this.makeNav.TabIndex = 1;
-            this.toolTip.SetToolTip(this.makeNav, "PPT 만들기");
-            this.makeNav.UseVisualStyleBackColor = false;
-            this.makeNav.Click += new System.EventHandler(this.Nav_Click);
+            this.buildNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.buildNav.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buildNav.FlatAppearance.BorderSize = 0;
+            this.buildNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buildNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.buildNav.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.buildNav.IconChar = FontAwesome.Sharp.IconChar.Desktop;
+            this.buildNav.IconColor = System.Drawing.SystemColors.MenuText;
+            this.buildNav.IconSize = 36;
+            this.buildNav.Location = new System.Drawing.Point(0, 0);
+            this.buildNav.Margin = new System.Windows.Forms.Padding(0);
+            this.buildNav.Name = "makeNav";
+            this.buildNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.buildNav.Rotation = 0D;
+            this.buildNav.Size = new System.Drawing.Size(48, 48);
+            this.buildNav.TabIndex = 1;
+            this.toolTip.SetToolTip(this.buildNav, "PPT 만들기");
+            this.buildNav.UseVisualStyleBackColor = false;
+            this.buildNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // historyNav
             // 
@@ -268,7 +268,7 @@
             // 
             // mainMultiPanel
             // 
-            this.mainMultiPanel.Controls.Add(this.makeMultiPanelPage);
+            this.mainMultiPanel.Controls.Add(this.buildMultiPanelPage);
             this.mainMultiPanel.Controls.Add(this.historyMultiPanelPage);
             this.mainMultiPanel.Controls.Add(this.templatesMultiPanelPage);
             this.mainMultiPanel.Controls.Add(this.settingsMultiPanelPage);
@@ -277,74 +277,74 @@
             this.mainMultiPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mainMultiPanel.Name = "mainMultiPanel";
             mainTableLayoutPanel.SetRowSpan(this.mainMultiPanel, 2);
-            this.mainMultiPanel.SelectedPage = this.makeMultiPanelPage;
+            this.mainMultiPanel.SelectedPage = this.templatesMultiPanelPage;
             this.mainMultiPanel.Size = new System.Drawing.Size(492, 335);
             this.mainMultiPanel.TabIndex = 1;
             this.mainMultiPanel.SelectedPanelChanged += new System.EventHandler(this.MainMultiPanel_SelectedPanelChanged);
             // 
             // makeMultiPanelPage
             // 
-            this.makeMultiPanelPage.Controls.Add(this.makeSplitContainer);
-            this.makeMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.makeMultiPanelPage.Location = new System.Drawing.Point(0, 0);
-            this.makeMultiPanelPage.Name = "makeMultiPanelPage";
-            this.makeMultiPanelPage.Size = new System.Drawing.Size(492, 335);
-            this.makeMultiPanelPage.TabIndex = 0;
-            this.makeMultiPanelPage.Text = "PPT 만들기";
+            this.buildMultiPanelPage.Controls.Add(this.buildSplitContainer);
+            this.buildMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buildMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.buildMultiPanelPage.Name = "makeMultiPanelPage";
+            this.buildMultiPanelPage.Size = new System.Drawing.Size(492, 335);
+            this.buildMultiPanelPage.TabIndex = 0;
+            this.buildMultiPanelPage.Text = "PPT 만들기";
             // 
             // makeSplitContainer
             // 
-            this.makeSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.makeSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.makeSplitContainer.Location = new System.Drawing.Point(0, 0);
-            this.makeSplitContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.makeSplitContainer.Name = "makeSplitContainer";
+            this.buildSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buildSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.buildSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.buildSplitContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.buildSplitContainer.Name = "makeSplitContainer";
             // 
             // makeSplitContainer.Panel1
             // 
-            this.makeSplitContainer.Panel1.Controls.Add(makeLeftTableLayoutPanel);
-            this.makeSplitContainer.Panel1.Padding = new System.Windows.Forms.Padding(13, 10, 0, 10);
+            this.buildSplitContainer.Panel1.Controls.Add(buildLeftTableLayoutPanel);
+            this.buildSplitContainer.Panel1.Padding = new System.Windows.Forms.Padding(13, 10, 0, 10);
             // 
             // makeSplitContainer.Panel2
             // 
-            this.makeSplitContainer.Panel2.Controls.Add(makeRightTableLayoutPanel);
-            this.makeSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 10, 13, 10);
-            this.makeSplitContainer.Size = new System.Drawing.Size(492, 335);
-            this.makeSplitContainer.SplitterDistance = 238;
-            this.makeSplitContainer.SplitterWidth = 13;
-            this.makeSplitContainer.TabIndex = 14;
+            this.buildSplitContainer.Panel2.Controls.Add(buildRightTableLayoutPanel);
+            this.buildSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 10, 13, 10);
+            this.buildSplitContainer.Size = new System.Drawing.Size(492, 335);
+            this.buildSplitContainer.SplitterDistance = 238;
+            this.buildSplitContainer.SplitterWidth = 13;
+            this.buildSplitContainer.TabIndex = 14;
             // 
             // makeLeftTableLayoutPanel
             // 
-            makeLeftTableLayoutPanel.ColumnCount = 1;
-            makeLeftTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            makeLeftTableLayoutPanel.Controls.Add(biblesTableLayoutPanel, 0, 4);
-            makeLeftTableLayoutPanel.Controls.Add(bibleTableLayoutPanel, 0, 2);
-            makeLeftTableLayoutPanel.Controls.Add(this.templateChaperNumberComboBox, 0, 12);
-            makeLeftTableLayoutPanel.Controls.Add(sourceTableLayoutPanel, 0, 0);
-            makeLeftTableLayoutPanel.Controls.Add(this.templateShortTitleComboBox, 0, 10);
-            makeLeftTableLayoutPanel.Controls.Add(this.templateLongTitleComboBox, 0, 8);
-            makeLeftTableLayoutPanel.Controls.Add(templateTableLayoutPanel, 0, 6);
-            makeLeftTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            makeLeftTableLayoutPanel.Location = new System.Drawing.Point(13, 10);
-            makeLeftTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            makeLeftTableLayoutPanel.Name = "makeLeftTableLayoutPanel";
-            makeLeftTableLayoutPanel.RowCount = 13;
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            makeLeftTableLayoutPanel.Size = new System.Drawing.Size(225, 315);
-            makeLeftTableLayoutPanel.TabIndex = 0;
+            buildLeftTableLayoutPanel.ColumnCount = 1;
+            buildLeftTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            buildLeftTableLayoutPanel.Controls.Add(biblesTableLayoutPanel, 0, 4);
+            buildLeftTableLayoutPanel.Controls.Add(bibleTableLayoutPanel, 0, 2);
+            buildLeftTableLayoutPanel.Controls.Add(this.templateChaperNumberComboBox, 0, 12);
+            buildLeftTableLayoutPanel.Controls.Add(sourceTableLayoutPanel, 0, 0);
+            buildLeftTableLayoutPanel.Controls.Add(this.templateShortTitleComboBox, 0, 10);
+            buildLeftTableLayoutPanel.Controls.Add(this.templateLongTitleComboBox, 0, 8);
+            buildLeftTableLayoutPanel.Controls.Add(templateTableLayoutPanel, 0, 6);
+            buildLeftTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            buildLeftTableLayoutPanel.Location = new System.Drawing.Point(13, 10);
+            buildLeftTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            buildLeftTableLayoutPanel.Name = "makeLeftTableLayoutPanel";
+            buildLeftTableLayoutPanel.RowCount = 13;
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            buildLeftTableLayoutPanel.Size = new System.Drawing.Size(225, 315);
+            buildLeftTableLayoutPanel.TabIndex = 0;
             // 
             // biblesTableLayoutPanel
             // 
@@ -699,60 +699,60 @@
             // 
             // makeRightTableLayoutPanel
             // 
-            makeRightTableLayoutPanel.ColumnCount = 1;
-            makeRightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            makeRightTableLayoutPanel.Controls.Add(this.makeFragmentCheckBox, 0, 4);
-            makeRightTableLayoutPanel.Controls.Add(this.makeButton, 0, 5);
-            makeRightTableLayoutPanel.Controls.Add(this.makeKeywordTextBox, 0, 2);
-            makeRightTableLayoutPanel.Controls.Add(booksTableLayoutPanel, 0, 0);
-            makeRightTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            makeRightTableLayoutPanel.Location = new System.Drawing.Point(0, 10);
-            makeRightTableLayoutPanel.Name = "makeRightTableLayoutPanel";
-            makeRightTableLayoutPanel.RowCount = 6;
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            makeRightTableLayoutPanel.Size = new System.Drawing.Size(228, 315);
-            makeRightTableLayoutPanel.TabIndex = 1;
+            buildRightTableLayoutPanel.ColumnCount = 1;
+            buildRightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            buildRightTableLayoutPanel.Controls.Add(this.buildFragmentCheckBox, 0, 4);
+            buildRightTableLayoutPanel.Controls.Add(this.buildButton, 0, 5);
+            buildRightTableLayoutPanel.Controls.Add(this.buildKeywordTextBox, 0, 2);
+            buildRightTableLayoutPanel.Controls.Add(booksTableLayoutPanel, 0, 0);
+            buildRightTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            buildRightTableLayoutPanel.Location = new System.Drawing.Point(0, 10);
+            buildRightTableLayoutPanel.Name = "makeRightTableLayoutPanel";
+            buildRightTableLayoutPanel.RowCount = 6;
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            buildRightTableLayoutPanel.Size = new System.Drawing.Size(228, 315);
+            buildRightTableLayoutPanel.TabIndex = 1;
             // 
             // makeFragmentCheckBox
             // 
-            this.makeFragmentCheckBox.AutoSize = true;
-            this.makeFragmentCheckBox.Location = new System.Drawing.Point(3, 267);
-            this.makeFragmentCheckBox.Name = "makeFragmentCheckBox";
-            this.makeFragmentCheckBox.Size = new System.Drawing.Size(128, 16);
-            this.makeFragmentCheckBox.TabIndex = 5;
-            this.makeFragmentCheckBox.Text = "장별로 PPT 나누기";
-            this.makeFragmentCheckBox.UseVisualStyleBackColor = true;
-            this.makeFragmentCheckBox.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
+            this.buildFragmentCheckBox.AutoSize = true;
+            this.buildFragmentCheckBox.Location = new System.Drawing.Point(3, 267);
+            this.buildFragmentCheckBox.Name = "makeFragmentCheckBox";
+            this.buildFragmentCheckBox.Size = new System.Drawing.Size(128, 16);
+            this.buildFragmentCheckBox.TabIndex = 5;
+            this.buildFragmentCheckBox.Text = "장별로 PPT 나누기";
+            this.buildFragmentCheckBox.UseVisualStyleBackColor = true;
+            this.buildFragmentCheckBox.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
             // 
             // makeButton
             // 
-            this.makeButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.makeButton.Location = new System.Drawing.Point(0, 286);
-            this.makeButton.Margin = new System.Windows.Forms.Padding(0);
-            this.makeButton.Name = "makeButton";
-            this.makeButton.Size = new System.Drawing.Size(228, 29);
-            this.makeButton.TabIndex = 6;
-            this.makeButton.Text = "PPT 만들기";
-            this.makeButton.UseVisualStyleBackColor = true;
-            this.makeButton.Click += new System.EventHandler(this.btnMake_Click);
+            this.buildButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buildButton.Location = new System.Drawing.Point(0, 286);
+            this.buildButton.Margin = new System.Windows.Forms.Padding(0);
+            this.buildButton.Name = "makeButton";
+            this.buildButton.Size = new System.Drawing.Size(228, 29);
+            this.buildButton.TabIndex = 6;
+            this.buildButton.Text = "PPT 만들기";
+            this.buildButton.UseVisualStyleBackColor = true;
+            this.buildButton.Click += new System.EventHandler(this.btnMake_Click);
             // 
             // makeKeywordTextBox
             // 
-            this.makeKeywordTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.makeKeywordTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.makeKeywordTextBox.Location = new System.Drawing.Point(0, 225);
-            this.makeKeywordTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.makeKeywordTextBox.Name = "makeKeywordTextBox";
-            this.makeKeywordTextBox.Size = new System.Drawing.Size(228, 29);
-            this.makeKeywordTextBox.TabIndex = 4;
-            this.makeKeywordTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
-            this.makeKeywordTextBox.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
+            this.buildKeywordTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buildKeywordTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.buildKeywordTextBox.Location = new System.Drawing.Point(0, 225);
+            this.buildKeywordTextBox.Margin = new System.Windows.Forms.Padding(0);
+            this.buildKeywordTextBox.Name = "makeKeywordTextBox";
+            this.buildKeywordTextBox.Size = new System.Drawing.Size(228, 29);
+            this.buildKeywordTextBox.TabIndex = 4;
+            this.buildKeywordTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
+            this.buildKeywordTextBox.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
             // 
             // booksTableLayoutPanel
             // 
@@ -876,7 +876,7 @@
             this.templatesMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.templatesMultiPanelPage.Location = new System.Drawing.Point(0, 0);
             this.templatesMultiPanelPage.Name = "templatesMultiPanelPage";
-            this.templatesMultiPanelPage.Size = new System.Drawing.Size(479, 319);
+            this.templatesMultiPanelPage.Size = new System.Drawing.Size(492, 335);
             this.templatesMultiPanelPage.TabIndex = 0;
             this.templatesMultiPanelPage.Text = "템플릿 관리";
             // 
@@ -938,12 +938,12 @@
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
             this.mainMultiPanel.ResumeLayout(false);
-            this.makeMultiPanelPage.ResumeLayout(false);
-            this.makeSplitContainer.Panel1.ResumeLayout(false);
-            this.makeSplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.makeSplitContainer)).EndInit();
-            this.makeSplitContainer.ResumeLayout(false);
-            makeLeftTableLayoutPanel.ResumeLayout(false);
+            this.buildMultiPanelPage.ResumeLayout(false);
+            this.buildSplitContainer.Panel1.ResumeLayout(false);
+            this.buildSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.buildSplitContainer)).EndInit();
+            this.buildSplitContainer.ResumeLayout(false);
+            buildLeftTableLayoutPanel.ResumeLayout(false);
             biblesTableLayoutPanel.ResumeLayout(false);
             biblesButtonTableLayoutPanel.ResumeLayout(false);
             bibleTableLayoutPanel.ResumeLayout(false);
@@ -955,8 +955,8 @@
             templateTableLayoutPanel.ResumeLayout(false);
             templateTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(templateIconPictureBox)).EndInit();
-            makeRightTableLayoutPanel.ResumeLayout(false);
-            makeRightTableLayoutPanel.PerformLayout();
+            buildRightTableLayoutPanel.ResumeLayout(false);
+            buildRightTableLayoutPanel.PerformLayout();
             booksTableLayoutPanel.ResumeLayout(false);
             booksSearchTableLayoutPanel.ResumeLayout(false);
             booksSearchTableLayoutPanel.PerformLayout();
@@ -973,18 +973,18 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ComboBox templateShortTitleComboBox;
         private System.Windows.Forms.Button btnTemplate;
-        private System.Windows.Forms.TextBox makeKeywordTextBox;
+        private System.Windows.Forms.TextBox buildKeywordTextBox;
         private System.Windows.Forms.ComboBox templateChaperNumberComboBox;
-        private System.Windows.Forms.Button makeButton;
+        private System.Windows.Forms.Button buildButton;
         private System.Windows.Forms.ComboBox templateLongTitleComboBox;
         private System.Windows.Forms.ListView booksListView;
         private System.Windows.Forms.TextBox booksSearchTextBox;
-        private System.Windows.Forms.CheckBox makeFragmentCheckBox;
+        private System.Windows.Forms.CheckBox buildFragmentCheckBox;
         private System.Windows.Forms.Button btnGithub;
         private System.Windows.Forms.ComboBox sourceComboBox;
         private System.Windows.Forms.ComboBox bibleComboBox;
         private System.Windows.Forms.CheckBox chkUseCache;
-        private FontAwesome.Sharp.IconButton makeNav;
+        private FontAwesome.Sharp.IconButton buildNav;
         private MultiPanel mainMultiPanel;
         private MultiPanelPage historyMultiPanelPage;
         private MultiPanelPage templatesMultiPanelPage;
@@ -992,7 +992,7 @@
         private FontAwesome.Sharp.IconButton historyNav;
         private FontAwesome.Sharp.IconButton settingsNav;
         private FontAwesome.Sharp.IconButton templatesNav;
-        private MultiPanelPage makeMultiPanelPage;
+        private MultiPanelPage buildMultiPanelPage;
         private System.Windows.Forms.ComboBox templateComboBox;
         private System.Windows.Forms.Label templateLabel;
         private FontAwesome.Sharp.IconButton biblesRemoveIconButton;
@@ -1000,7 +1000,7 @@
         private FontAwesome.Sharp.IconButton biblesDownIconButton;
         private FontAwesome.Sharp.IconButton biblesUpIconButton;
         private System.Windows.Forms.ListView biblesListView;
-        private System.Windows.Forms.SplitContainer makeSplitContainer;
+        private System.Windows.Forms.SplitContainer buildSplitContainer;
     }
 }
 

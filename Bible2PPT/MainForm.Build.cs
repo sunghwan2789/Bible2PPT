@@ -23,23 +23,23 @@ namespace Bible2PPT
             templateChaperNumberComboBox,
             templateLongTitleComboBox,
             templateShortTitleComboBox,
-            makeKeywordTextBox,
-            makeButton,
-            makeFragmentCheckBox,
+            buildKeywordTextBox,
+            buildButton,
+            buildFragmentCheckBox,
             chkUseCache,
         };
 
-        private void InitializeMakeComponent()
+        private void InitializeBuildComponent()
         {
             // TableLayoutPanel에 포함되면 SplitterWidth가 초기화되는
             // SplitContainer의 특성에 따라 값 다시 설정
-            makeSplitContainer.SplitterWidth = 13;
+            buildSplitContainer.SplitterWidth = 13;
 
             // 불러오기
             templateLongTitleComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
             templateShortTitleComboBox.SelectedIndex = (int)AppConfig.Context.ShowShortTitle;
             templateChaperNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
-            makeFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
+            buildFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
             sourceComboBox.Items.AddRange(BibleSource.AvailableSources);
             sourceComboBox.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
@@ -189,7 +189,7 @@ namespace Bible2PPT
         {
             if (e.KeyChar == 13)
             {
-                makeButton.PerformClick();
+                buildButton.PerformClick();
             }
         }
 
@@ -201,7 +201,7 @@ namespace Bible2PPT
 레1-3:9   = 레위기 1장 1절 - 3장 9절
 전1:3     = 전도서 1장 3절
 스1:3-9   = 에스라 1장 3절 - 1장 9절
-사1:3-3:9 = 이사야 1장 3절 - 3장 9절", makeKeywordTextBox, Int16.MaxValue);
+사1:3-3:9 = 이사야 1장 3절 - 3장 9절", buildKeywordTextBox, Int16.MaxValue);
         }
 
         private void cmbLongTitle_SelectedIndexChanged(object sender, EventArgs e)
@@ -221,14 +221,14 @@ namespace Bible2PPT
 
         private void chkFragment_CheckedChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.SeperateByChapter = makeFragmentCheckBox.Checked;
+            AppConfig.Context.SeperateByChapter = buildFragmentCheckBox.Checked;
         }
 
 
         private CancellationTokenSource CTS;
         private async void btnMake_Click(object sender, EventArgs e)
         {
-            if (makeButton.Text == @"PPT 만드는 중...")
+            if (buildButton.Text == @"PPT 만드는 중...")
             {
                 CTS.Cancel();
                 return;
@@ -245,8 +245,8 @@ namespace Bible2PPT
                 destination = fd.SelectedPath;
             }
 
-            makeButton.Text = @"PPT 만드는 중...";
-            ToggleCriticalControls(false, makeButton);
+            buildButton.Text = @"PPT 만드는 중...";
+            ToggleCriticalControls(false, buildButton);
 
             CTS = new CancellationTokenSource();
             PPTBuilderWork work = null;
@@ -259,7 +259,7 @@ namespace Bible2PPT
 
                 var books = booksListView.Tag as List<Book>;
                 foreach (var t in
-                    Regex.Replace(makeKeywordTextBox.Text.Trim(), @"\s+", " ").Split()
+                    Regex.Replace(buildKeywordTextBox.Text.Trim(), @"\s+", " ").Split()
                         .Select(BibleQuery.ParseQuery)
                         .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
                 {
@@ -320,7 +320,7 @@ namespace Bible2PPT
             }
 
             ToggleCriticalControls(true);
-            makeButton.Text = "PPT 만들기";
+            buildButton.Text = "PPT 만들기";
             Text = "성경2PPT";
         }
     }

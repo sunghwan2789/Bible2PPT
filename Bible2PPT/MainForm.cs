@@ -29,9 +29,9 @@ namespace Bible2PPT
             }
 
             InitializeComponent();
-            InitializeMakeComponent();
+            InitializeBuildComponent();
             // TODO: 마지막 페이지 기억하기
-            mainMultiPanel.SelectedPage = makeMultiPanelPage;
+            mainMultiPanel.SelectedPage = buildMultiPanelPage;
 
             chkUseCache.Checked = AppConfig.Context.UseCache;
         }
@@ -76,7 +76,7 @@ namespace Bible2PPT
 
         private Button[] Navs => new[]
         {
-            makeNav,
+            buildNav,
             historyNav,
             templatesNav,
             settingsNav,
@@ -88,8 +88,8 @@ namespace Bible2PPT
             // 현재 페이지와 연결된 Nav 찾기
             switch (mainMultiPanel.SelectedPage.Name)
             {
-                case nameof(makeMultiPanelPage):
-                    target = makeNav;
+                case nameof(buildMultiPanelPage):
+                    target = buildNav;
                     break;
                 case nameof(historyMultiPanelPage):
                     target = historyNav;
@@ -117,8 +117,8 @@ namespace Bible2PPT
             // 현재 Nav와 연결된 페이지 찾기
             switch ((sender as Control).Name)
             {
-                case nameof(makeNav):
-                    target = makeMultiPanelPage;
+                case nameof(buildNav):
+                    target = buildMultiPanelPage;
                     break;
                 case nameof(historyNav):
                     target = historyMultiPanelPage;
