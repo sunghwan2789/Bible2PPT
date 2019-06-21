@@ -66,8 +66,10 @@ namespace Bible2PPT
 
         private void MainMultiPanel_SelectedPanelChanged(object sender, EventArgs e)
         {
+            // 제목 표시줄에 페이지 제목 추가
+            Text = $"{mainMultiPanel.SelectedPage.Text} - 성경2PPT";
+            // 현재 페이지와 연결된 Nav를 찾고
             Button target;
-            // 현재 페이지와 연결된 Nav 찾기
             switch (mainMultiPanel.SelectedPage.Name)
             {
                 case nameof(buildMultiPanelPage):
@@ -95,8 +97,8 @@ namespace Bible2PPT
 
         private void Nav_Click(object sender, EventArgs e)
         {
+            // 해당 Nav와 연결된 페이지를 찾고
             MultiPanelPage target;
-            // 현재 Nav와 연결된 페이지 찾기
             switch ((sender as Control).Name)
             {
                 case nameof(buildNav):

@@ -145,10 +145,10 @@
             booksTableLayoutPanel.SuspendLayout();
             booksSearchTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(booksSearchIconPictureBox)).BeginInit();
-            this.templatesMultiPanelPage.SuspendLayout();
-            this.settingsMultiPanelPage.SuspendLayout();
             versesTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).BeginInit();
+            this.templatesMultiPanelPage.SuspendLayout();
+            this.settingsMultiPanelPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTableLayoutPanel
@@ -956,57 +956,6 @@
             this.columnHeader5.Text = "약자";
             this.columnHeader5.Width = 64;
             // 
-            // historyMultiPanelPage
-            // 
-            this.historyMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.historyMultiPanelPage.Location = new System.Drawing.Point(0, 0);
-            this.historyMultiPanelPage.Name = "historyMultiPanelPage";
-            this.historyMultiPanelPage.Size = new System.Drawing.Size(479, 319);
-            this.historyMultiPanelPage.TabIndex = 0;
-            this.historyMultiPanelPage.Text = "PPT 제작 기록";
-            // 
-            // templatesMultiPanelPage
-            // 
-            this.templatesMultiPanelPage.Controls.Add(this.btnGithub);
-            this.templatesMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.templatesMultiPanelPage.Location = new System.Drawing.Point(0, 0);
-            this.templatesMultiPanelPage.Name = "templatesMultiPanelPage";
-            this.templatesMultiPanelPage.Size = new System.Drawing.Size(492, 335);
-            this.templatesMultiPanelPage.TabIndex = 0;
-            this.templatesMultiPanelPage.Text = "템플릿 관리";
-            // 
-            // btnGithub
-            // 
-            this.btnGithub.BackgroundImage = global::Bible2PPT.Properties.Resources.GitHub_Mark_32px;
-            this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnGithub.Location = new System.Drawing.Point(143, 203);
-            this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
-            this.btnGithub.Name = "btnGithub";
-            this.btnGithub.Size = new System.Drawing.Size(29, 29);
-            this.btnGithub.TabIndex = 0;
-            this.btnGithub.UseVisualStyleBackColor = true;
-            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
-            // 
-            // settingsMultiPanelPage
-            // 
-            this.settingsMultiPanelPage.Controls.Add(this.chkUseCache);
-            this.settingsMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.settingsMultiPanelPage.Location = new System.Drawing.Point(0, 0);
-            this.settingsMultiPanelPage.Name = "settingsMultiPanelPage";
-            this.settingsMultiPanelPage.Size = new System.Drawing.Size(479, 319);
-            this.settingsMultiPanelPage.TabIndex = 0;
-            // 
-            // chkUseCache
-            // 
-            this.chkUseCache.AutoSize = true;
-            this.chkUseCache.Location = new System.Drawing.Point(33, 33);
-            this.chkUseCache.Name = "chkUseCache";
-            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
-            this.chkUseCache.TabIndex = 1;
-            this.chkUseCache.Text = "오프라인 캐시 사용";
-            this.chkUseCache.UseVisualStyleBackColor = true;
-            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
-            // 
             // versesTableLayoutPanel
             // 
             versesTableLayoutPanel.ColumnCount = 2;
@@ -1048,6 +997,58 @@
             versesLabel.Size = new System.Drawing.Size(57, 12);
             versesLabel.TabIndex = 7;
             versesLabel.Text = "성경 구절";
+            // 
+            // historyMultiPanelPage
+            // 
+            this.historyMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.historyMultiPanelPage.Name = "historyMultiPanelPage";
+            this.historyMultiPanelPage.Size = new System.Drawing.Size(479, 319);
+            this.historyMultiPanelPage.TabIndex = 0;
+            this.historyMultiPanelPage.Text = "PPT 제작 기록";
+            // 
+            // templatesMultiPanelPage
+            // 
+            this.templatesMultiPanelPage.Controls.Add(this.btnGithub);
+            this.templatesMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templatesMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.templatesMultiPanelPage.Name = "templatesMultiPanelPage";
+            this.templatesMultiPanelPage.Size = new System.Drawing.Size(492, 335);
+            this.templatesMultiPanelPage.TabIndex = 0;
+            this.templatesMultiPanelPage.Text = "템플릿 관리";
+            // 
+            // btnGithub
+            // 
+            this.btnGithub.BackgroundImage = global::Bible2PPT.Properties.Resources.GitHub_Mark_32px;
+            this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnGithub.Location = new System.Drawing.Point(143, 203);
+            this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
+            this.btnGithub.Name = "btnGithub";
+            this.btnGithub.Size = new System.Drawing.Size(29, 29);
+            this.btnGithub.TabIndex = 0;
+            this.btnGithub.UseVisualStyleBackColor = true;
+            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
+            // 
+            // settingsMultiPanelPage
+            // 
+            this.settingsMultiPanelPage.Controls.Add(this.chkUseCache);
+            this.settingsMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingsMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.settingsMultiPanelPage.Name = "settingsMultiPanelPage";
+            this.settingsMultiPanelPage.Size = new System.Drawing.Size(479, 319);
+            this.settingsMultiPanelPage.TabIndex = 0;
+            this.settingsMultiPanelPage.Text = "설정";
+            // 
+            // chkUseCache
+            // 
+            this.chkUseCache.AutoSize = true;
+            this.chkUseCache.Location = new System.Drawing.Point(33, 33);
+            this.chkUseCache.Name = "chkUseCache";
+            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
+            this.chkUseCache.TabIndex = 1;
+            this.chkUseCache.Text = "오프라인 캐시 사용";
+            this.chkUseCache.UseVisualStyleBackColor = true;
+            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
             // 
             // MainForm
             // 
@@ -1092,12 +1093,12 @@
             booksSearchTableLayoutPanel.ResumeLayout(false);
             booksSearchTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(booksSearchIconPictureBox)).EndInit();
-            this.templatesMultiPanelPage.ResumeLayout(false);
-            this.settingsMultiPanelPage.ResumeLayout(false);
-            this.settingsMultiPanelPage.PerformLayout();
             versesTableLayoutPanel.ResumeLayout(false);
             versesTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).EndInit();
+            this.templatesMultiPanelPage.ResumeLayout(false);
+            this.settingsMultiPanelPage.ResumeLayout(false);
+            this.settingsMultiPanelPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
