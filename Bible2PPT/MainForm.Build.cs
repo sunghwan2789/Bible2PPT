@@ -182,7 +182,7 @@ namespace Bible2PPT
 
         private void txtSearch_Leave(object sender, EventArgs e)
         {
-            booksSearchTextBox.Text = @"검색...";
+            booksSearchTextBox.Text = @"책 검색...";
         }
 
         private void txtKeyword_KeyPress(object sender, KeyPressEventArgs e)
