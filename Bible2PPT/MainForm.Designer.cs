@@ -29,545 +29,328 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+            System.Windows.Forms.TableLayoutPanel mainTableLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
             System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-            this.menuSetting = new FontAwesome.Sharp.IconButton();
-            this.menuMake = new FontAwesome.Sharp.IconButton();
-            this.menuHistory = new FontAwesome.Sharp.IconButton();
-            this.menuTemplate = new FontAwesome.Sharp.IconButton();
-            this.multiPanelMain = new Bible2PPT.MultiPanel();
-            this.multiPanelPageHistory = new Bible2PPT.MultiPanelPage();
-            this.multiPanelPageTemplate = new Bible2PPT.MultiPanelPage();
-            this.multiPanelPageSetting = new Bible2PPT.MultiPanelPage();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cmbShortTitle = new System.Windows.Forms.ComboBox();
-            this.cmbLongTitle = new System.Windows.Forms.ComboBox();
-            this.cmbChapNum = new System.Windows.Forms.ComboBox();
-            this.cmbBibleSource = new System.Windows.Forms.ComboBox();
-            this.cmbBibleVersion = new System.Windows.Forms.ComboBox();
-            this.btnMake = new System.Windows.Forms.Button();
-            this.txtKeyword = new System.Windows.Forms.TextBox();
-            this.btnTemplate = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnGithub = new System.Windows.Forms.Button();
-            this.chkFragment = new System.Windows.Forms.CheckBox();
-            this.lstBooks = new System.Windows.Forms.ListView();
-            this.title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.chkUseCache = new System.Windows.Forms.CheckBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.listView1 = new System.Windows.Forms.ListView();
+            System.Windows.Forms.TableLayoutPanel makeLeftTableLayoutPanel;
+            System.Windows.Forms.TableLayoutPanel biblesTableLayoutPanel;
+            System.Windows.Forms.TableLayoutPanel biblesButtonTableLayoutPanel;
+            System.Windows.Forms.TableLayoutPanel bibleTableLayoutPanel;
+            FontAwesome.Sharp.IconPictureBox bibleIconPictureBox;
+            System.Windows.Forms.Label bibleLabel;
+            System.Windows.Forms.TableLayoutPanel sourceTableLayoutPanel;
+            System.Windows.Forms.Label sourceLabel;
+            FontAwesome.Sharp.IconPictureBox sourceIconPictureBox;
+            System.Windows.Forms.TableLayoutPanel templateTableLayoutPanel;
+            FontAwesome.Sharp.IconPictureBox templateIconPictureBox;
+            System.Windows.Forms.TableLayoutPanel makeRightTableLayoutPanel;
+            this.settingsNav = new FontAwesome.Sharp.IconButton();
+            this.makeNav = new FontAwesome.Sharp.IconButton();
+            this.historyNav = new FontAwesome.Sharp.IconButton();
+            this.templatesNav = new FontAwesome.Sharp.IconButton();
+            this.mainMultiPanel = new Bible2PPT.MultiPanel();
+            this.makeMultiPanelPage = new Bible2PPT.MultiPanelPage();
+            this.makeSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.biblesListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox3 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
-            this.iconButton1 = new FontAwesome.Sharp.IconButton();
-            this.iconButton2 = new FontAwesome.Sharp.IconButton();
-            this.iconButton3 = new FontAwesome.Sharp.IconButton();
-            this.iconButton4 = new FontAwesome.Sharp.IconButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.multiPanelPageMake = new Bible2PPT.MultiPanelPage();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
-            tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.biblesUpIconButton = new FontAwesome.Sharp.IconButton();
+            this.biblesDownIconButton = new FontAwesome.Sharp.IconButton();
+            this.biblesAddIconButton = new FontAwesome.Sharp.IconButton();
+            this.biblesRemoveIconButton = new FontAwesome.Sharp.IconButton();
+            this.bibleComboBox = new System.Windows.Forms.ComboBox();
+            this.templateChaperNumberComboBox = new System.Windows.Forms.ComboBox();
+            this.sourceComboBox = new System.Windows.Forms.ComboBox();
+            this.templateShortTitleComboBox = new System.Windows.Forms.ComboBox();
+            this.templateLongTitleComboBox = new System.Windows.Forms.ComboBox();
+            this.templateLabel = new System.Windows.Forms.Label();
+            this.templateComboBox = new System.Windows.Forms.ComboBox();
+            this.booksSearchTextBox = new System.Windows.Forms.TextBox();
+            this.booksListView = new System.Windows.Forms.ListView();
+            this.title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.length = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.makeFragmentCheckBox = new System.Windows.Forms.CheckBox();
+            this.makeButton = new System.Windows.Forms.Button();
+            this.makeKeywordTextBox = new System.Windows.Forms.TextBox();
+            this.historyMultiPanelPage = new Bible2PPT.MultiPanelPage();
+            this.templatesMultiPanelPage = new Bible2PPT.MultiPanelPage();
+            this.btnGithub = new System.Windows.Forms.Button();
+            this.btnTemplate = new System.Windows.Forms.Button();
+            this.settingsMultiPanelPage = new Bible2PPT.MultiPanelPage();
+            this.chkUseCache = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            tableLayoutPanel3.SuspendLayout();
+            makeLeftTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            biblesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            biblesButtonTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            bibleTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            bibleIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
+            bibleLabel = new System.Windows.Forms.Label();
+            sourceTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            sourceLabel = new System.Windows.Forms.Label();
+            sourceIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
+            templateTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            templateIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
+            makeRightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            mainTableLayoutPanel.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            this.multiPanelMain.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
-            this.multiPanelPageMake.SuspendLayout();
+            this.mainMultiPanel.SuspendLayout();
+            this.makeMultiPanelPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.makeSplitContainer)).BeginInit();
+            this.makeSplitContainer.Panel1.SuspendLayout();
+            this.makeSplitContainer.Panel2.SuspendLayout();
+            this.makeSplitContainer.SuspendLayout();
+            makeLeftTableLayoutPanel.SuspendLayout();
+            biblesTableLayoutPanel.SuspendLayout();
+            biblesButtonTableLayoutPanel.SuspendLayout();
+            bibleTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(bibleIconPictureBox)).BeginInit();
+            sourceTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(sourceIconPictureBox)).BeginInit();
+            templateTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(templateIconPictureBox)).BeginInit();
+            makeRightTableLayoutPanel.SuspendLayout();
+            this.templatesMultiPanelPage.SuspendLayout();
+            this.settingsMultiPanelPage.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel3
+            // mainTableLayoutPanel
             // 
-            tableLayoutPanel3.ColumnCount = 2;
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel3.Controls.Add(flowLayoutPanel2, 0, 1);
-            tableLayoutPanel3.Controls.Add(flowLayoutPanel1, 0, 0);
-            tableLayoutPanel3.Controls.Add(this.multiPanelMain, 1, 0);
-            tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Left;
-            tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 2;
-            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            tableLayoutPanel3.Size = new System.Drawing.Size(527, 385);
-            tableLayoutPanel3.TabIndex = 3;
+            mainTableLayoutPanel.ColumnCount = 2;
+            mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            mainTableLayoutPanel.Controls.Add(flowLayoutPanel2, 0, 1);
+            mainTableLayoutPanel.Controls.Add(flowLayoutPanel1, 0, 0);
+            mainTableLayoutPanel.Controls.Add(this.mainMultiPanel, 1, 0);
+            mainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            mainTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            mainTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            mainTableLayoutPanel.Name = "mainTableLayoutPanel";
+            mainTableLayoutPanel.RowCount = 2;
+            mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            mainTableLayoutPanel.Size = new System.Drawing.Size(540, 335);
+            mainTableLayoutPanel.TabIndex = 3;
             // 
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.BackColor = System.Drawing.SystemColors.MenuBar;
-            flowLayoutPanel2.Controls.Add(this.menuSetting);
+            flowLayoutPanel2.Controls.Add(this.settingsNav);
             flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
-            flowLayoutPanel2.Location = new System.Drawing.Point(0, 337);
+            flowLayoutPanel2.Location = new System.Drawing.Point(0, 287);
             flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Size = new System.Drawing.Size(48, 48);
             flowLayoutPanel2.TabIndex = 2;
             // 
-            // menuSetting
+            // settingsNav
             // 
-            this.menuSetting.FlatAppearance.BorderSize = 0;
-            this.menuSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.menuSetting.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.menuSetting.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.menuSetting.IconChar = FontAwesome.Sharp.IconChar.Cog;
-            this.menuSetting.IconColor = System.Drawing.SystemColors.MenuText;
-            this.menuSetting.IconSize = 36;
-            this.menuSetting.Location = new System.Drawing.Point(0, 0);
-            this.menuSetting.Margin = new System.Windows.Forms.Padding(0);
-            this.menuSetting.Name = "menuSetting";
-            this.menuSetting.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.menuSetting.Rotation = 0D;
-            this.menuSetting.Size = new System.Drawing.Size(48, 48);
-            this.menuSetting.TabIndex = 2;
-            this.menuSetting.UseVisualStyleBackColor = true;
+            this.settingsNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.settingsNav.FlatAppearance.BorderSize = 0;
+            this.settingsNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settingsNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.settingsNav.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.settingsNav.IconChar = FontAwesome.Sharp.IconChar.Cog;
+            this.settingsNav.IconColor = System.Drawing.SystemColors.MenuText;
+            this.settingsNav.IconSize = 36;
+            this.settingsNav.Location = new System.Drawing.Point(0, 0);
+            this.settingsNav.Margin = new System.Windows.Forms.Padding(0);
+            this.settingsNav.Name = "settingsNav";
+            this.settingsNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.settingsNav.Rotation = 0D;
+            this.settingsNav.Size = new System.Drawing.Size(48, 48);
+            this.settingsNav.TabIndex = 2;
+            this.settingsNav.UseVisualStyleBackColor = false;
             // 
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.BackColor = System.Drawing.SystemColors.MenuBar;
-            flowLayoutPanel1.Controls.Add(this.menuMake);
-            flowLayoutPanel1.Controls.Add(this.menuHistory);
-            flowLayoutPanel1.Controls.Add(this.menuTemplate);
+            flowLayoutPanel1.Controls.Add(this.makeNav);
+            flowLayoutPanel1.Controls.Add(this.historyNav);
+            flowLayoutPanel1.Controls.Add(this.templatesNav);
             flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(48, 337);
+            flowLayoutPanel1.Size = new System.Drawing.Size(48, 287);
             flowLayoutPanel1.TabIndex = 0;
             // 
-            // menuMake
+            // makeNav
             // 
-            this.menuMake.FlatAppearance.BorderSize = 0;
-            this.menuMake.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.menuMake.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.menuMake.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.menuMake.IconChar = FontAwesome.Sharp.IconChar.Desktop;
-            this.menuMake.IconColor = System.Drawing.SystemColors.MenuText;
-            this.menuMake.IconSize = 36;
-            this.menuMake.Location = new System.Drawing.Point(0, 0);
-            this.menuMake.Margin = new System.Windows.Forms.Padding(0);
-            this.menuMake.Name = "menuMake";
-            this.menuMake.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.menuMake.Rotation = 0D;
-            this.menuMake.Size = new System.Drawing.Size(48, 48);
-            this.menuMake.TabIndex = 1;
-            this.menuMake.UseVisualStyleBackColor = true;
+            this.makeNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.makeNav.FlatAppearance.BorderSize = 0;
+            this.makeNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.makeNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.makeNav.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.makeNav.IconChar = FontAwesome.Sharp.IconChar.Desktop;
+            this.makeNav.IconColor = System.Drawing.SystemColors.MenuText;
+            this.makeNav.IconSize = 36;
+            this.makeNav.Location = new System.Drawing.Point(0, 0);
+            this.makeNav.Margin = new System.Windows.Forms.Padding(0);
+            this.makeNav.Name = "makeNav";
+            this.makeNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.makeNav.Rotation = 0D;
+            this.makeNav.Size = new System.Drawing.Size(48, 48);
+            this.makeNav.TabIndex = 1;
+            this.makeNav.UseVisualStyleBackColor = false;
             // 
-            // menuHistory
+            // historyNav
             // 
-            this.menuHistory.FlatAppearance.BorderSize = 0;
-            this.menuHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.menuHistory.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.menuHistory.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.menuHistory.IconChar = FontAwesome.Sharp.IconChar.History;
-            this.menuHistory.IconColor = System.Drawing.SystemColors.MenuText;
-            this.menuHistory.IconSize = 36;
-            this.menuHistory.Location = new System.Drawing.Point(0, 48);
-            this.menuHistory.Margin = new System.Windows.Forms.Padding(0);
-            this.menuHistory.Name = "menuHistory";
-            this.menuHistory.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.menuHistory.Rotation = 0D;
-            this.menuHistory.Size = new System.Drawing.Size(48, 48);
-            this.menuHistory.TabIndex = 2;
-            this.menuHistory.UseVisualStyleBackColor = true;
+            this.historyNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.historyNav.FlatAppearance.BorderSize = 0;
+            this.historyNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.historyNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.historyNav.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.historyNav.IconChar = FontAwesome.Sharp.IconChar.History;
+            this.historyNav.IconColor = System.Drawing.SystemColors.MenuText;
+            this.historyNav.IconSize = 36;
+            this.historyNav.Location = new System.Drawing.Point(0, 48);
+            this.historyNav.Margin = new System.Windows.Forms.Padding(0);
+            this.historyNav.Name = "historyNav";
+            this.historyNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.historyNav.Rotation = 0D;
+            this.historyNav.Size = new System.Drawing.Size(48, 48);
+            this.historyNav.TabIndex = 2;
+            this.historyNav.UseVisualStyleBackColor = false;
             // 
-            // menuTemplate
+            // templatesNav
             // 
-            this.menuTemplate.FlatAppearance.BorderSize = 0;
-            this.menuTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.menuTemplate.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.menuTemplate.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.menuTemplate.IconChar = FontAwesome.Sharp.IconChar.Images;
-            this.menuTemplate.IconColor = System.Drawing.SystemColors.MenuText;
-            this.menuTemplate.IconSize = 36;
-            this.menuTemplate.Location = new System.Drawing.Point(0, 96);
-            this.menuTemplate.Margin = new System.Windows.Forms.Padding(0);
-            this.menuTemplate.Name = "menuTemplate";
-            this.menuTemplate.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.menuTemplate.Rotation = 0D;
-            this.menuTemplate.Size = new System.Drawing.Size(48, 48);
-            this.menuTemplate.TabIndex = 3;
-            this.menuTemplate.UseVisualStyleBackColor = true;
+            this.templatesNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.templatesNav.FlatAppearance.BorderSize = 0;
+            this.templatesNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.templatesNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.templatesNav.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.templatesNav.IconChar = FontAwesome.Sharp.IconChar.Images;
+            this.templatesNav.IconColor = System.Drawing.SystemColors.MenuText;
+            this.templatesNav.IconSize = 36;
+            this.templatesNav.Location = new System.Drawing.Point(0, 96);
+            this.templatesNav.Margin = new System.Windows.Forms.Padding(0);
+            this.templatesNav.Name = "templatesNav";
+            this.templatesNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.templatesNav.Rotation = 0D;
+            this.templatesNav.Size = new System.Drawing.Size(48, 48);
+            this.templatesNav.TabIndex = 3;
+            this.templatesNav.UseVisualStyleBackColor = false;
             // 
-            // multiPanelMain
+            // mainMultiPanel
             // 
-            this.multiPanelMain.Controls.Add(this.multiPanelPageMake);
-            this.multiPanelMain.Controls.Add(this.multiPanelPageHistory);
-            this.multiPanelMain.Controls.Add(this.multiPanelPageTemplate);
-            this.multiPanelMain.Controls.Add(this.multiPanelPageSetting);
-            this.multiPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanelMain.Location = new System.Drawing.Point(48, 0);
-            this.multiPanelMain.Margin = new System.Windows.Forms.Padding(0);
-            this.multiPanelMain.Name = "multiPanelMain";
-            tableLayoutPanel3.SetRowSpan(this.multiPanelMain, 2);
-            this.multiPanelMain.SelectedPage = null;
-            this.multiPanelMain.Size = new System.Drawing.Size(479, 385);
-            this.multiPanelMain.TabIndex = 1;
+            this.mainMultiPanel.Controls.Add(this.makeMultiPanelPage);
+            this.mainMultiPanel.Controls.Add(this.historyMultiPanelPage);
+            this.mainMultiPanel.Controls.Add(this.templatesMultiPanelPage);
+            this.mainMultiPanel.Controls.Add(this.settingsMultiPanelPage);
+            this.mainMultiPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainMultiPanel.Location = new System.Drawing.Point(48, 0);
+            this.mainMultiPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.mainMultiPanel.Name = "mainMultiPanel";
+            mainTableLayoutPanel.SetRowSpan(this.mainMultiPanel, 2);
+            this.mainMultiPanel.SelectedPage = this.makeMultiPanelPage;
+            this.mainMultiPanel.Size = new System.Drawing.Size(492, 335);
+            this.mainMultiPanel.TabIndex = 1;
             // 
-            // multiPanelPageHistory
+            // makeMultiPanelPage
             // 
-            this.multiPanelPageHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanelPageHistory.Location = new System.Drawing.Point(0, 0);
-            this.multiPanelPageHistory.Name = "multiPanelPageHistory";
-            this.multiPanelPageHistory.Size = new System.Drawing.Size(479, 385);
-            this.multiPanelPageHistory.TabIndex = 0;
+            this.makeMultiPanelPage.Controls.Add(this.makeSplitContainer);
+            this.makeMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.makeMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.makeMultiPanelPage.Name = "makeMultiPanelPage";
+            this.makeMultiPanelPage.Size = new System.Drawing.Size(492, 335);
+            this.makeMultiPanelPage.TabIndex = 0;
             // 
-            // multiPanelPageTemplate
+            // makeSplitContainer
             // 
-            this.multiPanelPageTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanelPageTemplate.Location = new System.Drawing.Point(0, 0);
-            this.multiPanelPageTemplate.Name = "multiPanelPageTemplate";
-            this.multiPanelPageTemplate.Size = new System.Drawing.Size(479, 385);
-            this.multiPanelPageTemplate.TabIndex = 0;
+            this.makeSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.makeSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.makeSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.makeSplitContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.makeSplitContainer.Name = "makeSplitContainer";
             // 
-            // multiPanelPageSetting
+            // makeSplitContainer.Panel1
             // 
-            this.multiPanelPageSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanelPageSetting.Location = new System.Drawing.Point(0, 0);
-            this.multiPanelPageSetting.Name = "multiPanelPageSetting";
-            this.multiPanelPageSetting.Size = new System.Drawing.Size(479, 385);
-            this.multiPanelPageSetting.TabIndex = 0;
+            this.makeSplitContainer.Panel1.Controls.Add(makeLeftTableLayoutPanel);
+            this.makeSplitContainer.Panel1.Padding = new System.Windows.Forms.Padding(13, 10, 0, 10);
             // 
-            // cmbShortTitle
+            // makeSplitContainer.Panel2
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbShortTitle, 3);
-            this.cmbShortTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbShortTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbShortTitle.Items.AddRange(new object[] {
-            "짧은 제목 표시",
-            "각 장의 첫 절에만 표시"});
-            this.cmbShortTitle.Location = new System.Drawing.Point(10, 74);
-            this.cmbShortTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbShortTitle.Name = "cmbShortTitle";
-            this.cmbShortTitle.Size = new System.Drawing.Size(156, 20);
-            this.cmbShortTitle.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.cmbShortTitle, "짧은 제목 표시 설정");
-            this.cmbShortTitle.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
+            this.makeSplitContainer.Panel2.Controls.Add(makeRightTableLayoutPanel);
+            this.makeSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 10, 13, 10);
+            this.makeSplitContainer.Size = new System.Drawing.Size(492, 335);
+            this.makeSplitContainer.SplitterDistance = 238;
+            this.makeSplitContainer.SplitterWidth = 13;
+            this.makeSplitContainer.TabIndex = 14;
             // 
-            // cmbLongTitle
+            // makeLeftTableLayoutPanel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbLongTitle, 3);
-            this.cmbLongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbLongTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbLongTitle.Items.AddRange(new object[] {
-            "긴 제목 표시",
-            "각 장의 첫 절에만 표시"});
-            this.cmbLongTitle.Location = new System.Drawing.Point(10, 49);
-            this.cmbLongTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbLongTitle.Name = "cmbLongTitle";
-            this.cmbLongTitle.Size = new System.Drawing.Size(156, 20);
-            this.cmbLongTitle.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.cmbLongTitle, "긴 제목 표시 설정");
-            this.cmbLongTitle.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
+            makeLeftTableLayoutPanel.ColumnCount = 1;
+            makeLeftTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            makeLeftTableLayoutPanel.Controls.Add(biblesTableLayoutPanel, 0, 4);
+            makeLeftTableLayoutPanel.Controls.Add(bibleTableLayoutPanel, 0, 2);
+            makeLeftTableLayoutPanel.Controls.Add(this.templateChaperNumberComboBox, 0, 12);
+            makeLeftTableLayoutPanel.Controls.Add(sourceTableLayoutPanel, 0, 0);
+            makeLeftTableLayoutPanel.Controls.Add(this.templateShortTitleComboBox, 0, 10);
+            makeLeftTableLayoutPanel.Controls.Add(this.templateLongTitleComboBox, 0, 8);
+            makeLeftTableLayoutPanel.Controls.Add(templateTableLayoutPanel, 0, 6);
+            makeLeftTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            makeLeftTableLayoutPanel.Location = new System.Drawing.Point(13, 10);
+            makeLeftTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            makeLeftTableLayoutPanel.Name = "makeLeftTableLayoutPanel";
+            makeLeftTableLayoutPanel.RowCount = 13;
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            makeLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            makeLeftTableLayoutPanel.Size = new System.Drawing.Size(225, 315);
+            makeLeftTableLayoutPanel.TabIndex = 0;
             // 
-            // cmbChapNum
+            // biblesTableLayoutPanel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.cmbChapNum, 3);
-            this.cmbChapNum.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbChapNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbChapNum.Items.AddRange(new object[] {
-            "장 번호 표시",
-            "각 장의 첫 절에만 표시"});
-            this.cmbChapNum.Location = new System.Drawing.Point(10, 99);
-            this.cmbChapNum.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbChapNum.Name = "cmbChapNum";
-            this.cmbChapNum.Size = new System.Drawing.Size(156, 20);
-            this.cmbChapNum.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.cmbChapNum, "장 번호 표시 설정");
-            this.cmbChapNum.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
+            biblesTableLayoutPanel.ColumnCount = 1;
+            biblesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            biblesTableLayoutPanel.Controls.Add(this.biblesListView, 0, 0);
+            biblesTableLayoutPanel.Controls.Add(biblesButtonTableLayoutPanel, 0, 2);
+            biblesTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            biblesTableLayoutPanel.Location = new System.Drawing.Point(0, 54);
+            biblesTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            biblesTableLayoutPanel.Name = "biblesTableLayoutPanel";
+            biblesTableLayoutPanel.RowCount = 3;
+            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            biblesTableLayoutPanel.Size = new System.Drawing.Size(225, 153);
+            biblesTableLayoutPanel.TabIndex = 1;
             // 
-            // cmbBibleSource
+            // biblesListView
             // 
-            this.cmbBibleSource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbBibleSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBibleSource.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbBibleSource.FormattingEnabled = true;
-            this.cmbBibleSource.Location = new System.Drawing.Point(0, 22);
-            this.cmbBibleSource.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbBibleSource.Name = "cmbBibleSource";
-            this.cmbBibleSource.Size = new System.Drawing.Size(151, 20);
-            this.cmbBibleSource.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.cmbBibleSource, "성경 소스 선택");
-            this.cmbBibleSource.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
-            // 
-            // cmbBibleVersion
-            // 
-            this.cmbBibleVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbBibleVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBibleVersion.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cmbBibleVersion.FormattingEnabled = true;
-            this.cmbBibleVersion.Location = new System.Drawing.Point(0, 47);
-            this.cmbBibleVersion.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbBibleVersion.Name = "cmbBibleVersion";
-            this.cmbBibleVersion.Size = new System.Drawing.Size(151, 20);
-            this.cmbBibleVersion.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.cmbBibleVersion, "성경 선택");
-            this.cmbBibleVersion.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
-            // 
-            // btnMake
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.btnMake, 3);
-            this.btnMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMake.Location = new System.Drawing.Point(10, 191);
-            this.btnMake.Margin = new System.Windows.Forms.Padding(0);
-            this.btnMake.Name = "btnMake";
-            this.btnMake.Size = new System.Drawing.Size(156, 29);
-            this.btnMake.TabIndex = 6;
-            this.btnMake.Text = "PPT 만들기";
-            this.btnMake.UseVisualStyleBackColor = true;
-            this.btnMake.Click += new System.EventHandler(this.btnMake_Click);
-            // 
-            // txtKeyword
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.txtKeyword, 3);
-            this.txtKeyword.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeyword.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtKeyword.Location = new System.Drawing.Point(10, 130);
-            this.txtKeyword.Margin = new System.Windows.Forms.Padding(0);
-            this.txtKeyword.Name = "txtKeyword";
-            this.txtKeyword.Size = new System.Drawing.Size(156, 29);
-            this.txtKeyword.TabIndex = 4;
-            this.txtKeyword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
-            this.txtKeyword.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
-            // 
-            // btnTemplate
-            // 
-            this.btnTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnTemplate.Location = new System.Drawing.Point(10, 10);
-            this.btnTemplate.Margin = new System.Windows.Forms.Padding(0);
-            this.btnTemplate.Name = "btnTemplate";
-            this.btnTemplate.Size = new System.Drawing.Size(124, 29);
-            this.btnTemplate.TabIndex = 0;
-            this.btnTemplate.Text = "템플릿 열기";
-            this.btnTemplate.UseVisualStyleBackColor = true;
-            this.btnTemplate.Click += new System.EventHandler(this.btnTemplate_Click);
-            this.btnTemplate.MouseHover += new System.EventHandler(this.btnTemplate_MouseHover);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 5;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 3F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Controls.Add(this.btnGithub, 3, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnTemplate, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txtKeyword, 1, 9);
-            this.tableLayoutPanel1.Controls.Add(this.cmbChapNum, 1, 7);
-            this.tableLayoutPanel1.Controls.Add(this.btnMake, 1, 12);
-            this.tableLayoutPanel1.Controls.Add(this.cmbLongTitle, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.cmbShortTitle, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.chkFragment, 1, 11);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 14;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(179, 249);
-            this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // btnGithub
-            // 
-            this.btnGithub.BackgroundImage = global::Bible2PPT.Properties.Resources.GitHub_Mark_32px;
-            this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnGithub.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGithub.Location = new System.Drawing.Point(137, 10);
-            this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
-            this.btnGithub.Name = "btnGithub";
-            this.btnGithub.Size = new System.Drawing.Size(29, 29);
-            this.btnGithub.TabIndex = 0;
-            this.btnGithub.UseVisualStyleBackColor = true;
-            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
-            // 
-            // chkFragment
-            // 
-            this.chkFragment.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.chkFragment, 3);
-            this.chkFragment.Location = new System.Drawing.Point(13, 172);
-            this.chkFragment.Name = "chkFragment";
-            this.chkFragment.Size = new System.Drawing.Size(128, 16);
-            this.chkFragment.TabIndex = 5;
-            this.chkFragment.Text = "장별로 PPT 나누기";
-            this.chkFragment.UseVisualStyleBackColor = true;
-            this.chkFragment.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
-            // 
-            // lstBooks
-            // 
-            this.lstBooks.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lstBooks.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstBooks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.title,
-            this.length});
-            this.lstBooks.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBooks.FullRowSelect = true;
-            this.lstBooks.GridLines = true;
-            this.lstBooks.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lstBooks.HideSelection = false;
-            this.lstBooks.Location = new System.Drawing.Point(0, 95);
-            this.lstBooks.Margin = new System.Windows.Forms.Padding(0);
-            this.lstBooks.Name = "lstBooks";
-            this.lstBooks.Size = new System.Drawing.Size(151, 154);
-            this.lstBooks.TabIndex = 0;
-            this.lstBooks.TabStop = false;
-            this.lstBooks.UseCompatibleStateImageBehavior = false;
-            this.lstBooks.View = System.Windows.Forms.View.Details;
-            this.lstBooks.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lstBooks_MouseClick);
-            // 
-            // title
-            // 
-            this.title.Text = "제목";
-            this.title.Width = 98;
-            // 
-            // length
-            // 
-            this.length.Text = "장수";
-            this.length.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.length.Width = 36;
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtSearch.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txtSearch.Location = new System.Drawing.Point(0, 72);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(0);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(151, 22);
-            this.txtSearch.TabIndex = 0;
-            this.txtSearch.Text = "검색...";
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
-            this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
-            this.txtSearch.Leave += new System.EventHandler(this.txtSearch_Leave);
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.chkUseCache, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lstBooks, 0, 6);
-            this.tableLayoutPanel2.Controls.Add(this.txtSearch, 0, 5);
-            this.tableLayoutPanel2.Controls.Add(this.cmbBibleSource, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.cmbBibleVersion, 0, 3);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 7;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(151, 249);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // chkUseCache
-            // 
-            this.chkUseCache.AutoSize = true;
-            this.chkUseCache.Location = new System.Drawing.Point(3, 3);
-            this.chkUseCache.Name = "chkUseCache";
-            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
-            this.chkUseCache.TabIndex = 1;
-            this.chkUseCache.Text = "오프라인 캐시 사용";
-            this.chkUseCache.UseVisualStyleBackColor = true;
-            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(547, 54);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel2);
-            this.splitContainer1.Panel1MinSize = 0;
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer1.Panel2MinSize = 0;
-            this.splitContainer1.Size = new System.Drawing.Size(334, 249);
-            this.splitContainer1.SplitterDistance = 151;
-            this.splitContainer1.TabIndex = 2;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(80, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(158, 20);
-            this.comboBox1.TabIndex = 1;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(79, 58);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(158, 20);
-            this.comboBox2.TabIndex = 3;
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.biblesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(17, 95);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(220, 112);
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.biblesListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.biblesListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.biblesListView.HideSelection = false;
+            this.biblesListView.Location = new System.Drawing.Point(0, 0);
+            this.biblesListView.Margin = new System.Windows.Forms.Padding(0);
+            this.biblesListView.Name = "biblesListView";
+            this.biblesListView.Size = new System.Drawing.Size(225, 118);
+            this.biblesListView.TabIndex = 4;
+            this.biblesListView.UseCompatibleStateImageBehavior = false;
+            this.biblesListView.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -584,231 +367,519 @@
             this.columnHeader3.Text = "성경";
             this.columnHeader3.Width = 80;
             // 
-            // iconPictureBox1
+            // biblesButtonTableLayoutPanel
             // 
-            this.iconPictureBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.iconPictureBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Bible;
-            this.iconPictureBox1.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox1.IconSize = 24;
-            this.iconPictureBox1.Location = new System.Drawing.Point(17, 54);
-            this.iconPictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.iconPictureBox1.Name = "iconPictureBox1";
-            this.iconPictureBox1.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.iconPictureBox1.Size = new System.Drawing.Size(24, 24);
-            this.iconPictureBox1.TabIndex = 5;
-            this.iconPictureBox1.TabStop = false;
+            biblesButtonTableLayoutPanel.ColumnCount = 5;
+            biblesButtonTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            biblesButtonTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            biblesButtonTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            biblesButtonTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            biblesButtonTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            biblesButtonTableLayoutPanel.Controls.Add(this.biblesUpIconButton, 0, 0);
+            biblesButtonTableLayoutPanel.Controls.Add(this.biblesDownIconButton, 1, 0);
+            biblesButtonTableLayoutPanel.Controls.Add(this.biblesAddIconButton, 3, 0);
+            biblesButtonTableLayoutPanel.Controls.Add(this.biblesRemoveIconButton, 4, 0);
+            biblesButtonTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            biblesButtonTableLayoutPanel.Location = new System.Drawing.Point(0, 121);
+            biblesButtonTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            biblesButtonTableLayoutPanel.Name = "biblesButtonTableLayoutPanel";
+            biblesButtonTableLayoutPanel.RowCount = 1;
+            biblesButtonTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            biblesButtonTableLayoutPanel.Size = new System.Drawing.Size(225, 32);
+            biblesButtonTableLayoutPanel.TabIndex = 5;
             // 
-            // iconPictureBox3
+            // biblesUpIconButton
             // 
-            this.iconPictureBox3.BackColor = System.Drawing.SystemColors.Window;
-            this.iconPictureBox3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox3.IconChar = FontAwesome.Sharp.IconChar.Image;
-            this.iconPictureBox3.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox3.IconSize = 24;
-            this.iconPictureBox3.Location = new System.Drawing.Point(26, 279);
-            this.iconPictureBox3.Margin = new System.Windows.Forms.Padding(0);
-            this.iconPictureBox3.Name = "iconPictureBox3";
-            this.iconPictureBox3.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.iconPictureBox3.Size = new System.Drawing.Size(24, 24);
-            this.iconPictureBox3.TabIndex = 5;
-            this.iconPictureBox3.TabStop = false;
+            this.biblesUpIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.biblesUpIconButton.IconChar = FontAwesome.Sharp.IconChar.AngleUp;
+            this.biblesUpIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesUpIconButton.IconSize = 24;
+            this.biblesUpIconButton.Location = new System.Drawing.Point(0, 0);
+            this.biblesUpIconButton.Margin = new System.Windows.Forms.Padding(0);
+            this.biblesUpIconButton.Name = "biblesUpIconButton";
+            this.biblesUpIconButton.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.biblesUpIconButton.Rotation = 0D;
+            this.biblesUpIconButton.Size = new System.Drawing.Size(32, 32);
+            this.biblesUpIconButton.TabIndex = 6;
+            this.biblesUpIconButton.UseVisualStyleBackColor = true;
             // 
-            // iconPictureBox2
+            // biblesDownIconButton
             // 
-            this.iconPictureBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.iconPictureBox2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox2.IconChar = FontAwesome.Sharp.IconChar.Database;
-            this.iconPictureBox2.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconPictureBox2.IconSize = 24;
-            this.iconPictureBox2.Location = new System.Drawing.Point(17, 19);
-            this.iconPictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.iconPictureBox2.Name = "iconPictureBox2";
-            this.iconPictureBox2.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.iconPictureBox2.Size = new System.Drawing.Size(24, 24);
-            this.iconPictureBox2.TabIndex = 5;
-            this.iconPictureBox2.TabStop = false;
+            this.biblesDownIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.biblesDownIconButton.IconChar = FontAwesome.Sharp.IconChar.AngleDown;
+            this.biblesDownIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesDownIconButton.IconSize = 24;
+            this.biblesDownIconButton.Location = new System.Drawing.Point(32, 0);
+            this.biblesDownIconButton.Margin = new System.Windows.Forms.Padding(0);
+            this.biblesDownIconButton.Name = "biblesDownIconButton";
+            this.biblesDownIconButton.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.biblesDownIconButton.Rotation = 0D;
+            this.biblesDownIconButton.Size = new System.Drawing.Size(32, 32);
+            this.biblesDownIconButton.TabIndex = 6;
+            this.biblesDownIconButton.UseVisualStyleBackColor = true;
             // 
-            // iconButton1
+            // biblesAddIconButton
             // 
-            this.iconButton1.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.AngleUp;
-            this.iconButton1.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton1.IconSize = 24;
-            this.iconButton1.Location = new System.Drawing.Point(18, 210);
-            this.iconButton1.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton1.Name = "iconButton1";
-            this.iconButton1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton1.Rotation = 0D;
-            this.iconButton1.Size = new System.Drawing.Size(32, 32);
-            this.iconButton1.TabIndex = 6;
-            this.iconButton1.UseVisualStyleBackColor = true;
+            this.biblesAddIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.biblesAddIconButton.IconChar = FontAwesome.Sharp.IconChar.Plus;
+            this.biblesAddIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesAddIconButton.IconSize = 24;
+            this.biblesAddIconButton.Location = new System.Drawing.Point(161, 0);
+            this.biblesAddIconButton.Margin = new System.Windows.Forms.Padding(0);
+            this.biblesAddIconButton.Name = "biblesAddIconButton";
+            this.biblesAddIconButton.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.biblesAddIconButton.Rotation = 0D;
+            this.biblesAddIconButton.Size = new System.Drawing.Size(32, 32);
+            this.biblesAddIconButton.TabIndex = 6;
+            this.biblesAddIconButton.UseVisualStyleBackColor = true;
             // 
-            // iconButton2
+            // biblesRemoveIconButton
             // 
-            this.iconButton2.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.AngleDown;
-            this.iconButton2.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton2.IconSize = 24;
-            this.iconButton2.Location = new System.Drawing.Point(50, 210);
-            this.iconButton2.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton2.Name = "iconButton2";
-            this.iconButton2.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton2.Rotation = 0D;
-            this.iconButton2.Size = new System.Drawing.Size(32, 32);
-            this.iconButton2.TabIndex = 6;
-            this.iconButton2.UseVisualStyleBackColor = true;
+            this.biblesRemoveIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.biblesRemoveIconButton.IconChar = FontAwesome.Sharp.IconChar.Minus;
+            this.biblesRemoveIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesRemoveIconButton.IconSize = 24;
+            this.biblesRemoveIconButton.Location = new System.Drawing.Point(193, 0);
+            this.biblesRemoveIconButton.Margin = new System.Windows.Forms.Padding(0);
+            this.biblesRemoveIconButton.Name = "biblesRemoveIconButton";
+            this.biblesRemoveIconButton.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.biblesRemoveIconButton.Rotation = 0D;
+            this.biblesRemoveIconButton.Size = new System.Drawing.Size(32, 32);
+            this.biblesRemoveIconButton.TabIndex = 6;
+            this.biblesRemoveIconButton.UseVisualStyleBackColor = true;
             // 
-            // iconButton3
+            // bibleTableLayoutPanel
             // 
-            this.iconButton3.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton3.IconChar = FontAwesome.Sharp.IconChar.Plus;
-            this.iconButton3.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton3.IconSize = 24;
-            this.iconButton3.Location = new System.Drawing.Point(174, 211);
-            this.iconButton3.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton3.Name = "iconButton3";
-            this.iconButton3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton3.Rotation = 0D;
-            this.iconButton3.Size = new System.Drawing.Size(32, 32);
-            this.iconButton3.TabIndex = 6;
-            this.iconButton3.UseVisualStyleBackColor = true;
+            bibleTableLayoutPanel.ColumnCount = 3;
+            bibleTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            bibleTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            bibleTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            bibleTableLayoutPanel.Controls.Add(this.bibleComboBox, 2, 0);
+            bibleTableLayoutPanel.Controls.Add(bibleIconPictureBox, 0, 0);
+            bibleTableLayoutPanel.Controls.Add(bibleLabel, 1, 0);
+            bibleTableLayoutPanel.Location = new System.Drawing.Point(0, 27);
+            bibleTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            bibleTableLayoutPanel.Name = "bibleTableLayoutPanel";
+            bibleTableLayoutPanel.RowCount = 1;
+            bibleTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            bibleTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            bibleTableLayoutPanel.Size = new System.Drawing.Size(225, 24);
+            bibleTableLayoutPanel.TabIndex = 0;
             // 
-            // iconButton4
+            // bibleComboBox
             // 
-            this.iconButton4.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.iconButton4.IconChar = FontAwesome.Sharp.IconChar.Minus;
-            this.iconButton4.IconColor = System.Drawing.SystemColors.ControlText;
-            this.iconButton4.IconSize = 24;
-            this.iconButton4.Location = new System.Drawing.Point(206, 211);
-            this.iconButton4.Margin = new System.Windows.Forms.Padding(0);
-            this.iconButton4.Name = "iconButton4";
-            this.iconButton4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.iconButton4.Rotation = 0D;
-            this.iconButton4.Size = new System.Drawing.Size(32, 32);
-            this.iconButton4.TabIndex = 6;
-            this.iconButton4.UseVisualStyleBackColor = true;
+            this.bibleComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bibleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.bibleComboBox.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.bibleComboBox.FormattingEnabled = true;
+            this.bibleComboBox.Location = new System.Drawing.Point(64, 2);
+            this.bibleComboBox.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.bibleComboBox.Name = "bibleComboBox";
+            this.bibleComboBox.Size = new System.Drawing.Size(161, 20);
+            this.bibleComboBox.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.bibleComboBox, "성경 선택");
+            this.bibleComboBox.SelectedIndexChanged += new System.EventHandler(this.cmbBibleVersion_SelectedIndexChanged);
             // 
-            // label1
+            // bibleIconPictureBox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "소스";
+            bibleIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            bibleIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
+            bibleIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
+            bibleIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Bible;
+            bibleIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            bibleIconPictureBox.IconSize = 24;
+            bibleIconPictureBox.Location = new System.Drawing.Point(0, 0);
+            bibleIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            bibleIconPictureBox.Name = "bibleIconPictureBox";
+            bibleIconPictureBox.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            bibleIconPictureBox.Size = new System.Drawing.Size(24, 24);
+            bibleIconPictureBox.TabIndex = 5;
+            bibleIconPictureBox.TabStop = false;
             // 
-            // label2
+            // bibleLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 12);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "성경";
+            bibleLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            bibleLabel.AutoSize = true;
+            bibleLabel.Location = new System.Drawing.Point(24, 6);
+            bibleLabel.Margin = new System.Windows.Forms.Padding(0);
+            bibleLabel.Name = "bibleLabel";
+            bibleLabel.Size = new System.Drawing.Size(29, 12);
+            bibleLabel.TabIndex = 7;
+            bibleLabel.Text = "성경";
             // 
-            // label3
+            // templateChaperNumberComboBox
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(55, 287);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "템플릿";
+            this.templateChaperNumberComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templateChaperNumberComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.templateChaperNumberComboBox.Items.AddRange(new object[] {
+            "장 번호 표시",
+            "각 장의 첫 절에만 표시"});
+            this.templateChaperNumberComboBox.Location = new System.Drawing.Point(0, 294);
+            this.templateChaperNumberComboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.templateChaperNumberComboBox.Name = "templateChaperNumberComboBox";
+            this.templateChaperNumberComboBox.Size = new System.Drawing.Size(225, 20);
+            this.templateChaperNumberComboBox.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.templateChaperNumberComboBox, "장 번호 표시 설정");
+            this.templateChaperNumberComboBox.SelectedIndexChanged += new System.EventHandler(this.cmbChapNum_SelectedIndexChanged);
             // 
-            // comboBox3
+            // sourceTableLayoutPanel
             // 
-            this.comboBox3.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(127, 279);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(110, 20);
-            this.comboBox3.TabIndex = 9;
+            sourceTableLayoutPanel.ColumnCount = 3;
+            sourceTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            sourceTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            sourceTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            sourceTableLayoutPanel.Controls.Add(sourceLabel, 1, 0);
+            sourceTableLayoutPanel.Controls.Add(this.sourceComboBox, 2, 0);
+            sourceTableLayoutPanel.Controls.Add(sourceIconPictureBox, 0, 0);
+            sourceTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            sourceTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            sourceTableLayoutPanel.Name = "sourceTableLayoutPanel";
+            sourceTableLayoutPanel.RowCount = 1;
+            sourceTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            sourceTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            sourceTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            sourceTableLayoutPanel.Size = new System.Drawing.Size(225, 24);
+            sourceTableLayoutPanel.TabIndex = 0;
             // 
-            // multiPanelPageMake
+            // sourceLabel
             // 
-            this.multiPanelPageMake.Controls.Add(this.comboBox6);
-            this.multiPanelPageMake.Controls.Add(this.comboBox5);
-            this.multiPanelPageMake.Controls.Add(this.comboBox4);
-            this.multiPanelPageMake.Controls.Add(this.comboBox3);
-            this.multiPanelPageMake.Controls.Add(this.label3);
-            this.multiPanelPageMake.Controls.Add(this.label2);
-            this.multiPanelPageMake.Controls.Add(this.label1);
-            this.multiPanelPageMake.Controls.Add(this.iconButton4);
-            this.multiPanelPageMake.Controls.Add(this.iconButton3);
-            this.multiPanelPageMake.Controls.Add(this.iconButton2);
-            this.multiPanelPageMake.Controls.Add(this.iconButton1);
-            this.multiPanelPageMake.Controls.Add(this.iconPictureBox2);
-            this.multiPanelPageMake.Controls.Add(this.iconPictureBox3);
-            this.multiPanelPageMake.Controls.Add(this.iconPictureBox1);
-            this.multiPanelPageMake.Controls.Add(this.listView1);
-            this.multiPanelPageMake.Controls.Add(this.comboBox2);
-            this.multiPanelPageMake.Controls.Add(this.comboBox1);
-            this.multiPanelPageMake.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.multiPanelPageMake.Location = new System.Drawing.Point(0, 0);
-            this.multiPanelPageMake.Name = "multiPanelPageMake";
-            this.multiPanelPageMake.Size = new System.Drawing.Size(479, 385);
-            this.multiPanelPageMake.TabIndex = 0;
+            sourceLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            sourceLabel.AutoSize = true;
+            sourceLabel.Location = new System.Drawing.Point(24, 6);
+            sourceLabel.Margin = new System.Windows.Forms.Padding(0);
+            sourceLabel.Name = "sourceLabel";
+            sourceLabel.Size = new System.Drawing.Size(29, 12);
+            sourceLabel.TabIndex = 7;
+            sourceLabel.Text = "소스";
             // 
-            // comboBox4
+            // sourceComboBox
             // 
-            this.comboBox4.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(26, 310);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(212, 20);
-            this.comboBox4.TabIndex = 10;
+            this.sourceComboBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.sourceComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sourceComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sourceComboBox.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sourceComboBox.FormattingEnabled = true;
+            this.sourceComboBox.Location = new System.Drawing.Point(64, 2);
+            this.sourceComboBox.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.sourceComboBox.Name = "sourceComboBox";
+            this.sourceComboBox.Size = new System.Drawing.Size(161, 20);
+            this.sourceComboBox.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.sourceComboBox, "성경 소스 선택");
+            this.sourceComboBox.SelectedIndexChanged += new System.EventHandler(this.cmbBibleSource_SelectedIndexChanged);
             // 
-            // comboBox5
+            // sourceIconPictureBox
             // 
-            this.comboBox5.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(26, 336);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(211, 20);
-            this.comboBox5.TabIndex = 11;
+            sourceIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            sourceIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
+            sourceIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
+            sourceIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Database;
+            sourceIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            sourceIconPictureBox.IconSize = 24;
+            sourceIconPictureBox.Location = new System.Drawing.Point(0, 0);
+            sourceIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            sourceIconPictureBox.Name = "sourceIconPictureBox";
+            sourceIconPictureBox.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            sourceIconPictureBox.Size = new System.Drawing.Size(24, 24);
+            sourceIconPictureBox.TabIndex = 5;
+            sourceIconPictureBox.TabStop = false;
             // 
-            // comboBox6
+            // templateShortTitleComboBox
             // 
-            this.comboBox6.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(26, 362);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(211, 20);
-            this.comboBox6.TabIndex = 12;
+            this.templateShortTitleComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templateShortTitleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.templateShortTitleComboBox.Items.AddRange(new object[] {
+            "짧은 제목 표시",
+            "각 장의 첫 절에만 표시"});
+            this.templateShortTitleComboBox.Location = new System.Drawing.Point(0, 269);
+            this.templateShortTitleComboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.templateShortTitleComboBox.Name = "templateShortTitleComboBox";
+            this.templateShortTitleComboBox.Size = new System.Drawing.Size(225, 20);
+            this.templateShortTitleComboBox.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.templateShortTitleComboBox, "짧은 제목 표시 설정");
+            this.templateShortTitleComboBox.SelectedIndexChanged += new System.EventHandler(this.cmbShortTitle_SelectedIndexChanged);
+            // 
+            // templateLongTitleComboBox
+            // 
+            this.templateLongTitleComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templateLongTitleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.templateLongTitleComboBox.Items.AddRange(new object[] {
+            "긴 제목 표시",
+            "각 장의 첫 절에만 표시"});
+            this.templateLongTitleComboBox.Location = new System.Drawing.Point(0, 244);
+            this.templateLongTitleComboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.templateLongTitleComboBox.Name = "templateLongTitleComboBox";
+            this.templateLongTitleComboBox.Size = new System.Drawing.Size(225, 20);
+            this.templateLongTitleComboBox.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.templateLongTitleComboBox, "긴 제목 표시 설정");
+            this.templateLongTitleComboBox.SelectedIndexChanged += new System.EventHandler(this.cmbLongTitle_SelectedIndexChanged);
+            // 
+            // templateTableLayoutPanel
+            // 
+            templateTableLayoutPanel.ColumnCount = 3;
+            templateTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            templateTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            templateTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            templateTableLayoutPanel.Controls.Add(this.templateLabel, 1, 0);
+            templateTableLayoutPanel.Controls.Add(this.templateComboBox, 2, 0);
+            templateTableLayoutPanel.Controls.Add(templateIconPictureBox, 0, 0);
+            templateTableLayoutPanel.Location = new System.Drawing.Point(0, 217);
+            templateTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            templateTableLayoutPanel.Name = "templateTableLayoutPanel";
+            templateTableLayoutPanel.RowCount = 1;
+            templateTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            templateTableLayoutPanel.Size = new System.Drawing.Size(225, 24);
+            templateTableLayoutPanel.TabIndex = 14;
+            // 
+            // templateLabel
+            // 
+            this.templateLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.templateLabel.AutoSize = true;
+            this.templateLabel.Location = new System.Drawing.Point(24, 6);
+            this.templateLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.templateLabel.Name = "templateLabel";
+            this.templateLabel.Size = new System.Drawing.Size(41, 12);
+            this.templateLabel.TabIndex = 8;
+            this.templateLabel.Text = "템플릿";
+            // 
+            // templateComboBox
+            // 
+            this.templateComboBox.BackColor = System.Drawing.SystemColors.Window;
+            this.templateComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.templateComboBox.FormattingEnabled = true;
+            this.templateComboBox.Location = new System.Drawing.Point(84, 2);
+            this.templateComboBox.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.templateComboBox.Name = "templateComboBox";
+            this.templateComboBox.Size = new System.Drawing.Size(141, 20);
+            this.templateComboBox.TabIndex = 9;
+            // 
+            // templateIconPictureBox
+            // 
+            templateIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            templateIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
+            templateIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
+            templateIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Image;
+            templateIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            templateIconPictureBox.IconSize = 24;
+            templateIconPictureBox.Location = new System.Drawing.Point(0, 0);
+            templateIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            templateIconPictureBox.Name = "templateIconPictureBox";
+            templateIconPictureBox.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            templateIconPictureBox.Size = new System.Drawing.Size(24, 24);
+            templateIconPictureBox.TabIndex = 5;
+            templateIconPictureBox.TabStop = false;
+            // 
+            // makeRightTableLayoutPanel
+            // 
+            makeRightTableLayoutPanel.ColumnCount = 1;
+            makeRightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            makeRightTableLayoutPanel.Controls.Add(this.booksSearchTextBox, 0, 0);
+            makeRightTableLayoutPanel.Controls.Add(this.booksListView, 0, 1);
+            makeRightTableLayoutPanel.Controls.Add(this.makeFragmentCheckBox, 0, 5);
+            makeRightTableLayoutPanel.Controls.Add(this.makeButton, 0, 6);
+            makeRightTableLayoutPanel.Controls.Add(this.makeKeywordTextBox, 0, 3);
+            makeRightTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            makeRightTableLayoutPanel.Location = new System.Drawing.Point(0, 10);
+            makeRightTableLayoutPanel.Name = "makeRightTableLayoutPanel";
+            makeRightTableLayoutPanel.RowCount = 7;
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            makeRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            makeRightTableLayoutPanel.Size = new System.Drawing.Size(228, 315);
+            makeRightTableLayoutPanel.TabIndex = 1;
+            // 
+            // booksSearchTextBox
+            // 
+            this.booksSearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.booksSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.booksSearchTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.booksSearchTextBox.Location = new System.Drawing.Point(0, 0);
+            this.booksSearchTextBox.Margin = new System.Windows.Forms.Padding(0);
+            this.booksSearchTextBox.Name = "booksSearchTextBox";
+            this.booksSearchTextBox.Size = new System.Drawing.Size(228, 22);
+            this.booksSearchTextBox.TabIndex = 0;
+            this.booksSearchTextBox.Text = "검색...";
+            this.booksSearchTextBox.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.booksSearchTextBox.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.booksSearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+            this.booksSearchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
+            this.booksSearchTextBox.Leave += new System.EventHandler(this.txtSearch_Leave);
+            // 
+            // booksListView
+            // 
+            this.booksListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.booksListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.booksListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.title,
+            this.length,
+            this.columnHeader4});
+            this.booksListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.booksListView.FullRowSelect = true;
+            this.booksListView.GridLines = true;
+            this.booksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.booksListView.HideSelection = false;
+            this.booksListView.Location = new System.Drawing.Point(0, 23);
+            this.booksListView.Margin = new System.Windows.Forms.Padding(0);
+            this.booksListView.Name = "booksListView";
+            this.booksListView.Size = new System.Drawing.Size(228, 192);
+            this.booksListView.TabIndex = 0;
+            this.booksListView.TabStop = false;
+            this.booksListView.UseCompatibleStateImageBehavior = false;
+            this.booksListView.View = System.Windows.Forms.View.Details;
+            this.booksListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lstBooks_MouseClick);
+            // 
+            // title
+            // 
+            this.title.Text = "긴 제목";
+            this.title.Width = 98;
+            // 
+            // length
+            // 
+            this.length.Text = "장수";
+            this.length.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.length.Width = 10;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "키워드";
+            // 
+            // makeFragmentCheckBox
+            // 
+            this.makeFragmentCheckBox.AutoSize = true;
+            this.makeFragmentCheckBox.Location = new System.Drawing.Point(3, 267);
+            this.makeFragmentCheckBox.Name = "makeFragmentCheckBox";
+            this.makeFragmentCheckBox.Size = new System.Drawing.Size(128, 16);
+            this.makeFragmentCheckBox.TabIndex = 5;
+            this.makeFragmentCheckBox.Text = "장별로 PPT 나누기";
+            this.makeFragmentCheckBox.UseVisualStyleBackColor = true;
+            this.makeFragmentCheckBox.CheckedChanged += new System.EventHandler(this.chkFragment_CheckedChanged);
+            // 
+            // makeButton
+            // 
+            this.makeButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.makeButton.Location = new System.Drawing.Point(0, 286);
+            this.makeButton.Margin = new System.Windows.Forms.Padding(0);
+            this.makeButton.Name = "makeButton";
+            this.makeButton.Size = new System.Drawing.Size(228, 29);
+            this.makeButton.TabIndex = 6;
+            this.makeButton.Text = "PPT 만들기";
+            this.makeButton.UseVisualStyleBackColor = true;
+            this.makeButton.Click += new System.EventHandler(this.btnMake_Click);
+            // 
+            // makeKeywordTextBox
+            // 
+            this.makeKeywordTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.makeKeywordTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.makeKeywordTextBox.Location = new System.Drawing.Point(0, 225);
+            this.makeKeywordTextBox.Margin = new System.Windows.Forms.Padding(0);
+            this.makeKeywordTextBox.Name = "makeKeywordTextBox";
+            this.makeKeywordTextBox.Size = new System.Drawing.Size(228, 29);
+            this.makeKeywordTextBox.TabIndex = 4;
+            this.makeKeywordTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyword_KeyPress);
+            this.makeKeywordTextBox.MouseHover += new System.EventHandler(this.txtKeyword_MouseHover);
+            // 
+            // historyMultiPanelPage
+            // 
+            this.historyMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.historyMultiPanelPage.Name = "historyMultiPanelPage";
+            this.historyMultiPanelPage.Size = new System.Drawing.Size(479, 319);
+            this.historyMultiPanelPage.TabIndex = 0;
+            // 
+            // templatesMultiPanelPage
+            // 
+            this.templatesMultiPanelPage.Controls.Add(this.btnGithub);
+            this.templatesMultiPanelPage.Controls.Add(this.btnTemplate);
+            this.templatesMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templatesMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.templatesMultiPanelPage.Name = "templatesMultiPanelPage";
+            this.templatesMultiPanelPage.Size = new System.Drawing.Size(479, 319);
+            this.templatesMultiPanelPage.TabIndex = 0;
+            // 
+            // btnGithub
+            // 
+            this.btnGithub.BackgroundImage = global::Bible2PPT.Properties.Resources.GitHub_Mark_32px;
+            this.btnGithub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnGithub.Location = new System.Drawing.Point(143, 203);
+            this.btnGithub.Margin = new System.Windows.Forms.Padding(0);
+            this.btnGithub.Name = "btnGithub";
+            this.btnGithub.Size = new System.Drawing.Size(29, 29);
+            this.btnGithub.TabIndex = 0;
+            this.btnGithub.UseVisualStyleBackColor = true;
+            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
+            // 
+            // btnTemplate
+            // 
+            this.btnTemplate.Location = new System.Drawing.Point(88, 96);
+            this.btnTemplate.Margin = new System.Windows.Forms.Padding(0);
+            this.btnTemplate.Name = "btnTemplate";
+            this.btnTemplate.Size = new System.Drawing.Size(124, 29);
+            this.btnTemplate.TabIndex = 0;
+            this.btnTemplate.Text = "템플릿 열기";
+            this.btnTemplate.UseVisualStyleBackColor = true;
+            this.btnTemplate.Click += new System.EventHandler(this.btnTemplate_Click);
+            this.btnTemplate.MouseHover += new System.EventHandler(this.btnTemplate_MouseHover);
+            // 
+            // settingsMultiPanelPage
+            // 
+            this.settingsMultiPanelPage.Controls.Add(this.chkUseCache);
+            this.settingsMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.settingsMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.settingsMultiPanelPage.Name = "settingsMultiPanelPage";
+            this.settingsMultiPanelPage.Size = new System.Drawing.Size(479, 319);
+            this.settingsMultiPanelPage.TabIndex = 0;
+            // 
+            // chkUseCache
+            // 
+            this.chkUseCache.AutoSize = true;
+            this.chkUseCache.Location = new System.Drawing.Point(33, 33);
+            this.chkUseCache.Name = "chkUseCache";
+            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
+            this.chkUseCache.TabIndex = 1;
+            this.chkUseCache.Text = "오프라인 캐시 사용";
+            this.chkUseCache.UseVisualStyleBackColor = true;
+            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(893, 385);
-            this.Controls.Add(tableLayoutPanel3);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(540, 335);
+            this.Controls.Add(mainTableLayoutPanel);
             this.Name = "MainForm";
             this.Text = "성경2PPT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
-            tableLayoutPanel3.ResumeLayout(false);
+            mainTableLayoutPanel.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
-            this.multiPanelMain.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
-            this.multiPanelPageMake.ResumeLayout(false);
-            this.multiPanelPageMake.PerformLayout();
+            this.mainMultiPanel.ResumeLayout(false);
+            this.makeMultiPanelPage.ResumeLayout(false);
+            this.makeSplitContainer.Panel1.ResumeLayout(false);
+            this.makeSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.makeSplitContainer)).EndInit();
+            this.makeSplitContainer.ResumeLayout(false);
+            makeLeftTableLayoutPanel.ResumeLayout(false);
+            biblesTableLayoutPanel.ResumeLayout(false);
+            biblesButtonTableLayoutPanel.ResumeLayout(false);
+            bibleTableLayoutPanel.ResumeLayout(false);
+            bibleTableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(bibleIconPictureBox)).EndInit();
+            sourceTableLayoutPanel.ResumeLayout(false);
+            sourceTableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(sourceIconPictureBox)).EndInit();
+            templateTableLayoutPanel.ResumeLayout(false);
+            templateTableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(templateIconPictureBox)).EndInit();
+            makeRightTableLayoutPanel.ResumeLayout(false);
+            makeRightTableLayoutPanel.PerformLayout();
+            this.templatesMultiPanelPage.ResumeLayout(false);
+            this.settingsMultiPanelPage.ResumeLayout(false);
+            this.settingsMultiPanelPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -816,53 +887,42 @@
         #endregion
 
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ComboBox cmbShortTitle;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.ComboBox templateShortTitleComboBox;
         private System.Windows.Forms.Button btnTemplate;
-        private System.Windows.Forms.TextBox txtKeyword;
-        private System.Windows.Forms.ComboBox cmbChapNum;
-        private System.Windows.Forms.Button btnMake;
-        private System.Windows.Forms.ComboBox cmbLongTitle;
+        private System.Windows.Forms.TextBox makeKeywordTextBox;
+        private System.Windows.Forms.ComboBox templateChaperNumberComboBox;
+        private System.Windows.Forms.Button makeButton;
+        private System.Windows.Forms.ComboBox templateLongTitleComboBox;
         private System.Windows.Forms.ColumnHeader title;
         private System.Windows.Forms.ColumnHeader length;
-        private System.Windows.Forms.ListView lstBooks;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.CheckBox chkFragment;
+        private System.Windows.Forms.ListView booksListView;
+        private System.Windows.Forms.TextBox booksSearchTextBox;
+        private System.Windows.Forms.CheckBox makeFragmentCheckBox;
         private System.Windows.Forms.Button btnGithub;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ComboBox cmbBibleSource;
-        private System.Windows.Forms.ComboBox cmbBibleVersion;
+        private System.Windows.Forms.ComboBox sourceComboBox;
+        private System.Windows.Forms.ComboBox bibleComboBox;
         private System.Windows.Forms.CheckBox chkUseCache;
-        private FontAwesome.Sharp.IconButton menuMake;
-        private MultiPanel multiPanelMain;
-        private MultiPanelPage multiPanelPageHistory;
-        private MultiPanelPage multiPanelPageTemplate;
-        private MultiPanelPage multiPanelPageSetting;
-        private FontAwesome.Sharp.IconButton menuHistory;
-        private FontAwesome.Sharp.IconButton menuSetting;
-        private FontAwesome.Sharp.IconButton menuTemplate;
-        private MultiPanelPage multiPanelPageMake;
-        private System.Windows.Forms.ComboBox comboBox6;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private FontAwesome.Sharp.IconButton iconButton4;
-        private FontAwesome.Sharp.IconButton iconButton3;
-        private FontAwesome.Sharp.IconButton iconButton2;
-        private FontAwesome.Sharp.IconButton iconButton1;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox2;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox3;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
-        private System.Windows.Forms.ListView listView1;
+        private FontAwesome.Sharp.IconButton makeNav;
+        private MultiPanel mainMultiPanel;
+        private MultiPanelPage historyMultiPanelPage;
+        private MultiPanelPage templatesMultiPanelPage;
+        private MultiPanelPage settingsMultiPanelPage;
+        private FontAwesome.Sharp.IconButton historyNav;
+        private FontAwesome.Sharp.IconButton settingsNav;
+        private FontAwesome.Sharp.IconButton templatesNav;
+        private MultiPanelPage makeMultiPanelPage;
+        private System.Windows.Forms.ComboBox templateComboBox;
+        private System.Windows.Forms.Label templateLabel;
+        private FontAwesome.Sharp.IconButton biblesRemoveIconButton;
+        private FontAwesome.Sharp.IconButton biblesAddIconButton;
+        private FontAwesome.Sharp.IconButton biblesDownIconButton;
+        private FontAwesome.Sharp.IconButton biblesUpIconButton;
+        private System.Windows.Forms.ListView biblesListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.SplitContainer makeSplitContainer;
     }
 }
 

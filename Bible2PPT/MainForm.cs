@@ -18,16 +18,16 @@ namespace Bible2PPT
 
         private Control[] CriticalControls => new Control[]
         {
-            cmbBibleSource,
-            cmbBibleVersion,
-            lstBooks,
-            txtSearch,
-            cmbChapNum,
-            cmbLongTitle,
-            cmbShortTitle,
-            txtKeyword,
-            btnMake,
-            chkFragment,
+            sourceComboBox,
+            bibleComboBox,
+            booksListView,
+            booksSearchTextBox,
+            templateChaperNumberComboBox,
+            templateLongTitleComboBox,
+            templateShortTitleComboBox,
+            makeKeywordTextBox,
+            makeButton,
+            makeFragmentCheckBox,
             chkUseCache,
         };
 
@@ -44,43 +44,44 @@ namespace Bible2PPT
             }
 
             InitializeComponent();
+            makeSplitContainer.SplitterWidth = 13;
 
-            cmbLongTitle.SelectedIndex = (int) AppConfig.Context.ShowLongTitle;
-            cmbShortTitle.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
-            cmbChapNum.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
-            chkFragment.Checked = AppConfig.Context.SeperateByChapter;
+            templateLongTitleComboBox.SelectedIndex = (int) AppConfig.Context.ShowLongTitle;
+            templateShortTitleComboBox.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
+            templateChaperNumberComboBox.SelectedIndex = (int) AppConfig.Context.ShowChapterNumber;
+            makeFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
             chkUseCache.Checked = AppConfig.Context.UseCache;
 
-            cmbBibleSource.Items.AddRange(BibleSource.AvailableSources);
-            cmbBibleSource.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
+            sourceComboBox.Items.AddRange(BibleSource.AvailableSources);
+            sourceComboBox.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
         }
 
         private async void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var source = cmbBibleSource.SelectedItem as BibleSource;
+            var source = sourceComboBox.SelectedItem as BibleSource;
             if (source == null)
             {
-                cmbBibleVersion.Tag = null;
-                cmbBibleVersion.Items.Clear();
-                lstBooks.Tag = null;
-                lstBooks.Items.Clear();
+                bibleComboBox.Tag = null;
+                bibleComboBox.Items.Clear();
+                booksListView.Tag = null;
+                booksListView.Items.Clear();
                 return;
             }
 
             AppConfig.Context.BibleSourceId = source.Id;
 
             ToggleCriticalControls(false);
-            cmbBibleVersion.Tag = null;
-            cmbBibleVersion.Items.Clear();
-            lstBooks.Tag = null;
-            lstBooks.Items.Clear();
+            bibleComboBox.Tag = null;
+            bibleComboBox.Items.Clear();
+            booksListView.Tag = null;
+            booksListView.Items.Clear();
 
             try
             {
                 var bibles = await source.GetBiblesAsync();
-                cmbBibleVersion.Tag = bibles;
-                cmbBibleVersion.Items.AddRange(bibles.ToArray());
-                cmbBibleVersion.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
+                bibleComboBox.Tag = bibles;
+                bibleComboBox.Items.AddRange(bibles.ToArray());
+                bibleComboBox.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
             }
             finally
             {
@@ -90,7 +91,7 @@ namespace Bible2PPT
 
         private async void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var bible = cmbBibleVersion.SelectedItem as Bibles.Bible;
+            var bible = bibleComboBox.SelectedItem as Bibles.Bible;
             if (bible == null)
             {
                 ToggleCriticalControls(true);
@@ -100,16 +101,16 @@ namespace Bible2PPT
             AppConfig.Context.BibleVersionId = bible.Id;
 
             ToggleCriticalControls(false);
-            lstBooks.Tag = null;
-            lstBooks.Items.Clear();
+            booksListView.Tag = null;
+            booksListView.Items.Clear();
 
             try
             {
                 var books = await bible.Source.GetBooksAsync(bible);
-                lstBooks.Tag = books;
+                booksListView.Tag = books;
                 foreach (var book in books)
                 {
-                    var item = lstBooks.Items.Add(book.Title);
+                    var item = booksListView.Items.Add(book.Title);
                     item.SubItems.Add(book.ChapterCount.ToString());
                     item.Tag = book;
                 }
@@ -135,19 +136,19 @@ namespace Bible2PPT
 
         private void txtSearch_Enter(object sender, EventArgs e)
         {
-            txtSearch.Clear();
+            booksSearchTextBox.Clear();
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtSearch.Text.Length == 0)
+            if (booksSearchTextBox.Text.Length == 0)
             {
                 return;
             }
 
-            foreach (ListViewItem bookItem in lstBooks.Items)
+            foreach (ListViewItem bookItem in booksListView.Items)
             {
-                if (bookItem.Text.StartsWith(txtSearch.Text))
+                if (bookItem.Text.StartsWith(booksSearchTextBox.Text))
                 {
                     HighlightBookItem(bookItem);
                     return;
@@ -163,13 +164,13 @@ namespace Bible2PPT
                     e.SuppressKeyPress = true;
                     try
                     {
-                        HighlightBookItem(lstBooks.Items[lstBooks.SelectedIndices[0] - 1]);
+                        HighlightBookItem(booksListView.Items[booksListView.SelectedIndices[0] - 1]);
                     }
                     catch
                     {
-                        if (lstBooks.Items.Count > 0)
+                        if (booksListView.Items.Count > 0)
                         {
-                            HighlightBookItem(lstBooks.Items[lstBooks.Items.Count - 1]);
+                            HighlightBookItem(booksListView.Items[booksListView.Items.Count - 1]);
                         }
                     }
                     break;
@@ -177,13 +178,13 @@ namespace Bible2PPT
                     e.SuppressKeyPress = true;
                     try
                     {
-                        HighlightBookItem(lstBooks.Items[lstBooks.SelectedIndices[0] + 1]);
+                        HighlightBookItem(booksListView.Items[booksListView.SelectedIndices[0] + 1]);
                     }
                     catch
                     {
-                        if (lstBooks.Items.Count > 0)
+                        if (booksListView.Items.Count > 0)
                         {
-                            HighlightBookItem(lstBooks.Items[0]);
+                            HighlightBookItem(booksListView.Items[0]);
                         }
                     }
                     break;
@@ -200,7 +201,7 @@ namespace Bible2PPT
 
         private void txtSearch_Leave(object sender, EventArgs e)
         {
-            txtSearch.Text = @"검색...";
+            booksSearchTextBox.Text = @"검색...";
         }
 
 
@@ -215,7 +216,7 @@ namespace Bible2PPT
         {
             if (e.KeyChar == 13)
             {
-                btnMake.PerformClick();
+                makeButton.PerformClick();
             }
         }
 
@@ -223,7 +224,7 @@ namespace Bible2PPT
 
         private async void btnMake_Click(object sender, EventArgs e)
         {
-            if (btnMake.Text == @"PPT 만드는 중...")
+            if (makeButton.Text == @"PPT 만드는 중...")
             {
                 CTS.Cancel();
                 return;
@@ -240,8 +241,8 @@ namespace Bible2PPT
                 destination = fd.SelectedPath;
             }
 
-            btnMake.Text = @"PPT 만드는 중...";
-            ToggleCriticalControls(false, btnMake);
+            makeButton.Text = @"PPT 만드는 중...";
+            ToggleCriticalControls(false, makeButton);
 
             CTS = new CancellationTokenSource();
             PPTBuilderWork work = null;
@@ -252,9 +253,9 @@ namespace Bible2PPT
                     work = builder.BeginBuild();
                 }
 
-                var books = lstBooks.Tag as List<Book>;
+                var books = booksListView.Tag as List<Book>;
                 foreach (var t in
-                    Regex.Replace(txtKeyword.Text.Trim(), @"\s+", " ").Split()
+                    Regex.Replace(makeKeywordTextBox.Text.Trim(), @"\s+", " ").Split()
                         .Select(BibleQuery.ParseQuery)
                         .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
                 {
@@ -315,7 +316,7 @@ namespace Bible2PPT
             }
 
             ToggleCriticalControls(true);
-            btnMake.Text = "PPT 만들기";
+            makeButton.Text = "PPT 만들기";
             Text = "성경2PPT";
         }
 
@@ -340,27 +341,27 @@ namespace Bible2PPT
 레1-3:9   = 레위기 1장 1절 - 3장 9절
 전1:3     = 전도서 1장 3절
 스1:3-9   = 에스라 1장 3절 - 1장 9절
-사1:3-3:9 = 이사야 1장 3절 - 3장 9절", txtKeyword, Int16.MaxValue);
+사1:3-3:9 = 이사야 1장 3절 - 3장 9절", makeKeywordTextBox, Int16.MaxValue);
         }
 
         private void cmbLongTitle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.ShowLongTitle = (TemplateTextOptions) cmbLongTitle.SelectedIndex;
+            AppConfig.Context.ShowLongTitle = (TemplateTextOptions) templateLongTitleComboBox.SelectedIndex;
         }
 
         private void cmbShortTitle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.ShowShortTitle = (TemplateTextOptions) cmbShortTitle.SelectedIndex;
+            AppConfig.Context.ShowShortTitle = (TemplateTextOptions) templateShortTitleComboBox.SelectedIndex;
         }
 
         private void cmbChapNum_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.ShowChapterNumber = (TemplateTextOptions) cmbChapNum.SelectedIndex;
+            AppConfig.Context.ShowChapterNumber = (TemplateTextOptions) templateChaperNumberComboBox.SelectedIndex;
         }
 
         private void chkFragment_CheckedChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.SeperateByChapter = chkFragment.Checked;
+            AppConfig.Context.SeperateByChapter = makeFragmentCheckBox.Checked;
         }
 
         private void btnGithub_Click(object sender, EventArgs e)
@@ -375,7 +376,7 @@ namespace Bible2PPT
             {
                 BibleDb.Reset();
             }
-            cmbBibleSource.SelectedItem = null;
+            sourceComboBox.SelectedItem = null;
         }
     }
 }
