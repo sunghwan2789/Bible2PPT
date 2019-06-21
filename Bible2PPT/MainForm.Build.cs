@@ -21,8 +21,8 @@ namespace Bible2PPT
             booksListView,
             booksSearchTextBox,
             templateChaperNumberComboBox,
-            templateLongTitleComboBox,
-            templateShortTitleComboBox,
+            templateBookNameComboBox,
+            templateBookAbbrComboBox,
             buildKeywordTextBox,
             buildButton,
             buildFragmentCheckBox,
@@ -36,8 +36,8 @@ namespace Bible2PPT
             buildSplitContainer.SplitterWidth = 13;
 
             // 불러오기
-            templateLongTitleComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
-            templateShortTitleComboBox.SelectedIndex = (int)AppConfig.Context.ShowShortTitle;
+            templateBookNameComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
+            templateBookAbbrComboBox.SelectedIndex = (int)AppConfig.Context.ShowShortTitle;
             templateChaperNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
             buildFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
@@ -206,12 +206,12 @@ namespace Bible2PPT
 
         private void cmbLongTitle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.ShowLongTitle = (TemplateTextOptions)templateLongTitleComboBox.SelectedIndex;
+            AppConfig.Context.ShowLongTitle = (TemplateTextOptions)templateBookNameComboBox.SelectedIndex;
         }
 
         private void cmbShortTitle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.ShowShortTitle = (TemplateTextOptions)templateShortTitleComboBox.SelectedIndex;
+            AppConfig.Context.ShowShortTitle = (TemplateTextOptions)templateBookAbbrComboBox.SelectedIndex;
         }
 
         private void cmbChapNum_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,6 +322,24 @@ namespace Bible2PPT
             ToggleCriticalControls(true);
             buildButton.Text = "PPT 만들기";
             Text = "성경2PPT";
+        }
+
+        private void btnTemplate_Click(object sender, EventArgs e)
+        {
+            builder.OpenTemplate();
+        }
+
+
+        private void btnTemplate_MouseHover(object sender, EventArgs e)
+        {
+            toolTip.Show(@"[TITLE]: 긴 제목*
+[STITLE]: 짧은 제목*
+[CHAP]: 장 번호*
+[PARA]: 절 번호
+[BODY]: 내용
+
+* 표시: 접미사 사용 가능
+예) [CHAP:장] -> n장", templateEditButton, Int16.MaxValue);
         }
     }
 }

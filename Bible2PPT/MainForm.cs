@@ -41,24 +41,6 @@ namespace Bible2PPT
             AppConfig.Context.Save();
         }
 
-        private void btnTemplate_Click(object sender, EventArgs e)
-        {
-            builder.OpenTemplate();
-        }
-
-
-        private void btnTemplate_MouseHover(object sender, EventArgs e)
-        {
-            toolTip.Show(@"[TITLE]: 긴 제목*
-[STITLE]: 짧은 제목*
-[CHAP]: 장 번호*
-[PARA]: 절 번호
-[BODY]: 내용
-
-* 표시: 접미사 사용 가능
-예) [CHAP:장] -> n장", btnTemplate, Int16.MaxValue);
-        }
-
         private void btnGithub_Click(object sender, EventArgs e)
         {
             Process.Start(AppConfig.ContactUrl);
