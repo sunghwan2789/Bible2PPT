@@ -360,16 +360,16 @@
             // 
             biblesTableLayoutPanel.ColumnCount = 1;
             biblesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            biblesTableLayoutPanel.Controls.Add(this.biblesListView, 0, 0);
-            biblesTableLayoutPanel.Controls.Add(biblesButtonTableLayoutPanel, 0, 2);
+            biblesTableLayoutPanel.Controls.Add(biblesButtonTableLayoutPanel, 0, 0);
+            biblesTableLayoutPanel.Controls.Add(this.biblesListView, 0, 2);
             biblesTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             biblesTableLayoutPanel.Location = new System.Drawing.Point(0, 55);
             biblesTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             biblesTableLayoutPanel.Name = "biblesTableLayoutPanel";
             biblesTableLayoutPanel.RowCount = 3;
-            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
+            biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             biblesTableLayoutPanel.Size = new System.Drawing.Size(228, 152);
             biblesTableLayoutPanel.TabIndex = 1;
             // 
@@ -382,7 +382,7 @@
             this.biblesListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.biblesListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.biblesListView.HideSelection = false;
-            this.biblesListView.Location = new System.Drawing.Point(0, 0);
+            this.biblesListView.Location = new System.Drawing.Point(0, 27);
             this.biblesListView.Margin = new System.Windows.Forms.Padding(0);
             this.biblesListView.Name = "biblesListView";
             this.biblesListView.Size = new System.Drawing.Size(228, 125);
@@ -418,7 +418,7 @@
             biblesButtonTableLayoutPanel.Controls.Add(this.biblesAddIconButton, 3, 0);
             biblesButtonTableLayoutPanel.Controls.Add(this.biblesRemoveIconButton, 4, 0);
             biblesButtonTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            biblesButtonTableLayoutPanel.Location = new System.Drawing.Point(0, 128);
+            biblesButtonTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             biblesButtonTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             biblesButtonTableLayoutPanel.Name = "biblesButtonTableLayoutPanel";
             biblesButtonTableLayoutPanel.RowCount = 1;
