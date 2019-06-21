@@ -327,7 +327,7 @@ namespace Bible2PPT
 
         private void btnTemplate_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.Show(@"[TITLE]: 긴 제목*
+            toolTip.Show(@"[TITLE]: 긴 제목*
 [STITLE]: 짧은 제목*
 [CHAP]: 장 번호*
 [PARA]: 절 번호
@@ -339,7 +339,7 @@ namespace Bible2PPT
 
         private void txtKeyword_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.Show(@"예) 창    = 창세기 전체
+            toolTip.Show(@"예) 창    = 창세기 전체
 창1       = 창세기 1장 전체
 롬1-3     = 로마서 1장 1절 - 3장 전체
 레1-3:9   = 레위기 1장 1절 - 3장 9절
