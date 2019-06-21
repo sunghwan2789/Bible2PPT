@@ -152,6 +152,7 @@
             // settingsNav
             // 
             this.settingsNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.settingsNav.Cursor = System.Windows.Forms.Cursors.Hand;
             this.settingsNav.FlatAppearance.BorderSize = 0;
             this.settingsNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.settingsNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
@@ -167,6 +168,7 @@
             this.settingsNav.Size = new System.Drawing.Size(48, 48);
             this.settingsNav.TabIndex = 2;
             this.settingsNav.UseVisualStyleBackColor = false;
+            this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -185,6 +187,7 @@
             // makeNav
             // 
             this.makeNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.makeNav.Cursor = System.Windows.Forms.Cursors.Hand;
             this.makeNav.FlatAppearance.BorderSize = 0;
             this.makeNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.makeNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
@@ -200,10 +203,12 @@
             this.makeNav.Size = new System.Drawing.Size(48, 48);
             this.makeNav.TabIndex = 1;
             this.makeNav.UseVisualStyleBackColor = false;
+            this.makeNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // historyNav
             // 
             this.historyNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.historyNav.Cursor = System.Windows.Forms.Cursors.Hand;
             this.historyNav.FlatAppearance.BorderSize = 0;
             this.historyNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.historyNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
@@ -219,10 +224,12 @@
             this.historyNav.Size = new System.Drawing.Size(48, 48);
             this.historyNav.TabIndex = 2;
             this.historyNav.UseVisualStyleBackColor = false;
+            this.historyNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // templatesNav
             // 
             this.templatesNav.BackColor = System.Drawing.SystemColors.Menu;
+            this.templatesNav.Cursor = System.Windows.Forms.Cursors.Hand;
             this.templatesNav.FlatAppearance.BorderSize = 0;
             this.templatesNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.templatesNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
@@ -238,6 +245,7 @@
             this.templatesNav.Size = new System.Drawing.Size(48, 48);
             this.templatesNav.TabIndex = 3;
             this.templatesNav.UseVisualStyleBackColor = false;
+            this.templatesNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // mainMultiPanel
             // 
@@ -253,6 +261,7 @@
             this.mainMultiPanel.SelectedPage = this.makeMultiPanelPage;
             this.mainMultiPanel.Size = new System.Drawing.Size(492, 335);
             this.mainMultiPanel.TabIndex = 1;
+            this.mainMultiPanel.SelectedPanelChanged += new System.EventHandler(this.MainMultiPanel_SelectedPanelChanged);
             // 
             // makeMultiPanelPage
             // 

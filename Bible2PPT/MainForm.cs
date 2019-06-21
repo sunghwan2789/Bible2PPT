@@ -44,7 +44,11 @@ namespace Bible2PPT
             }
 
             InitializeComponent();
+            // TableLayoutPanel에 포함되면 SplitterWidth가 초기화되는
+            // SplitContainer의 특성에 따라 값 다시 설정
             makeSplitContainer.SplitterWidth = 13;
+            // TODO: 마지막 페이지 기억하기
+            mainMultiPanel.SelectedPage = makeMultiPanelPage;
 
             templateLongTitleComboBox.SelectedIndex = (int) AppConfig.Context.ShowLongTitle;
             templateShortTitleComboBox.SelectedIndex = (int) AppConfig.Context.ShowShortTitle;
@@ -377,6 +381,68 @@ namespace Bible2PPT
                 BibleDb.Reset();
             }
             sourceComboBox.SelectedItem = null;
+        }
+
+        private Button[] Navs => new[]
+        {
+            makeNav,
+            historyNav,
+            templatesNav,
+            settingsNav,
+        };
+
+        private void MainMultiPanel_SelectedPanelChanged(object sender, EventArgs e)
+        {
+            Button target;
+            // 현재 페이지와 연결된 Nav 찾기
+            switch (mainMultiPanel.SelectedPage.Name)
+            {
+                case nameof(makeMultiPanelPage):
+                    target = makeNav;
+                    break;
+                case nameof(historyMultiPanelPage):
+                    target = historyNav;
+                    break;
+                case nameof(templatesMultiPanelPage):
+                    target = templatesNav;
+                    break;
+                case nameof(settingsMultiPanelPage):
+                    target = settingsNav;
+                    break;
+                default:
+                    throw new NotImplementedException(mainMultiPanel.SelectedPage.Name);
+            }
+            // 연결된 Nav만 비활성화
+            foreach (var nav in Navs)
+            {
+                nav.Enabled = true;
+            }
+            target.Enabled = false;
+        }
+
+        private void Nav_Click(object sender, EventArgs e)
+        {
+            MultiPanelPage target;
+            // 현재 Nav와 연결된 페이지 찾기
+            switch ((sender as Control).Name)
+            {
+                case nameof(makeNav):
+                    target = makeMultiPanelPage;
+                    break;
+                case nameof(historyNav):
+                    target = historyMultiPanelPage;
+                    break;
+                case nameof(templatesNav):
+                    target = templatesMultiPanelPage;
+                    break;
+                case nameof(settingsNav):
+                    target = settingsMultiPanelPage;
+                    break;
+                default:
+                    throw new NotImplementedException((sender as Control).Name);
+            }
+            // 연결된 페이지 활성화
+            mainMultiPanel.SelectedPage = target;
         }
     }
 }
