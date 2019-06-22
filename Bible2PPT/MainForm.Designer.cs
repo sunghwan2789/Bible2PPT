@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TableLayoutPanel mainTableLayoutPanel;
-            System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-            System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+            System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
+            System.Windows.Forms.FlowLayoutPanel navTopFlowLayoutPanel;
             System.Windows.Forms.TableLayoutPanel biblesTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel biblesButtonTableLayoutPanel;
             System.Windows.Forms.ColumnHeader columnHeader1;
@@ -58,6 +58,7 @@
             System.Windows.Forms.TableLayoutPanel versesTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox versesIconPictureBox;
             System.Windows.Forms.Label versesLabel;
+            System.Windows.Forms.StatusStrip builderStatusStrip;
             this.settingsNav = new FontAwesome.Sharp.IconButton();
             this.buildNav = new FontAwesome.Sharp.IconButton();
             this.historyNav = new FontAwesome.Sharp.IconButton();
@@ -90,10 +91,12 @@
             this.btnGithub = new System.Windows.Forms.Button();
             this.settingsMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.chkUseCache = new System.Windows.Forms.CheckBox();
+            this.builderToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.builderToolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            navBottomFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            navTopFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             biblesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             biblesButtonTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -120,9 +123,10 @@
             versesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             versesIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
             versesLabel = new System.Windows.Forms.Label();
+            builderStatusStrip = new System.Windows.Forms.StatusStrip();
             mainTableLayoutPanel.SuspendLayout();
-            flowLayoutPanel2.SuspendLayout();
-            flowLayoutPanel1.SuspendLayout();
+            navBottomFlowLayoutPanel.SuspendLayout();
+            navTopFlowLayoutPanel.SuspendLayout();
             this.mainMultiPanel.SuspendLayout();
             this.buildMultiPanelPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buildSplitContainer)).BeginInit();
@@ -149,6 +153,7 @@
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).BeginInit();
             this.templatesMultiPanelPage.SuspendLayout();
             this.settingsMultiPanelPage.SuspendLayout();
+            builderStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTableLayoutPanel
@@ -156,30 +161,32 @@
             mainTableLayoutPanel.ColumnCount = 2;
             mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            mainTableLayoutPanel.Controls.Add(flowLayoutPanel2, 0, 1);
-            mainTableLayoutPanel.Controls.Add(flowLayoutPanel1, 0, 0);
+            mainTableLayoutPanel.Controls.Add(navBottomFlowLayoutPanel, 0, 1);
+            mainTableLayoutPanel.Controls.Add(navTopFlowLayoutPanel, 0, 0);
             mainTableLayoutPanel.Controls.Add(this.mainMultiPanel, 1, 0);
+            mainTableLayoutPanel.Controls.Add(builderStatusStrip, 0, 2);
             mainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             mainTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             mainTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             mainTableLayoutPanel.Name = "mainTableLayoutPanel";
-            mainTableLayoutPanel.RowCount = 2;
+            mainTableLayoutPanel.RowCount = 3;
             mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             mainTableLayoutPanel.Size = new System.Drawing.Size(509, 335);
             mainTableLayoutPanel.TabIndex = 3;
             // 
-            // flowLayoutPanel2
+            // navBottomFlowLayoutPanel
             // 
-            flowLayoutPanel2.BackColor = System.Drawing.SystemColors.MenuBar;
-            flowLayoutPanel2.Controls.Add(this.settingsNav);
-            flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
-            flowLayoutPanel2.Location = new System.Drawing.Point(0, 287);
-            flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new System.Drawing.Size(48, 48);
-            flowLayoutPanel2.TabIndex = 2;
+            navBottomFlowLayoutPanel.BackColor = System.Drawing.SystemColors.MenuBar;
+            navBottomFlowLayoutPanel.Controls.Add(this.settingsNav);
+            navBottomFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            navBottomFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
+            navBottomFlowLayoutPanel.Location = new System.Drawing.Point(0, 264);
+            navBottomFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            navBottomFlowLayoutPanel.Name = "navBottomFlowLayoutPanel";
+            navBottomFlowLayoutPanel.Size = new System.Drawing.Size(48, 48);
+            navBottomFlowLayoutPanel.TabIndex = 2;
             // 
             // settingsNav
             // 
@@ -203,19 +210,19 @@
             this.settingsNav.UseVisualStyleBackColor = false;
             this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
             // 
-            // flowLayoutPanel1
+            // navTopFlowLayoutPanel
             // 
-            flowLayoutPanel1.BackColor = System.Drawing.SystemColors.MenuBar;
-            flowLayoutPanel1.Controls.Add(this.buildNav);
-            flowLayoutPanel1.Controls.Add(this.historyNav);
-            flowLayoutPanel1.Controls.Add(this.templatesNav);
-            flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(48, 287);
-            flowLayoutPanel1.TabIndex = 0;
+            navTopFlowLayoutPanel.BackColor = System.Drawing.SystemColors.MenuBar;
+            navTopFlowLayoutPanel.Controls.Add(this.buildNav);
+            navTopFlowLayoutPanel.Controls.Add(this.historyNav);
+            navTopFlowLayoutPanel.Controls.Add(this.templatesNav);
+            navTopFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            navTopFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            navTopFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            navTopFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            navTopFlowLayoutPanel.Name = "navTopFlowLayoutPanel";
+            navTopFlowLayoutPanel.Size = new System.Drawing.Size(48, 264);
+            navTopFlowLayoutPanel.TabIndex = 0;
             // 
             // buildNav
             // 
@@ -295,7 +302,7 @@
             this.mainMultiPanel.Name = "mainMultiPanel";
             mainTableLayoutPanel.SetRowSpan(this.mainMultiPanel, 2);
             this.mainMultiPanel.SelectedPage = this.buildMultiPanelPage;
-            this.mainMultiPanel.Size = new System.Drawing.Size(461, 335);
+            this.mainMultiPanel.Size = new System.Drawing.Size(461, 312);
             this.mainMultiPanel.TabIndex = 1;
             this.mainMultiPanel.SelectedPanelChanged += new System.EventHandler(this.MainMultiPanel_SelectedPanelChanged);
             // 
@@ -305,7 +312,7 @@
             this.buildMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buildMultiPanelPage.Location = new System.Drawing.Point(0, 0);
             this.buildMultiPanelPage.Name = "buildMultiPanelPage";
-            this.buildMultiPanelPage.Size = new System.Drawing.Size(461, 335);
+            this.buildMultiPanelPage.Size = new System.Drawing.Size(461, 312);
             this.buildMultiPanelPage.TabIndex = 0;
             this.buildMultiPanelPage.Text = "PPT 만들기";
             // 
@@ -326,7 +333,7 @@
             // 
             this.buildSplitContainer.Panel2.Controls.Add(this.buildRightTableLayoutPanel);
             this.buildSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 10, 13, 10);
-            this.buildSplitContainer.Size = new System.Drawing.Size(461, 335);
+            this.buildSplitContainer.Size = new System.Drawing.Size(461, 312);
             this.buildSplitContainer.SplitterDistance = 241;
             this.buildSplitContainer.SplitterWidth = 13;
             this.buildSplitContainer.TabIndex = 14;
@@ -361,7 +368,7 @@
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.buildLeftTableLayoutPanel.Size = new System.Drawing.Size(228, 315);
+            this.buildLeftTableLayoutPanel.Size = new System.Drawing.Size(228, 292);
             this.buildLeftTableLayoutPanel.TabIndex = 0;
             // 
             // biblesTableLayoutPanel
@@ -378,7 +385,7 @@
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            biblesTableLayoutPanel.Size = new System.Drawing.Size(228, 152);
+            biblesTableLayoutPanel.Size = new System.Drawing.Size(228, 129);
             biblesTableLayoutPanel.TabIndex = 1;
             // 
             // biblesButtonTableLayoutPanel
@@ -474,7 +481,7 @@
             this.biblesListView.Location = new System.Drawing.Point(0, 24);
             this.biblesListView.Margin = new System.Windows.Forms.Padding(0);
             this.biblesListView.Name = "biblesListView";
-            this.biblesListView.Size = new System.Drawing.Size(228, 128);
+            this.biblesListView.Size = new System.Drawing.Size(228, 105);
             this.biblesListView.TabIndex = 4;
             this.biblesListView.UseCompatibleStateImageBehavior = false;
             this.biblesListView.View = System.Windows.Forms.View.Details;
@@ -624,7 +631,7 @@
             templateBookAbbrTableLayoutPanel.Controls.Add(templateBookAbbrLabel, 0, 0);
             templateBookAbbrTableLayoutPanel.Controls.Add(this.templateBookAbbrComboBox, 1, 0);
             templateBookAbbrTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateBookAbbrTableLayoutPanel.Location = new System.Drawing.Point(0, 269);
+            templateBookAbbrTableLayoutPanel.Location = new System.Drawing.Point(0, 246);
             templateBookAbbrTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateBookAbbrTableLayoutPanel.Name = "templateBookAbbrTableLayoutPanel";
             templateBookAbbrTableLayoutPanel.RowCount = 1;
@@ -665,7 +672,7 @@
             templateChaperNumberTableLayoutPanel.Controls.Add(templateChaperNumberLabel, 0, 0);
             templateChaperNumberTableLayoutPanel.Controls.Add(this.templateChaperNumberComboBox, 1, 0);
             templateChaperNumberTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateChaperNumberTableLayoutPanel.Location = new System.Drawing.Point(0, 294);
+            templateChaperNumberTableLayoutPanel.Location = new System.Drawing.Point(0, 271);
             templateChaperNumberTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateChaperNumberTableLayoutPanel.Name = "templateChaperNumberTableLayoutPanel";
             templateChaperNumberTableLayoutPanel.RowCount = 1;
@@ -708,7 +715,7 @@
             templateTableLayoutPanel.Controls.Add(templateIconPictureBox, 0, 0);
             templateTableLayoutPanel.Controls.Add(this.templateEditButton, 2, 0);
             templateTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateTableLayoutPanel.Location = new System.Drawing.Point(0, 217);
+            templateTableLayoutPanel.Location = new System.Drawing.Point(0, 194);
             templateTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateTableLayoutPanel.Name = "templateTableLayoutPanel";
             templateTableLayoutPanel.RowCount = 1;
@@ -764,7 +771,7 @@
             templateBookNameTableLayoutPanel.Controls.Add(templateBookNameLabel, 0, 0);
             templateBookNameTableLayoutPanel.Controls.Add(this.templateBookNameComboBox, 1, 0);
             templateBookNameTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateBookNameTableLayoutPanel.Location = new System.Drawing.Point(0, 244);
+            templateBookNameTableLayoutPanel.Location = new System.Drawing.Point(0, 221);
             templateBookNameTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateBookNameTableLayoutPanel.Name = "templateBookNameTableLayoutPanel";
             templateBookNameTableLayoutPanel.RowCount = 1;
@@ -818,13 +825,13 @@
             this.buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.buildRightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.buildRightTableLayoutPanel.Size = new System.Drawing.Size(194, 315);
+            this.buildRightTableLayoutPanel.Size = new System.Drawing.Size(194, 292);
             this.buildRightTableLayoutPanel.TabIndex = 1;
             // 
             // buildFragmentCheckBox
             // 
             this.buildFragmentCheckBox.AutoSize = true;
-            this.buildFragmentCheckBox.Location = new System.Drawing.Point(3, 267);
+            this.buildFragmentCheckBox.Location = new System.Drawing.Point(3, 244);
             this.buildFragmentCheckBox.Name = "buildFragmentCheckBox";
             this.buildFragmentCheckBox.Size = new System.Drawing.Size(128, 16);
             this.buildFragmentCheckBox.TabIndex = 5;
@@ -835,7 +842,7 @@
             // buildButton
             // 
             this.buildButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buildButton.Location = new System.Drawing.Point(0, 286);
+            this.buildButton.Location = new System.Drawing.Point(0, 263);
             this.buildButton.Margin = new System.Windows.Forms.Padding(0);
             this.buildButton.Name = "buildButton";
             this.buildButton.Size = new System.Drawing.Size(194, 29);
@@ -848,7 +855,7 @@
             // 
             this.versesTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.versesTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.versesTextBox.Location = new System.Drawing.Point(0, 225);
+            this.versesTextBox.Location = new System.Drawing.Point(0, 202);
             this.versesTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.versesTextBox.Name = "versesTextBox";
             this.versesTextBox.Size = new System.Drawing.Size(194, 29);
@@ -872,7 +879,7 @@
             booksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             booksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             booksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            booksTableLayoutPanel.Size = new System.Drawing.Size(194, 191);
+            booksTableLayoutPanel.Size = new System.Drawing.Size(194, 168);
             booksTableLayoutPanel.TabIndex = 7;
             // 
             // booksSearchTableLayoutPanel
@@ -939,7 +946,7 @@
             this.booksListView.Location = new System.Drawing.Point(1, 26);
             this.booksListView.Margin = new System.Windows.Forms.Padding(0);
             this.booksListView.Name = "booksListView";
-            this.booksListView.Size = new System.Drawing.Size(192, 164);
+            this.booksListView.Size = new System.Drawing.Size(192, 141);
             this.booksListView.TabIndex = 0;
             this.booksListView.TabStop = false;
             this.booksListView.UseCompatibleStateImageBehavior = false;
@@ -963,7 +970,7 @@
             versesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             versesTableLayoutPanel.Controls.Add(versesIconPictureBox, 0, 0);
             versesTableLayoutPanel.Controls.Add(versesLabel, 1, 0);
-            versesTableLayoutPanel.Location = new System.Drawing.Point(0, 201);
+            versesTableLayoutPanel.Location = new System.Drawing.Point(0, 178);
             versesTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             versesTableLayoutPanel.Name = "versesTableLayoutPanel";
             versesTableLayoutPanel.RowCount = 1;
@@ -1050,6 +1057,33 @@
             this.chkUseCache.UseVisualStyleBackColor = true;
             this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
             // 
+            // builderStatusStrip
+            // 
+            builderStatusStrip.BackColor = System.Drawing.SystemColors.Control;
+            mainTableLayoutPanel.SetColumnSpan(builderStatusStrip, 2);
+            builderStatusStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            builderStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.builderToolStripStatusLabel,
+            this.builderToolStripProgressBar});
+            builderStatusStrip.Location = new System.Drawing.Point(0, 312);
+            builderStatusStrip.Name = "builderStatusStrip";
+            builderStatusStrip.Size = new System.Drawing.Size(509, 23);
+            builderStatusStrip.TabIndex = 3;
+            // 
+            // builderToolStripStatusLabel
+            // 
+            this.builderToolStripStatusLabel.Name = "builderToolStripStatusLabel";
+            this.builderToolStripStatusLabel.Size = new System.Drawing.Size(494, 18);
+            this.builderToolStripStatusLabel.Spring = true;
+            this.builderToolStripStatusLabel.Text = "준비";
+            this.builderToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // builderToolStripProgressBar
+            // 
+            this.builderToolStripProgressBar.Name = "builderToolStripProgressBar";
+            this.builderToolStripProgressBar.Size = new System.Drawing.Size(100, 17);
+            this.builderToolStripProgressBar.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1061,8 +1095,9 @@
             this.Text = "성경2PPT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             mainTableLayoutPanel.ResumeLayout(false);
-            flowLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel1.ResumeLayout(false);
+            mainTableLayoutPanel.PerformLayout();
+            navBottomFlowLayoutPanel.ResumeLayout(false);
+            navTopFlowLayoutPanel.ResumeLayout(false);
             this.mainMultiPanel.ResumeLayout(false);
             this.buildMultiPanelPage.ResumeLayout(false);
             this.buildSplitContainer.Panel1.ResumeLayout(false);
@@ -1099,6 +1134,8 @@
             this.templatesMultiPanelPage.ResumeLayout(false);
             this.settingsMultiPanelPage.ResumeLayout(false);
             this.settingsMultiPanelPage.PerformLayout();
+            builderStatusStrip.ResumeLayout(false);
+            builderStatusStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1138,6 +1175,8 @@
         private System.Windows.Forms.TableLayoutPanel buildLeftTableLayoutPanel;
         private System.Windows.Forms.TableLayoutPanel buildRightTableLayoutPanel;
         private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ToolStripStatusLabel builderToolStripStatusLabel;
+        private System.Windows.Forms.ToolStripProgressBar builderToolStripProgressBar;
     }
 }
 
