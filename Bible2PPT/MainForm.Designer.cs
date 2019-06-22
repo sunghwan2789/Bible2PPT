@@ -265,6 +265,7 @@
             this.historyNav.TabIndex = 2;
             this.toolTip.SetToolTip(this.historyNav, "PPT 제작 기록");
             this.historyNav.UseVisualStyleBackColor = false;
+            this.historyNav.Visible = false;
             this.historyNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // templatesNav
@@ -287,6 +288,7 @@
             this.templatesNav.TabIndex = 3;
             this.toolTip.SetToolTip(this.templatesNav, "템플릿 관리");
             this.templatesNav.UseVisualStyleBackColor = false;
+            this.templatesNav.Visible = false;
             this.templatesNav.Click += new System.EventHandler(this.Nav_Click);
             // 
             // mainMultiPanel
