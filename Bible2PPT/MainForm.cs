@@ -30,30 +30,17 @@ namespace Bible2PPT
 
             InitializeComponent();
             InitializeBuildComponent();
+            InitializeHistoryComponent();
+            InitializeTemplatesComponent();
+            InitializeSettingsComponent();
+
             // TODO: 마지막 페이지 기억하기
             mainMultiPanel.SelectedPage = buildMultiPanelPage;
-
-            chkUseCache.Checked = AppConfig.Context.UseCache;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             AppConfig.Context.Save();
-        }
-
-        private void btnGithub_Click(object sender, EventArgs e)
-        {
-            Process.Start(AppConfig.ContactUrl);
-        }
-
-        private void chkUseCache_CheckedChanged(object sender, EventArgs e)
-        {
-            AppConfig.Context.UseCache = chkUseCache.Checked;
-            if (!chkUseCache.Checked)
-            {
-                BibleDb.Reset();
-            }
-            sourceComboBox.SelectedItem = null;
         }
 
         private Button[] Navs => new[]
