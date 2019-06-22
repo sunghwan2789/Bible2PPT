@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT
@@ -20,12 +21,20 @@ namespace Bible2PPT
 
         private bool isFirstVerseOfChapter;
 
-        public void AppendChapter(Chapter chapter, int startVerseNumber, int endVerseNumber, CancellationToken token)
+        public void AppendChapter(IEnumerable<Chapter> chapterGroup, int startVerseNumber, int endVerseNumber, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
-            foreach (var paragraph in
-                chapter.Source.GetVersesAsync(chapter).Result
-                    .Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber))
+            var chapter = chapterGroup.First();
+            var getVersesTasks = chapterGroup.Select(i => i.Source.GetVersesAsync(i)).ToArray();
+            Task.WaitAll(getVersesTasks);
+            var verses = new List<Verse>();
+            foreach (var getVersesTask in getVersesTasks)
+            {
+                verses.AddRange(getVersesTask.Result);
+            }
+            foreach (var verseGroup in
+                verses.Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber)
+                    .GroupBy(i => i.Number).ToList())
             {
                 token.ThrowIfCancellationRequested();
 
@@ -40,10 +49,21 @@ namespace Bible2PPT
                     text = AddSuffix(text, "CHAP", chapter.Number.ToString(), AppConfig.Context.ShowChapterNumber);
                     text = AddSuffix(text, "STITLE", chapter.Book.ShortTitle, AppConfig.Context.ShowShortTitle);
                     text = AddSuffix(text, "TITLE", chapter.Book.Title, AppConfig.Context.ShowLongTitle);
-                    text = text.Replace("[PARA]", paragraph.Number.ToString());
                     text = text.Replace("[CPAS]", startVerseNumber.ToString());
                     text = text.Replace("[CPAE]", endVerseNumber.ToString());
-                    text = text.Replace("[BODY]", paragraph.Text);
+                    text = text.Replace("[PARA]", verseGroup.First().Number.ToString());
+                    text = text.Replace("[BODY]", verseGroup.First().Text);
+
+                    var verseEnumerator = verseGroup.GetEnumerator();
+                    for (var i = 1; i <= 9; i++)
+                    {
+                        text = text.Replace(
+                            $"[BODY{i}]",
+                            verseEnumerator.MoveNext()
+                            ? verseEnumerator.Current.Text
+                            : string.Empty);
+                    }
+
                     textShape.Text = text;
                 }
                 isFirstVerseOfChapter = false;

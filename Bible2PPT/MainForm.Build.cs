@@ -493,39 +493,53 @@ namespace Bible2PPT
                         work = builder.BeginBuild();
                     }
 
-                    var books = await biblesToBuild.First().Source.GetBooksAsync(biblesToBuild.First());
+                    var books = new List<Book>();
+                    foreach (var getBooksTask in biblesToBuild.Select(i => i.Source.GetBooksAsync(i)).ToList())
+                    {
+                        books.AddRange(await getBooksTask);
+                    }
+
                     foreach (var t in
                         Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
                             .Select(BibleQuery.ParseQuery)
-                            .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
+                            .Select(q => Tuple.Create(q, books.Where(b => b.ShortTitle == q.BibleId).ToList())).ToList())
                     {
                         var query = t.Item1;
-                        var book = t.Item2;
+                        var targetBooks = t.Item2;
+                        var bookTitle = targetBooks[0].Title;
 
-                        var chapters = await book.Source.GetChaptersAsync(book);
-                        foreach (var chapter in
-                            chapters.Where(i =>
-                                (query.EndChapterNumber != null)
-                                ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
-                                : (i.Number >= query.StartChapterNumber)))
+                        var chapters = new List<Chapter>();
+                        foreach (var getChaptersTask in targetBooks.Select(i => i.Source.GetChaptersAsync(i)).ToList())
                         {
-                            Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{book.Title} {chapter.Number}장"));
+                            chapters.AddRange(await getChaptersTask);
+                        }
+
+                        foreach (var targetChapter in
+                            chapters
+                                .Where(i =>
+                                    (query.EndChapterNumber != null)
+                                    ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
+                                    : (i.Number >= query.StartChapterNumber))
+                                .GroupBy(i => i.Number).ToList())
+                        {
+                            var chapterNumber = targetChapter.Key;
+                            Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{bookTitle} {chapterNumber}장"));
 
                             if (AppConfig.Context.SeperateByChapter)
                             {
                                 work?.Save();
-                                var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
+                                var output = Path.Combine(destination, bookTitle, chapterNumber.ToString("000\\.pptx"));
                                 CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                                 work = builder.BeginBuild(output);
                             }
 
-                            var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                            var endVerseNo = (await chapter.Source.GetVersesAsync(chapter)).Max(i => i.Number);
-                            if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
+                            var startVerseNo = chapterNumber == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                            var endVerseNo = (await targetChapter.First().Source.GetVersesAsync(targetChapter.First())).Max(i => i.Number);
+                            if (chapterNumber == query.EndChapterNumber && query.EndVerseNumber != null)
                             {
                                 endVerseNo = query.EndVerseNumber.Value;
                             }
-                            work.AppendChapter(chapter, startVerseNo, endVerseNo, cts.Token);
+                            work.AppendChapter(targetChapter, startVerseNo, endVerseNo, cts.Token);
                         }
                     }
                 }).Unwrap();
