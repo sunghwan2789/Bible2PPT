@@ -65,8 +65,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyIconForm.cs">
@@ -92,9 +94,33 @@
     </Compile>
     <Compile Include="AppConfig.cs" />
     <Compile Include="MainForm.Helper.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IndexKeyAttribute.cs" />
+    <Compile Include="MainForm.Build.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.History.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Settings.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Templates.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultiPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MultiPanelPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MultiPanelPagesCollection.cs" />
     <Compile Include="PPTBuilder.cs" />
     <Compile Include="PPTBuilderWork.cs" />
     <Compile Include="Program.cs" />
@@ -108,6 +134,7 @@
     <Compile Include="TemplateTextOptions.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -168,6 +195,9 @@
     <None Include="BibleBookAliases.csv" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp">
+      <Version>5.8.3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Bcl.Async">
       <Version>1.0.168</Version>
     </PackageReference>

@@ -21,19 +21,19 @@ namespace Bible2PPT
 
         private void AppendShortTitle()
         {
-            if (lstBooks.SelectedItems.Count > 0)
+            if (booksListView.SelectedItems.Count > 0)
             {
-                var book = lstBooks.SelectedItems[0].Tag as Book;
-                txtKeyword.AppendText((txtKeyword.Text.Length > 0 ? " " : "") + book.ShortTitle);
-                txtKeyword.Focus();
+                var book = booksListView.SelectedItems[0].Tag as Book;
+                versesTextBox.AppendText((versesTextBox.Text.Length > 0 ? " " : "") + book.ShortTitle);
+                versesTextBox.Focus();
             }
         }
 
         private void HighlightBookItem(ListViewItem bookItem)
         {
-            lstBooks.SelectedItems.Clear();
+            booksListView.SelectedItems.Clear();
             bookItem.Selected = true;
-            lstBooks.TopItem = bookItem;
+            booksListView.TopItem = bookItem;
         }
 
         private static void CreateDirectoryIfNotExists(string path)
