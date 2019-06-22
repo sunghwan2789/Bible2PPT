@@ -41,11 +41,18 @@ namespace Bible2PPT
             templateChaperNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
             buildFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
-            sourceComboBox.Items.AddRange(Source.AvailableSources);
-            sourceComboBox.SelectedItem = Source.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
+            // 소스 목록 초기화
+            sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
+            sourceComboBox.ValueMember = nameof(Source.Id);
+            sourceComboBox.DisplayMember = nameof(Source.Name);
+            sourceComboBox.DataSource = Source.AvailableSources;
+            sourceComboBox.SelectedItem = null;
+            sourceComboBox.SelectedValueChanged += SourceComboBox_SelectedValueChanged;
+            // 과거 선택 소스 불러오기
+            sourceComboBox.SelectedValue = AppConfig.Context.BibleSourceId;
         }
 
-        private async void SourceComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private async void SourceComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             var source = sourceComboBox.SelectedItem as Source;
             if (source == null)

@@ -589,18 +589,14 @@
             // 
             // sourceComboBox
             // 
-            this.sourceComboBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.sourceComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sourceComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sourceComboBox.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.sourceComboBox.FormattingEnabled = true;
             this.sourceComboBox.Location = new System.Drawing.Point(64, 2);
             this.sourceComboBox.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.sourceComboBox.Name = "sourceComboBox";
             this.sourceComboBox.Size = new System.Drawing.Size(164, 20);
             this.sourceComboBox.TabIndex = 1;
-            this.toolTip.SetToolTip(this.sourceComboBox, "성경 소스 선택");
-            this.sourceComboBox.SelectedIndexChanged += new System.EventHandler(this.SourceComboBox_SelectedIndexChanged);
+            this.sourceComboBox.SelectedValueChanged += new System.EventHandler(this.SourceComboBox_SelectedValueChanged);
             // 
             // sourceIconPictureBox
             // 
