@@ -113,14 +113,31 @@ namespace Bible2PPT
         }
 
         /// <summary>
-        /// 성경을 선택했으면 자동으로 제작 대상에 추가한다.
+        /// 선택한 성경을 자동으로 빌드 대상으로 추가한다.
         /// </summary>
         private async void BibleComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (bibleComboBox.SelectedItem != null)
+            // 선택한 성경을 기억하고 빌드 대상으로 추가
+            if (bibleComboBox.SelectedItem is Bible bible)
             {
+                AppConfig.Context.BibleVersionId = bible.Id;
                 biblesAddIconButton.PerformClick();
             }
+        }
+
+        /// <summary>
+        /// 선택한 성경을 빌드 대상으로 추가한다.
+        /// </summary>
+        private void BiblesAddIconButton_Click(object sender, EventArgs e)
+        {
+            // 성경을 선택하지 않았으면 오류
+            if (!(bibleComboBox.SelectedItem is Bible bible))
+            {
+                MessageBox.Show("PPT에 사용할 성경을 선택한 다음 다시 누르세요.", "성경2PPT");
+                return;
+            }
+
+            // TODO: 빌드 대상 성경 기억
         }
 
         private void BooksListView_MouseClick(object sender, MouseEventArgs e)
