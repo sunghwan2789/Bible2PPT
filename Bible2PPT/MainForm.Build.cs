@@ -20,18 +20,22 @@ namespace Bible2PPT
         {
             sourceComboBox,
             bibleComboBox,
-            booksListView,
-            booksSearchTextBox,
-            templateChaperNumberComboBox,
+            biblesUpIconButton,
+            biblesDownIconButton,
+            biblesAddIconButton,
+            biblesRemoveIconButton,
+            biblesDataGridView,
             templateBookNameComboBox,
             templateBookAbbrComboBox,
+            templateChaperNumberComboBox,
+            booksSearchTextBox,
+            booksListView,
             versesTextBox,
-            buildButton,
             buildFragmentCheckBox,
             chkUseCache,
         };
 
-        private List<Bible> biblesToBuild = new List<Bible>();
+        private readonly List<Bible> biblesToBuild = new List<Bible>();
 
         private void InitializeBuildComponent()
         {
@@ -93,7 +97,7 @@ namespace Bible2PPT
             {
                 return;
             }
-            
+
             // 작업을 취소하기 위한 토큰 생성 및 연결
             var cts = new CancellationTokenSource();
             sourceComboBox.Tag = cts;
@@ -439,16 +443,25 @@ namespace Bible2PPT
             AppConfig.Context.SeperateByChapter = buildFragmentCheckBox.Checked;
         }
 
-
-        private CancellationTokenSource CTS;
+        /// <summary>
+        /// 빌드 대상 성경과 구절로 PPT를 만든다.
+        /// </summary>
         private async void BuildButton_Click(object sender, EventArgs e)
         {
-            if (buildButton.Text == @"PPT 만드는 중...")
+            // 지금 만드는 중인 PPT 작업을 취소하고 대기
+            if (buildButton.Tag is CancellationTokenSource previousCts)
             {
-                CTS.Cancel();
+                previousCts.Cancel();
                 return;
             }
 
+            // TODO: 빌드 대상 성경이 없으면 아무 작업도 안함
+            //if (!biblesToBuild.Any())
+            //{
+            //    return;
+            //}
+
+            // 장별로 PPT 나누기 경로 설정
             string destination;
             using (var fd = new FolderBrowserDialog())
             {
@@ -460,55 +473,66 @@ namespace Bible2PPT
                 destination = fd.SelectedPath;
             }
 
-            buildButton.Text = @"PPT 만드는 중...";
+            // PPT를 완성하기 전까지 주요 컨트롤 비활성화
             ToggleCriticalControls(false, buildButton);
+            buildButton.Text = "PPT 만드는 중...";
 
-            CTS = new CancellationTokenSource();
+
+            // 작업을 취소하기 위한 토큰 생성 및 연결
+            var cts = new CancellationTokenSource();
+            buildButton.Tag = cts;
+
+            // PPT 만들기
             PPTBuilderWork work = null;
             try
             {
-                if (!AppConfig.Context.SeperateByChapter)
+                await Task.Factory.StartNew(async () =>
                 {
-                    work = builder.BeginBuild();
-                }
-
-                var books = booksListView.Tag as List<Book>;
-                foreach (var t in
-                    Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
-                        .Select(BibleQuery.ParseQuery)
-                        .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
-                {
-                    var query = t.Item1;
-                    var book = t.Item2;
-
-                    var chapters = await book.Source.GetChaptersAsync(book);
-                    foreach (var chapter in
-                        chapters.Where(i =>
-                            (query.EndChapterNumber != null)
-                            ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
-                            : (i.Number >= query.StartChapterNumber)))
+                    if (!AppConfig.Context.SeperateByChapter)
                     {
-                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
-
-                        if (AppConfig.Context.SeperateByChapter)
-                        {
-                            work?.Save();
-                            var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
-                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            work = builder.BeginBuild(output);
-                        }
-
-                        var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                        var endVerseNo = (await chapter.Source.GetVersesAsync(chapter)).Max(i => i.Number);
-                        if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
-                        {
-                            endVerseNo = query.EndVerseNumber.Value;
-                        }
-                        work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
+                        work = builder.BeginBuild();
                     }
-                }
+
+                    var books = await biblesToBuild.First().Source.GetBooksAsync(biblesToBuild.First());
+                    foreach (var t in
+                        Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
+                            .Select(BibleQuery.ParseQuery)
+                            .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
+                    {
+                        var query = t.Item1;
+                        var book = t.Item2;
+
+                        var chapters = await book.Source.GetChaptersAsync(book);
+                        foreach (var chapter in
+                            chapters.Where(i =>
+                                (query.EndChapterNumber != null)
+                                ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
+                                : (i.Number >= query.StartChapterNumber)))
+                        {
+                            Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{book.Title} {chapter.Number}장"));
+
+                            if (AppConfig.Context.SeperateByChapter)
+                            {
+                                work?.Save();
+                                var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
+                                CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                                work = builder.BeginBuild(output);
+                            }
+
+                            var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                            var endVerseNo = (await chapter.Source.GetVersesAsync(chapter)).Max(i => i.Number);
+                            if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
+                            {
+                                endVerseNo = query.EndVerseNumber.Value;
+                            }
+                            work.AppendChapter(chapter, startVerseNo, endVerseNo, cts.Token);
+                        }
+                    }
+                }).Unwrap();
             }
-            catch (OperationCanceledException) { }
+            // 올바른 작업 취소 요청 시 오류 무시
+            catch (OperationCanceledException) when (cts.IsCancellationRequested) { }
+            // 작업 실패 시 작업 중지
             catch (Exception ex)
             {
                 if (work != null)
@@ -520,23 +544,27 @@ namespace Bible2PPT
             }
             finally
             {
-                if (work != null)
+                // 토큰 정리
+                buildButton.Tag = null;
+            }
+
+            // 작업을 성공하였으면 PPT 열기
+            if (work != null)
+            {
+                work.Save();
+                if (AppConfig.Context.SeperateByChapter)
                 {
-                    work.Save();
-                    if (AppConfig.Context.SeperateByChapter)
-                    {
-                        Process.Start(destination);
-                    }
-                    else
-                    {
-                        Process.Start(work.Output);
-                    }
+                    Process.Start(destination);
+                }
+                else
+                {
+                    Process.Start(work.Output);
                 }
             }
 
+            // 주요 컨트롤 활성화
             ToggleCriticalControls(true);
             buildButton.Text = "PPT 만들기";
-            Text = "성경2PPT";
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)
