@@ -45,7 +45,7 @@ namespace Bible2PPT
             sourceComboBox.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
         }
 
-        private async void cmbBibleSource_SelectedIndexChanged(object sender, EventArgs e)
+        private async void SourceComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var source = sourceComboBox.SelectedItem as BibleSource;
             if (source == null)
@@ -78,7 +78,7 @@ namespace Bible2PPT
             }
         }
 
-        private async void cmbBibleVersion_SelectedIndexChanged(object sender, EventArgs e)
+        private async void BibleComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var bible = bibleComboBox.SelectedItem as Bibles.Bible;
             if (bible == null)
@@ -110,17 +110,17 @@ namespace Bible2PPT
             }
         }
 
-        private void lstBooks_MouseClick(object sender, MouseEventArgs e)
+        private void BooksListView_MouseClick(object sender, MouseEventArgs e)
         {
             AppendShortTitle();
         }
 
-        private void txtSearch_Enter(object sender, EventArgs e)
+        private void BooksSearchTextBox_Enter(object sender, EventArgs e)
         {
             booksSearchTextBox.Clear();
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void BooksSearchTextBox_TextChanged(object sender, EventArgs e)
         {
             if (booksSearchTextBox.Text.Length == 0)
             {
@@ -137,7 +137,7 @@ namespace Bible2PPT
             }
         }
 
-        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        private void BooksSearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -172,7 +172,7 @@ namespace Bible2PPT
             }
         }
 
-        private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
+        private void BooksSearchTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
             {
@@ -180,12 +180,12 @@ namespace Bible2PPT
             }
         }
 
-        private void txtSearch_Leave(object sender, EventArgs e)
+        private void BooksSearchTextBox_Leave(object sender, EventArgs e)
         {
             booksSearchTextBox.Text = @"책 검색...";
         }
 
-        private void txtKeyword_KeyPress(object sender, KeyPressEventArgs e)
+        private void VersesTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
             {
@@ -193,7 +193,7 @@ namespace Bible2PPT
             }
         }
 
-        private void txtKeyword_MouseHover(object sender, EventArgs e)
+        private void VersesTextBox_MouseHover(object sender, EventArgs e)
         {
             toolTip.Show(@"예) 창    = 창세기 전체
 창1       = 창세기 1장 전체
@@ -204,29 +204,29 @@ namespace Bible2PPT
 사1:3-3:9 = 이사야 1장 3절 - 3장 9절", versesTextBox, Int16.MaxValue);
         }
 
-        private void cmbLongTitle_SelectedIndexChanged(object sender, EventArgs e)
+        private void TemplateBookNameComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             AppConfig.Context.ShowLongTitle = (TemplateTextOptions)templateBookNameComboBox.SelectedIndex;
         }
 
-        private void cmbShortTitle_SelectedIndexChanged(object sender, EventArgs e)
+        private void TemplateBookAbbrComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             AppConfig.Context.ShowShortTitle = (TemplateTextOptions)templateBookAbbrComboBox.SelectedIndex;
         }
 
-        private void cmbChapNum_SelectedIndexChanged(object sender, EventArgs e)
+        private void TemplateChapterNumberComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             AppConfig.Context.ShowChapterNumber = (TemplateTextOptions)templateChaperNumberComboBox.SelectedIndex;
         }
 
-        private void chkFragment_CheckedChanged(object sender, EventArgs e)
+        private void BuildFragmentCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             AppConfig.Context.SeperateByChapter = buildFragmentCheckBox.Checked;
         }
 
 
         private CancellationTokenSource CTS;
-        private async void btnMake_Click(object sender, EventArgs e)
+        private async void BuildButton_Click(object sender, EventArgs e)
         {
             if (buildButton.Text == @"PPT 만드는 중...")
             {
@@ -324,13 +324,13 @@ namespace Bible2PPT
             Text = "성경2PPT";
         }
 
-        private void btnTemplate_Click(object sender, EventArgs e)
+        private void TemplateEditButton_Click(object sender, EventArgs e)
         {
             builder.OpenTemplate();
         }
 
 
-        private void btnTemplate_MouseHover(object sender, EventArgs e)
+        private void TemplateEditButton_MouseHover(object sender, EventArgs e)
         {
             toolTip.Show(@"[TITLE]: 긴 제목*
 [STITLE]: 짧은 제목*

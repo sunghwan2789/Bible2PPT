@@ -36,7 +36,7 @@ namespace Bible2PPT
             chkUseCache.Checked = AppConfig.Context.UseCache;
         }
 
-        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             AppConfig.Context.Save();
         }
