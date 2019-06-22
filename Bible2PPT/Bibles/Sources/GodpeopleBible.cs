@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bible2PPT.Bibles.Sources
 {
-    class GodpeopleBible : BibleSource
+    class GodpeopleBible : Source
     {
         private const string BASE_URL = "http://find.godpeople.com";
         private static readonly Encoding ENCODING = Encoding.GetEncoding("EUC-KR");

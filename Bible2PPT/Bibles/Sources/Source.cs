@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bible2PPT.Bibles.Sources
 {
-    abstract class BibleSource
+    abstract class Source
     {
-        public static BibleSource[] AvailableSources = new BibleSource[]
+        public static Source[] AvailableSources = new Source[]
         {
             new GodpeopleBible { Id = 0 },
             new GodpiaBible { Id = 1 },

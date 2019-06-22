@@ -41,13 +41,13 @@ namespace Bible2PPT
             templateChaperNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
             buildFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
-            sourceComboBox.Items.AddRange(BibleSource.AvailableSources);
-            sourceComboBox.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
+            sourceComboBox.Items.AddRange(Source.AvailableSources);
+            sourceComboBox.SelectedItem = Source.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
         }
 
         private async void SourceComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var source = sourceComboBox.SelectedItem as BibleSource;
+            var source = sourceComboBox.SelectedItem as Source;
             if (source == null)
             {
                 bibleComboBox.Tag = null;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bible2PPT.Bibles.Sources
 {
-    class GoodtvBible : BibleSource
+    class GoodtvBible : Source
     {
         private const string BASE_URL = "http://goodtvbible.goodtv.co.kr";
 

@@ -83,7 +83,7 @@
     <Compile Include="Bibles\Verse.cs" />
     <Compile Include="Bibles\Sources\GodpeopleBible.cs" />
     <Compile Include="Bibles\Sources\GodpiaBible.cs" />
-    <Compile Include="Bibles\Sources\BibleSource.cs" />
+    <Compile Include="Bibles\Sources\Source.cs" />
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
     <Compile Include="MainForm.cs">
