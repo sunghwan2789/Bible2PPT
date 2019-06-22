@@ -170,13 +170,13 @@ namespace Bible2PPT
                 return;
             }
 
-            // 선택한 성경의 빌드 번호를 기억하고
-            var buildNumber = biblesToBuild.Count;
+            // 선택한 성경의 빌드 순번을 계산하고
+            var rank = biblesToBuild.Count;
             // 빌드 대상에 추가 및 컨트롤에 반영
             biblesToBuild.Add(bible);
             biblesBindingSource.ResetBindings(false);
             // 추가한 성경을 활성화
-            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[buildNumber].Cells[0];
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[rank].Cells[0];
 
             // TODO: 빌드 대상 성경 기억
         }
@@ -192,11 +192,67 @@ namespace Bible2PPT
                 return;
             }
 
-            // 활성화한 성경의 빌드 번호를 기억하고
-            var buildNumber = biblesDataGridView.CurrentRow.Index;
+            // 활성화한 성경의 빌드 순번을 기억하고
+            var rank = biblesDataGridView.CurrentRow.Index;
             // 빌드 대상에서 제거 및 컨트롤에 반영
-            biblesToBuild.RemoveAt(buildNumber);
+            biblesToBuild.RemoveAt(rank);
             biblesBindingSource.ResetBindings(false);
+
+            // TODO: 빌드 대상 성경 기억
+        }
+
+        /// <summary>
+        /// 활성화한 성경의 빌드 순번을 높인다.
+        /// </summary>
+        private void BiblesUpIconButton_Click(object sender, EventArgs e)
+        {
+            // 활성화한 성경이 없으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경의 빌드 순번을 기억
+            var rank = biblesDataGridView.CurrentRow.Index;
+            // 이미 최상위이면 아무 작업도 안함
+            if (rank == 0)
+            {
+                return;
+            }
+
+            // 바로 위 성경과 순서를 바꾸고 및 컨트롤에 반영
+            biblesToBuild.Insert(rank - 1, biblesToBuild[rank]);
+            biblesToBuild.RemoveAt(rank + 1);
+            biblesBindingSource.ResetBindings(false);
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[--rank].Cells[0];
+
+            // TODO: 빌드 대상 성경 기억
+        }
+
+        /// <summary>
+        /// 활성화한 성경의 빌드 순번을 낮춘다.
+        /// </summary>
+        private void BiblesDownIconButton_Click(object sender, EventArgs e)
+        {
+            // 활성화한 성경이 없으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경의 빌드 순번을 기억
+            var rank = biblesDataGridView.CurrentRow.Index;
+            // 이미 최하위이면 아무 작업도 안함
+            if (rank == biblesToBuild.Count - 1)
+            {
+                return;
+            }
+
+            // 바로 아래 성경과 순서를 바꾸고 및 컨트롤에 반영
+            biblesToBuild.Insert(rank + 2, biblesToBuild[rank]);
+            biblesToBuild.RemoveAt(rank);
+            biblesBindingSource.ResetBindings(false);
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[++rank].Cells[0];
 
             // TODO: 빌드 대상 성경 기억
         }
