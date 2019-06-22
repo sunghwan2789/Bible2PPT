@@ -112,35 +112,14 @@ namespace Bible2PPT
             bibleComboBox.Enabled = true;
         }
 
+        /// <summary>
+        /// 성경을 선택했으면 자동으로 제작 대상에 추가한다.
+        /// </summary>
         private async void BibleComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            var bible = bibleComboBox.SelectedItem as Bibles.Bible;
-            if (bible == null)
+            if (bibleComboBox.SelectedItem != null)
             {
-                ToggleCriticalControls(true);
-                throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
-            }
-
-            AppConfig.Context.BibleVersionId = bible.Id;
-
-            //ToggleCriticalControls(false);
-            booksListView.Tag = null;
-            booksListView.Items.Clear();
-
-            try
-            {
-                var books = await bible.Source.GetBooksAsync(bible);
-                booksListView.Tag = books;
-                foreach (var book in books)
-                {
-                    var item = booksListView.Items.Add(book.Title);
-                    item.SubItems.Add(book.ChapterCount.ToString());
-                    item.Tag = book;
-                }
-            }
-            finally
-            {
-                //ToggleCriticalControls(true);
+                biblesAddIconButton.PerformClick();
             }
         }
 
