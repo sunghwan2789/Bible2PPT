@@ -527,7 +527,7 @@
             this.bibleComboBox.Size = new System.Drawing.Size(164, 20);
             this.bibleComboBox.TabIndex = 1;
             this.toolTip.SetToolTip(this.bibleComboBox, "성경 선택");
-            this.bibleComboBox.SelectedIndexChanged += new System.EventHandler(this.BibleComboBox_SelectedIndexChanged);
+            this.bibleComboBox.SelectedValueChanged += new System.EventHandler(this.BibleComboBox_SelectedValueChanged);
             // 
             // bibleIconPictureBox
             // 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Bible2PPT
@@ -48,44 +49,70 @@ namespace Bible2PPT
             sourceComboBox.DataSource = Source.AvailableSources;
             sourceComboBox.SelectedItem = null;
             sourceComboBox.SelectedValueChanged += SourceComboBox_SelectedValueChanged;
-            // 과거 선택 소스 불러오기
+            // 마지막으로 선택한 소스 불러오기
             sourceComboBox.SelectedValue = AppConfig.Context.BibleSourceId;
         }
 
+        /// <summary>
+        /// 선택한 소스의 성경 목록을 가져온다.
+        /// </summary>
         private async void SourceComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            var source = sourceComboBox.SelectedItem as Source;
-            if (source == null)
+            // 성경 목록을 가져오기 전까지 성경 목록 컨트롤 비활성화
+            bibleComboBox.Enabled = false;
+
+            // 현재 소스를 선택하기 전에 선택한 소스의 성경 목록 가져오기 작업을 취소
+            if (sourceComboBox.Tag is CancellationTokenSource previousCts)
             {
-                bibleComboBox.Tag = null;
-                bibleComboBox.Items.Clear();
-                booksListView.Tag = null;
-                booksListView.Items.Clear();
+                previousCts.Cancel();
+                sourceComboBox.Tag = null;
+            }
+
+            // 소스를 선택하지 않았으면 아무 작업도 수행하지 않음
+            if (!(sourceComboBox.SelectedItem is Source source))
+            {
                 return;
             }
+            
+            // 작업을 취소하기 위한 토큰 생성 및 연결
+            var cts = new CancellationTokenSource();
+            sourceComboBox.Tag = cts;
 
-            AppConfig.Context.BibleSourceId = source.Id;
-
-            ToggleCriticalControls(false);
-            bibleComboBox.Tag = null;
-            bibleComboBox.Items.Clear();
-            booksListView.Tag = null;
-            booksListView.Items.Clear();
-
+            // 성경 목록 가져오기
+            List<Bible> bibles;
             try
             {
-                var bibles = await source.GetBiblesAsync();
-                bibleComboBox.Tag = bibles;
-                bibleComboBox.Items.AddRange(bibles.ToArray());
-                bibleComboBox.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
+                bibles = await source.GetBiblesAsync();
+
+                // 작업 취소 요청 수리
+                cts.Token.ThrowIfCancellationRequested();
             }
-            finally
+            // 올바른 작업 취소 요청 시 아무 작업도 수행하지 않음
+            catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
-                ToggleCriticalControls(true);
+                return;
             }
+            // TODO: 작업 실패 시 에러 처리 및 컨트롤 활성화
+            //catch { }
+
+            // 성경 목록 가져오기를 성공하였으므로 선택한 소스를 기억
+            AppConfig.Context.BibleSourceId = source.Id;
+
+            // 성경 목록 초기화
+            bibleComboBox.SelectedValueChanged -= BibleComboBox_SelectedValueChanged;
+            bibleComboBox.ValueMember = nameof(Bible.Id);
+            bibleComboBox.DisplayMember = nameof(Bible.Version);
+            bibleComboBox.DataSource = bibles;
+            bibleComboBox.SelectedItem = null;
+            bibleComboBox.SelectedValueChanged += BibleComboBox_SelectedValueChanged;
+            // 마지막으로 선택한 성경 불러오기
+            bibleComboBox.SelectedValue = AppConfig.Context.BibleVersionId;
+
+            // 성경 목록 컨트롤 활성화
+            bibleComboBox.Enabled = true;
         }
 
-        private async void BibleComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private async void BibleComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             var bible = bibleComboBox.SelectedItem as Bibles.Bible;
             if (bible == null)
@@ -96,7 +123,7 @@ namespace Bible2PPT
 
             AppConfig.Context.BibleVersionId = bible.Id;
 
-            ToggleCriticalControls(false);
+            //ToggleCriticalControls(false);
             booksListView.Tag = null;
             booksListView.Items.Clear();
 
@@ -113,7 +140,7 @@ namespace Bible2PPT
             }
             finally
             {
-                ToggleCriticalControls(true);
+                //ToggleCriticalControls(true);
             }
         }
 
