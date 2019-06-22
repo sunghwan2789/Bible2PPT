@@ -34,8 +34,8 @@
             System.Windows.Forms.StatusStrip builderStatusStrip;
             System.Windows.Forms.TableLayoutPanel biblesTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel biblesButtonTableLayoutPanel;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.TableLayoutPanel bibleTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox bibleIconPictureBox;
             System.Windows.Forms.Label bibleLabel;
@@ -93,6 +93,9 @@
             this.chkUseCache = new System.Windows.Forms.CheckBox();
             this.settingsNav = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.biblesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.biblesSourceDataGridViewColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.biblesBibleDataGridViewColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             navTopFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             builderStatusStrip = new System.Windows.Forms.StatusStrip();
@@ -151,6 +154,7 @@
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).BeginInit();
             this.settingsMultiPanelPage.SuspendLayout();
             navBottomFlowLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // mainTableLayoutPanel
@@ -475,15 +479,18 @@
             this.biblesDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.biblesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.biblesDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.biblesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.biblesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.biblesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.biblesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.biblesSourceDataGridViewColumn,
+            this.biblesBibleDataGridViewColumn});
             this.biblesDataGridView.Cursor = System.Windows.Forms.Cursors.Hand;
             this.biblesDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.biblesDataGridView.Location = new System.Drawing.Point(1, 26);
@@ -491,14 +498,14 @@
             this.biblesDataGridView.MultiSelect = false;
             this.biblesDataGridView.Name = "biblesDataGridView";
             this.biblesDataGridView.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.biblesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.biblesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.biblesDataGridView.RowHeadersWidth = 30;
             this.biblesDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.biblesDataGridView.RowTemplate.Height = 18;
@@ -507,6 +514,7 @@
             this.biblesDataGridView.Size = new System.Drawing.Size(236, 102);
             this.biblesDataGridView.StandardTab = true;
             this.biblesDataGridView.TabIndex = 1;
+            this.biblesDataGridView.CurrentCellChanged += new System.EventHandler(this.BiblesDataGridView_CurrentCellChanged);
             this.biblesDataGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.BiblesDataGridView_RowPostPaint);
             // 
             // bibleTableLayoutPanel
@@ -1098,6 +1106,18 @@
             this.settingsNav.UseVisualStyleBackColor = false;
             this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
             // 
+            // biblesSourceDataGridViewColumn
+            // 
+            this.biblesSourceDataGridViewColumn.HeaderText = "소스";
+            this.biblesSourceDataGridViewColumn.Name = "biblesSourceDataGridViewColumn";
+            this.biblesSourceDataGridViewColumn.ReadOnly = true;
+            // 
+            // biblesBibleDataGridViewColumn
+            // 
+            this.biblesBibleDataGridViewColumn.HeaderText = "성경";
+            this.biblesBibleDataGridViewColumn.Name = "biblesBibleDataGridViewColumn";
+            this.biblesBibleDataGridViewColumn.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1150,6 +1170,7 @@
             this.settingsMultiPanelPage.ResumeLayout(false);
             this.settingsMultiPanelPage.PerformLayout();
             navBottomFlowLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1190,6 +1211,9 @@
         private FontAwesome.Sharp.IconButton btnGithub;
         private System.Windows.Forms.SplitContainer buildSplitContainer;
         private System.Windows.Forms.DataGridView biblesDataGridView;
+        private System.Windows.Forms.BindingSource biblesBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn biblesSourceDataGridViewColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn biblesBibleDataGridViewColumn;
     }
 }
 

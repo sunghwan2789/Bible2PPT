@@ -32,7 +32,6 @@ namespace Bible2PPT
         };
 
         private List<Bible> biblesToBuild = new List<Bible>();
-        private BindingSource biblesBindingSource;
 
         private void InitializeBuildComponent()
         {
@@ -52,23 +51,9 @@ namespace Bible2PPT
             bibleComboBox.SelectedValueChanged += BibleComboBox_SelectedValueChanged;
 
             biblesDataGridView.AutoGenerateColumns = false;
-            biblesDataGridView.Columns.AddRange(new[]
-            {
-                new DataGridViewTextBoxColumn
-                {
-                    HeaderText = "소스",
-                    DataPropertyName = nameof(Bible.Source),
-                },
-                new DataGridViewTextBoxColumn
-                {
-                    HeaderText = "성경",
-                    DataPropertyName = nameof(Bible.Version),
-                },
-            });
-            biblesBindingSource = new BindingSource
-            {
-                DataSource = biblesToBuild,
-            };
+            biblesSourceDataGridViewColumn.DataPropertyName = nameof(Bible.Source);
+            biblesBibleDataGridViewColumn.DataPropertyName = nameof(Bible.Version);
+            biblesBindingSource.DataSource = biblesToBuild;
             biblesDataGridView.DataSource = biblesBindingSource;
 
             // 불러오기
@@ -85,6 +70,8 @@ namespace Bible2PPT
             // 마지막으로 선택한 소스 불러오기
             sourceComboBox.SelectedValue = AppConfig.Context.BibleSourceId;
         }
+
+        #region 빌드 대상 성경 관리
 
         /// <summary>
         /// 선택한 소스의 성경 목록을 가져온다.
@@ -125,7 +112,7 @@ namespace Bible2PPT
             {
                 return;
             }
-            // TODO: 작업 실패 시 에러 처리 및 컨트롤 활성화
+            // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
             //catch { }
 
             // 성경 목록 가져오기를 성공하였으므로 선택한 소스를 기억
@@ -271,6 +258,71 @@ namespace Bible2PPT
             }
         }
 
+        #endregion
+
+        #region 책 목록 관리
+
+        /// <summary>
+        /// 활성화한 성경의 책 목록을 가져온다.
+        /// </summary>
+        private async void BiblesDataGridView_CurrentCellChanged(object sender, EventArgs e)
+        {
+            // 책 목록을 가져오기 전까지 책 목록 컨트롤 비활성화
+            booksListView.Enabled = false;
+
+            // 현재 성경을 활성화하기 전에 활성화한 성경의 책 목록 가져오기 작업을 취소
+            if (biblesDataGridView.Tag is CancellationTokenSource previousCts)
+            {
+                previousCts.Cancel();
+                biblesDataGridView.Tag = null;
+            }
+
+            // 성경을 활성화하지 않았으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경을 기억
+            var bible = biblesToBuild[biblesDataGridView.CurrentRow.Index];
+
+            // 작업을 취소하기 위한 토큰 생성 및 연결
+            var cts = new CancellationTokenSource();
+            biblesDataGridView.Tag = cts;
+
+            // 책 목록 가져오기
+            List<Book> books;
+            try
+            {
+                books = await bible.Source.GetBooksAsync(bible);
+
+                // 작업 취소 요청 수리
+                cts.Token.ThrowIfCancellationRequested();
+            }
+            // 올바른 작업 취소 요청 시 아무 작업도 안함
+            catch (OperationCanceledException) when (cts.IsCancellationRequested)
+            {
+                return;
+            }
+            // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
+            //catch { }
+
+            // TODO: 책 목록 가져오기를 성공하였으므로 활성화한 성경을 기억
+            //AppConfig.Context.BibleSourceId = source.Id;
+
+            // 책 목록 초기화
+            booksListView.Tag = books;
+            booksListView.Items.Clear();
+            foreach (var book in books)
+            {
+                var item = booksListView.Items.Add(book.Title);
+                item.SubItems.Add(book.ShortTitle);
+                item.Tag = book;
+            }
+            // 책 목록 컨트롤 활성화
+            booksListView.Enabled = true;
+        }
+
         private void BooksListView_MouseClick(object sender, MouseEventArgs e)
         {
             AppendShortTitle();
@@ -345,6 +397,8 @@ namespace Bible2PPT
         {
             booksSearchTextBox.Text = @"책 검색...";
         }
+
+        #endregion
 
         private void VersesTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
