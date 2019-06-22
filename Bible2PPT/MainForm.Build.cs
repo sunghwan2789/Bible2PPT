@@ -101,7 +101,7 @@ namespace Bible2PPT
                 sourceComboBox.Tag = null;
             }
 
-            // 소스를 선택하지 않았으면 아무 작업도 수행하지 않음
+            // 소스를 선택하지 않았으면 아무 작업도 안함
             if (!(sourceComboBox.SelectedItem is Source source))
             {
                 return;
@@ -120,7 +120,7 @@ namespace Bible2PPT
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();
             }
-            // 올바른 작업 취소 요청 시 아무 작업도 수행하지 않음
+            // 올바른 작업 취소 요청 시 아무 작업도 안함
             catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
                 return;
@@ -170,7 +170,32 @@ namespace Bible2PPT
                 return;
             }
 
+            // 선택한 성경의 빌드 번호를 기억하고
+            var buildNumber = biblesToBuild.Count;
+            // 빌드 대상에 추가 및 컨트롤에 반영
             biblesToBuild.Add(bible);
+            biblesBindingSource.ResetBindings(false);
+            // 추가한 성경을 활성화
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[buildNumber].Cells[0];
+
+            // TODO: 빌드 대상 성경 기억
+        }
+
+        /// <summary>
+        /// 활성화한 성경을 빌드 대상에서 제거한다.
+        /// </summary>
+        private void BiblesRemoveIconButton_Click(object sender, EventArgs e)
+        {
+            // 활성화한 성경이 없으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경의 빌드 번호를 기억하고
+            var buildNumber = biblesDataGridView.CurrentRow.Index;
+            // 빌드 대상에서 제거 및 컨트롤에 반영
+            biblesToBuild.RemoveAt(buildNumber);
             biblesBindingSource.ResetBindings(false);
 
             // TODO: 빌드 대상 성경 기억

@@ -462,6 +462,7 @@
             this.biblesRemoveIconButton.Size = new System.Drawing.Size(24, 24);
             this.biblesRemoveIconButton.TabIndex = 3;
             this.biblesRemoveIconButton.UseVisualStyleBackColor = true;
+            this.biblesRemoveIconButton.Click += new System.EventHandler(this.BiblesRemoveIconButton_Click);
             // 
             // biblesDataGridView
             // 
