@@ -216,11 +216,13 @@ namespace Bible2PPT.Bibles.Sources
             {
                 chapters = await GetChaptersOnlineAsync(book);
                 chapters.ForEach(chapter => LinkForeigns(chapter, book));
+                chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
                 return chapters;
             }
             // 캐시가 있으면 사용
             chapters = GetChaptersCached(book);
             chapters.ForEach(chapter => LinkForeigns(chapter, book));
+            chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
             if (chapters.Any())
             {
                 return chapters;
@@ -228,6 +230,7 @@ namespace Bible2PPT.Bibles.Sources
             // 캐시가 없으면 온라인에서 가져와서 저장
             chapters = await GetChaptersOnlineAsync(book);
             chapters.ForEach(chapter => LinkForeigns(chapter, book));
+            chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
             CacheChapters(chapters);
             return chapters;
         }
@@ -240,11 +243,13 @@ namespace Bible2PPT.Bibles.Sources
             {
                 verses = await GetVersesOnlineAsync(chapter);
                 verses.ForEach(verse => LinkForeigns(verse, chapter));
+                verses.Sort((a, b) => a.Number.CompareTo(b.Number));
                 return verses;
             }
             // 캐시가 있으면 사용
             verses = GetVersesCached(chapter);
             verses.ForEach(verse => LinkForeigns(verse, chapter));
+            verses.Sort((a, b) => a.Number.CompareTo(b.Number));
             if (verses.Any())
             {
                 return verses;
@@ -252,6 +257,7 @@ namespace Bible2PPT.Bibles.Sources
             // 캐시가 없으면 온라인에서 가져와서 저장
             verses = await GetVersesOnlineAsync(chapter);
             verses.ForEach(verse => LinkForeigns(verse, chapter));
+            verses.Sort((a, b) => a.Number.CompareTo(b.Number));
             CacheVerses(verses);
             return verses;
         }

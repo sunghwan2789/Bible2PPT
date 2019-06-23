@@ -601,7 +601,11 @@ namespace Bible2PPT
                         foreach (var targetEachChapter in targetEachChapters)
                         {
                             // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
-                            var mainChapter = targetEachChapter.First(i => i != null);
+                            var mainChapter = targetEachChapter.FirstOrDefault(i => i != null);
+                            if (mainChapter == null)
+                            {
+                                continue;
+                            }
 
                             Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{mainBook.Title} {mainChapter.Number}장"));
 
