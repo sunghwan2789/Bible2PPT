@@ -664,12 +664,12 @@ namespace Bible2PPT
                                 work = builder.BeginBuild(output);
                             }
 
-                            var startVerseNo = mainChapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                        //if (mainChapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
+                            var startVerseNo = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
+                            var endVerseNo = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
                         GET_VERSES:
                             try
                             {
-                                work.AppendChapter(targetEachChapter, startVerseNo, query.EndVerseNumber, cts.Token);
+                                work.AppendChapter(targetEachChapter, startVerseNo, endVerseNo, cts.Token);
                             }
                             catch (OperationCanceledException) when (!cts.IsCancellationRequested)
                             {
