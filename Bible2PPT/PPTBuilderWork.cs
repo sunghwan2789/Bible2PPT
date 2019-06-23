@@ -21,22 +21,76 @@ namespace Bible2PPT
 
         private bool isFirstVerseOfChapter;
 
-        public void AppendChapter(IEnumerable<Chapter> chapterGroup, int startVerseNumber, int endVerseNumber, CancellationToken token)
+        public void AppendChapter(IEnumerable<Chapter> eachChapter, int startVerseNumber, int? endVerseNumber, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
-            var chapter = chapterGroup.First();
-            var getVersesTasks = chapterGroup.Select(i => i.Source.GetVersesAsync(i)).ToArray();
-            Task.WaitAll(getVersesTasks);
-            var verses = new List<Verse>();
-            foreach (var getVersesTask in getVersesTasks)
+
+            var mainChapter = eachChapter.First(i => i != null);
+
+            var eachTargetVerses = eachChapter
+                .Select(chapter => chapter?.Source.GetVersesAsync(chapter)).ToList().Select(i => i?.Result)
+                .Select(i => i ?? new List<Verse>())
+                .Select(verses => verses.Where(verse =>
+                    (endVerseNumber != null)
+                    ? (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber)
+                    : (verse.Number >= startVerseNumber)).ToList())
+                .ToList();
+
+            var targetEachVerses = new List<IEnumerable<Verse>>();
+            var targetVerseEnumerators = eachTargetVerses.Select(i => i.GetEnumerator()).ToList();
+            for (var verseNumber = startVerseNumber; ;)
             {
-                verses.AddRange(getVersesTask.Result);
+                // 다음 절이 있는지 확인
+                var nextVerseNumber = verseNumber;
+                foreach (var i in targetVerseEnumerators)
+                {
+                    if (i.MoveNext())
+                    {
+                        nextVerseNumber = Math.Max(nextVerseNumber, i.Current.Number);
+                    }
+                }
+
+                // 현재 절이 마지막이었으면 종료
+                if (verseNumber == nextVerseNumber)
+                {
+                    break;
+                }
+
+                for (; verseNumber <= nextVerseNumber; verseNumber++)
+                {
+                    var eachVerse = new List<Verse>();
+                    foreach (var i in targetVerseEnumerators)
+                    {
+                        // 범위를 넘어가면 더 페이지가 없음
+                        if (i.Current == null)
+                        {
+                            eachVerse.Add(null);
+                            continue;
+                        }
+
+                        // 절 번호가 앞서가면 앞 절이 비었음
+                        if (i.Current.Number > verseNumber)
+                        {
+                            eachVerse.Add(null);
+                            continue;
+                        }
+
+                        eachVerse.Add(i.Current);
+                        i.MoveNext();
+                    }
+                    targetEachVerses.Add(eachVerse);
+                }
             }
-            foreach (var verseGroup in
-                verses.Where(i => i.Number >= startVerseNumber && i.Number <= endVerseNumber)
-                    .GroupBy(i => i.Number).ToList())
+            //while (targetVerseEnumerators.Where(i => i.MoveNext()).ToList().Any())
+            //{
+            //    targetEachVerses.Add(targetVerseEnumerators.Select(i => i.Current).ToList());
+            //}
+
+            foreach (var eachVerse in targetEachVerses)
             {
                 token.ThrowIfCancellationRequested();
+
+                var mainVerse = eachVerse.First(i => i != null);
 
                 var slide = TemplateSlide.Duplicate();
                 slide.MoveTo(WorkingPPT.Slides.Count);
@@ -46,22 +100,19 @@ namespace Bible2PPT
                         .Select(i => i.TextFrame.TextRange))
                 {
                     var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", chapter.Number.ToString(), AppConfig.Context.ShowChapterNumber);
-                    text = AddSuffix(text, "STITLE", chapter.Book.ShortTitle, AppConfig.Context.ShowShortTitle);
-                    text = AddSuffix(text, "TITLE", chapter.Book.Title, AppConfig.Context.ShowLongTitle);
-                    text = text.Replace("[CPAS]", startVerseNumber.ToString());
-                    text = text.Replace("[CPAE]", endVerseNumber.ToString());
-                    text = text.Replace("[PARA]", verseGroup.First().Number.ToString());
-                    text = text.Replace("[BODY]", verseGroup.First().Text);
+                    text = AddSuffix(text, "CHAP", $"{mainChapter.Number}", AppConfig.Context.ShowChapterNumber);
+                    text = AddSuffix(text, "STITLE", mainChapter.Book.ShortTitle, AppConfig.Context.ShowShortTitle);
+                    text = AddSuffix(text, "TITLE", mainChapter.Book.Title, AppConfig.Context.ShowLongTitle);
+                    text = text.Replace("[CPAS]", $"{startVerseNumber}");
+                    text = text.Replace("[CPAE]", $"{endVerseNumber}");
+                    text = text.Replace("[PARA]", $"{mainVerse.Number}");
+                    text = text.Replace("[BODY]", eachVerse.First()?.Text);
 
-                    var verseEnumerator = verseGroup.GetEnumerator();
+                    var verseEnumerator = eachVerse.GetEnumerator();
                     for (var i = 1; i <= 9; i++)
                     {
-                        text = text.Replace(
-                            $"[BODY{i}]",
-                            verseEnumerator.MoveNext()
-                            ? verseEnumerator.Current.Text
-                            : string.Empty);
+                        var verse = verseEnumerator.MoveNext() ? verseEnumerator.Current : null;
+                        text = text.Replace($"[BODY{i}]", verse?.Text);
                     }
 
                     textShape.Text = text;

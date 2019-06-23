@@ -486,63 +486,106 @@ namespace Bible2PPT
             PPTBuilderWork work = null;
             try
             {
-                await Task.Factory.StartNew(async () =>
+                await Task.Factory.StartNew(() =>
                 {
                     if (!AppConfig.Context.SeperateByChapter)
                     {
                         work = builder.BeginBuild();
                     }
 
-                    var books = new List<Book>();
-                    foreach (var getBooksTask in biblesToBuild.Select(i => i.Source.GetBooksAsync(i)).ToList())
-                    {
-                        books.AddRange(await getBooksTask);
-                    }
+                    var eachBooks = biblesToBuild.Select(bible => bible.Source.GetBooksAsync(bible)).ToList().Select(i => i.Result).ToList();
 
                     foreach (var t in
                         Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
                             .Select(BibleQuery.ParseQuery)
-                            .Select(q => Tuple.Create(q, books.Where(b => b.ShortTitle == q.BibleId).ToList())).ToList())
+                            .Select(query => Tuple.Create(
+                                query,
+                                eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList())))
                     {
                         var query = t.Item1;
-                        var targetBooks = t.Item2;
-                        var bookTitle = targetBooks[0].Title;
+                        var targetEachBook = t.Item2;
 
-                        var chapters = new List<Chapter>();
-                        foreach (var getChaptersTask in targetBooks.Select(i => i.Source.GetChaptersAsync(i)).ToList())
+                        // 해당 책이 있는 성경에서 해당 책을 대표로 사용
+                        var mainBook = targetEachBook.First(i => i != null);
+
+                        // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
+                        var eachTargetChapters = targetEachBook
+                            .Select(book => book?.Source.GetChaptersAsync(book)).ToList().Select(i => i?.Result)
+                            .Select(i => i ?? new List<Chapter>())
+                            .Select(chapters => chapters.Where(chapter =>
+                                (query.EndChapterNumber != null)
+                                ? (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
+                                : (chapter.Number >= query.StartChapterNumber)).ToList())
+                            .ToList();
+
+                        // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
+                        var targetEachChapters = new List<IEnumerable<Chapter>>();
+                        var targetChapterEnumerators = eachTargetChapters.Select(i => i.GetEnumerator()).ToList();
+                        for (var chapterNumber = query.StartChapterNumber; ;)
                         {
-                            chapters.AddRange(await getChaptersTask);
+                            // 다음 장이 있는지 확인
+                            var nextChapterNumber = chapterNumber;
+                            foreach (var i in targetChapterEnumerators)
+                            {
+                                if (i.MoveNext())
+                                {
+                                    nextChapterNumber = Math.Max(nextChapterNumber, i.Current.Number);
+                                }
+                            }
+
+                            // 현재 장이 마지막이었으면 종료
+                            if (chapterNumber == nextChapterNumber)
+                            {
+                                break;
+                            }
+
+                            for (; chapterNumber <= nextChapterNumber; chapterNumber++)
+                            {
+                                var eachChapter = new List<Chapter>();
+                                foreach (var i in targetChapterEnumerators)
+                                {
+                                    // 범위를 넘어가면 더 페이지가 없음
+                                    if (i.Current == null)
+                                    {
+                                        eachChapter.Add(null);
+                                        continue;
+                                    }
+
+                                    // 장 번호가 앞서가면 앞 장이 비었음
+                                    if (i.Current.Number > chapterNumber)
+                                    {
+                                        eachChapter.Add(null);
+                                        continue;
+                                    }
+
+                                    eachChapter.Add(i.Current);
+                                    i.MoveNext();
+                                }
+                                targetEachChapters.Add(eachChapter);
+                            }
                         }
 
-                        foreach (var targetChapter in
-                            chapters
-                                .Where(i =>
-                                    (query.EndChapterNumber != null)
-                                    ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
-                                    : (i.Number >= query.StartChapterNumber))
-                                .GroupBy(i => i.Number).ToList())
+                        foreach (var targetEachChapter in targetEachChapters)
                         {
-                            var chapterNumber = targetChapter.Key;
-                            Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{bookTitle} {chapterNumber}장"));
+                            // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
+                            var mainChapter = targetEachChapter.First(i => i != null);
+
+                            Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{mainBook.Title} {mainChapter.Number}장"));
 
                             if (AppConfig.Context.SeperateByChapter)
                             {
                                 work?.Save();
-                                var output = Path.Combine(destination, bookTitle, chapterNumber.ToString("000\\.pptx"));
+                                var output = Path.Combine(destination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
                                 CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                                 work = builder.BeginBuild(output);
                             }
 
-                            var startVerseNo = chapterNumber == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                            var endVerseNo = (await targetChapter.First().Source.GetVersesAsync(targetChapter.First())).Max(i => i.Number);
-                            if (chapterNumber == query.EndChapterNumber && query.EndVerseNumber != null)
-                            {
-                                endVerseNo = query.EndVerseNumber.Value;
-                            }
-                            work.AppendChapter(targetChapter, startVerseNo, endVerseNo, cts.Token);
+                            var startVerseNo = mainChapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                            //if (mainChapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
+                            work.AppendChapter(targetEachChapter, startVerseNo, query.EndVerseNumber, cts.Token);
                         }
                     }
-                }).Unwrap();
+                });
             }
             // 올바른 작업 취소 요청 시 오류 무시
             catch (OperationCanceledException) when (cts.IsCancellationRequested) { }
