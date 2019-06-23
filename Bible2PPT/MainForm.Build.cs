@@ -1,5 +1,6 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
+using Microsoft.Database.Isam;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,13 +36,29 @@ namespace Bible2PPT
             chkUseCache,
         };
 
-        private readonly List<Bible> biblesToBuild = new List<Bible>();
+        private readonly List<Bible> biblesToBuild = new List<Bible>(9);
 
         private void InitializeBuildComponent()
         {
             // TableLayoutPanel에 포함되면 SplitterWidth가 초기화되는
             // SplitContainer의 특성에 따라 값 다시 설정
             buildSplitContainer.SplitterWidth = 13;
+
+            using (var db = new BibleDb())
+            using (var cursor = db.Bibles)
+            {
+                cursor.SetCurrentIndex(nameof(Bible.Id));
+                foreach (var i in AppConfig.Context.BibleToBuild)
+                {
+                    cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(i));
+                    var bible = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).FirstOrDefault();
+                    if (bible != null)
+                    {
+                        bible.Source = Source.AvailableSources.First(j => j.Id == bible.SourceId);
+                        biblesToBuild.Add(bible);
+                    }
+                }
+            }
 
             // DataSource 사용을 위한 기초 설정
             sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
@@ -142,10 +159,8 @@ namespace Bible2PPT
             if (bibleComboBox.SelectedItem is Bible bible)
             {
                 AppConfig.Context.BibleVersionId = bible.Id;
-                // 아래 코드는 FormShown 이벤트 발생 후에 작동하므로 사용하지 않음
-                // TODO: 빌드 대상 성경 기억 지원 시 주석 해제
-                //biblesAddIconButton.PerformClick();
-                BiblesAddIconButton_Click(biblesAddIconButton, EventArgs.Empty);
+                // 아래 코드는 FormShown 이벤트 발생 후에 작동하므로 불러오기 시에는 작동 안함
+                biblesAddIconButton.PerformClick();
             }
         }
 
@@ -169,7 +184,7 @@ namespace Bible2PPT
             // 추가한 성경을 활성화
             biblesDataGridView.CurrentCell = biblesDataGridView.Rows[rank].Cells[0];
 
-            // TODO: 빌드 대상 성경 기억
+            BiblesToBuild_Changed();
         }
 
         /// <summary>
@@ -189,7 +204,7 @@ namespace Bible2PPT
             biblesToBuild.RemoveAt(rank);
             biblesBindingSource.ResetBindings(false);
 
-            // TODO: 빌드 대상 성경 기억
+            BiblesToBuild_Changed();
         }
 
         /// <summary>
@@ -217,7 +232,7 @@ namespace Bible2PPT
             biblesBindingSource.ResetBindings(false);
             biblesDataGridView.CurrentCell = biblesDataGridView.Rows[--rank].Cells[0];
 
-            // TODO: 빌드 대상 성경 기억
+            BiblesToBuild_Changed();
         }
 
         /// <summary>
@@ -245,7 +260,7 @@ namespace Bible2PPT
             biblesBindingSource.ResetBindings(false);
             biblesDataGridView.CurrentCell = biblesDataGridView.Rows[++rank].Cells[0];
 
-            // TODO: 빌드 대상 성경 기억
+            BiblesToBuild_Changed();
         }
 
         private void BiblesDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -259,6 +274,17 @@ namespace Bible2PPT
                     e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
                     e.RowBounds.Location.Y + 4,
                     new StringFormat(StringFormatFlags.DirectionRightToLeft));
+            }
+        }
+
+        private void BiblesToBuild_Changed()
+        {
+            for (var i = 0; i < 9; i++)
+            {
+                AppConfig.Context.BibleToBuild[i] =
+                    (i < biblesToBuild.Count)
+                    ? biblesToBuild[i].Id
+                    : Guid.Empty;
             }
         }
 

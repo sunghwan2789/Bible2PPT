@@ -73,6 +73,8 @@
             this.biblesAddIconButton = new FontAwesome.Sharp.IconButton();
             this.biblesRemoveIconButton = new FontAwesome.Sharp.IconButton();
             this.biblesDataGridView = new System.Windows.Forms.DataGridView();
+            this.biblesSourceDataGridViewColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.biblesBibleDataGridViewColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bibleComboBox = new System.Windows.Forms.ComboBox();
             this.sourceComboBox = new System.Windows.Forms.ComboBox();
             this.templateBookAbbrComboBox = new System.Windows.Forms.ComboBox();
@@ -94,8 +96,6 @@
             this.settingsNav = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.biblesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.biblesSourceDataGridViewColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.biblesBibleDataGridViewColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             navTopFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             builderStatusStrip = new System.Windows.Forms.StatusStrip();
@@ -516,6 +516,18 @@
             this.biblesDataGridView.TabIndex = 1;
             this.biblesDataGridView.CurrentCellChanged += new System.EventHandler(this.BiblesDataGridView_CurrentCellChanged);
             this.biblesDataGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.BiblesDataGridView_RowPostPaint);
+            // 
+            // biblesSourceDataGridViewColumn
+            // 
+            this.biblesSourceDataGridViewColumn.HeaderText = "소스";
+            this.biblesSourceDataGridViewColumn.Name = "biblesSourceDataGridViewColumn";
+            this.biblesSourceDataGridViewColumn.ReadOnly = true;
+            // 
+            // biblesBibleDataGridViewColumn
+            // 
+            this.biblesBibleDataGridViewColumn.HeaderText = "성경";
+            this.biblesBibleDataGridViewColumn.Name = "biblesBibleDataGridViewColumn";
+            this.biblesBibleDataGridViewColumn.ReadOnly = true;
             // 
             // bibleTableLayoutPanel
             // 
@@ -1105,18 +1117,6 @@
             this.toolTip.SetToolTip(this.settingsNav, "설정");
             this.settingsNav.UseVisualStyleBackColor = false;
             this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
-            // 
-            // biblesSourceDataGridViewColumn
-            // 
-            this.biblesSourceDataGridViewColumn.HeaderText = "소스";
-            this.biblesSourceDataGridViewColumn.Name = "biblesSourceDataGridViewColumn";
-            this.biblesSourceDataGridViewColumn.ReadOnly = true;
-            // 
-            // biblesBibleDataGridViewColumn
-            // 
-            this.biblesBibleDataGridViewColumn.HeaderText = "성경";
-            this.biblesBibleDataGridViewColumn.Name = "biblesBibleDataGridViewColumn";
-            this.biblesBibleDataGridViewColumn.ReadOnly = true;
             // 
             // MainForm
             // 
