@@ -29,7 +29,7 @@ namespace Bible2PPT
             {
                 BibleDb.Reset();
             }
-            sourceComboBox.SelectedItem = null;
+            //sourceComboBox.SelectedItem = null;
         }
     }
 }

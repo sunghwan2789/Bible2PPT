@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bible2PPT.Bibles.Sources
 {
-    class GodpiaBible : BibleSource
+    class GodpiaBible : Source
     {
         private const string BASE_URL = "http://bible.godpia.com";
 

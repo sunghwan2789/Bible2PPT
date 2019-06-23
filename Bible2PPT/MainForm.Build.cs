@@ -1,13 +1,16 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
+using Microsoft.Database.Isam;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Bible2PPT
@@ -18,16 +21,22 @@ namespace Bible2PPT
         {
             sourceComboBox,
             bibleComboBox,
-            booksListView,
-            booksSearchTextBox,
-            templateChaperNumberComboBox,
+            biblesUpIconButton,
+            biblesDownIconButton,
+            biblesAddIconButton,
+            biblesRemoveIconButton,
+            biblesDataGridView,
             templateBookNameComboBox,
             templateBookAbbrComboBox,
+            templateChaperNumberComboBox,
+            booksSearchTextBox,
+            booksListView,
             versesTextBox,
-            buildButton,
             buildFragmentCheckBox,
             chkUseCache,
         };
+
+        private readonly List<Bible> biblesToBuild = new List<Bible>(9);
 
         private void InitializeBuildComponent()
         {
@@ -35,79 +44,313 @@ namespace Bible2PPT
             // SplitContainer의 특성에 따라 값 다시 설정
             buildSplitContainer.SplitterWidth = 13;
 
+            using (var db = new BibleDb())
+            using (var cursor = db.Bibles)
+            {
+                cursor.SetCurrentIndex(nameof(Bible.Id));
+                foreach (var i in AppConfig.Context.BibleToBuild)
+                {
+                    cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(i));
+                    var bible = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).FirstOrDefault();
+                    if (bible != null)
+                    {
+                        bible.Source = Source.AvailableSources.First(j => j.Id == bible.SourceId);
+                        biblesToBuild.Add(bible);
+                    }
+                }
+            }
+
+            // DataSource 사용을 위한 기초 설정
+            sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
+            sourceComboBox.ValueMember = nameof(Source.Id);
+            sourceComboBox.DisplayMember = nameof(Source.Name);
+            sourceComboBox.SelectedValueChanged += SourceComboBox_SelectedValueChanged;
+
+            bibleComboBox.SelectedValueChanged -= BibleComboBox_SelectedValueChanged;
+            bibleComboBox.ValueMember = nameof(Bible.Id);
+            bibleComboBox.DisplayMember = nameof(Bible.Version);
+            bibleComboBox.SelectedValueChanged += BibleComboBox_SelectedValueChanged;
+
+            biblesDataGridView.AutoGenerateColumns = false;
+            biblesSourceDataGridViewColumn.DataPropertyName = nameof(Bible.Source);
+            biblesBibleDataGridViewColumn.DataPropertyName = nameof(Bible.Version);
+            biblesBindingSource.DataSource = biblesToBuild;
+            biblesDataGridView.DataSource = biblesBindingSource;
+
             // 불러오기
             templateBookNameComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
             templateBookAbbrComboBox.SelectedIndex = (int)AppConfig.Context.ShowShortTitle;
             templateChaperNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
             buildFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
-            sourceComboBox.Items.AddRange(BibleSource.AvailableSources);
-            sourceComboBox.SelectedItem = BibleSource.AvailableSources.FirstOrDefault(i => i.Id == AppConfig.Context.BibleSourceId);
+            // 소스 목록 초기화
+            sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
+            sourceComboBox.DataSource = Source.AvailableSources;
+            sourceComboBox.SelectedItem = null;
+            sourceComboBox.SelectedValueChanged += SourceComboBox_SelectedValueChanged;
+            // 마지막으로 선택한 소스 불러오기
+            sourceComboBox.SelectedValue = AppConfig.Context.BibleSourceId;
         }
 
-        private async void SourceComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        #region 빌드 대상 성경 관리
+
+        /// <summary>
+        /// 선택한 소스의 성경 목록을 가져온다.
+        /// </summary>
+        private async void SourceComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            var source = sourceComboBox.SelectedItem as BibleSource;
-            if (source == null)
+            // 성경 목록을 가져오기 전까지 성경 목록 컨트롤 비활성화
+            bibleComboBox.Enabled = false;
+
+            // 현재 소스를 선택하기 전에 선택한 소스의 성경 목록 가져오기 작업을 취소
+            if (sourceComboBox.Tag is CancellationTokenSource previousCts)
             {
-                bibleComboBox.Tag = null;
-                bibleComboBox.Items.Clear();
-                booksListView.Tag = null;
-                booksListView.Items.Clear();
+                previousCts.Cancel();
+                sourceComboBox.Tag = null;
+            }
+
+            // 소스를 선택하지 않았으면 아무 작업도 안함
+            if (!(sourceComboBox.SelectedItem is Source source))
+            {
                 return;
             }
 
-            AppConfig.Context.BibleSourceId = source.Id;
+            // 작업을 취소하기 위한 토큰 생성 및 연결
+            var cts = new CancellationTokenSource();
+            sourceComboBox.Tag = cts;
 
-            ToggleCriticalControls(false);
-            bibleComboBox.Tag = null;
-            bibleComboBox.Items.Clear();
-            booksListView.Tag = null;
-            booksListView.Items.Clear();
-
+            // 성경 목록 가져오기
+            List<Bible> bibles;
             try
             {
-                var bibles = await source.GetBiblesAsync();
-                bibleComboBox.Tag = bibles;
-                bibleComboBox.Items.AddRange(bibles.ToArray());
-                bibleComboBox.SelectedItem = bibles.FirstOrDefault(i => i.Id == AppConfig.Context.BibleVersionId);
+                bibles = await source.GetBiblesAsync();
+
+                // 작업 취소 요청 수리
+                cts.Token.ThrowIfCancellationRequested();
             }
-            finally
+            // 올바른 작업 취소 요청 시 아무 작업도 안함
+            catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
-                ToggleCriticalControls(true);
+                return;
+            }
+            // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
+            //catch { }
+
+            // 성경 목록 가져오기를 성공하였으므로 선택한 소스를 기억
+            AppConfig.Context.BibleSourceId = source.Id;
+
+            // 성경 목록 초기화
+            bibleComboBox.SelectedValueChanged -= BibleComboBox_SelectedValueChanged;
+            bibleComboBox.DataSource = bibles;
+            bibleComboBox.SelectedItem = null;
+            bibleComboBox.SelectedValueChanged += BibleComboBox_SelectedValueChanged;
+            // 성경 목록 컨트롤 활성화
+            bibleComboBox.Enabled = true;
+            // 마지막으로 선택한 성경 불러오기
+            bibleComboBox.SelectedValue = AppConfig.Context.BibleVersionId;
+        }
+
+        /// <summary>
+        /// 선택한 성경을 자동으로 빌드 대상으로 추가한다.
+        /// </summary>
+        private void BibleComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            // 선택한 성경을 기억하고 빌드 대상으로 추가
+            if (bibleComboBox.SelectedItem is Bible bible)
+            {
+                AppConfig.Context.BibleVersionId = bible.Id;
+                // 아래 코드는 FormShown 이벤트 발생 후에 작동하므로 불러오기 시에는 작동 안함
+                biblesAddIconButton.PerformClick();
             }
         }
 
-        private async void BibleComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// 선택한 성경을 빌드 대상으로 추가한다.
+        /// </summary>
+        private void BiblesAddIconButton_Click(object sender, EventArgs e)
         {
-            var bible = bibleComboBox.SelectedItem as Bibles.Bible;
-            if (bible == null)
+            // 성경을 선택하지 않았으면 오류
+            if (!(bibleComboBox.SelectedItem is Bible bible) || !bibleComboBox.Enabled)
             {
-                ToggleCriticalControls(true);
-                throw new EntryPointNotFoundException("사용할 수 없는 성경입니다.");
+                MessageBox.Show("PPT에 사용할 성경을 선택한 다음 다시 누르세요.", "성경2PPT");
+                return;
             }
 
-            AppConfig.Context.BibleVersionId = bible.Id;
+            // 선택한 성경의 빌드 순번을 계산하고
+            var rank = biblesToBuild.Count;
+            // 빌드 대상에 추가 및 컨트롤에 반영
+            biblesToBuild.Add(bible);
+            biblesBindingSource.ResetBindings(false);
+            // 추가한 성경을 활성화
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[rank].Cells[0];
 
-            ToggleCriticalControls(false);
-            booksListView.Tag = null;
-            booksListView.Items.Clear();
+            BiblesToBuild_Changed();
+        }
 
+        /// <summary>
+        /// 활성화한 성경을 빌드 대상에서 제거한다.
+        /// </summary>
+        private void BiblesRemoveIconButton_Click(object sender, EventArgs e)
+        {
+            // 활성화한 성경이 없으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경의 빌드 순번을 기억하고
+            var rank = biblesDataGridView.CurrentRow.Index;
+            // 빌드 대상에서 제거 및 컨트롤에 반영
+            biblesToBuild.RemoveAt(rank);
+            biblesBindingSource.ResetBindings(false);
+
+            BiblesToBuild_Changed();
+        }
+
+        /// <summary>
+        /// 활성화한 성경의 빌드 순번을 높인다.
+        /// </summary>
+        private void BiblesUpIconButton_Click(object sender, EventArgs e)
+        {
+            // 활성화한 성경이 없으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경의 빌드 순번을 기억
+            var rank = biblesDataGridView.CurrentRow.Index;
+            // 이미 최상위이면 아무 작업도 안함
+            if (rank == 0)
+            {
+                return;
+            }
+
+            // 바로 위 성경과 순서를 바꾸고 및 컨트롤에 반영
+            biblesToBuild.Insert(rank - 1, biblesToBuild[rank]);
+            biblesToBuild.RemoveAt(rank + 1);
+            biblesBindingSource.ResetBindings(false);
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[--rank].Cells[0];
+
+            BiblesToBuild_Changed();
+        }
+
+        /// <summary>
+        /// 활성화한 성경의 빌드 순번을 낮춘다.
+        /// </summary>
+        private void BiblesDownIconButton_Click(object sender, EventArgs e)
+        {
+            // 활성화한 성경이 없으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경의 빌드 순번을 기억
+            var rank = biblesDataGridView.CurrentRow.Index;
+            // 이미 최하위이면 아무 작업도 안함
+            if (rank == biblesToBuild.Count - 1)
+            {
+                return;
+            }
+
+            // 바로 아래 성경과 순서를 바꾸고 및 컨트롤에 반영
+            biblesToBuild.Insert(rank + 2, biblesToBuild[rank]);
+            biblesToBuild.RemoveAt(rank);
+            biblesBindingSource.ResetBindings(false);
+            biblesDataGridView.CurrentCell = biblesDataGridView.Rows[++rank].Cells[0];
+
+            BiblesToBuild_Changed();
+        }
+
+        private void BiblesDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            using (var brush = new SolidBrush(biblesDataGridView.RowHeadersDefaultCellStyle.ForeColor))
+            {
+                e.Graphics.DrawString(
+                    $"{e.RowIndex + 1}",
+                    e.InheritedRowStyle.Font,
+                    brush,
+                    e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
+                    e.RowBounds.Location.Y + 4,
+                    new StringFormat(StringFormatFlags.DirectionRightToLeft));
+            }
+        }
+
+        private void BiblesToBuild_Changed()
+        {
+            for (var i = 0; i < 9; i++)
+            {
+                AppConfig.Context.BibleToBuild[i] =
+                    (i < biblesToBuild.Count)
+                    ? biblesToBuild[i].Id
+                    : Guid.Empty;
+            }
+        }
+
+        #endregion
+
+        #region 책 목록 관리
+
+        /// <summary>
+        /// 활성화한 성경의 책 목록을 가져온다.
+        /// </summary>
+        private async void BiblesDataGridView_CurrentCellChanged(object sender, EventArgs e)
+        {
+            // 책 목록을 가져오기 전까지 책 목록 컨트롤 비활성화
+            booksListView.Enabled = false;
+
+            // 현재 성경을 활성화하기 전에 활성화한 성경의 책 목록 가져오기 작업을 취소
+            if (biblesDataGridView.Tag is CancellationTokenSource previousCts)
+            {
+                previousCts.Cancel();
+                biblesDataGridView.Tag = null;
+            }
+
+            // 성경을 활성화하지 않았으면 아무 작업도 안함
+            if (biblesDataGridView.CurrentRow == null)
+            {
+                return;
+            }
+
+            // 활성화한 성경을 기억
+            var bible = biblesToBuild[biblesDataGridView.CurrentRow.Index];
+
+            // 작업을 취소하기 위한 토큰 생성 및 연결
+            var cts = new CancellationTokenSource();
+            biblesDataGridView.Tag = cts;
+
+            // 책 목록 가져오기
+            List<Book> books;
             try
             {
-                var books = await bible.Source.GetBooksAsync(bible);
-                booksListView.Tag = books;
-                foreach (var book in books)
-                {
-                    var item = booksListView.Items.Add(book.Title);
-                    item.SubItems.Add(book.ChapterCount.ToString());
-                    item.Tag = book;
-                }
+                books = await bible.Source.GetBooksAsync(bible);
+
+                // 작업 취소 요청 수리
+                cts.Token.ThrowIfCancellationRequested();
             }
-            finally
+            // 올바른 작업 취소 요청 시 아무 작업도 안함
+            catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
-                ToggleCriticalControls(true);
+                return;
             }
+            // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
+            //catch { }
+
+            // TODO: 책 목록 가져오기를 성공하였으므로 활성화한 성경을 기억
+            //AppConfig.Context.BibleSourceId = source.Id;
+
+            // 책 목록 초기화
+            booksListView.Tag = books;
+            booksListView.Items.Clear();
+            foreach (var book in books)
+            {
+                var item = booksListView.Items.Add(book.Title);
+                item.SubItems.Add(book.ShortTitle);
+                item.Tag = book;
+            }
+            // 책 목록 컨트롤 활성화
+            booksListView.Enabled = true;
         }
 
         private void BooksListView_MouseClick(object sender, MouseEventArgs e)
@@ -185,6 +428,8 @@ namespace Bible2PPT
             booksSearchTextBox.Text = @"책 검색...";
         }
 
+        #endregion
+
         private void VersesTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
@@ -224,16 +469,25 @@ namespace Bible2PPT
             AppConfig.Context.SeperateByChapter = buildFragmentCheckBox.Checked;
         }
 
-
-        private CancellationTokenSource CTS;
+        /// <summary>
+        /// 빌드 대상 성경과 구절로 PPT를 만든다.
+        /// </summary>
         private async void BuildButton_Click(object sender, EventArgs e)
         {
-            if (buildButton.Text == @"PPT 만드는 중...")
+            // 지금 만드는 중인 PPT 작업을 취소하고 대기
+            if (buildButton.Tag is CancellationTokenSource previousCts)
             {
-                CTS.Cancel();
+                previousCts.Cancel();
                 return;
             }
 
+            // TODO: 빌드 대상 성경이 없으면 아무 작업도 안함
+            //if (!biblesToBuild.Any())
+            //{
+            //    return;
+            //}
+
+            // 장별로 PPT 나누기 경로 설정
             string destination;
             using (var fd = new FolderBrowserDialog())
             {
@@ -245,55 +499,130 @@ namespace Bible2PPT
                 destination = fd.SelectedPath;
             }
 
-            buildButton.Text = @"PPT 만드는 중...";
+            // PPT를 완성하기 전까지 주요 컨트롤 비활성화
             ToggleCriticalControls(false, buildButton);
+            buildButton.Text = "PPT 만드는 중...";
 
-            CTS = new CancellationTokenSource();
+
+            // 작업을 취소하기 위한 토큰 생성 및 연결
+            var cts = new CancellationTokenSource();
+            buildButton.Tag = cts;
+
+            // PPT 만들기
             PPTBuilderWork work = null;
             try
             {
-                if (!AppConfig.Context.SeperateByChapter)
+                await Task.Factory.StartNew(() =>
                 {
-                    work = builder.BeginBuild();
-                }
-
-                var books = booksListView.Tag as List<Book>;
-                foreach (var t in
-                    Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
-                        .Select(BibleQuery.ParseQuery)
-                        .Select(q => Tuple.Create(q, books.First(b => b.ShortTitle == q.BibleId))).ToList())
-                {
-                    var query = t.Item1;
-                    var book = t.Item2;
-
-                    var chapters = await book.Source.GetChaptersAsync(book);
-                    foreach (var chapter in
-                        chapters.Where(i =>
-                            (query.EndChapterNumber != null)
-                            ? (i.Number >= query.StartChapterNumber) && (i.Number <= query.EndChapterNumber)
-                            : (i.Number >= query.StartChapterNumber)))
+                    if (!AppConfig.Context.SeperateByChapter)
                     {
-                        Invoke(new MethodInvoker(() => Text = $"성경2PPT - {book.Title} {chapter.Number}장"));
-
-                        if (AppConfig.Context.SeperateByChapter)
-                        {
-                            work?.Save();
-                            var output = Path.Combine(destination, book.Title, chapter.Number.ToString("000\\.pptx"));
-                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            work = builder.BeginBuild(output);
-                        }
-
-                        var startVerseNo = chapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                        var endVerseNo = (await chapter.Source.GetVersesAsync(chapter)).Max(i => i.Number);
-                        if (chapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
-                        {
-                            endVerseNo = query.EndVerseNumber.Value;
-                        }
-                        work.AppendChapter(chapter, startVerseNo, endVerseNo, CTS.Token);
+                        work = builder.BeginBuild();
                     }
-                }
+
+                    var eachBooks = biblesToBuild.Select(bible => bible.Source.GetBooksAsync(bible)).ToList().Select(i => i.Result).ToList();
+
+                    foreach (var t in
+                        Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
+                            .Select(BibleQuery.ParseQuery)
+                            .Select(query => Tuple.Create(
+                                query,
+                                eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList())))
+                    {
+                        var query = t.Item1;
+                        var targetEachBook = t.Item2;
+
+                        // 해당 책이 있는 성경에서 해당 책을 대표로 사용
+                        var mainBook = targetEachBook.First(i => i != null);
+
+                        // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
+                        var eachTargetChapters = targetEachBook
+                            .Select(book => book?.Source.GetChaptersAsync(book)).ToList().Select(i => i?.Result)
+                            .Select(i => i ?? new List<Chapter>())
+                            .Select(chapters => chapters.Where(chapter =>
+                                (query.EndChapterNumber != null)
+                                ? (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
+                                : (chapter.Number >= query.StartChapterNumber)).ToList())
+                            .ToList();
+
+                        // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
+                        var targetEachChapters = new List<IEnumerable<Chapter>>();
+                        // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
+                        var targetChapterEnumerators = eachTargetChapters.Select(i => (IEnumerator<Chapter>)i.GetEnumerator()).ToList();
+                        for (var chapterNumber = query.StartChapterNumber; ;)
+                        {
+                            // 다음 장이 있는지 확인
+                            var moved = new Dictionary<IEnumerator<Chapter>, bool>();
+                            var nextChapterNumber = chapterNumber;
+                            foreach (var i in targetChapterEnumerators)
+                            {
+                                if (i.MoveNext())
+                                {
+                                    moved[i] = true;
+                                    nextChapterNumber = Math.Max(nextChapterNumber, i.Current.Number);
+                                }
+                            }
+
+                            // 현재 장이 마지막이었으면 종료
+                            if (!moved.Any())
+                            {
+                                break;
+                            }
+
+                            for (; chapterNumber <= nextChapterNumber; chapterNumber++)
+                            {
+                                var eachChapter = new List<Chapter>();
+                                foreach (var i in targetChapterEnumerators)
+                                {
+                                    // 범위를 넘어가면 더 페이지가 없음
+                                    if (i.Current == null)
+                                    {
+                                        eachChapter.Add(null);
+                                        continue;
+                                    }
+
+                                    // 장 번호가 앞서가면 앞 장이 비었음
+                                    if (i.Current.Number > chapterNumber)
+                                    {
+                                        eachChapter.Add(null);
+                                        continue;
+                                    }
+
+                                    if (!moved[i])
+                                    {
+                                        i.MoveNext();
+                                    }
+                                    eachChapter.Add(i.Current);
+                                    moved[i] = false;
+                                }
+                                targetEachChapters.Add(eachChapter);
+                            }
+                        }
+
+                        foreach (var targetEachChapter in targetEachChapters)
+                        {
+                            // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
+                            var mainChapter = targetEachChapter.First(i => i != null);
+
+                            Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{mainBook.Title} {mainChapter.Number}장"));
+
+                            if (AppConfig.Context.SeperateByChapter)
+                            {
+                                work?.Save();
+                                var output = Path.Combine(destination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
+                                CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                                work = builder.BeginBuild(output);
+                            }
+
+                            var startVerseNo = mainChapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
+                            //if (mainChapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
+                            work.AppendChapter(targetEachChapter, startVerseNo, query.EndVerseNumber, cts.Token);
+                        }
+                    }
+                });
             }
-            catch (OperationCanceledException) { }
+            // 올바른 작업 취소 요청 시 오류 무시
+            catch (OperationCanceledException) when (cts.IsCancellationRequested) { }
+            // 작업 실패 시 작업 중지
             catch (Exception ex)
             {
                 if (work != null)
@@ -305,23 +634,27 @@ namespace Bible2PPT
             }
             finally
             {
-                if (work != null)
+                // 토큰 정리
+                buildButton.Tag = null;
+            }
+
+            // 작업을 성공하였으면 PPT 열기
+            if (work != null)
+            {
+                work.Save();
+                if (AppConfig.Context.SeperateByChapter)
                 {
-                    work.Save();
-                    if (AppConfig.Context.SeperateByChapter)
-                    {
-                        Process.Start(destination);
-                    }
-                    else
-                    {
-                        Process.Start(work.Output);
-                    }
+                    Process.Start(destination);
+                }
+                else
+                {
+                    Process.Start(work.Output);
                 }
             }
 
+            // 주요 컨트롤 활성화
             ToggleCriticalControls(true);
             buildButton.Text = "PPT 만들기";
-            Text = "성경2PPT";
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)
