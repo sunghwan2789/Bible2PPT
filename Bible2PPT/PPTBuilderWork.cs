@@ -93,7 +93,11 @@ namespace Bible2PPT
             {
                 token.ThrowIfCancellationRequested();
 
-                var mainVerse = eachVerse.First(i => i != null);
+                var mainVerse = eachVerse.FirstOrDefault(i => i != null);
+                if (mainVerse == null)
+                {
+                    continue;
+                }
 
                 var slide = TemplateSlide.Duplicate();
                 slide.MoveTo(WorkingPPT.Slides.Count);
