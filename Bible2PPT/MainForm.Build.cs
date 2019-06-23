@@ -121,6 +121,7 @@ namespace Bible2PPT
 
             // 성경 목록 가져오기
             List<Bible> bibles;
+        GET_BIBLES:
             try
             {
                 bibles = await source.GetBiblesAsync();
@@ -132,6 +133,16 @@ namespace Bible2PPT
             catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
                 return;
+            }
+            // 성경 소스가 응답이 없으면 다시 시도
+            catch (OperationCanceledException)
+            {
+                if (DialogResult.No == MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo))
+                {
+                    return;
+                }
+
+                goto GET_BIBLES;
             }
             // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
             //catch { }
@@ -322,6 +333,7 @@ namespace Bible2PPT
 
             // 책 목록 가져오기
             List<Book> books;
+        GET_BOOKS:
             try
             {
                 books = await bible.Source.GetBooksAsync(bible);
@@ -334,11 +346,18 @@ namespace Bible2PPT
             {
                 return;
             }
+            // 성경 소스가 응답이 없으면 다시 시도
+            catch (OperationCanceledException)
+            {
+                if (DialogResult.No == MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo))
+                {
+                    return;
+                }
+
+                goto GET_BOOKS;
+            }
             // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
             //catch { }
-
-            // TODO: 책 목록 가져오기를 성공하였으므로 활성화한 성경을 기억
-            //AppConfig.Context.BibleSourceId = source.Id;
 
             // 책 목록 초기화
             booksListView.Tag = books;
