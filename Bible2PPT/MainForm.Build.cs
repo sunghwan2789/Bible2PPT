@@ -520,21 +520,24 @@ namespace Bible2PPT
 
                         // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
                         var targetEachChapters = new List<IEnumerable<Chapter>>();
-                        var targetChapterEnumerators = eachTargetChapters.Select(i => i.GetEnumerator()).ToList();
+                        // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
+                        var targetChapterEnumerators = eachTargetChapters.Select(i => (IEnumerator<Chapter>)i.GetEnumerator()).ToList();
                         for (var chapterNumber = query.StartChapterNumber; ;)
                         {
                             // 다음 장이 있는지 확인
+                            var moved = new Dictionary<IEnumerator<Chapter>, bool>();
                             var nextChapterNumber = chapterNumber;
                             foreach (var i in targetChapterEnumerators)
                             {
                                 if (i.MoveNext())
                                 {
+                                    moved[i] = true;
                                     nextChapterNumber = Math.Max(nextChapterNumber, i.Current.Number);
                                 }
                             }
 
                             // 현재 장이 마지막이었으면 종료
-                            if (chapterNumber == nextChapterNumber)
+                            if (!moved.Any())
                             {
                                 break;
                             }
@@ -558,8 +561,12 @@ namespace Bible2PPT
                                         continue;
                                     }
 
+                                    if (!moved[i])
+                                    {
+                                        i.MoveNext();
+                                    }
                                     eachChapter.Add(i.Current);
-                                    i.MoveNext();
+                                    moved[i] = false;
                                 }
                                 targetEachChapters.Add(eachChapter);
                             }

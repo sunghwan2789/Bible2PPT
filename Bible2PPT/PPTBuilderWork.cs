@@ -37,21 +37,24 @@ namespace Bible2PPT
                 .ToList();
 
             var targetEachVerses = new List<IEnumerable<Verse>>();
-            var targetVerseEnumerators = eachTargetVerses.Select(i => i.GetEnumerator()).ToList();
+            // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
+            var targetVerseEnumerators = eachTargetVerses.Select(i => (IEnumerator<Verse>)i.GetEnumerator()).ToList();
             for (var verseNumber = startVerseNumber; ;)
             {
                 // 다음 절이 있는지 확인
+                var moved = new Dictionary<IEnumerator<Verse>, bool>();
                 var nextVerseNumber = verseNumber;
                 foreach (var i in targetVerseEnumerators)
                 {
                     if (i.MoveNext())
                     {
+                        moved[i] = true;
                         nextVerseNumber = Math.Max(nextVerseNumber, i.Current.Number);
                     }
                 }
 
                 // 현재 절이 마지막이었으면 종료
-                if (verseNumber == nextVerseNumber)
+                if (!moved.Any())
                 {
                     break;
                 }
@@ -75,16 +78,16 @@ namespace Bible2PPT
                             continue;
                         }
 
+                        if (!moved[i])
+                        {
+                            i.MoveNext();
+                        }
                         eachVerse.Add(i.Current);
-                        i.MoveNext();
+                        moved[i] = false;
                     }
                     targetEachVerses.Add(eachVerse);
                 }
             }
-            //while (targetVerseEnumerators.Where(i => i.MoveNext()).ToList().Any())
-            //{
-            //    targetEachVerses.Add(targetVerseEnumerators.Select(i => i.Current).ToList());
-            //}
 
             foreach (var eachVerse in targetEachVerses)
             {
