@@ -121,6 +121,7 @@ namespace Bible2PPT
 
             // 성경 목록 가져오기
             List<Bible> bibles;
+        GET_BIBLES:
             try
             {
                 bibles = await source.GetBiblesAsync();
@@ -132,6 +133,16 @@ namespace Bible2PPT
             catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
                 return;
+            }
+            // 성경 소스가 응답이 없으면 다시 시도
+            catch (OperationCanceledException)
+            {
+                if (DialogResult.No == MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo))
+                {
+                    return;
+                }
+
+                goto GET_BIBLES;
             }
             // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
             //catch { }
@@ -322,6 +333,7 @@ namespace Bible2PPT
 
             // 책 목록 가져오기
             List<Book> books;
+        GET_BOOKS:
             try
             {
                 books = await bible.Source.GetBooksAsync(bible);
@@ -334,11 +346,18 @@ namespace Bible2PPT
             {
                 return;
             }
+            // 성경 소스가 응답이 없으면 다시 시도
+            catch (OperationCanceledException)
+            {
+                if (DialogResult.No == MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo))
+                {
+                    return;
+                }
+
+                goto GET_BOOKS;
+            }
             // TODO: 작업 실패 시 오류 처리 및 컨트롤 활성화
             //catch { }
-
-            // TODO: 책 목록 가져오기를 성공하였으므로 활성화한 성경을 기억
-            //AppConfig.Context.BibleSourceId = source.Id;
 
             // 책 목록 초기화
             booksListView.Tag = books;
@@ -519,7 +538,23 @@ namespace Bible2PPT
                         work = builder.BeginBuild();
                     }
 
-                    var eachBooks = biblesToBuild.Select(bible => bible.Source.GetBooksAsync(bible)).ToList().Select(i => i.Result).ToList();
+                    List<List<Book>> eachBooks;
+                GET_BOOKS:
+                    try
+                    {
+                        eachBooks = biblesToBuild.Select(bible => bible.Source.GetBooksAsync(bible)).ToList().Select(i => i.Result).ToList();
+                    }
+                    catch (OperationCanceledException) when (!cts.IsCancellationRequested)
+                    {
+                        var answer = DialogResult.No;
+                        Invoke(new MethodInvoker(() => answer = MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo)));
+                        if (answer == DialogResult.No)
+                        {
+                            throw;
+                        }
+
+                        goto GET_BOOKS;
+                    }
 
                     foreach (var t in
                         Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
@@ -535,14 +570,30 @@ namespace Bible2PPT
                         var mainBook = targetEachBook.First(i => i != null);
 
                         // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
-                        var eachTargetChapters = targetEachBook
-                            .Select(book => book?.Source.GetChaptersAsync(book)).ToList().Select(i => i?.Result)
-                            .Select(i => i ?? new List<Chapter>())
-                            .Select(chapters => chapters.Where(chapter =>
-                                (query.EndChapterNumber != null)
-                                ? (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
-                                : (chapter.Number >= query.StartChapterNumber)).ToList())
-                            .ToList();
+                        List<List<Chapter>> eachTargetChapters;
+                    GET_CHAPTERS:
+                        try
+                        {
+                            eachTargetChapters = targetEachBook
+                                .Select(book => book?.Source.GetChaptersAsync(book)).ToList().Select(i => i?.Result)
+                                .Select(i => i ?? new List<Chapter>())
+                                .Select(chapters => chapters.Where(chapter =>
+                                    (query.EndChapterNumber != null)
+                                    ? (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
+                                    : (chapter.Number >= query.StartChapterNumber)).ToList())
+                                .ToList();
+                        }
+                        catch (OperationCanceledException) when (!cts.IsCancellationRequested)
+                        {
+                            var answer = DialogResult.No;
+                            Invoke(new MethodInvoker(() => answer = MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo)));
+                            if (answer == DialogResult.No)
+                            {
+                                throw;
+                            }
+
+                            goto GET_CHAPTERS;
+                        }
 
                         // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
                         var targetEachChapters = new List<IEnumerable<Chapter>>();
@@ -617,15 +668,30 @@ namespace Bible2PPT
                                 work = builder.BeginBuild(output);
                             }
 
-                            var startVerseNo = mainChapter.Number == query.StartChapterNumber ? query.StartVerseNumber : 1;
-                            //if (mainChapter.Number == query.EndChapterNumber && query.EndVerseNumber != null)
-                            work.AppendChapter(targetEachChapter, startVerseNo, query.EndVerseNumber, cts.Token);
+                            var startVerseNo = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
+                            var endVerseNo = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
+                        GET_VERSES:
+                            try
+                            {
+                                work.AppendChapter(targetEachChapter, startVerseNo, endVerseNo, cts.Token);
+                            }
+                            catch (OperationCanceledException) when (!cts.IsCancellationRequested)
+                            {
+                                var answer = DialogResult.No;
+                                Invoke(new MethodInvoker(() => answer = MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo)));
+                                if (answer == DialogResult.No)
+                                {
+                                    throw;
+                                }
+
+                                goto GET_VERSES;
+                            }
                         }
                     }
                 });
             }
             // 올바른 작업 취소 요청 시 오류 무시
-            catch (OperationCanceledException) when (cts.IsCancellationRequested) { }
+            catch (OperationCanceledException) { }
             // 작업 실패 시 작업 중지
             catch (Exception ex)
             {
