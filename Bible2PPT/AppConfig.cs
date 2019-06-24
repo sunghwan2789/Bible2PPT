@@ -8,7 +8,7 @@ namespace Bible2PPT
 {
     class AppConfig : BinaryConfig
     {
-        public const int ConfigSize = 1 + 4 + 16;
+        public const int ConfigSize = 1 + 4 + 16 + 16 * 9;
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
         public static string DatabaseWorkingDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar;
@@ -16,13 +16,13 @@ namespace Bible2PPT
         public static string ContactUrl { get; } = "https://github.com/sunghwan2789/Bible2PPT";
 
         public static AppConfig Context { get; } = new AppConfig();
-        
+
         /// <summary>
         /// Offset: 0,
         /// Mask: 0b0000_0001,
         /// </summary>
         public TemplateTextOptions ShowLongTitle { get; set; } = TemplateTextOptions.Always;
-        
+
         /// <summary>
         /// Offset: 0,
         /// Mask: 0b0000_0010,
@@ -59,6 +59,12 @@ namespace Bible2PPT
         /// </summary>
         public Guid BibleVersionId { get; set; }
 
+        /// <summary>
+        /// Offset: 21,
+        /// Length: 16 * 9
+        /// </summary>
+        public Guid[] BibleToBuild { get; set; } = new Guid[9];
+
         public AppConfig() : base(ConfigPath, ConfigSize) {}
 
         protected override byte[] Serialize()
@@ -71,6 +77,10 @@ namespace Bible2PPT
             b[0] |= (byte) (UseCache ? 32 : 0);
             BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
             BibleVersionId.ToByteArray().CopyTo(b, 5);
+            for (var i = 0; i < 9; i++)
+            {
+                BibleToBuild[i].ToByteArray().CopyTo(b, 21 + 16 * i);
+            }
             return b;
         }
 
@@ -83,6 +93,10 @@ namespace Bible2PPT
             UseCache = (s[0] & 32) == 32;
             BibleSourceId = BitConverter.ToInt32(s, 1);
             BibleVersionId = new Guid(s.Skip(5).Take(16).ToArray());
+            for (var i = 0; i < 9; i++)
+            {
+                BibleToBuild[i] = new Guid(s.Skip(21 + 16 * i).Take(16).ToArray());
+            }
         }
     }
 }

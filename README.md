@@ -2,24 +2,23 @@
 
 > 성경 구절을 PPT로 만들어주는 프로그램
 
-<p align="center"><img src="https://user-images.githubusercontent.com/4927894/36576622-1def6d7a-1895-11e8-9c68-bf402e0e89d1.png" alt="성경2PPT 스크린샷"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/4927894/59970937-1377a600-95ad-11e9-93b4-66eed61dd932.png" alt="성경2PPT 스크린샷"></p>
 <p align="center">⬇️</p>
 <p align="center"><img src="https://user-images.githubusercontent.com/4927894/36557220-072f3588-184b-11e8-85b4-05845fbe76c1.png" alt="성경2PPT로 만든 PPT 스크린샷"></p>
 
 
 ## 사용 성경 목록
-
-| 성경 | 소스 |
-| --- | --- |
-| 개역개정 | 갓피아 성경, 갓피플 성경 |
-| NIV | 갓피아 성경 |
-| 개역한글 | 갓피아 성경 |
-| 쉬운성경 | 갓피아 성경, 갓피플 성경 |
-| 공동번역 | 갓피아 성경 |
-| 현대인의성경 | 갓피아 성경 |
-| 새번역 | 갓피아 성경 |
-| 히브리어(구약) | 갓피아 성경 |
-| 헬라어(신약) | 갓피아 성경 |
+| 소스 | 언어 | 성경 |
+| --- | --- | --- |
+| 갓피플 성경 | 한국어 | 개역개정, 쉬운성경 | 
+| 갓피아 성경 | 한국어 | 개역개정 4판, 개역한글, 쉬운성경, 공동번역, 현대인의성경, 새번역 |
+| GOODTV 성경 | 한국어 | 개역개정, 개역한글, 공동번역, 표준새번역, 우리말성경 |
+| 갓피아 성경 | 영어 | NIV |
+| GOODTV 성경 | 영어 | NIV, KJV, NASB |
+| GOODTV 성경 | 일본어 | (日)구어역, (日)신공동역 |
+| GOODTV 성경 | 중국어 | (中)번체, (中)간체 |
+| 갓피아 성경 | 기타 | 히브리어(구약), 헬라어(신약) |
+| GOODTV 성경 | 기타 | 히브리어, 헬라어 |
 
 
 ## 성경 구절 입력 방법
@@ -67,6 +66,7 @@
     | `[CHAP]` | 장 번호 | 예 |
     | `[PARA]` | 절 번호 | 아니요 |
     | `[BODY]` | 내용 | 아니요 |
+    | `[BODY1]` ~ `[BODY9]` | 내용(다중 성경 지원) | 아니요 |
 
     | 실험용 치환자 | 내용 | *접미사* 지원 |
     | --- | --- | :---: |
@@ -94,7 +94,7 @@
 ## 실행 요구 사항
 
 ### .NET Framework 4 Client Profile 이상
-**성경2PPT**를 실행하는 데 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받으세요.
+**성경2PPT**를 실행하는 데 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받아서 설치하시고, [여기](http://go.microsoft.com/fwlink/?linkid=221217)에서 업데이트를 설치하세요.
 
 ### Microsoft PowerPoint 2007 이상
 PPT를 만들고 보는 데 필요한 프로그램입니다. 프로그램 구성 요소로 *Office 공유 기능* - *Visual Basic for Applications*를 설치해야 합니다.
@@ -108,4 +108,4 @@ PPT를 만들고 보는 데 필요한 프로그램입니다. 프로그램 구성
 
 
 ## License
-This software is licenced under the [MIT](LICENSE) © [Bang Sunghwan](https://github.com/sunghwan2789).
+This software is licenced under the [MIT](LICENSE) © [Sunghwan Bang](https://github.com/sunghwan2789).

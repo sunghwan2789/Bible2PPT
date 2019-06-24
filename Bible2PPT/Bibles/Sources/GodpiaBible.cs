@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Bible2PPT.Bibles.Sources
 {
-    class GodpiaBible : BibleSource
+    class GodpiaBible : Source
     {
         private const string BASE_URL = "http://bible.godpia.com";
 
-        private BetterWebClient client = new BetterWebClient
+        private static readonly HttpClient client = new HttpClient
         {
-            BaseAddress = BASE_URL,
-            Encoding = Encoding.UTF8,
+            BaseAddress = new Uri(BASE_URL),
+            Timeout = TimeSpan.FromSeconds(5),
         };
 
         public GodpiaBible()
@@ -21,52 +23,48 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피아 성경";
         }
 
-        protected override List<BibleVersion> GetBiblesOnline()
+        protected override async Task<List<Bible>> GetBiblesOnlineAsync()
         {
-            var data = client.DownloadString($"/index.asp");
+            var data = await client.GetStringAsync($"/index.asp");
             var matches = Regex.Matches(data, @"#(.+?)"" class=""clickReadBible"">(.+?)</");
-            return matches.Cast<Match>().Select(i => new BibleVersion
+            return matches.Cast<Match>().Select(i => new Bible
             {
                 OnlineId = i.Groups[1].Value,
-                Name = i.Groups[2].Value,
+                Version = i.Groups[2].Value,
             }).ToList();
         }
 
-        protected override List<BibleBook> GetBooksOnline(BibleVersion bible)
+        protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={bible.OnlineId}");
+            var data = await client.GetStringAsync($"/read/reading.asp?ver={bible.OnlineId}");
             data = string.Join("", Regex.Matches(data, @"<select id=""selectBibleSub[12]"".+?</select>", RegexOptions.Singleline).Cast<Match>().Select(i => i.Groups[0].Value));
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
-            return matches.Cast<Match>().Select(i => new BibleBook
+            return matches.Cast<Match>().Select(i => new Book
             {
                 OnlineId = i.Groups[1].Value,
                 Title = i.Groups[2].Value,
-            }).Select(i =>
-            {
-                i.Bible = bible;
-                i.ChapterCount = GetChapters(i).Count;
-                return i;
             }).ToList();
         }
 
-        protected override List<BibleChapter> GetChaptersOnline(BibleBook book)
+        protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={book.Bible.OnlineId}&vol={book.OnlineId}");
+            var data = await client.GetStringAsync($"/read/reading.asp?ver={book.Bible.OnlineId}&vol={book.OnlineId}");
             data = Regex.Match(data, @"<select id=""selectBibleSub3"".+?</select>", RegexOptions.Singleline).Groups[0].Value;
             var matches = Regex.Matches(data, @"<option value=""(.+?)"".+?>(.+?)</");
-            return matches.Cast<Match>().Select(i => new BibleChapter
+            return matches.Cast<Match>().Select(i => new Chapter
             {
+                OnlineId = i.Groups[1].Value,
                 Number = int.Parse(i.Groups[1].Value),
             }).ToList();
         }
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        protected override List<BibleVerse> GetVersesOnline(BibleChapter chapter)
+        protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var data = client.DownloadString($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.Number}");
+            var data = await client.GetStringAsync($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.OnlineId}");
             var matches = Regex.Matches(data, @"class=""num"">(\d+).*?</span>(.*?)</p>");
-            return matches.Cast<Match>().Select(i => new BibleVerse
+            return matches.Cast<Match>().Select(i => new Verse
             {
                 Number = int.Parse(i.Groups[1].Value),
                 Text = StripHtmlTags(i.Groups[2].Value),
