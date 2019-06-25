@@ -19,7 +19,7 @@ namespace Bible2PPT.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -82,8 +82,7 @@ namespace Bible2PPT.Properties {
         ///시,시편,psa,Psa,Psalms
         ///잠,잠언,pro,Pro,Proverbs
         ///전,전도서,ecc,Ecc,Ecclesiastes
-        ///아,아가,sng,Sol,Song of Solomon
-        ///사, [rest of string was truncated]&quot;;.
+        ///아,아가,sng,S [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string BibleBookAliases {
             get {
