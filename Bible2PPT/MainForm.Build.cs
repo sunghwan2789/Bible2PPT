@@ -276,7 +276,6 @@ namespace Bible2PPT
 
         private void BiblesDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            MessageBox.Show($"{e.RowBounds.Location.X} / {biblesDataGridView.RowHeadersWidth} / {e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3}");
             using (var brush = new SolidBrush(biblesDataGridView.RowHeadersDefaultCellStyle.ForeColor))
             {
                 e.Graphics.DrawString(
@@ -284,7 +283,7 @@ namespace Bible2PPT
                     e.InheritedRowStyle.Font,
                     brush,
                     e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
-                    e.RowBounds.Location.Y + 4,
+                    e.RowBounds.Location.Y + (e.RowBounds.Height - e.InheritedRowStyle.Font.Height) / 2,
                     new StringFormat(StringFormatFlags.DirectionRightToLeft));
             }
         }
