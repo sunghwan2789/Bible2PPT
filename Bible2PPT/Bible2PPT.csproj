@@ -86,6 +86,7 @@
     <Compile Include="Bibles\Sources\Source.cs" />
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
+    <Compile Include="Data\BibleContext.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,6 +207,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.EF6">
+      <Version>1.0.111</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
