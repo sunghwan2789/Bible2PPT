@@ -561,7 +561,6 @@
             //
             // bibleIconPictureBox
             //
-            bibleIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             bibleIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
             bibleIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             bibleIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Bible;
@@ -630,7 +629,6 @@
             //
             // sourceIconPictureBox
             //
-            sourceIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             sourceIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
             sourceIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             sourceIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Database;
@@ -757,7 +755,6 @@
             //
             // templateIconPictureBox
             //
-            templateIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             templateIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
             templateIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             templateIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Image;
@@ -938,7 +935,6 @@
             //
             // booksSearchIconPictureBox
             //
-            booksSearchIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
             booksSearchIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
             booksSearchIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             booksSearchIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Search;
@@ -1001,7 +997,6 @@
             //
             // versesIconPictureBox
             //
-            versesIconPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             versesIconPictureBox.BackColor = System.Drawing.SystemColors.Window;
             versesIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             versesIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.QuoteLeft;

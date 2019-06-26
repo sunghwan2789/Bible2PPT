@@ -3,6 +3,7 @@ using Bible2PPT.Bibles.Sources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -41,6 +42,21 @@ namespace Bible2PPT
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             AppConfig.Context.Save();
+        }
+
+        private void ScaleListViewColumns(ListView listview, SizeF factor)
+        {
+            foreach (ColumnHeader column in listview.Columns)
+            {
+                column.Width = (int)Math.Round(column.Width * factor.Width);
+            }
+        }
+
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            base.ScaleControl(factor, specified);
+
+            ScaleListViewColumns(booksListView, factor);
         }
 
         private Button[] Navs => new[]
