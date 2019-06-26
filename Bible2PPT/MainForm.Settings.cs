@@ -19,7 +19,11 @@ namespace Bible2PPT
 
         private void btnGithub_Click(object sender, EventArgs e)
         {
-            Process.Start(AppConfig.ContactUrl);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = AppConfig.ContactUrl,
+                UseShellExecute = true,
+            });
         }
 
         private void chkUseCache_CheckedChanged(object sender, EventArgs e)

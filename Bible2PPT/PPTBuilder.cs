@@ -45,7 +45,11 @@ namespace Bible2PPT
         public void OpenTemplate()
         {
             ExtractTemplate();
-            Process.Start(AppConfig.TemplatePath);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = AppConfig.TemplatePath,
+                UseShellExecute = true,
+            });
         }
 
 

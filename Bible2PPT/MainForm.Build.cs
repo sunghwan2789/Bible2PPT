@@ -714,11 +714,19 @@ namespace Bible2PPT
                 work.Save();
                 if (AppConfig.Context.SeperateByChapter)
                 {
-                    Process.Start(destination);
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = destination,
+                        UseShellExecute = true,
+                    });
                 }
                 else
                 {
-                    Process.Start(work.Output);
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = work.Output,
+                        UseShellExecute = true,
+                    });
                 }
             }
 
