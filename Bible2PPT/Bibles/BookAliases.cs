@@ -12,7 +12,8 @@ namespace Bible2PPT.Bibles
 
         static BookAliases()
         {
-            using (var reader = new StringReader(Properties.Resources.BibleBookAliases))
+            using (var s = Resources.GetStream("BibleBookAliases.csv"))
+            using (var reader = new StreamReader(s))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)

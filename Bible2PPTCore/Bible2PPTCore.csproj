@@ -8,11 +8,14 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>Bible2PPTCore</AssemblyName>
     <RootNamespace>Bible2PPT</RootNamespace>
+
+    <ApplicationIcon>..\Bible2PPT\Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\Bible2PPT\**\*.cs" />
     <EmbeddedResource Include="..\Bible2PPT\**\*.resx" />
+    <EmbeddedResource Include="..\Bible2PPT\Resources\**\*" />
   </ItemGroup>
 
   <ItemGroup>

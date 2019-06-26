@@ -35,10 +35,10 @@ namespace Bible2PPT
                 return;
             }
 
-            using (var ms = new MemoryStream(Properties.Resources.Template))
+            using (var s = Resources.GetStream("Template.pptx"))
             using (var fs = File.OpenWrite(AppConfig.TemplatePath))
             {
-                ms.CopyTo(fs);
+                s.CopyTo(fs);
             }
         }
 
