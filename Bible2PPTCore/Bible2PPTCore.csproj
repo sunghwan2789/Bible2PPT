@@ -10,6 +10,7 @@
     <RootNamespace>Bible2PPT</RootNamespace>
 
     <ApplicationIcon>..\Bible2PPT\Icon.ico</ApplicationIcon>
+    <Win32Manifest>..\Bible2PPT\app.manifest</Win32Manifest>
   </PropertyGroup>
 
   <ItemGroup>
