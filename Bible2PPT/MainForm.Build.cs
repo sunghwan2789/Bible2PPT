@@ -295,7 +295,7 @@ namespace Bible2PPT
                 AppConfig.Context.BibleToBuild[i] =
                     (i < biblesToBuild.Count)
                     ? biblesToBuild[i].Id
-                    : Guid.Empty;
+                    : -1;
             }
         }
 
