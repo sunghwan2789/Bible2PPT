@@ -201,9 +201,6 @@
     <PackageReference Include="Microsoft.Bcl.Async">
       <Version>1.0.168</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Database.Isam">
-      <Version>1.9.4</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
     </PackageReference>

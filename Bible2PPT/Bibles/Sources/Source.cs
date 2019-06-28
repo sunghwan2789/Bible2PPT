@@ -1,5 +1,4 @@
 ﻿using Bible2PPT.Data;
-using Microsoft.Database.Isam;
 using System;
 using System.Collections.Generic;
 using System.Linq;
