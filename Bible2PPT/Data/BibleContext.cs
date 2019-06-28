@@ -1,7 +1,9 @@
 ﻿using Bible2PPT.Bibles;
+using SQLite.CodeFirst;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 
@@ -13,6 +15,8 @@ namespace Bible2PPT.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Verse> Verses { get; set; }
+
+        public BibleContext() : this("Data Source=./bible.db") { }
 
         public BibleContext(string connectionString)
         {
@@ -37,6 +41,8 @@ namespace Bible2PPT.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            Database.SetInitializer(new SqliteDropCreateDatabaseWhenModelChanges<BibleContext>(modelBuilder));
 
             modelBuilder.Entity<Bible>().HasIndex(e => e.SourceId);
 

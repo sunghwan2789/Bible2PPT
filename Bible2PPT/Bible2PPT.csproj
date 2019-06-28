@@ -87,6 +87,7 @@
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
     <Compile Include="Data\BibleContext.cs" />
+    <Compile Include="Data\BibleContextDbConfiguration.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -208,7 +209,10 @@
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
     </PackageReference>
-    <PackageReference Include="System.Data.SQLite.EF6">
+    <PackageReference Include="SQLite.CodeFirst">
+      <Version>1.5.2.28</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
       <Version>1.0.111</Version>
     </PackageReference>
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Database.Isam;
+﻿using Bible2PPT.Data;
+using Microsoft.Database.Isam;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,17 +54,10 @@ namespace Bible2PPT.Bibles.Sources
 
         private void CacheBibles(List<Bible> bibles)
         {
-            using (var db = new BibleDb())
-            using (var tx = db.Transaction)
-            using (var cursor = db.Bibles)
+            using (var db = new BibleContext())
             {
-                foreach (var bible in bibles)
-                {
-                    cursor.BeginEditForInsert();
-                    BibleDb.MapEntity(cursor, bible);
-                    cursor.AcceptChanges();
-                }
-                tx.Commit();
+                db.Bibles.AddRange(bibles);
+                db.SaveChanges();
             }
         }
 
@@ -117,12 +111,9 @@ namespace Bible2PPT.Bibles.Sources
 
         private List<Bible> GetBiblesCached()
         {
-            using (var db = new BibleDb())
-            using (var cursor = db.Bibles)
+            using (var db = new BibleContext())
             {
-                cursor.SetCurrentIndex(nameof(Bible.SourceId));
-                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(Id));
-                return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).ToList();
+                return db.Bibles.Where(i => i.SourceId == Id).ToList();
             }
         }
 

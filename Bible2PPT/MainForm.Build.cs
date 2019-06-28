@@ -44,21 +44,21 @@ namespace Bible2PPT
             // SplitContainer의 특성에 따라 값 다시 설정
             buildSplitContainer.SplitterWidth = 13;
 
-            using (var db = new BibleDb())
-            using (var cursor = db.Bibles)
-            {
-                cursor.SetCurrentIndex(nameof(Bible.Id));
-                foreach (var i in AppConfig.Context.BibleToBuild)
-                {
-                    cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(i));
-                    var bible = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).FirstOrDefault();
-                    if (bible != null)
-                    {
-                        bible.Source = Source.AvailableSources.First(j => j.Id == bible.SourceId);
-                        biblesToBuild.Add(bible);
-                    }
-                }
-            }
+            //using (var db = new BibleDb())
+            //using (var cursor = db.Bibles)
+            //{
+            //    cursor.SetCurrentIndex(nameof(Bible.Id));
+            //    foreach (var i in AppConfig.Context.BibleToBuild)
+            //    {
+            //        cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(i));
+            //        var bible = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).FirstOrDefault();
+            //        if (bible != null)
+            //        {
+            //            bible.Source = Source.AvailableSources.First(j => j.Id == bible.SourceId);
+            //            biblesToBuild.Add(bible);
+            //        }
+            //    }
+            //}
 
             // DataSource 사용을 위한 기초 설정
             sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
