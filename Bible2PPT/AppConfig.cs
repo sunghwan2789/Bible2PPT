@@ -90,7 +90,7 @@ namespace Bible2PPT
             ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
             ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
             SeperateByChapter = (s[0] & 16) == 16;
-            UseCache = (s[0] & 32) == 32;
+            //UseCache = (s[0] & 32) == 32;
             BibleSourceId = BitConverter.ToInt32(s, 1);
             BibleVersionId = new Guid(s.Skip(5).Take(16).ToArray());
             for (var i = 0; i < 9; i++)
