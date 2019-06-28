@@ -51,8 +51,12 @@ namespace Bible2PPT
                     var bible = db.Bibles.Find(bibleId);
                     if (bible != null)
                     {
-                        bible.Source = Source.AvailableSources.First(i => i.Id == bible.SourceId);
-                        biblesToBuild.Add(bible);
+                        var source = Source.AvailableSources.FirstOrDefault(i => i.Id == bible.SourceId);
+                        if (source != null)
+                        {
+                            bible.Source = source;
+                            biblesToBuild.Add(bible);
+                        }
                     }
                 }
             }
