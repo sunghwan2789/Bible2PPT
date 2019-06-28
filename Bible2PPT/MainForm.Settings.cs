@@ -24,11 +24,11 @@ namespace Bible2PPT
 
         private void chkUseCache_CheckedChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.UseCache = chkUseCache.Checked;
-            if (!chkUseCache.Checked)
-            {
-                BibleDb.Reset();
-            }
+            //AppConfig.Context.UseCache = chkUseCache.Checked;
+            //if (!chkUseCache.Checked)
+            //{
+            //    BibleDb.Reset();
+            //}
             //sourceComboBox.SelectedItem = null;
         }
     }

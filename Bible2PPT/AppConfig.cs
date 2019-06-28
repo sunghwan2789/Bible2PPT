@@ -8,7 +8,7 @@ namespace Bible2PPT
 {
     class AppConfig : BinaryConfig
     {
-        public const int ConfigSize = 1 + 4 + 16 + 16 * 9;
+        public const int ConfigSize = 1 + 4 + 16 + 16 * 9 + 4 + 4 * 9;
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
         public static string DatabaseWorkingDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar;
@@ -57,13 +57,27 @@ namespace Bible2PPT
         /// Offset: 5,
         /// Length: 16,
         /// </summary>
-        public Guid BibleVersionId { get; set; }
+        [Obsolete]
+        private Guid _BibleVersionId { get; set; }
 
         /// <summary>
         /// Offset: 21,
         /// Length: 16 * 9
         /// </summary>
-        public Guid[] BibleToBuild { get; set; } = new Guid[9];
+        [Obsolete]
+        private Guid[] _BibleToBuild { get; set; } = new Guid[9];
+
+        /// <summary>
+        /// Offset: 165,
+        /// Length: 4,
+        /// </summary>
+        public int BibleVersionId { get; set; } = -1;
+
+        /// <summary>
+        /// Offset: 169,
+        /// Length: 4 * 9,
+        /// </summary>
+        public int[] BibleToBuild { get; set; } = new int[9];
 
         public AppConfig() : base(ConfigPath, ConfigSize) {}
 
@@ -76,10 +90,10 @@ namespace Bible2PPT
             b[0] |= (byte) (SeperateByChapter ? 16 : 0);
             b[0] |= (byte) (UseCache ? 32 : 0);
             BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
-            BibleVersionId.ToByteArray().CopyTo(b, 5);
+            BitConverter.GetBytes(BibleVersionId).CopyTo(b, 165);
             for (var i = 0; i < 9; i++)
             {
-                BibleToBuild[i].ToByteArray().CopyTo(b, 21 + 16 * i);
+                BitConverter.GetBytes(BibleToBuild[i]).CopyTo(b, 169 + 4 * i);
             }
             return b;
         }
@@ -90,12 +104,12 @@ namespace Bible2PPT
             ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
             ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
             SeperateByChapter = (s[0] & 16) == 16;
-            UseCache = (s[0] & 32) == 32;
+            //UseCache = (s[0] & 32) == 32;
             BibleSourceId = BitConverter.ToInt32(s, 1);
-            BibleVersionId = new Guid(s.Skip(5).Take(16).ToArray());
+            BibleVersionId = BitConverter.ToInt32(s, 165);
             for (var i = 0; i < 9; i++)
             {
-                BibleToBuild[i] = new Guid(s.Skip(21 + 16 * i).Take(16).ToArray());
+                BibleToBuild[i] = BitConverter.ToInt32(s, 169 + 4 * i);
             }
         }
     }

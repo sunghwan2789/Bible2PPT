@@ -1,4 +1,4 @@
-﻿using Microsoft.Database.Isam;
+﻿using Bible2PPT.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,109 +53,72 @@ namespace Bible2PPT.Bibles.Sources
 
         private void CacheBibles(List<Bible> bibles)
         {
-            using (var db = new BibleDb())
-            using (var tx = db.Transaction)
-            using (var cursor = db.Bibles)
+            using (var db = new BibleContext())
             {
-                foreach (var bible in bibles)
-                {
-                    cursor.BeginEditForInsert();
-                    BibleDb.MapEntity(cursor, bible);
-                    cursor.AcceptChanges();
-                }
-                tx.Commit();
+                db.Bibles.AddRange(bibles);
+                db.SaveChanges();
             }
         }
 
         private void CacheBooks(List<Book> books)
         {
-            using (var db = new BibleDb())
-            using (var tx = db.Transaction)
-            using (var cursor = db.Books)
+            using (var db = new BibleContext())
             {
-                foreach (var book in books)
-                {
-                    cursor.BeginEditForInsert();
-                    BibleDb.MapEntity(cursor, book);
-                    cursor.AcceptChanges();
-                }
-                tx.Commit();
+                db.Bibles.Attach(books.First().Bible);
+                db.Books.AddRange(books);
+                db.SaveChanges();
             }
         }
 
         private void CacheChapters(List<Chapter> chapters)
         {
-            using (var db = new BibleDb())
-            using (var tx = db.Transaction)
-            using (var cursor = db.Chapters)
+            using (var db = new BibleContext())
             {
-                foreach (var chapter in chapters)
-                {
-                    cursor.BeginEditForInsert();
-                    BibleDb.MapEntity(cursor, chapter);
-                    cursor.AcceptChanges();
-                }
-                tx.Commit();
+                db.Books.Attach(chapters.First().Book);
+                db.Chapters.AddRange(chapters);
+                db.SaveChanges();
             }
         }
 
         private void CacheVerses(List<Verse> verses)
         {
-            using (var db = new BibleDb())
-            using (var tx = db.Transaction)
-            using (var cursor = db.Verses)
+            using (var db = new BibleContext())
             {
-                foreach (var verse in verses)
-                {
-                    cursor.BeginEditForInsert();
-                    BibleDb.MapEntity(cursor, verse);
-                    cursor.AcceptChanges();
-                }
-                tx.Commit();
+                db.Chapters.Attach(verses.First().Chapter);
+                db.Verses.AddRange(verses);
+                db.SaveChanges();
             }
         }
 
         private List<Bible> GetBiblesCached()
         {
-            using (var db = new BibleDb())
-            using (var cursor = db.Bibles)
+            using (var db = new BibleContext())
             {
-                cursor.SetCurrentIndex(nameof(Bible.SourceId));
-                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(Id));
-                return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).ToList();
+                return db.Bibles.Where(i => i.SourceId == Id).ToList();
             }
         }
 
         private List<Book> GetBooksCached(Bible bible)
         {
-            using (var db = new BibleDb())
-            using (var cursor = db.Books)
+            using (var db = new BibleContext())
             {
-                cursor.SetCurrentIndex(nameof(Book.BibleId));
-                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(bible.Id));
-                return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Book>).ToList();
+                return db.Books.Where(i => i.BibleId == bible.Id).ToList();
             }
         }
 
         private List<Chapter> GetChaptersCached(Book book)
         {
-            using (var db = new BibleDb())
-            using (var cursor = db.Chapters)
+            using (var db = new BibleContext())
             {
-                cursor.SetCurrentIndex(nameof(Chapter.BookId));
-                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(book.Id));
-                return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Chapter>).ToList();
+                return db.Chapters.Where(i => i.BookId == book.Id).ToList();
             }
         }
 
         private List<Verse> GetVersesCached(Chapter chapter)
         {
-            using (var db = new BibleDb())
-            using (var cursor = db.Verses)
+            using (var db = new BibleContext())
             {
-                cursor.SetCurrentIndex(nameof(Verse.ChapterId));
-                cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(chapter.Id));
-                return cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Verse>).ToList();
+                return db.Verses.Where(i => i.ChapterId == chapter.Id).ToList();
             }
         }
 

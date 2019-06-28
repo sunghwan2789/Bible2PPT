@@ -1,6 +1,6 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
-using Microsoft.Database.Isam;
+using Bible2PPT.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,18 +44,19 @@ namespace Bible2PPT
             // SplitContainer의 특성에 따라 값 다시 설정
             buildSplitContainer.SplitterWidth = 13;
 
-            using (var db = new BibleDb())
-            using (var cursor = db.Bibles)
+            using (var db = new BibleContext())
             {
-                cursor.SetCurrentIndex(nameof(Bible.Id));
-                foreach (var i in AppConfig.Context.BibleToBuild)
+                foreach (var bibleId in AppConfig.Context.BibleToBuild)
                 {
-                    cursor.FindRecords(MatchCriteria.EqualTo, Key.Compose(i));
-                    var bible = cursor.Cast<FieldCollection>().Select(BibleDb.MapEntity<Bible>).FirstOrDefault();
+                    var bible = db.Bibles.Find(bibleId);
                     if (bible != null)
                     {
-                        bible.Source = Source.AvailableSources.First(j => j.Id == bible.SourceId);
-                        biblesToBuild.Add(bible);
+                        var source = Source.AvailableSources.FirstOrDefault(i => i.Id == bible.SourceId);
+                        if (source != null)
+                        {
+                            bible.Source = source;
+                            biblesToBuild.Add(bible);
+                        }
                     }
                 }
             }
@@ -295,7 +296,7 @@ namespace Bible2PPT
                 AppConfig.Context.BibleToBuild[i] =
                     (i < biblesToBuild.Count)
                     ? biblesToBuild[i].Id
-                    : Guid.Empty;
+                    : -1;
             }
         }
 

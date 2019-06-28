@@ -74,7 +74,6 @@
     <Compile Include="AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BibleDb.cs" />
     <Compile Include="Bibles\BibleBase.cs" />
     <Compile Include="Bibles\Bible.cs" />
     <Compile Include="Bibles\BookAliases.cs" />
@@ -86,6 +85,8 @@
     <Compile Include="Bibles\Sources\Source.cs" />
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
+    <Compile Include="Data\BibleContext.cs" />
+    <Compile Include="Data\BibleContextDbConfiguration.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,7 +98,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IndexKeyAttribute.cs" />
     <Compile Include="MainForm.Build.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
@@ -201,11 +201,14 @@
     <PackageReference Include="Microsoft.Bcl.Async">
       <Version>1.0.168</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Database.Isam">
-      <Version>1.9.4</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite.CodeFirst">
+      <Version>1.5.2.28</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.111</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
