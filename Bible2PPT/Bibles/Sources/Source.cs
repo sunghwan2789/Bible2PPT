@@ -64,6 +64,7 @@ namespace Bible2PPT.Bibles.Sources
         {
             using (var db = new BibleContext())
             {
+                db.Bibles.Attach(books.First().Bible);
                 db.Books.AddRange(books);
                 db.SaveChanges();
             }
@@ -73,6 +74,7 @@ namespace Bible2PPT.Bibles.Sources
         {
             using (var db = new BibleContext())
             {
+                db.Books.Attach(chapters.First().Book);
                 db.Chapters.AddRange(chapters);
                 db.SaveChanges();
             }
@@ -82,6 +84,7 @@ namespace Bible2PPT.Bibles.Sources
         {
             using (var db = new BibleContext())
             {
+                db.Chapters.Attach(verses.First().Chapter);
                 db.Verses.AddRange(verses);
                 db.SaveChanges();
             }
