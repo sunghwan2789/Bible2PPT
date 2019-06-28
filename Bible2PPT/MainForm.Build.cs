@@ -33,7 +33,6 @@ namespace Bible2PPT
             booksListView,
             versesTextBox,
             buildFragmentCheckBox,
-            chkUseCache,
         };
 
         private readonly List<Bible> biblesToBuild = new List<Bible>(9);

@@ -91,8 +91,8 @@
             this.templatesMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.historyMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.settingsMultiPanelPage = new Bible2PPT.MultiPanelPage();
-            this.btnGithub = new FontAwesome.Sharp.IconButton();
-            this.chkUseCache = new System.Windows.Forms.CheckBox();
+            this.updateButton = new System.Windows.Forms.Button();
+            this.cleanCacheButton = new System.Windows.Forms.Button();
             this.settingsNav = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.biblesBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -1049,8 +1049,8 @@
             // 
             // settingsMultiPanelPage
             // 
-            this.settingsMultiPanelPage.Controls.Add(this.btnGithub);
-            this.settingsMultiPanelPage.Controls.Add(this.chkUseCache);
+            this.settingsMultiPanelPage.Controls.Add(this.updateButton);
+            this.settingsMultiPanelPage.Controls.Add(this.cleanCacheButton);
             this.settingsMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsMultiPanelPage.Location = new System.Drawing.Point(0, 0);
             this.settingsMultiPanelPage.Name = "settingsMultiPanelPage";
@@ -1058,31 +1058,25 @@
             this.settingsMultiPanelPage.TabIndex = 0;
             this.settingsMultiPanelPage.Text = "설정";
             // 
-            // btnGithub
+            // updateButton
             // 
-            this.btnGithub.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btnGithub.IconChar = FontAwesome.Sharp.IconChar.Github;
-            this.btnGithub.IconColor = System.Drawing.Color.Black;
-            this.btnGithub.IconSize = 24;
-            this.btnGithub.Location = new System.Drawing.Point(417, 24);
-            this.btnGithub.Name = "btnGithub";
-            this.btnGithub.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btnGithub.Rotation = 0D;
-            this.btnGithub.Size = new System.Drawing.Size(32, 32);
-            this.btnGithub.TabIndex = 2;
-            this.btnGithub.UseVisualStyleBackColor = true;
-            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
+            this.updateButton.Location = new System.Drawing.Point(25, 72);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(102, 35);
+            this.updateButton.TabIndex = 4;
+            this.updateButton.Text = "업데이트 확인";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
-            // chkUseCache
+            // cleanCacheButton
             // 
-            this.chkUseCache.AutoSize = true;
-            this.chkUseCache.Location = new System.Drawing.Point(33, 33);
-            this.chkUseCache.Name = "chkUseCache";
-            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
-            this.chkUseCache.TabIndex = 1;
-            this.chkUseCache.Text = "오프라인 캐시 사용";
-            this.chkUseCache.UseVisualStyleBackColor = true;
-            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
+            this.cleanCacheButton.Location = new System.Drawing.Point(25, 24);
+            this.cleanCacheButton.Name = "cleanCacheButton";
+            this.cleanCacheButton.Size = new System.Drawing.Size(102, 34);
+            this.cleanCacheButton.TabIndex = 3;
+            this.cleanCacheButton.Text = "캐시 지우기";
+            this.cleanCacheButton.UseVisualStyleBackColor = true;
+            this.cleanCacheButton.Click += new System.EventHandler(this.CleanCacheButton_Click);
             // 
             // navBottomFlowLayoutPanel
             // 
@@ -1168,7 +1162,6 @@
             versesTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).EndInit();
             this.settingsMultiPanelPage.ResumeLayout(false);
-            this.settingsMultiPanelPage.PerformLayout();
             navBottomFlowLayoutPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -1189,7 +1182,6 @@
         private System.Windows.Forms.CheckBox buildFragmentCheckBox;
         private System.Windows.Forms.ComboBox sourceComboBox;
         private System.Windows.Forms.ComboBox bibleComboBox;
-        private System.Windows.Forms.CheckBox chkUseCache;
         private FontAwesome.Sharp.IconButton buildNav;
         private MultiPanel mainMultiPanel;
         private MultiPanelPage historyMultiPanelPage;
@@ -1208,12 +1200,13 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripStatusLabel builderToolStripStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar builderToolStripProgressBar;
-        private FontAwesome.Sharp.IconButton btnGithub;
         private System.Windows.Forms.SplitContainer buildSplitContainer;
         private System.Windows.Forms.DataGridView biblesDataGridView;
         private System.Windows.Forms.BindingSource biblesBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn biblesSourceDataGridViewColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn biblesBibleDataGridViewColumn;
+        private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.Button cleanCacheButton;
     }
 }
 
