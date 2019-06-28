@@ -18,7 +18,7 @@ namespace Bible2PPT.Data
 
         public BibleContext() : this("Data Source=./bible.db") { }
 
-        public BibleContext(string connectionString)
+        public BibleContext(string connectionString) : base(connectionString)
         {
             var connection = Database.Connection;
             try
