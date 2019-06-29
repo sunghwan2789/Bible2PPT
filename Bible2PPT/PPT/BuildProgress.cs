@@ -8,6 +8,8 @@ namespace Bible2PPT.PPT
 {
     class BuildProgress
     {
+        public int ItemsLeft { get; set; }
+
         public Work Work { get; set; }
 
         public Chapter CurrentChapter { get; set; }

@@ -543,15 +543,16 @@ namespace Bible2PPT
 
             var onProgress = new Progress<BuildProgress>(progress =>
             {
-                //var answer = DialogResult.No;
-                //Invoke(new MethodInvoker(() => answer = MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo)));
-                //if (answer == DialogResult.No)
-                //{
-                //}
+                var elapsedTime = DateTime.UtcNow.Subtract(progress.Work.CreatedAt);
+                var timeStamp = $"{((int)elapsedTime.TotalMinutes).ToString("00")}:{elapsedTime.Seconds.ToString("00")}";
+                builderToolStripStatusLabel.Text = $"({progress.ItemsLeft}개 대기) [{timeStamp}] {progress.Work.QueryString}"
+                    + $" - {progress.CurrentChapter.Book.Title} {progress.CurrentChapter.Number}장 추가 중";
             });
 
             var onEnd = new Progress<BuildResult>(result =>
             {
+                builderToolStripStatusLabel.Text = "준비";
+
                 // 토큰 정리
                 buildButton.Tag = null;
 

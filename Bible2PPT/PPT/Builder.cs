@@ -341,6 +341,7 @@ namespace Bible2PPT.PPT
                         // TODO: NO INTERACT 
                         progress.Report(new BuildProgress
                         {
+                            ItemsLeft = Queue.Count,
                             Work = work,
                             CurrentChapter = mainChapter,
                         });
