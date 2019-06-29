@@ -17,8 +17,6 @@ namespace Bible2PPT.Data
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Verse> Verses { get; set; }
 
-        public DbSet<Work> Works { get; set; }
-
         public BibleContext() : this("Data Source=./bible.db") { }
 
         public BibleContext(string connectionString) : base(connectionString)

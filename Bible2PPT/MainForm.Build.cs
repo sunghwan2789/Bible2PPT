@@ -539,15 +539,6 @@ namespace Bible2PPT
                 TemplateBookAbbrOption = AppConfig.Context.ShowShortTitle,
                 TemplateChapterNumberOption = AppConfig.Context.ShowChapterNumber,
             };
-            using (var db = new BibleContext())
-            {
-                foreach (var bible in history.Bibles)
-                {
-                    db.Bibles.Attach(bible);
-                }
-                db.Works.Add(history);
-                db.SaveChanges();
-            }
 
             // PPT 만들기
             PPTBuilderWork work = null;
