@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Bible2PPT.PPT
 {
     using Element = Tuple<Work, CancellationToken, IProgress<BuildProgress>>;
 
-    class Builder
+    class Builder : IDisposable
     {
 
         private static PowerPoint.Application POWERPNT;
@@ -265,6 +266,12 @@ namespace Bible2PPT.PPT
             {
                 ms.CopyTo(fs);
             }
+        }
+
+        public static void OpenTemplate()
+        {
+            ExtractTemplate();
+            Process.Start(AppConfig.TemplatePath);
         }
 
         private BuildResult Prepare(Work work) => Prepare(work, Path.GetTempFileName() + ".pptx");
