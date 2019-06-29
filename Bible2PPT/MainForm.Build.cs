@@ -560,7 +560,7 @@ namespace Bible2PPT
                 buildButton.Text = "PPT 만들기";
 
                 // 오류 발생으로 작업 실패
-                if (!result.IsCompleted && !(result.Exception is OperationCanceledException))
+                if (!result.IsCompleted)
                 {
                     result.QuitAndCleanup();
                     MessageBox.Show(result.Exception?.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -50,6 +50,10 @@ namespace Bible2PPT.PPT
                     {
                         if (item.Item2.IsCancellationRequested)
                         {
+                            end.Report(new BuildResult
+                            {
+                                Work = item.Item1,
+                            });
                             continue;
                         }
 
@@ -367,7 +371,7 @@ namespace Bible2PPT.PPT
                 }
             }
             // 올바른 작업 취소 요청 시 오류 무시
-            catch (OperationCanceledException) { }
+            //catch (OperationCanceledException) { }
             // 작업 실패 시 작업 중지
             catch (Exception ex)
             {
@@ -388,7 +392,7 @@ namespace Bible2PPT.PPT
                 }
             }
 
-            // 작업을 시작하지 않음
+            // 작업을 시작하지 않음 :: 지금은 도달 불가능
             if (result == null)
             {
                 return new BuildResult
