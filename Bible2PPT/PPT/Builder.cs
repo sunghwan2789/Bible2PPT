@@ -268,7 +268,7 @@ namespace Bible2PPT.PPT
             }
         }
 
-        public static void OpenTemplate()
+        public void OpenTemplate()
         {
             ExtractTemplate();
             Process.Start(AppConfig.TemplatePath);
