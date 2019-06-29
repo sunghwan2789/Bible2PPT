@@ -121,8 +121,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MultiPanelPagesCollection.cs" />
-    <Compile Include="PPTBuilder.cs" />
-    <Compile Include="PPTBuilderWork.cs" />
+    <Compile Include="PPT\Builder.cs" />
+    <Compile Include="PPT\BuildProgress.cs" />
+    <Compile Include="PPT\BuildResult.cs" />
+    <Compile Include="PPT\Work.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BibleQuery.cs" />

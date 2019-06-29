@@ -1,5 +1,6 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
+using Bible2PPT.PPT;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,13 +15,13 @@ namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
-        private PPTBuilder builder;
+        private Builder builder;
 
         public MainForm()
         {
             try
             {
-                builder = new PPTBuilder();
+                builder = new Builder();
             }
             catch
             {

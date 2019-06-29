@@ -1,4 +1,5 @@
 ﻿using Bible2PPT.Bibles;
+using Bible2PPT.PPT;
 using SQLite.CodeFirst;
 using System;
 using System.Collections.Generic;
