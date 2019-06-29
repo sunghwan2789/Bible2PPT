@@ -2,6 +2,7 @@
 using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,7 +27,18 @@ namespace Bible2PPT.PPT
 
         public void Save()
         {
-            throw new NotImplementedException();
+            TemplateSlide?.Delete();
+            WorkingPPT?.Save();
+            WorkingPPT?.Close();
+        }
+
+        public void QuitAndCleanup()
+        {
+            WorkingPPT?.Close();
+            if (Output != null && File.Exists(Output))
+            {
+                File.Delete(Output);
+            }
         }
 
         private bool isFirstVerseOfChapter;
