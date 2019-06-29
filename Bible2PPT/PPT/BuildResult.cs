@@ -45,6 +45,7 @@ namespace Bible2PPT.PPT
 
         internal void AppendChapter(IEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, CancellationToken cancellationToken)
         {
+            isFirstVerseOfChapter = true;
             foreach (var eachVerse in eachVerses)
             {
                 cancellationToken.ThrowIfCancellationRequested();
