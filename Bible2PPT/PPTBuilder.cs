@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System;
+using Bible2PPT.PPT;
 
 namespace Bible2PPT
 {
@@ -51,9 +52,9 @@ namespace Bible2PPT
 
 
 
-        public PPTBuilderWork BeginBuild() => BeginBuild(Path.GetTempFileName() + ".pptx");
+        public PPTBuilderWork BeginBuild(Work work) => BeginBuild(work, Path.GetTempFileName() + ".pptx");
 
-        public PPTBuilderWork BeginBuild(string output)
+        public PPTBuilderWork BeginBuild(Work work, string output)
         {
             ExtractTemplate();
             File.Copy(AppConfig.TemplatePath, output, true);
@@ -61,6 +62,7 @@ namespace Bible2PPT
             var workingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
             return new PPTBuilderWork
             {
+                Work = work,
                 Output = output,
                 WorkingPPT = workingPPT,
                 TemplateSlide = workingPPT.Slides[1],

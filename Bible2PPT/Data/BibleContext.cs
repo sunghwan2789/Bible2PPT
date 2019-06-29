@@ -1,4 +1,5 @@
 ﻿using Bible2PPT.Bibles;
+using Bible2PPT.PPT;
 using SQLite.CodeFirst;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Bible2PPT.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Verse> Verses { get; set; }
+
+        public DbSet<Work> Works { get; set; }
 
         public BibleContext() : this("Data Source=./bible.db") { }
 

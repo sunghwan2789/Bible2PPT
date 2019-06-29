@@ -1,4 +1,5 @@
 ﻿using Bible2PPT.Bibles;
+using Bible2PPT.PPT;
 using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Bible2PPT
 {
     class PPTBuilderWork
     {
+        public Work Work { get; set; }
         public string Output { get; set; }
         public PowerPoint.Presentation WorkingPPT { get; set; }
         public PowerPoint.Slide TemplateSlide { get; set; }
@@ -107,9 +109,9 @@ namespace Bible2PPT
                         .Select(i => i.TextFrame.TextRange))
                 {
                     var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", $"{mainChapter.Number}", AppConfig.Context.ShowChapterNumber);
-                    text = AddSuffix(text, "STITLE", mainChapter.Book.ShortTitle, AppConfig.Context.ShowShortTitle);
-                    text = AddSuffix(text, "TITLE", mainChapter.Book.Title, AppConfig.Context.ShowLongTitle);
+                    text = AddSuffix(text, "CHAP", $"{mainChapter.Number}", Work.TemplateChapterNumberOption);
+                    text = AddSuffix(text, "STITLE", mainChapter.Book.ShortTitle, Work.TemplateBookAbbrOption);
+                    text = AddSuffix(text, "TITLE", mainChapter.Book.Title, Work.TemplateBookNameOption);
                     text = text.Replace("[CPAS]", $"{startVerseNumber}");
                     text = text.Replace("[CPAE]", $"{endVerseNumber}");
                     text = text.Replace("[PARA]", $"{mainVerse.Number}");

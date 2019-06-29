@@ -1,6 +1,7 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Data;
+using Bible2PPT.PPT;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -527,15 +528,36 @@ namespace Bible2PPT
             var cts = new CancellationTokenSource();
             buildButton.Tag = cts;
 
+            var history = new Work
+            {
+                Bibles = biblesToBuild,
+                CreatedAt = DateTime.UtcNow,
+                SplitChaptersIntoFiles = AppConfig.Context.SeperateByChapter,
+                OutputDestination = destination,
+                QueryString = Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " "),
+                TemplateBookNameOption = AppConfig.Context.ShowLongTitle,
+                TemplateBookAbbrOption = AppConfig.Context.ShowShortTitle,
+                TemplateChapterNumberOption = AppConfig.Context.ShowChapterNumber,
+            };
+            using (var db = new BibleContext())
+            {
+                foreach (var bible in history.Bibles)
+                {
+                    db.Bibles.Attach(bible);
+                }
+                db.Works.Add(history);
+                db.SaveChanges();
+            }
+
             // PPT 만들기
             PPTBuilderWork work = null;
             try
             {
                 await Task.Factory.StartNew(() =>
                 {
-                    if (!AppConfig.Context.SeperateByChapter)
+                    if (!history.SplitChaptersIntoFiles)
                     {
-                        work = builder.BeginBuild();
+                        work = builder.BeginBuild(history);
                     }
 
                     List<List<Book>> eachBooks;
@@ -556,15 +578,9 @@ namespace Bible2PPT
                         goto GET_BOOKS;
                     }
 
-                    foreach (var t in
-                        Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " ").Split()
-                            .Select(BibleQuery.ParseQuery)
-                            .Select(query => Tuple.Create(
-                                query,
-                                eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList())))
+                    foreach (var query in history.QueryString.Split().Select(BibleQuery.ParseQuery).ToList())
                     {
-                        var query = t.Item1;
-                        var targetEachBook = t.Item2;
+                        var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
 
                         // 해당 책이 있는 성경에서 해당 책을 대표로 사용
                         var mainBook = targetEachBook.First(i => i != null);
@@ -660,12 +676,12 @@ namespace Bible2PPT
 
                             Invoke(new MethodInvoker(() => builderToolStripStatusLabel.Text = $"{mainBook.Title} {mainChapter.Number}장"));
 
-                            if (AppConfig.Context.SeperateByChapter)
+                            if (history.SplitChaptersIntoFiles)
                             {
                                 work?.Save();
-                                var output = Path.Combine(destination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
+                                var output = Path.Combine(history.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
                                 CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                                work = builder.BeginBuild(output);
+                                work = builder.BeginBuild(history, output);
                             }
 
                             var startVerseNo = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
@@ -712,9 +728,9 @@ namespace Bible2PPT
             if (work != null)
             {
                 work.Save();
-                if (AppConfig.Context.SeperateByChapter)
+                if (history.SplitChaptersIntoFiles)
                 {
-                    Process.Start(destination);
+                    Process.Start(history.OutputDestination);
                 }
                 else
                 {
