@@ -7,7 +7,7 @@ namespace Bible2PPT.Bibles
     {
         public int SourceId { get; set; }
         [NotMapped]
-        public virtual Sources.Source Source { get; set; } //Sources.BibleSource.AvailableSources.FirstOrDefault(i => i.Id == SourceId)
+        public Sources.Source Source { get; set; } //Sources.BibleSource.AvailableSources.FirstOrDefault(i => i.Id == SourceId)
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

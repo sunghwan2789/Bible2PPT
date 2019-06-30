@@ -12,8 +12,8 @@ namespace Bible2PPT.PPT
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public Work Work { get; set; }
+        public virtual Work Work { get; set; }
 
-        public Bible Bible { get; set; }
+        public virtual Bible Bible { get; set; }
     }
 }
