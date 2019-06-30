@@ -56,6 +56,9 @@ namespace Bible2PPT.Data
 
             modelBuilder.Entity<Verse>().HasIndex(e => e.SourceId);
             modelBuilder.Entity<Verse>().HasIndex(e => e.ChapterId);
+
+            modelBuilder.Entity<WorkBible>().HasRequired(e => e.Work).WithMany(e => e.WorkBibles);
+            modelBuilder.Entity<WorkBible>().HasRequired(e => e.Bible).WithMany();
         }
     }
 }

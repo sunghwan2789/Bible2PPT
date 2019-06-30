@@ -12,8 +12,9 @@ namespace Bible2PPT.PPT
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public List<WorkBible> WorkBibles { get; set; }
+        public virtual ICollection<WorkBible> WorkBibles { get; set; }
 
+        [NotMapped]
         public List<Bible> Bibles
         {
             get => WorkBibles.Select(i => i.Bible).ToList();
