@@ -125,6 +125,7 @@
     <Compile Include="PPT\BuildProgress.cs" />
     <Compile Include="PPT\BuildResult.cs" />
     <Compile Include="PPT\Work.cs" />
+    <Compile Include="PPT\WorkBible.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BibleQuery.cs" />

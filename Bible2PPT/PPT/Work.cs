@@ -12,7 +12,14 @@ namespace Bible2PPT.PPT
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public List<Bible> Bibles { get; set; }
+        public List<WorkBible> WorkBibles { get; set; }
+
+        public List<Bible> Bibles
+        {
+            get => WorkBibles.Select(i => i.Bible).ToList();
+            set => WorkBibles = value.Select(i => new WorkBible { Bible = i, }).ToList();
+        }
+
         public TemplateTextOptions TemplateBookNameOption { get; set; }
         public TemplateTextOptions TemplateBookAbbrOption { get; set; }
         public TemplateTextOptions TemplateChapterNumberOption { get; set; }
