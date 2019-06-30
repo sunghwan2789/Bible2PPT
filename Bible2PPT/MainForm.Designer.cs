@@ -58,6 +58,7 @@
             System.Windows.Forms.TableLayoutPanel versesTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox versesIconPictureBox;
             System.Windows.Forms.Label versesLabel;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
             this.buildNav = new FontAwesome.Sharp.IconButton();
             this.historyNav = new FontAwesome.Sharp.IconButton();
@@ -99,9 +100,7 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.templatesMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.settingsMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.updateButton = new System.Windows.Forms.Button();
@@ -1056,9 +1055,11 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
@@ -1074,6 +1075,17 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -1083,34 +1095,34 @@
             this.Column5,
             this.Column6,
             this.Column7,
-            this.Column10,
-            this.Column8,
-            this.Column9,
-            this.Column11});
+            this.Column10});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 45);
+            this.dataGridView1.Location = new System.Drawing.Point(14, 46);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(435, 257);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(433, 255);
+            this.dataGridView1.StandardTab = true;
             this.dataGridView1.TabIndex = 0;
             // 
             // Column1
             // 
-            this.Column1.HeaderText = "추가한 시간";
+            this.Column1.HeaderText = "만든 날짜";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "사용한 성경";
+            this.Column2.HeaderText = "성경";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
             // Column3
             // 
-            this.Column3.HeaderText = "성경 구절";
+            this.Column3.HeaderText = "구절";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             // 
@@ -1144,23 +1156,14 @@
             this.Column10.Name = "Column10";
             this.Column10.ReadOnly = true;
             // 
-            // Column8
+            // flowLayoutPanel1
             // 
-            this.Column8.HeaderText = "불러오기";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "열기";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "제거";
-            this.Column11.Name = "Column11";
-            this.Column11.ReadOnly = true;
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(14, 11);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(433, 34);
+            this.flowLayoutPanel1.TabIndex = 1;
             // 
             // templatesMultiPanelPage
             // 
@@ -1344,9 +1347,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewButtonColumn Column8;
-        private System.Windows.Forms.DataGridViewButtonColumn Column9;
-        private System.Windows.Forms.DataGridViewButtonColumn Column11;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 
