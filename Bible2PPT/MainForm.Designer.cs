@@ -58,8 +58,10 @@
             System.Windows.Forms.TableLayoutPanel versesTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox versesIconPictureBox;
             System.Windows.Forms.Label versesLabel;
+            System.Windows.Forms.TableLayoutPanel historyTableLayoutPanel;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.FlowLayoutPanel historyFlowLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
             this.buildNav = new FontAwesome.Sharp.IconButton();
             this.historyNav = new FontAwesome.Sharp.IconButton();
@@ -91,20 +93,18 @@
             this.booksListView = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.historyMultiPanelPage = new Bible2PPT.MultiPanelPage();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.historyDataGridView = new System.Windows.Forms.DataGridView();
+            this.historyCreatedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyBiblesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyQueryStringColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyTemplateBookNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyTemplateBookAbbrColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyTemplateChapterNumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historySplitChaptersIntoFileColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.historyResultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyOpenResultButton = new System.Windows.Forms.Button();
+            this.historyLoadButton = new System.Windows.Forms.Button();
+            this.historyDeleteButton = new System.Windows.Forms.Button();
             this.templatesMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.settingsMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.updateButton = new System.Windows.Forms.Button();
@@ -139,6 +139,8 @@
             versesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             versesIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
             versesLabel = new System.Windows.Forms.Label();
+            historyTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            historyFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             navBottomFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             mainTableLayoutPanel.SuspendLayout();
             navTopFlowLayoutPanel.SuspendLayout();
@@ -169,9 +171,9 @@
             versesTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).BeginInit();
             this.historyMultiPanelPage.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.flowLayoutPanel1.SuspendLayout();
+            historyTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.historyDataGridView)).BeginInit();
+            historyFlowLayoutPanel.SuspendLayout();
             this.settingsMultiPanelPage.SuspendLayout();
             navBottomFlowLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).BeginInit();
@@ -1050,7 +1052,7 @@
             // 
             // historyMultiPanelPage
             // 
-            this.historyMultiPanelPage.Controls.Add(this.tableLayoutPanel1);
+            this.historyMultiPanelPage.Controls.Add(historyTableLayoutPanel);
             this.historyMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.historyMultiPanelPage.Location = new System.Drawing.Point(0, 0);
             this.historyMultiPanelPage.Name = "historyMultiPanelPage";
@@ -1058,33 +1060,33 @@
             this.historyMultiPanelPage.TabIndex = 0;
             this.historyMultiPanelPage.Text = "PPT 제작 기록";
             // 
-            // tableLayoutPanel1
+            // historyTableLayoutPanel
             // 
-            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(13, 10, 13, 10);
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(461, 312);
-            this.tableLayoutPanel1.TabIndex = 0;
+            historyTableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            historyTableLayoutPanel.ColumnCount = 1;
+            historyTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            historyTableLayoutPanel.Controls.Add(this.historyDataGridView, 0, 1);
+            historyTableLayoutPanel.Controls.Add(historyFlowLayoutPanel, 0, 0);
+            historyTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            historyTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            historyTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            historyTableLayoutPanel.Name = "historyTableLayoutPanel";
+            historyTableLayoutPanel.Padding = new System.Windows.Forms.Padding(13, 10, 13, 10);
+            historyTableLayoutPanel.RowCount = 2;
+            historyTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            historyTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            historyTableLayoutPanel.Size = new System.Drawing.Size(461, 312);
+            historyTableLayoutPanel.TabIndex = 0;
             // 
-            // dataGridView1
+            // historyDataGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
-            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.historyDataGridView.AllowUserToAddRows = false;
+            this.historyDataGridView.AllowUserToDeleteRows = false;
+            this.historyDataGridView.AllowUserToOrderColumns = true;
+            this.historyDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            this.historyDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.historyDataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.historyDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -1092,133 +1094,136 @@
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5,
-            this.Column6,
-            this.Column7,
-            this.Column10});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(14, 36);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(433, 265);
-            this.dataGridView1.StandardTab = true;
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1_CellFormatting);
+            this.historyDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.historyDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.historyDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.historyCreatedAtColumn,
+            this.historyBiblesColumn,
+            this.historyQueryStringColumn,
+            this.historyTemplateBookNameColumn,
+            this.historyTemplateBookAbbrColumn,
+            this.historyTemplateChapterNumberColumn,
+            this.historySplitChaptersIntoFileColumn,
+            this.historyResultColumn});
+            this.historyDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyDataGridView.Location = new System.Drawing.Point(14, 36);
+            this.historyDataGridView.Margin = new System.Windows.Forms.Padding(0);
+            this.historyDataGridView.Name = "historyDataGridView";
+            this.historyDataGridView.ReadOnly = true;
+            this.historyDataGridView.RowHeadersVisible = false;
+            this.historyDataGridView.RowTemplate.Height = 23;
+            this.historyDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.historyDataGridView.Size = new System.Drawing.Size(433, 265);
+            this.historyDataGridView.StandardTab = true;
+            this.historyDataGridView.TabIndex = 0;
+            this.historyDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.HistoryDataGridView_CellFormatting);
             // 
-            // Column1
+            // historyCreatedAtColumn
             // 
-            this.Column1.HeaderText = "만든 날짜";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 5;
+            this.historyCreatedAtColumn.HeaderText = "만든 날짜";
+            this.historyCreatedAtColumn.Name = "historyCreatedAtColumn";
+            this.historyCreatedAtColumn.ReadOnly = true;
+            this.historyCreatedAtColumn.Width = 5;
             // 
-            // Column2
+            // historyBiblesColumn
             // 
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Column2.HeaderText = "성경";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column2.Width = 5;
+            this.historyBiblesColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.historyBiblesColumn.HeaderText = "성경";
+            this.historyBiblesColumn.Name = "historyBiblesColumn";
+            this.historyBiblesColumn.ReadOnly = true;
+            this.historyBiblesColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.historyBiblesColumn.Width = 5;
             // 
-            // Column3
+            // historyQueryStringColumn
             // 
-            this.Column3.HeaderText = "구절";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 5;
+            this.historyQueryStringColumn.HeaderText = "구절";
+            this.historyQueryStringColumn.Name = "historyQueryStringColumn";
+            this.historyQueryStringColumn.ReadOnly = true;
+            this.historyQueryStringColumn.Width = 5;
             // 
-            // Column4
+            // historyTemplateBookNameColumn
             // 
-            this.Column4.HeaderText = "책 이름";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.Width = 5;
+            this.historyTemplateBookNameColumn.HeaderText = "책 이름";
+            this.historyTemplateBookNameColumn.Name = "historyTemplateBookNameColumn";
+            this.historyTemplateBookNameColumn.ReadOnly = true;
+            this.historyTemplateBookNameColumn.Width = 5;
             // 
-            // Column5
+            // historyTemplateBookAbbrColumn
             // 
-            this.Column5.HeaderText = "약자";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Width = 5;
+            this.historyTemplateBookAbbrColumn.HeaderText = "약자";
+            this.historyTemplateBookAbbrColumn.Name = "historyTemplateBookAbbrColumn";
+            this.historyTemplateBookAbbrColumn.ReadOnly = true;
+            this.historyTemplateBookAbbrColumn.Width = 5;
             // 
-            // Column6
+            // historyTemplateChapterNumberColumn
             // 
-            this.Column6.HeaderText = "장 번호";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Width = 5;
+            this.historyTemplateChapterNumberColumn.HeaderText = "장 번호";
+            this.historyTemplateChapterNumberColumn.Name = "historyTemplateChapterNumberColumn";
+            this.historyTemplateChapterNumberColumn.ReadOnly = true;
+            this.historyTemplateChapterNumberColumn.Width = 5;
             // 
-            // Column7
+            // historySplitChaptersIntoFileColumn
             // 
-            this.Column7.HeaderText = "장별로 나누기";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            this.Column7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Column7.Width = 5;
+            this.historySplitChaptersIntoFileColumn.HeaderText = "장별로 나누기";
+            this.historySplitChaptersIntoFileColumn.Name = "historySplitChaptersIntoFileColumn";
+            this.historySplitChaptersIntoFileColumn.ReadOnly = true;
+            this.historySplitChaptersIntoFileColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.historySplitChaptersIntoFileColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.historySplitChaptersIntoFileColumn.Width = 5;
             // 
-            // Column10
+            // historyResultColumn
             // 
-            this.Column10.HeaderText = "결과";
-            this.Column10.Name = "Column10";
-            this.Column10.ReadOnly = true;
-            this.Column10.Width = 5;
+            this.historyResultColumn.HeaderText = "결과";
+            this.historyResultColumn.Name = "historyResultColumn";
+            this.historyResultColumn.ReadOnly = true;
+            this.historyResultColumn.Width = 5;
             // 
-            // flowLayoutPanel1
+            // historyFlowLayoutPanel
             // 
-            this.flowLayoutPanel1.Controls.Add(this.button1);
-            this.flowLayoutPanel1.Controls.Add(this.button2);
-            this.flowLayoutPanel1.Controls.Add(this.button3);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(14, 11);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(433, 24);
-            this.flowLayoutPanel1.TabIndex = 1;
+            historyFlowLayoutPanel.Controls.Add(this.historyOpenResultButton);
+            historyFlowLayoutPanel.Controls.Add(this.historyLoadButton);
+            historyFlowLayoutPanel.Controls.Add(this.historyDeleteButton);
+            historyFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            historyFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            historyFlowLayoutPanel.Location = new System.Drawing.Point(14, 11);
+            historyFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            historyFlowLayoutPanel.Name = "historyFlowLayoutPanel";
+            historyFlowLayoutPanel.Size = new System.Drawing.Size(433, 24);
+            historyFlowLayoutPanel.TabIndex = 1;
             // 
-            // button1
+            // historyOpenResultButton
             // 
-            this.button1.Location = new System.Drawing.Point(358, 0);
-            this.button1.Margin = new System.Windows.Forms.Padding(0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "열기";
-            this.button1.UseVisualStyleBackColor = true;
+            this.historyOpenResultButton.Location = new System.Drawing.Point(358, 0);
+            this.historyOpenResultButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyOpenResultButton.Name = "historyOpenResultButton";
+            this.historyOpenResultButton.Size = new System.Drawing.Size(75, 23);
+            this.historyOpenResultButton.TabIndex = 0;
+            this.historyOpenResultButton.Text = "열기";
+            this.historyOpenResultButton.UseVisualStyleBackColor = true;
+            this.historyOpenResultButton.Click += new System.EventHandler(this.HistoryOpenResultButton_Click);
             // 
-            // button2
+            // historyLoadButton
             // 
-            this.button2.Location = new System.Drawing.Point(283, 0);
-            this.button2.Margin = new System.Windows.Forms.Padding(0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "불러오기";
-            this.button2.UseVisualStyleBackColor = true;
+            this.historyLoadButton.Location = new System.Drawing.Point(283, 0);
+            this.historyLoadButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyLoadButton.Name = "historyLoadButton";
+            this.historyLoadButton.Size = new System.Drawing.Size(75, 23);
+            this.historyLoadButton.TabIndex = 1;
+            this.historyLoadButton.Text = "불러오기";
+            this.historyLoadButton.UseVisualStyleBackColor = true;
+            this.historyLoadButton.Click += new System.EventHandler(this.HistoryLoadButton_Click);
             // 
-            // button3
+            // historyDeleteButton
             // 
-            this.button3.Location = new System.Drawing.Point(208, 0);
-            this.button3.Margin = new System.Windows.Forms.Padding(0);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "삭제";
-            this.button3.UseVisualStyleBackColor = true;
+            this.historyDeleteButton.Location = new System.Drawing.Point(208, 0);
+            this.historyDeleteButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyDeleteButton.Name = "historyDeleteButton";
+            this.historyDeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.historyDeleteButton.TabIndex = 2;
+            this.historyDeleteButton.Text = "삭제";
+            this.historyDeleteButton.UseVisualStyleBackColor = true;
+            this.historyDeleteButton.Click += new System.EventHandler(this.HistoryDeleteButton_Click);
             // 
             // templatesMultiPanelPage
             // 
@@ -1344,9 +1349,9 @@
             versesTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).EndInit();
             this.historyMultiPanelPage.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.flowLayoutPanel1.ResumeLayout(false);
+            historyTableLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.historyDataGridView)).EndInit();
+            historyFlowLayoutPanel.ResumeLayout(false);
             this.settingsMultiPanelPage.ResumeLayout(false);
             navBottomFlowLayoutPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).EndInit();
@@ -1393,20 +1398,18 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn biblesBibleDataGridViewColumn;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button cleanCacheButton;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridView historyDataGridView;
+        private System.Windows.Forms.Button historyOpenResultButton;
+        private System.Windows.Forms.Button historyLoadButton;
+        private System.Windows.Forms.Button historyDeleteButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyCreatedAtColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyBiblesColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyQueryStringColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateChapterNumberColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn historySplitChaptersIntoFileColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyResultColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateBookNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateBookAbbrColumn;
     }
 }
 

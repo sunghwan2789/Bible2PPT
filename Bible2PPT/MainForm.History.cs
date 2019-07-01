@@ -18,14 +18,14 @@ namespace Bible2PPT
     {
         private void InitializeHistoryComponent()
         {
-            dataGridView1.AutoGenerateColumns = false;
-            Column1.DataPropertyName = nameof(Work.CreatedAt);
-            Column2.DataPropertyName = nameof(Work.Bibles);
-            Column3.DataPropertyName = nameof(Work.QueryString);
-            Column4.DataPropertyName = nameof(Work.TemplateBookNameOption);
-            Column5.DataPropertyName = nameof(Work.TemplateBookAbbrOption);
-            Column6.DataPropertyName = nameof(Work.TemplateChapterNumberOption);
-            Column7.DataPropertyName = nameof(Work.SplitChaptersIntoFiles);
+            historyDataGridView.AutoGenerateColumns = false;
+            historyCreatedAtColumn.DataPropertyName = nameof(Work.CreatedAt);
+            historyBiblesColumn.DataPropertyName = nameof(Work.Bibles);
+            historyQueryStringColumn.DataPropertyName = nameof(Work.QueryString);
+            historyTemplateBookNameColumn.DataPropertyName = nameof(Work.TemplateBookNameOption);
+            historyTemplateBookAbbrColumn.DataPropertyName = nameof(Work.TemplateBookAbbrOption);
+            historyTemplateChapterNumberColumn.DataPropertyName = nameof(Work.TemplateChapterNumberOption);
+            historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Work.SplitChaptersIntoFiles);
 
             List<Work> works;
             using (var db = new BibleContext())
@@ -36,10 +36,10 @@ namespace Bible2PPT
                     .ToList();
                 works.ForEach(i => i.Bibles.ForEach(j => j.Source = Source.AvailableSources.First(k => k.Id == j.SourceId)));
             }
-            dataGridView1.DataSource = works;
+            historyDataGridView.DataSource = works;
         }
 
-        private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void HistoryDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             switch (e.Value)
             {
@@ -68,6 +68,21 @@ namespace Bible2PPT
                     break;
                 }
             }
+        }
+
+        private void HistoryOpenResultButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HistoryLoadButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HistoryDeleteButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
