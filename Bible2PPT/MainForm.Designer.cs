@@ -60,9 +60,9 @@
             System.Windows.Forms.Label versesLabel;
             System.Windows.Forms.TableLayoutPanel historyTableLayoutPanel;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.FlowLayoutPanel historyFlowLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buildNav = new FontAwesome.Sharp.IconButton();
             this.historyNav = new FontAwesome.Sharp.IconButton();
             this.templatesNav = new FontAwesome.Sharp.IconButton();
@@ -94,14 +94,6 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.historyMultiPanelPage = new Bible2PPT.MultiPanelPage();
             this.historyDataGridView = new System.Windows.Forms.DataGridView();
-            this.historyCreatedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historyBiblesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historyQueryStringColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historyTemplateBookNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historyTemplateBookAbbrColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historyTemplateChapterNumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historySplitChaptersIntoFileColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.historyResultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.historyOpenResultButton = new System.Windows.Forms.Button();
             this.historyLoadButton = new System.Windows.Forms.Button();
             this.historyDeleteButton = new System.Windows.Forms.Button();
@@ -112,6 +104,14 @@
             this.settingsNav = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.biblesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.historyCreatedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyBiblesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyQueryStringColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyTemplateBookNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyTemplateBookAbbrColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyTemplateChapterNumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historySplitChaptersIntoFileColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.historyResultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             navTopFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             builderStatusStrip = new System.Windows.Forms.StatusStrip();
@@ -1083,7 +1083,6 @@
             this.historyDataGridView.AllowUserToAddRows = false;
             this.historyDataGridView.AllowUserToDeleteRows = false;
             this.historyDataGridView.AllowUserToOrderColumns = true;
-            this.historyDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
             this.historyDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.historyDataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
             this.historyDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -1117,67 +1116,6 @@
             this.historyDataGridView.StandardTab = true;
             this.historyDataGridView.TabIndex = 0;
             this.historyDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.HistoryDataGridView_CellFormatting);
-            // 
-            // historyCreatedAtColumn
-            // 
-            this.historyCreatedAtColumn.HeaderText = "만든 날짜";
-            this.historyCreatedAtColumn.Name = "historyCreatedAtColumn";
-            this.historyCreatedAtColumn.ReadOnly = true;
-            this.historyCreatedAtColumn.Width = 5;
-            // 
-            // historyBiblesColumn
-            // 
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.historyBiblesColumn.DefaultCellStyle = dataGridViewCellStyle4;
-            this.historyBiblesColumn.HeaderText = "성경";
-            this.historyBiblesColumn.Name = "historyBiblesColumn";
-            this.historyBiblesColumn.ReadOnly = true;
-            this.historyBiblesColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.historyBiblesColumn.Width = 5;
-            // 
-            // historyQueryStringColumn
-            // 
-            this.historyQueryStringColumn.HeaderText = "구절";
-            this.historyQueryStringColumn.Name = "historyQueryStringColumn";
-            this.historyQueryStringColumn.ReadOnly = true;
-            this.historyQueryStringColumn.Width = 5;
-            // 
-            // historyTemplateBookNameColumn
-            // 
-            this.historyTemplateBookNameColumn.HeaderText = "책 이름";
-            this.historyTemplateBookNameColumn.Name = "historyTemplateBookNameColumn";
-            this.historyTemplateBookNameColumn.ReadOnly = true;
-            this.historyTemplateBookNameColumn.Width = 5;
-            // 
-            // historyTemplateBookAbbrColumn
-            // 
-            this.historyTemplateBookAbbrColumn.HeaderText = "약자";
-            this.historyTemplateBookAbbrColumn.Name = "historyTemplateBookAbbrColumn";
-            this.historyTemplateBookAbbrColumn.ReadOnly = true;
-            this.historyTemplateBookAbbrColumn.Width = 5;
-            // 
-            // historyTemplateChapterNumberColumn
-            // 
-            this.historyTemplateChapterNumberColumn.HeaderText = "장 번호";
-            this.historyTemplateChapterNumberColumn.Name = "historyTemplateChapterNumberColumn";
-            this.historyTemplateChapterNumberColumn.ReadOnly = true;
-            this.historyTemplateChapterNumberColumn.Width = 5;
-            // 
-            // historySplitChaptersIntoFileColumn
-            // 
-            this.historySplitChaptersIntoFileColumn.HeaderText = "장별로 나누기";
-            this.historySplitChaptersIntoFileColumn.Name = "historySplitChaptersIntoFileColumn";
-            this.historySplitChaptersIntoFileColumn.ReadOnly = true;
-            this.historySplitChaptersIntoFileColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.historySplitChaptersIntoFileColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.historySplitChaptersIntoFileColumn.Width = 5;
-            // 
-            // historyResultColumn
-            // 
-            this.historyResultColumn.HeaderText = "결과";
-            this.historyResultColumn.Name = "historyResultColumn";
-            this.historyResultColumn.ReadOnly = true;
-            this.historyResultColumn.Width = 5;
             // 
             // historyFlowLayoutPanel
             // 
@@ -1299,6 +1237,66 @@
             this.settingsNav.UseVisualStyleBackColor = false;
             this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
             // 
+            // historyCreatedAtColumn
+            // 
+            this.historyCreatedAtColumn.HeaderText = "만든 날짜";
+            this.historyCreatedAtColumn.Name = "historyCreatedAtColumn";
+            this.historyCreatedAtColumn.ReadOnly = true;
+            this.historyCreatedAtColumn.Width = 80;
+            // 
+            // historyBiblesColumn
+            // 
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.historyBiblesColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.historyBiblesColumn.HeaderText = "성경";
+            this.historyBiblesColumn.Name = "historyBiblesColumn";
+            this.historyBiblesColumn.ReadOnly = true;
+            this.historyBiblesColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.historyBiblesColumn.Width = 150;
+            // 
+            // historyQueryStringColumn
+            // 
+            this.historyQueryStringColumn.HeaderText = "구절";
+            this.historyQueryStringColumn.Name = "historyQueryStringColumn";
+            this.historyQueryStringColumn.ReadOnly = true;
+            // 
+            // historyTemplateBookNameColumn
+            // 
+            this.historyTemplateBookNameColumn.HeaderText = "책 이름";
+            this.historyTemplateBookNameColumn.Name = "historyTemplateBookNameColumn";
+            this.historyTemplateBookNameColumn.ReadOnly = true;
+            this.historyTemplateBookNameColumn.Width = 60;
+            // 
+            // historyTemplateBookAbbrColumn
+            // 
+            this.historyTemplateBookAbbrColumn.HeaderText = "약자";
+            this.historyTemplateBookAbbrColumn.Name = "historyTemplateBookAbbrColumn";
+            this.historyTemplateBookAbbrColumn.ReadOnly = true;
+            this.historyTemplateBookAbbrColumn.Width = 60;
+            // 
+            // historyTemplateChapterNumberColumn
+            // 
+            this.historyTemplateChapterNumberColumn.HeaderText = "장 번호";
+            this.historyTemplateChapterNumberColumn.Name = "historyTemplateChapterNumberColumn";
+            this.historyTemplateChapterNumberColumn.ReadOnly = true;
+            this.historyTemplateChapterNumberColumn.Width = 60;
+            // 
+            // historySplitChaptersIntoFileColumn
+            // 
+            this.historySplitChaptersIntoFileColumn.HeaderText = "장별로 나누기";
+            this.historySplitChaptersIntoFileColumn.Name = "historySplitChaptersIntoFileColumn";
+            this.historySplitChaptersIntoFileColumn.ReadOnly = true;
+            this.historySplitChaptersIntoFileColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.historySplitChaptersIntoFileColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.historySplitChaptersIntoFileColumn.Width = 24;
+            // 
+            // historyResultColumn
+            // 
+            this.historyResultColumn.HeaderText = "결과";
+            this.historyResultColumn.Name = "historyResultColumn";
+            this.historyResultColumn.ReadOnly = true;
+            this.historyResultColumn.Width = 120;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1405,11 +1403,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn historyCreatedAtColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn historyBiblesColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn historyQueryStringColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateBookNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateBookAbbrColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateChapterNumberColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn historySplitChaptersIntoFileColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn historyResultColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateBookNameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn historyTemplateBookAbbrColumn;
     }
 }
 
