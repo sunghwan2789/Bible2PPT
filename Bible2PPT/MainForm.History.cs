@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.Entity;
+using Bible2PPT.Bibles;
+using Bible2PPT.Bibles.Sources;
 
 namespace Bible2PPT
 {
@@ -32,8 +34,40 @@ namespace Bible2PPT
                     .Include(w => w.WorkBibles.Select(wb => wb.Bible))
                     .OrderByDescending(w => w.Id)
                     .ToList();
+                works.ForEach(i => i.Bibles.ForEach(j => j.Source = Source.AvailableSources.First(k => k.Id == j.SourceId)));
             }
             dataGridView1.DataSource = works;
+        }
+
+        private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            switch (e.Value)
+            {
+                case List<Bible> bibles:
+                {
+                    e.Value = string.Join("\n", bibles.Select(i => $"{i.Source?.Name} - {i.Version}"));
+                    e.FormattingApplied = true;
+                    break;
+                }
+                case TemplateTextOptions textOptions:
+                {
+                    string value;
+                    switch (textOptions)
+                    {
+                        case TemplateTextOptions.Always:
+                            value = "항상 보이기";
+                            break;
+                        case TemplateTextOptions.FirstVerseOfChapter:
+                            value = "각 장의 첫 절에만 보이기";
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                    e.Value = value;
+                    e.FormattingApplied = true;
+                    break;
+                }
+            }
         }
     }
 }
