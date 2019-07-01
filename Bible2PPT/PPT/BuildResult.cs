@@ -2,6 +2,7 @@
 using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,10 +14,16 @@ namespace Bible2PPT.PPT
 {
     class BuildResult
     {
-        public Work Work { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        public virtual Work Work { get; set; }
         
         public bool IsCompleted { get; set; }
 
+        public string Text { get; set; }
+
+        [NotMapped]
         public Exception Exception { get; set; }
 
         public string Output { get; set; }

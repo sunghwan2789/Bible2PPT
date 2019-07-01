@@ -28,5 +28,7 @@ namespace Bible2PPT.PPT
         public bool SplitChaptersIntoFiles { get; set; }
         public string OutputDestination { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public virtual BuildResult Result { get; set; }
     }
 }
