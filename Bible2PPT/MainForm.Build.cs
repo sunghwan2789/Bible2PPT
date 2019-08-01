@@ -1,6 +1,7 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Data;
+using Bible2PPT.Extensions;
 using Bible2PPT.PPT;
 using Microsoft;
 using System;
@@ -107,7 +108,7 @@ namespace Bible2PPT
             // 현재 소스를 선택하기 전에 선택한 소스의 성경 목록 가져오기 작업을 취소
             if (sourceComboBox.Tag is CancellationTokenSource previousCts)
             {
-                previousCts.Cancel();
+                previousCts.CancelIfNotDisposed();
                 sourceComboBox.Tag = null;
             }
 
@@ -134,14 +135,14 @@ namespace Bible2PPT
             // 올바른 작업 취소 요청 시 아무 작업도 안함
             catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
-                return;
+                goto CLEANUP;
             }
             // 성경 소스가 응답이 없으면 다시 시도
             catch (OperationCanceledException)
             {
                 if (DialogResult.No == MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo))
                 {
-                    return;
+                    goto CLEANUP;
                 }
 
                 goto GET_BIBLES;
@@ -161,6 +162,9 @@ namespace Bible2PPT
             bibleComboBox.Enabled = true;
             // 마지막으로 선택한 성경 불러오기
             bibleComboBox.SelectedValue = AppConfig.Context.BibleVersionId;
+
+        CLEANUP:
+            cts.Dispose();
         }
 
         /// <summary>
@@ -316,7 +320,7 @@ namespace Bible2PPT
             // 현재 성경을 활성화하기 전에 활성화한 성경의 책 목록 가져오기 작업을 취소
             if (biblesDataGridView.Tag is CancellationTokenSource previousCts)
             {
-                previousCts.Cancel();
+                previousCts.CancelIfNotDisposed();
                 biblesDataGridView.Tag = null;
             }
 
@@ -346,14 +350,14 @@ namespace Bible2PPT
             // 올바른 작업 취소 요청 시 아무 작업도 안함
             catch (OperationCanceledException) when (cts.IsCancellationRequested)
             {
-                return;
+                goto CLEANUP;
             }
             // 성경 소스가 응답이 없으면 다시 시도
             catch (OperationCanceledException)
             {
                 if (DialogResult.No == MessageBox.Show("성경 소스가 응답이 없습니다.\n다시 시도할까요?", "성경2PPT", MessageBoxButtons.YesNo))
                 {
-                    return;
+                    goto CLEANUP;
                 }
 
                 goto GET_BOOKS;
@@ -372,6 +376,9 @@ namespace Bible2PPT
             }
             // 책 목록 컨트롤 활성화
             booksListView.Enabled = true;
+
+        CLEANUP:
+            cts.Dispose();
         }
 
         private void BooksListView_MouseClick(object sender, MouseEventArgs e)

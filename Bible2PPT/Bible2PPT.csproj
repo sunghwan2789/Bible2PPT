@@ -87,6 +87,7 @@
     <Compile Include="BinaryConfig.cs" />
     <Compile Include="Data\BibleContext.cs" />
     <Compile Include="Data\BibleContextDbConfiguration.cs" />
+    <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,6 +215,7 @@
       <Version>1.0.111</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
