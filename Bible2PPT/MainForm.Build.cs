@@ -6,6 +6,7 @@ using Bible2PPT.PPT;
 using Microsoft;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -38,7 +39,7 @@ namespace Bible2PPT
             buildFragmentCheckBox,
         };
 
-        private readonly List<Bible> biblesToBuild = new List<Bible>(9);
+        private readonly BindingList<Bible> biblesToBuild = new BindingList<Bible>();
 
         private void InitializeBuildComponent()
         {
@@ -77,8 +78,7 @@ namespace Bible2PPT
             biblesDataGridView.AutoGenerateColumns = false;
             biblesSourceDataGridViewColumn.DataPropertyName = nameof(Bible.Source);
             biblesBibleDataGridViewColumn.DataPropertyName = nameof(Bible.Version);
-            biblesBindingSource.DataSource = biblesToBuild;
-            biblesDataGridView.DataSource = biblesBindingSource;
+            biblesDataGridView.DataSource = biblesToBuild;
 
             // 불러오기
             templateBookNameComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
@@ -197,7 +197,6 @@ namespace Bible2PPT
             var rank = biblesToBuild.Count;
             // 빌드 대상에 추가 및 컨트롤에 반영
             biblesToBuild.Add(bible);
-            biblesBindingSource.ResetBindings(false);
             // 추가한 성경을 활성화
             biblesDataGridView.CurrentCell = biblesDataGridView.Rows[rank].Cells[0];
 
@@ -219,7 +218,6 @@ namespace Bible2PPT
             var rank = biblesDataGridView.CurrentRow.Index;
             // 빌드 대상에서 제거 및 컨트롤에 반영
             biblesToBuild.RemoveAt(rank);
-            biblesBindingSource.ResetBindings(false);
 
             BiblesToBuild_Changed();
         }
@@ -246,7 +244,6 @@ namespace Bible2PPT
             // 바로 위 성경과 순서를 바꾸고 및 컨트롤에 반영
             biblesToBuild.Insert(rank - 1, biblesToBuild[rank]);
             biblesToBuild.RemoveAt(rank + 1);
-            biblesBindingSource.ResetBindings(false);
             biblesDataGridView.CurrentCell = biblesDataGridView.Rows[--rank].Cells[0];
 
             BiblesToBuild_Changed();
@@ -274,7 +271,6 @@ namespace Bible2PPT
             // 바로 아래 성경과 순서를 바꾸고 및 컨트롤에 반영
             biblesToBuild.Insert(rank + 2, biblesToBuild[rank]);
             biblesToBuild.RemoveAt(rank);
-            biblesBindingSource.ResetBindings(false);
             biblesDataGridView.CurrentCell = biblesDataGridView.Rows[++rank].Cells[0];
 
             BiblesToBuild_Changed();
@@ -538,7 +534,7 @@ namespace Bible2PPT
 
             var history = new Work
             {
-                Bibles = biblesToBuild,
+                Bibles = biblesToBuild.ToList(),
                 CreatedAt = DateTime.UtcNow,
                 SplitChaptersIntoFiles = AppConfig.Context.SeperateByChapter,
                 OutputDestination = destination,
