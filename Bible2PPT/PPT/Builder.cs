@@ -19,8 +19,11 @@ namespace Bible2PPT.PPT
 
     class Builder : IDisposable
     {
-
         private static PowerPoint.Application POWERPNT;
+
+        public event EventHandler<JobEventArgs> JobAdded;
+        public event EventHandler<JobProgressEventArgs> JobProgress;
+        public event EventHandler<JobCompletedEventArgs> JobCompleted;
 
         public Builder()
         {
@@ -34,6 +37,11 @@ namespace Bible2PPT.PPT
                 catch { }
             }
         }
+
+        protected void OnJobAdded(JobEventArgs e) => JobAdded?.Invoke(this, e);
+        protected void OnJobProgress(JobProgressEventArgs e) => JobProgress?.Invoke(this, e);
+        protected void OnJobCompleted(JobCompletedEventArgs e) => JobCompleted?.Invoke(this, e);
+
 
         private readonly ConcurrentQueue<Element> Queue = new ConcurrentQueue<Element>();
 
@@ -52,6 +60,8 @@ namespace Bible2PPT.PPT
             }
 
             Queue.Enqueue(Tuple.Create(job, cancellationToken, progress));
+            OnJobAdded(new JobEventArgs(job));
+
             TaskEx.Run(async () =>
             {
                 try

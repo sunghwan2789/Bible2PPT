@@ -138,6 +138,9 @@
     <Compile Include="PPT\BuildResult.cs" />
     <Compile Include="PPT\Job.cs" />
     <Compile Include="PPT\JobBible.cs" />
+    <Compile Include="PPT\JobCompletedEventArgs.cs" />
+    <Compile Include="PPT\JobEventArgs.cs" />
+    <Compile Include="PPT\JobProgressEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BibleQuery.cs" />
