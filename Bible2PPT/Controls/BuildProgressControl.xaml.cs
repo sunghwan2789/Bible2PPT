@@ -23,7 +23,7 @@ namespace Bible2PPT.Controls
         public delegate void BuildEndEventHandler(object sender, EventArgs e);
         public event BuildEndEventHandler OnBuildEnd;
 
-        public BuildProgress Work { get; set; }
+        public BuildProgress Job { get; set; }
 
 
         public BuildProgressControl()

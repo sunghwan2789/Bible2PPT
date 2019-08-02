@@ -532,7 +532,7 @@ namespace Bible2PPT
             var cts = new CancellationTokenSource();
             buildButton.Tag = cts;
 
-            var history = new Work
+            var job = new Job
             {
                 Bibles = biblesToBuild.ToList(),
                 CreatedAt = DateTime.UtcNow,
@@ -545,19 +545,19 @@ namespace Bible2PPT
             };
             using (var db = new BibleContext())
             {
-                foreach (var i in history.Bibles)
+                foreach (var i in job.Bibles)
                 {
                     db.Bibles.Attach(i);
                 }
-                db.Works.Add(history);
+                db.Jobs.Add(job);
                 db.SaveChanges();
             }
 
             var onProgress = new Progress<BuildProgress>(progress =>
             {
-                var elapsedTime = DateTime.UtcNow.Subtract(progress.Work.CreatedAt);
+                var elapsedTime = DateTime.UtcNow.Subtract(progress.Job.CreatedAt);
                 var timeStamp = $"{((int)elapsedTime.TotalMinutes).ToString("00")}:{elapsedTime.Seconds.ToString("00")}";
-                builderToolStripStatusLabel.Text = $"({progress.ItemsLeft}개 대기) [{timeStamp}] {progress.Work.QueryString}"
+                builderToolStripStatusLabel.Text = $"({progress.ItemsLeft}개 대기) [{timeStamp}] {progress.Job.QueryString}"
                     + $" - {progress.CurrentChapter.Book.Title} {progress.CurrentChapter.Number}장 추가 중";
             });
 
@@ -582,9 +582,9 @@ namespace Bible2PPT
 
                 // 작업을 성공하였으면 PPT 열기
                 result.Save();
-                if (history.SplitChaptersIntoFiles)
+                if (job.SplitChaptersIntoFiles)
                 {
-                    Process.Start(history.OutputDestination);
+                    Process.Start(job.OutputDestination);
                 }
                 else
                 {
@@ -593,7 +593,7 @@ namespace Bible2PPT
             });
 
             // PPT 만들기
-            builder.Push(history, cts.Token, onProgress, onEnd);
+            builder.Push(job, cts.Token, onProgress, onEnd);
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)

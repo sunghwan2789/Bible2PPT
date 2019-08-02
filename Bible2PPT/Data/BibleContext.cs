@@ -16,7 +16,7 @@ namespace Bible2PPT.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Verse> Verses { get; set; }
-        public DbSet<Work> Works { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         public BibleContext() : this("Data Source=./bible.db") { }
 
@@ -57,10 +57,10 @@ namespace Bible2PPT.Data
             modelBuilder.Entity<Verse>().HasIndex(e => e.SourceId);
             modelBuilder.Entity<Verse>().HasIndex(e => e.ChapterId);
 
-            modelBuilder.Entity<WorkBible>().HasRequired(e => e.Work).WithMany(e => e.WorkBibles);
-            modelBuilder.Entity<WorkBible>().HasRequired(e => e.Bible).WithMany();
+            modelBuilder.Entity<JobBible>().HasRequired(e => e.Job).WithMany(e => e.JobBibles);
+            modelBuilder.Entity<JobBible>().HasRequired(e => e.Bible).WithMany();
 
-            modelBuilder.Entity<Work>().HasOptional(e => e.Result).WithRequired();
+            modelBuilder.Entity<Job>().HasOptional(e => e.Result).WithRequired();
         }
     }
 }

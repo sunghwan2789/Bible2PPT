@@ -7,18 +7,18 @@ using System.Text;
 
 namespace Bible2PPT.PPT
 {
-    class Work
+    class Job
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public virtual ICollection<WorkBible> WorkBibles { get; set; }
+        public virtual ICollection<JobBible> JobBibles { get; set; }
 
         [NotMapped]
         public List<Bible> Bibles
         {
-            get => WorkBibles.Select(i => i.Bible).ToList();
-            set => WorkBibles = value.Select(i => new WorkBible { Bible = i, }).ToList();
+            get => JobBibles.Select(i => i.Bible).ToList();
+            set => JobBibles = value.Select(i => new JobBible { Bible = i, }).ToList();
         }
 
         public TemplateTextOptions TemplateBookNameOption { get; set; }

@@ -14,7 +14,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
 {
-    using Element = Tuple<Work, CancellationToken, IProgress<BuildProgress>>;
+    using Element = Tuple<Job, CancellationToken, IProgress<BuildProgress>>;
 
     class Builder : IDisposable
     {
@@ -38,7 +38,7 @@ namespace Bible2PPT.PPT
 
         private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
 
-        public void Push(Work work, CancellationToken cancellationToken, IProgress<BuildProgress> progress, IProgress<BuildResult> end)
+        public void Push(Job work, CancellationToken cancellationToken, IProgress<BuildProgress> progress, IProgress<BuildResult> end)
         {
             Queue.Enqueue(Tuple.Create(work, cancellationToken, progress));
             TaskEx.Run(async () =>
@@ -52,12 +52,12 @@ namespace Bible2PPT.PPT
                         {
                             end.Report(new BuildResult
                             {
-                                Work = item.Item1,
+                                Job = item.Item1,
                             });
                             continue;
                         }
 
-                        end.Report(await DoWorkAsync(item.Item1, item.Item2, item.Item3));
+                        end.Report(await DoJobAsync(item.Item1, item.Item2, item.Item3));
                         break;
                     }
                 }
@@ -278,9 +278,9 @@ namespace Bible2PPT.PPT
             Process.Start(AppConfig.TemplatePath);
         }
 
-        private BuildResult Prepare(Work work) => Prepare(work, Path.GetTempFileName() + ".pptx");
+        private BuildResult Prepare(Job work) => Prepare(work, Path.GetTempFileName() + ".pptx");
 
-        private BuildResult Prepare(Work work, string output)
+        private BuildResult Prepare(Job work, string output)
         {
             ExtractTemplate();
             File.Copy(AppConfig.TemplatePath, output, true);
@@ -288,14 +288,14 @@ namespace Bible2PPT.PPT
             var workingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
             return new BuildResult
             {
-                Work = work,
+                Job = work,
                 Output = output,
                 WorkingPPT = workingPPT,
                 TemplateSlide = workingPPT.Slides[1],
             };
         }
 
-        private async Task<BuildResult> DoWorkAsync(Work work, CancellationToken cancellationToken, IProgress<BuildProgress> progress)
+        private async Task<BuildResult> DoJobAsync(Job work, CancellationToken cancellationToken, IProgress<BuildProgress> progress)
         {
             BuildResult result = null;
             try
@@ -342,7 +342,7 @@ namespace Bible2PPT.PPT
                         progress.Report(new BuildProgress
                         {
                             ItemsLeft = Queue.Count,
-                            Work = work,
+                            Job = work,
                             CurrentChapter = mainChapter,
                         });
 
@@ -381,7 +381,7 @@ namespace Bible2PPT.PPT
                 {
                     return new BuildResult
                     {
-                        Work = work,
+                        Job = work,
                         Exception = ex,
                     };
                 }
@@ -398,7 +398,7 @@ namespace Bible2PPT.PPT
             {
                 return new BuildResult
                 {
-                    Work = work,
+                    Job = work,
                 };
             }
             // 작업을 성공적으로 끝냄

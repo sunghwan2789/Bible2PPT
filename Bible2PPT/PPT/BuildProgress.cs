@@ -10,7 +10,7 @@ namespace Bible2PPT.PPT
     {
         public int ItemsLeft { get; set; }
 
-        public Work Work { get; set; }
+        public Job Job { get; set; }
 
         public Chapter CurrentChapter { get; set; }
     }

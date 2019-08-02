@@ -76,12 +76,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BuildForm.Designer.cs">
-      <DependentUpon>BuildForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,8 +136,8 @@
     <Compile Include="PPT\Builder.cs" />
     <Compile Include="PPT\BuildProgress.cs" />
     <Compile Include="PPT\BuildResult.cs" />
-    <Compile Include="PPT\Work.cs" />
-    <Compile Include="PPT\WorkBible.cs" />
+    <Compile Include="PPT\Job.cs" />
+    <Compile Include="PPT\JobBible.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BibleQuery.cs" />
@@ -153,9 +147,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemplateTextOptions.cs" />
-    <EmbeddedResource Include="BuildForm.resx">
-      <DependentUpon>BuildForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>

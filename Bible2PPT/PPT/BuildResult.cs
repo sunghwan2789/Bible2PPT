@@ -17,7 +17,7 @@ namespace Bible2PPT.PPT
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public virtual Work Work { get; set; }
+        public virtual Job Job { get; set; }
         
         public bool IsCompleted { get; set; }
 
@@ -71,9 +71,9 @@ namespace Bible2PPT.PPT
                         .Select(i => i.TextFrame.TextRange))
                 {
                     var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", $"{chapter.Number}", Work.TemplateChapterNumberOption);
-                    text = AddSuffix(text, "STITLE", book.ShortTitle, Work.TemplateBookAbbrOption);
-                    text = AddSuffix(text, "TITLE", book.Title, Work.TemplateBookNameOption);
+                    text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
+                    text = AddSuffix(text, "STITLE", book.ShortTitle, Job.TemplateBookAbbrOption);
+                    text = AddSuffix(text, "TITLE", book.Title, Job.TemplateBookNameOption);
                     //text = text.Replace("[CPAS]", $"{startVerseNumber}");
                     //text = text.Replace("[CPAE]", $"{endVerseNumber}");
                     text = text.Replace("[PARA]", $"{mainVerse.Number}");

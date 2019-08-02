@@ -21,19 +21,19 @@ namespace Bible2PPT
         private void InitializeHistoryComponent()
         {
             historyDataGridView.AutoGenerateColumns = false;
-            historyCreatedAtColumn.DataPropertyName = nameof(Work.CreatedAt);
-            historyBiblesColumn.DataPropertyName = nameof(Work.Bibles);
-            historyQueryStringColumn.DataPropertyName = nameof(Work.QueryString);
-            historyTemplateBookNameColumn.DataPropertyName = nameof(Work.TemplateBookNameOption);
-            historyTemplateBookAbbrColumn.DataPropertyName = nameof(Work.TemplateBookAbbrOption);
-            historyTemplateChapterNumberColumn.DataPropertyName = nameof(Work.TemplateChapterNumberOption);
-            historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Work.SplitChaptersIntoFiles);
+            historyCreatedAtColumn.DataPropertyName = nameof(Job.CreatedAt);
+            historyBiblesColumn.DataPropertyName = nameof(Job.Bibles);
+            historyQueryStringColumn.DataPropertyName = nameof(Job.QueryString);
+            historyTemplateBookNameColumn.DataPropertyName = nameof(Job.TemplateBookNameOption);
+            historyTemplateBookAbbrColumn.DataPropertyName = nameof(Job.TemplateBookAbbrOption);
+            historyTemplateChapterNumberColumn.DataPropertyName = nameof(Job.TemplateChapterNumberOption);
+            historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Job.SplitChaptersIntoFiles);
 
-            List<Work> works;
+            List<Job> works;
             using (var db = new BibleContext())
             {
-                works = db.Works
-                    .Include(w => w.WorkBibles.Select(wb => wb.Bible))
+                works = db.Jobs
+                    .Include(w => w.JobBibles.Select(wb => wb.Bible))
                     .Include(w => w.Result)
                     .OrderByDescending(w => w.Id)
                     .ToList();
@@ -76,7 +76,7 @@ namespace Bible2PPT
         private void HistoryOpenResultButton_Click(object sender, EventArgs e)
         {
             // 선택한 기록이 없으면 아무 작업도 안함
-            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Work history))
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job history))
             {
                 return;
             }
