@@ -1,10 +1,4 @@
-﻿using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
-using Bible2PPT.Data;
-using Bible2PPT.Extensions;
-using Bible2PPT.PPT;
-using Microsoft;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -16,6 +10,12 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Bible2PPT.Bibles;
+using Bible2PPT.Bibles.Sources;
+using Bible2PPT.Data;
+using Bible2PPT.Extensions;
+using Bible2PPT.PPT;
+using Microsoft;
 
 namespace Bible2PPT
 {

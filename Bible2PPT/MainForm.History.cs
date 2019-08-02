@@ -1,18 +1,18 @@
-﻿using Bible2PPT.Data;
-using Bible2PPT.PPT;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
-using System.Data.Entity;
 using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
-using System.Threading;
-using System.Diagnostics;
+using Bible2PPT.Data;
+using Bible2PPT.PPT;
 
 namespace Bible2PPT
 {
@@ -47,29 +47,29 @@ namespace Bible2PPT
             switch (e.Value)
             {
                 case List<Bible> bibles:
-                {
-                    e.Value = string.Join("\n", bibles.Select(i => $"{i.Source?.Name} - {i.Version}"));
-                    e.FormattingApplied = true;
-                    break;
-                }
-                case TemplateTextOptions textOptions:
-                {
-                    string value;
-                    switch (textOptions)
                     {
-                        case TemplateTextOptions.Always:
-                            value = "항상 보이기";
-                            break;
-                        case TemplateTextOptions.FirstVerseOfChapter:
-                            value = "각 장의 첫 절에만 보이기";
-                            break;
-                        default:
-                            throw new NotImplementedException();
+                        e.Value = string.Join("\n", bibles.Select(i => $"{i.Source?.Name} - {i.Version}"));
+                        e.FormattingApplied = true;
+                        break;
                     }
-                    e.Value = value;
-                    e.FormattingApplied = true;
-                    break;
-                }
+                case TemplateTextOptions textOptions:
+                    {
+                        string value;
+                        switch (textOptions)
+                        {
+                            case TemplateTextOptions.Always:
+                                value = "항상 보이기";
+                                break;
+                            case TemplateTextOptions.FirstVerseOfChapter:
+                                value = "각 장의 첫 절에만 보이기";
+                                break;
+                            default:
+                                throw new NotImplementedException();
+                        }
+                        e.Value = value;
+                        e.FormattingApplied = true;
+                        break;
+                    }
             }
         }
 

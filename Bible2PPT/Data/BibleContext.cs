@@ -1,12 +1,12 @@
-﻿using Bible2PPT.Bibles;
-using Bible2PPT.PPT;
-using SQLite.CodeFirst;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using Bible2PPT.Bibles;
+using Bible2PPT.PPT;
+using SQLite.CodeFirst;
 
 namespace Bible2PPT.Data
 {

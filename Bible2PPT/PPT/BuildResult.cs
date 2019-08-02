@@ -1,6 +1,4 @@
-﻿using Bible2PPT.Bibles;
-using Microsoft.Office.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
@@ -8,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Bible2PPT.Bibles;
+using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
@@ -18,7 +18,7 @@ namespace Bible2PPT.PPT
         public int Id { get; set; }
 
         public virtual Job Job { get; set; }
-        
+
         public bool IsCompleted { get; set; }
 
         public string Text { get; set; }
