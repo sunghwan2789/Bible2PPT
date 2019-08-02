@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bible2PPT.PPT;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +18,14 @@ namespace Bible2PPT.Controls
     /// <summary>
     /// Interaction logic for BuildProgressControl.xaml
     /// </summary>
-    public partial class BuildProgressControl : UserControl
+    partial class BuildProgressControl : UserControl
     {
+        public delegate void BuildEndEventHandler(object sender, EventArgs e);
+        public event BuildEndEventHandler OnBuildEnd;
+
+        public BuildProgress Work { get; set; }
+
+
         public BuildProgressControl()
         {
             InitializeComponent();

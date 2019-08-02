@@ -76,6 +76,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BuildForm.Designer.cs">
+      <DependentUpon>BuildForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +153,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemplateTextOptions.cs" />
+    <EmbeddedResource Include="BuildForm.resx">
+      <DependentUpon>BuildForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>

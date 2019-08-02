@@ -17,7 +17,7 @@ namespace Bible2PPT.Controls
     /// <summary>
     /// Interaction logic for BuildResultControl.xaml
     /// </summary>
-    public partial class BuildResultControl : UserControl
+    partial class BuildResultControl : UserControl
     {
         public BuildResultControl()
         {
