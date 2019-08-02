@@ -1,5 +1,6 @@
 ﻿using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
+using Bible2PPT.Controls;
 using Bible2PPT.PPT;
 using System;
 using System.Collections.Concurrent;

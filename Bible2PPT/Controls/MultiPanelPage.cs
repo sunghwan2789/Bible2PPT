@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Bible2PPT
+namespace Bible2PPT.Controls
 {
     public class MultiPanelPage : ContainerControl
     {
@@ -53,11 +53,11 @@ namespace Bible2PPT
         /// Overriden from <see cref="Control"/>.
         /// </summary>
         /// <returns>
-        /// A <see cref="MultiPanelPage.ControlCollection"/>.
+        /// A <see cref="ControlCollection"/>.
         /// </returns>
-        protected override System.Windows.Forms.Control.ControlCollection CreateControlsInstance()
+        protected override Control.ControlCollection CreateControlsInstance()
         {
-            return new MultiPanelPage.ControlCollection(this);
+            return new ControlCollection(this);
         }
 
         #region Classes
@@ -70,7 +70,7 @@ namespace Bible2PPT
             {
                 if (owner == null || owner.GetType() != typeof(MultiPanelPage))
                     throw new ArgumentNullException("owner", "Tried to create a MultiPanelPage.ControlCollection with a null owner.");
-                MultiPanelPage c = owner as MultiPanelPage;
+                var c = owner as MultiPanelPage;
                 if (c == null)
                     throw new ArgumentException("Tried to create a MultiPanelPage.ControlCollection with a non-MultiPanelPage owner.", "owner");
             }
@@ -81,7 +81,7 @@ namespace Bible2PPT
             {
                 if (value == null)
                     throw new ArgumentNullException("value", "Tried to add a null value to the MultiPanelPage.ControlCollection.");
-                MultiPanelPage p = value as MultiPanelPage;
+                var p = value as MultiPanelPage;
                 if (p != null)
                     throw new ArgumentException("Tried to add a MultiPanelPage control to the MultiPanelPage.ControlCollection.", "value");
                 base.Add(value);
