@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bible2PPT.Bibles;
+using Bible2PPT.Data;
 using Microsoft;
 using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -38,9 +39,19 @@ namespace Bible2PPT.PPT
 
         private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
 
-        public void Push(Job work, CancellationToken cancellationToken, IProgress<BuildProgress> progress, IProgress<BuildResult> end)
+        public void Push(Job job, CancellationToken cancellationToken, IProgress<BuildProgress> progress, IProgress<BuildResult> end)
         {
-            Queue.Enqueue(Tuple.Create(work, cancellationToken, progress));
+            using (var db = new BibleContext())
+            {
+                foreach (var i in job.Bibles)
+                {
+                    db.Bibles.Attach(i);
+                }
+                db.Jobs.Add(job);
+                db.SaveChanges();
+            }
+
+            Queue.Enqueue(Tuple.Create(job, cancellationToken, progress));
             TaskEx.Run(async () =>
             {
                 try
