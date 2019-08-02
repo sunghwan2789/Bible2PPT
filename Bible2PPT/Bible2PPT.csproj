@@ -63,12 +63,17 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AssemblyIconForm.cs">
@@ -85,6 +90,12 @@
     <Compile Include="Bibles\Sources\Source.cs" />
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
+    <Compile Include="Controls\BuildResultControl.xaml.cs">
+      <DependentUpon>BuildResultControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BuildProgressControl.xaml.cs">
+      <DependentUpon>BuildProgressControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\BibleContext.cs" />
     <Compile Include="Data\BibleContextDbConfiguration.cs" />
     <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
@@ -215,7 +226,16 @@
       <Version>1.0.111</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Controls\BuildResultControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BuildProgressControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
