@@ -74,9 +74,9 @@ namespace Bible2PPT.PPT
         RETRY:
             try
             {
-                return (await TaskEx.WhenAll(bibles
+                return await TaskEx.WhenAll(bibles
                     .Select(bible => bible.Source.GetBooksAsync(bible))
-                    .ToList()));
+                    .ToList());
             }
             catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
             {
@@ -96,11 +96,11 @@ namespace Bible2PPT.PPT
             try
             {
                 // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
-                return (await TaskEx.WhenAll(books
+                return await TaskEx.WhenAll(books
                     .Select(book =>
                         book?.Source.GetChaptersAsync(book)
                         ?? TaskEx.FromResult(new List<Chapter>()))
-                    .ToList()));
+                    .ToList());
             }
             catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
             {
@@ -180,11 +180,11 @@ namespace Bible2PPT.PPT
         RETRY:
             try
             {
-                return (await TaskEx.WhenAll(chapters
+                return await TaskEx.WhenAll(chapters
                     .Select(chapter =>
                         chapter?.Source.GetVersesAsync(chapter)
                         ?? TaskEx.FromResult(new List<Verse>()))
-                    .ToList()));
+                    .ToList());
             }
             catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
             {
