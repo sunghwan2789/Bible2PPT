@@ -259,8 +259,11 @@ namespace Bible2PPT.PPT
             };
         }
 
-        protected override async Task ProcessAsync(Job job, CancellationTokenSource cts)
+        protected override async Task ProcessAsync(Job job, CancellationToken token)
         {
+            await base.ProcessAsync(job, token);
+
+            var e = new JobProgressEventArgs(job);
             BuildResult result = null;
             try
             {
@@ -269,8 +272,9 @@ namespace Bible2PPT.PPT
                     result = Prepare(job);
                 }
 
-                var eachBooks = await GetEachBooksAsync(job.Bibles, cts);
+                var eachBooks = await GetEachBooksAsync(job.Bibles, token);
 
+                // TODO: ParseQuery Job 추가 시 적용
                 foreach (var query in job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList())
                 {
                     var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
@@ -282,7 +286,7 @@ namespace Bible2PPT.PPT
                         continue;
                     }
 
-                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, cts))
+                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, token))
                         .Select(chapters => chapters
                             .Where(chapter =>
                                 (query.EndChapterNumber != null)
@@ -321,7 +325,7 @@ namespace Bible2PPT.PPT
                         var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
                         var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
 
-                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, cts))
+                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, token))
                             .Select(verses => verses
                                 .Where(verse =>
                                     (endVerseNumber != null)
@@ -331,7 +335,7 @@ namespace Bible2PPT.PPT
                             .ToList();
 
                         var targetEachVerses = Inverse(eachTargetVerses);
-                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, cts);
+                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
                     }
                 }
             }

@@ -10,12 +10,14 @@ namespace Bible2PPT.PPT
     class JobProgressEventArgs : EventArgs
     {
         public Job Job { get; }
-        public CancellationTokenSource CancellationTokenSource { get; }
 
-        public JobProgressEventArgs(Job job, CancellationTokenSource cts)
+        public int UnresolvedBooks { get; }
+        public int UnresolvedChapters { get; }
+        public int ResolvedChapters { get; }
+
+        public JobProgressEventArgs(Job job)
         {
             Job = job;
-            CancellationTokenSource = cts;
         }
     }
 }
