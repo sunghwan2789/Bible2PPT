@@ -33,7 +33,7 @@ namespace Bible2PPT.PPT
             }
         }
 
-        private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken cancellationToken)
+        private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken token)
         {
         RETRY:
             try
@@ -42,19 +42,15 @@ namespace Bible2PPT.PPT
                     .Select(bible => bible.Source.GetBooksAsync(bible))
                     .ToList());
             }
-            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            // 취소할 때까지 계속 재시도
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                // TODO: UI와 계속 진행 여부 통신
-                if (!false)
-                {
-                    throw;
-                }
-
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
 
-        private static async Task<IEnumerable<IEnumerable<Chapter>>> GetEachChaptersAsync(IEnumerable<Book> books, CancellationToken cancellationToken)
+        private static async Task<IEnumerable<IEnumerable<Chapter>>> GetEachChaptersAsync(IEnumerable<Book> books, CancellationToken token)
         {
         RETRY:
             try
@@ -66,14 +62,10 @@ namespace Bible2PPT.PPT
                         ?? TaskEx.FromResult(new List<Chapter>()))
                     .ToList());
             }
-            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            // 취소할 때까지 계속 재시도
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                // TODO: UI와 계속 진행 여부 통신
-                if (!false)
-                {
-                    throw;
-                }
-
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
@@ -139,7 +131,7 @@ namespace Bible2PPT.PPT
             return targetEachChapters;
         }
 
-        private static async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken cancellationToken)
+        private static async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken token)
         {
         RETRY:
             try
@@ -150,14 +142,10 @@ namespace Bible2PPT.PPT
                         ?? TaskEx.FromResult(new List<Verse>()))
                     .ToList());
             }
-            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            // 취소할 때까지 계속 재시도
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                // TODO: UI와 계속 진행 여부 통신
-                if (!false)
-                {
-                    throw;
-                }
-
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
@@ -263,117 +251,80 @@ namespace Bible2PPT.PPT
         {
             await base.ProcessAsync(job, token);
 
-            var e = new JobProgressEventArgs(job);
+            var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
+            var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
+
             BuildResult result = null;
-            try
+            if (!job.SplitChaptersIntoFiles)
             {
-                if (!job.SplitChaptersIntoFiles)
+                result = Prepare(job);
+            }
+
+            var eachBooks = await GetEachBooksAsync(job.Bibles, token);
+
+            foreach (var query in queries)
+            {
+                var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
+
+                // 해당 책이 있는 성경에서 해당 책을 대표로 사용
+                var mainBook = targetEachBook.FirstOrDefault(i => i != null);
+                if (mainBook == null)
                 {
-                    result = Prepare(job);
+                    goto PROGRESS_QUERY;
                 }
 
-                var eachBooks = await GetEachBooksAsync(job.Bibles, token);
+                var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, token))
+                    .Select(chapters => chapters
+                        .Where(chapter =>
+                            (query.EndChapterNumber == null)
+                            ? (chapter.Number >= query.StartChapterNumber)
+                            : (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber))
+                        .ToList())
+                    .ToList();
 
-                // TODO: ParseQuery Job 추가 시 적용
-                foreach (var query in job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList())
+                // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
+                var targetEachChapters = Inverse(eachTargetChapters);
+                e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters + targetEachChapters.Count());
+                foreach (var targetEachChapter in targetEachChapters)
                 {
-                    var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
-
-                    // 해당 책이 있는 성경에서 해당 책을 대표로 사용
-                    var mainBook = targetEachBook.FirstOrDefault(i => i != null);
-                    if (mainBook == null)
+                    // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
+                    var mainChapter = targetEachChapter.FirstOrDefault(i => i != null);
+                    if (mainChapter == null)
                     {
-                        continue;
+                        goto PROGRESS_CHAPTER;
                     }
 
-                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, token))
-                        .Select(chapters => chapters
-                            .Where(chapter =>
-                                (query.EndChapterNumber != null)
-                                ? (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
-                                : (chapter.Number >= query.StartChapterNumber))
+                    e = new JobProgressEventArgs(job, mainChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters);
+
+                    if (job.SplitChaptersIntoFiles)
+                    {
+                        result?.Save();
+                        var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
+                        CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                        result = Prepare(job, output);
+                    }
+
+                    var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
+                    var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
+
+                    var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, token))
+                        .Select(verses => verses
+                            .Where(verse =>
+                                (endVerseNumber == null)
+                                ? (verse.Number >= startVerseNumber)
+                                : (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber))
                             .ToList())
                         .ToList();
 
-                    // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
-                    var targetEachChapters = Inverse(eachTargetChapters);
-                    foreach (var targetEachChapter in targetEachChapters)
-                    {
-                        // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
-                        var mainChapter = targetEachChapter.FirstOrDefault(i => i != null);
-                        if (mainChapter == null)
-                        {
-                            continue;
-                        }
+                    var targetEachVerses = Inverse(eachTargetVerses);
+                    result.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
 
-                        // TODO: NO INTERACT 
-                        progress.Report(new BuildProgress
-                        {
-                            ItemsLeft = Queue.Count,
-                            Job = job,
-                            CurrentChapter = mainChapter,
-                        });
-
-                        if (job.SplitChaptersIntoFiles)
-                        {
-                            result?.Save();
-                            var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
-                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            result = Prepare(job, output);
-                        }
-
-                        var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
-                        var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
-
-                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, token))
-                            .Select(verses => verses
-                                .Where(verse =>
-                                    (endVerseNumber != null)
-                                    ? (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber)
-                                    : (verse.Number >= startVerseNumber))
-                                .ToList())
-                            .ToList();
-
-                        var targetEachVerses = Inverse(eachTargetVerses);
-                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
-                    }
+                PROGRESS_CHAPTER:
+                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone + 1, e.Chapters);
                 }
-            }
-            // 올바른 작업 취소 요청 시 오류 무시
-            //catch (OperationCanceledException) { }
-            // 작업 실패 시 작업 중지
-            catch (Exception ex)
-            {
-                // 작업을 시작하기 전에 오류
-                if (result == null)
-                {
-                    return new BuildResult
-                    {
-                        Job = job,
-                        Exception = ex,
-                    };
-                }
-                // 작업 중에 오류
-                else
-                {
-                    result.Exception = ex;
-                    return result;
-                }
-            }
 
-            // 작업을 시작하지 않음 :: 지금은 도달 불가능
-            if (result == null)
-            {
-                return new BuildResult
-                {
-                    Job = job,
-                };
-            }
-            // 작업을 성공적으로 끝냄
-            else
-            {
-                result.IsCompleted = true;
-                return result;
+            PROGRESS_QUERY:
+                e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone + 1, e.Queries, e.ChaptersDone, e.Chapters);
             }
         }
 
