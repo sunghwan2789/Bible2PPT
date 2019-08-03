@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
 using Microsoft;
@@ -15,15 +16,9 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
 {
-    using Element = Tuple<Job, CancellationToken, IProgress<BuildProgress>>;
-
-    class Builder : IDisposable
+    class Builder : JobManager
     {
         private static PowerPoint.Application POWERPNT;
-
-        public event EventHandler<JobEventArgs> JobAdded;
-        public event EventHandler<JobProgressEventArgs> JobProgress;
-        public event EventHandler<JobCompletedEventArgs> JobCompleted;
 
         public Builder()
         {
@@ -36,58 +31,6 @@ namespace Bible2PPT.PPT
                 }
                 catch { }
             }
-        }
-
-        protected void OnJobAdded(JobEventArgs e) => JobAdded?.Invoke(this, e);
-        protected void OnJobProgress(JobProgressEventArgs e) => JobProgress?.Invoke(this, e);
-        protected void OnJobCompleted(JobCompletedEventArgs e) => JobCompleted?.Invoke(this, e);
-
-
-        private readonly ConcurrentQueue<Element> Queue = new ConcurrentQueue<Element>();
-
-        private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-
-        public void Push(Job job, CancellationToken cancellationToken, IProgress<BuildProgress> progress, IProgress<BuildResult> end)
-        {
-            using (var db = new BibleContext())
-            {
-                foreach (var i in job.Bibles)
-                {
-                    db.Bibles.Attach(i);
-                }
-                db.Jobs.Add(job);
-                db.SaveChanges();
-            }
-
-            Queue.Enqueue(Tuple.Create(job, cancellationToken, progress));
-            OnJobAdded(new JobEventArgs(job));
-
-            TaskEx.Run(async () =>
-            {
-                try
-                {
-                    semaphore.Wait(cancellationToken);
-                    while (Queue.TryDequeue(out var item))
-                    {
-                        if (item.Item2.IsCancellationRequested)
-                        {
-                            end.Report(new BuildResult
-                            {
-                                Job = item.Item1,
-                            });
-                            continue;
-                        }
-
-                        end.Report(await DoJobAsync(item.Item1, item.Item2, item.Item3));
-                        break;
-                    }
-                }
-                catch { }
-                finally
-                {
-                    semaphore.Release();
-                }
-            });
         }
 
         private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken cancellationToken)
@@ -296,7 +239,7 @@ namespace Bible2PPT.PPT
         public void OpenTemplate()
         {
             ExtractTemplate();
-            Process.Start(AppConfig.TemplatePath);
+            System.Diagnostics.Process.Start(AppConfig.TemplatePath);
         }
 
         private BuildResult Prepare(Job work) => Prepare(work, Path.GetTempFileName() + ".pptx");
@@ -316,19 +259,19 @@ namespace Bible2PPT.PPT
             };
         }
 
-        private async Task<BuildResult> DoJobAsync(Job work, CancellationToken cancellationToken, IProgress<BuildProgress> progress)
+        protected override async Task ProcessAsync(Job job, CancellationTokenSource cts)
         {
             BuildResult result = null;
             try
             {
-                if (!work.SplitChaptersIntoFiles)
+                if (!job.SplitChaptersIntoFiles)
                 {
-                    result = Prepare(work);
+                    result = Prepare(job);
                 }
 
-                var eachBooks = await GetEachBooksAsync(work.Bibles, cancellationToken);
+                var eachBooks = await GetEachBooksAsync(job.Bibles, cts);
 
-                foreach (var query in work.QueryString.Split().Select(BibleQuery.ParseQuery).ToList())
+                foreach (var query in job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList())
                 {
                     var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
 
@@ -339,7 +282,7 @@ namespace Bible2PPT.PPT
                         continue;
                     }
 
-                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, cancellationToken))
+                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, cts))
                         .Select(chapters => chapters
                             .Where(chapter =>
                                 (query.EndChapterNumber != null)
@@ -363,22 +306,22 @@ namespace Bible2PPT.PPT
                         progress.Report(new BuildProgress
                         {
                             ItemsLeft = Queue.Count,
-                            Job = work,
+                            Job = job,
                             CurrentChapter = mainChapter,
                         });
 
-                        if (work.SplitChaptersIntoFiles)
+                        if (job.SplitChaptersIntoFiles)
                         {
                             result?.Save();
-                            var output = Path.Combine(work.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
+                            var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
                             CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            result = Prepare(work, output);
+                            result = Prepare(job, output);
                         }
 
                         var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
                         var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
 
-                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, cancellationToken))
+                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, cts))
                             .Select(verses => verses
                                 .Where(verse =>
                                     (endVerseNumber != null)
@@ -388,7 +331,7 @@ namespace Bible2PPT.PPT
                             .ToList();
 
                         var targetEachVerses = Inverse(eachTargetVerses);
-                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, cancellationToken);
+                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, cts);
                     }
                 }
             }
@@ -402,7 +345,7 @@ namespace Bible2PPT.PPT
                 {
                     return new BuildResult
                     {
-                        Job = work,
+                        Job = job,
                         Exception = ex,
                     };
                 }
@@ -419,7 +362,7 @@ namespace Bible2PPT.PPT
             {
                 return new BuildResult
                 {
-                    Job = work,
+                    Job = job,
                 };
             }
             // 작업을 성공적으로 끝냄
@@ -441,7 +384,7 @@ namespace Bible2PPT.PPT
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -464,21 +407,7 @@ namespace Bible2PPT.PPT
 
                 disposedValue = true;
             }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~PPTBuilder() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            base.Dispose(disposing);
         }
         #endregion
     }

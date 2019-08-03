@@ -7,12 +7,12 @@ using System.Threading;
 
 namespace Bible2PPT.PPT
 {
-    class JobProgressEventArgs : EventArgs
+    class JobAddedEventArgs : EventArgs
     {
         public Job Job { get; }
         public CancellationTokenSource CancellationTokenSource { get; }
 
-        public JobProgressEventArgs(Job job, CancellationTokenSource cts)
+        public JobAddedEventArgs(Job job, CancellationTokenSource cts)
         {
             Job = job;
             CancellationTokenSource = cts;

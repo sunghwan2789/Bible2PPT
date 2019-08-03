@@ -5,13 +5,17 @@ using System.Text;
 
 namespace Bible2PPT.PPT
 {
-    class JobCompletedEventArgs : JobEventArgs
+    class JobCompletedEventArgs : EventArgs
     {
-        public BuildResult Result { get; }
+        public Job Job { get; }
+        public Exception Exception { get; }
+        public bool IsFaulted => Exception != null;
+        public bool IsCancelled => Exception is OperationCanceledException;
 
-        public JobCompletedEventArgs(Job job, BuildResult result) : base(job)
+        public JobCompletedEventArgs(Job job, Exception ex)
         {
-            Result = result;
+            Job = job;
+            Exception = ex;
         }
     }
 }
