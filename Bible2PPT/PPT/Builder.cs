@@ -16,7 +16,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
 {
-    class Builder : JobManager
+    class Builder : JobsManager
     {
         private static PowerPoint.Application POWERPNT;
 
@@ -210,41 +210,23 @@ namespace Bible2PPT.PPT
             return targetEachVerses;
         }
 
-        private static void ExtractTemplate()
-        {
-            if (File.Exists(AppConfig.TemplatePath))
-            {
-                return;
-            }
-
-            using (var ms = new MemoryStream(Properties.Resources.Template))
-            using (var fs = File.OpenWrite(AppConfig.TemplatePath))
-            {
-                ms.CopyTo(fs);
-            }
-        }
-
         public void OpenTemplate()
         {
+            void ExtractTemplate()
+            {
+                if (File.Exists(AppConfig.TemplatePath))
+                {
+                    return;
+                }
+
+                using (var ms = new MemoryStream(Properties.Resources.Template))
+                using (var fs = File.OpenWrite(AppConfig.TemplatePath))
+                {
+                    ms.CopyTo(fs);
+                }
+            }
             ExtractTemplate();
             System.Diagnostics.Process.Start(AppConfig.TemplatePath);
-        }
-
-        private BuildResult Prepare(Job work) => Prepare(work, Path.GetTempFileName() + ".pptx");
-
-        private BuildResult Prepare(Job work, string output)
-        {
-            ExtractTemplate();
-            File.Copy(AppConfig.TemplatePath, output, true);
-
-            var workingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
-            return new BuildResult
-            {
-                Job = work,
-                Output = output,
-                WorkingPPT = workingPPT,
-                TemplateSlide = workingPPT.Slides[1],
-            };
         }
 
         protected override async Task ProcessAsync(Job job, CancellationToken token)
@@ -254,77 +236,74 @@ namespace Bible2PPT.PPT
             var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
             var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
 
-            BuildResult result = null;
-            if (!job.SplitChaptersIntoFiles)
+            using (var manager = !job.SplitChaptersIntoFiles ? new PPTManager(POWERPNT, job) : null)
             {
-                result = Prepare(job);
-            }
+                var eachBooks = await GetEachBooksAsync(job.Bibles, token);
 
-            var eachBooks = await GetEachBooksAsync(job.Bibles, token);
-
-            foreach (var query in queries)
-            {
-                var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
-
-                // 해당 책이 있는 성경에서 해당 책을 대표로 사용
-                var mainBook = targetEachBook.FirstOrDefault(i => i != null);
-                if (mainBook == null)
+                foreach (var query in queries)
                 {
-                    goto PROGRESS_QUERY;
-                }
+                    var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
 
-                var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, token))
-                    .Select(chapters => chapters
-                        .Where(chapter =>
-                            (query.EndChapterNumber == null)
-                            ? (chapter.Number >= query.StartChapterNumber)
-                            : (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber))
-                        .ToList())
-                    .ToList();
-
-                // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
-                var targetEachChapters = Inverse(eachTargetChapters);
-                e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters + targetEachChapters.Count());
-                foreach (var targetEachChapter in targetEachChapters)
-                {
-                    // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
-                    var mainChapter = targetEachChapter.FirstOrDefault(i => i != null);
-                    if (mainChapter == null)
+                    // 해당 책이 있는 성경에서 해당 책을 대표로 사용
+                    var mainBook = targetEachBook.FirstOrDefault(i => i != null);
+                    if (mainBook == null)
                     {
-                        goto PROGRESS_CHAPTER;
+                        goto PROGRESS_QUERY;
                     }
 
-                    e = new JobProgressEventArgs(job, mainChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters);
-
-                    if (job.SplitChaptersIntoFiles)
-                    {
-                        result?.Save();
-                        var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
-                        CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                        result = Prepare(job, output);
-                    }
-
-                    var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
-                    var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
-
-                    var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, token))
-                        .Select(verses => verses
-                            .Where(verse =>
-                                (endVerseNumber == null)
-                                ? (verse.Number >= startVerseNumber)
-                                : (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber))
+                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, token))
+                        .Select(chapters => chapters
+                            .Where(chapter =>
+                                (query.EndChapterNumber == null)
+                                ? (chapter.Number >= query.StartChapterNumber)
+                                : (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber))
                             .ToList())
                         .ToList();
 
-                    var targetEachVerses = Inverse(eachTargetVerses);
-                    result.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                    // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
+                    var targetEachChapters = Inverse(eachTargetChapters);
+                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters + targetEachChapters.Count());
+                    foreach (var targetEachChapter in targetEachChapters)
+                    {
+                        // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
+                        var mainChapter = targetEachChapter.FirstOrDefault(i => i != null);
+                        if (mainChapter == null)
+                        {
+                            goto PROGRESS_CHAPTER;
+                        }
 
-                PROGRESS_CHAPTER:
-                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone + 1, e.Chapters);
+                        e = new JobProgressEventArgs(job, mainChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters);
+
+                        if (job.SplitChaptersIntoFiles)
+                        {
+                            result?.Save();
+                            var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
+                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                            result = Prepare(job, output);
+                        }
+
+                        var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
+                        var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
+
+                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, token))
+                            .Select(verses => verses
+                                .Where(verse =>
+                                    (endVerseNumber == null)
+                                    ? (verse.Number >= startVerseNumber)
+                                    : (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber))
+                                .ToList())
+                            .ToList();
+
+                        var targetEachVerses = Inverse(eachTargetVerses);
+                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+
+                    PROGRESS_CHAPTER:
+                        e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone + 1, e.Chapters);
+                    }
+
+                PROGRESS_QUERY:
+                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone + 1, e.Queries, e.ChaptersDone, e.Chapters);
                 }
-
-            PROGRESS_QUERY:
-                e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone + 1, e.Queries, e.ChaptersDone, e.Chapters);
             }
         }
 

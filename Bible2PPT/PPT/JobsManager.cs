@@ -10,7 +10,7 @@ using Bible2PPT.Extensions;
 
 namespace Bible2PPT.PPT
 {
-    class JobManager : IDisposable
+    class JobsManager : IDisposable
     {
         public event EventHandler<JobQueuedEventArgs> JobQueued;
         public event EventHandler<JobProgressEventArgs> JobProgress;
