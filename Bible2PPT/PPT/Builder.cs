@@ -73,7 +73,6 @@ namespace Bible2PPT.PPT
         private static IEnumerable<IEnumerable<Chapter>> Inverse(IEnumerable<IEnumerable<Chapter>> eachTargetChapters)
         {
             // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
-            var targetEachChapters = new List<IEnumerable<Chapter>>();
             // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
             var targetChapterEnumerators = eachTargetChapters.Select(i => (IEnumerator<Chapter>)i.GetEnumerator()).ToList();
 
@@ -124,11 +123,9 @@ namespace Bible2PPT.PPT
                         eachChapter.Add(i.Current);
                         moved[i] = false;
                     }
-                    targetEachChapters.Add(eachChapter);
+                    yield return eachChapter;
                 }
             }
-
-            return targetEachChapters;
         }
 
         private static async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken token)
@@ -152,7 +149,6 @@ namespace Bible2PPT.PPT
 
         private static IEnumerable<IEnumerable<Verse>> Inverse(IEnumerable<IEnumerable<Verse>> eachTargetVerses)
         {
-            var targetEachVerses = new List<IEnumerable<Verse>>();
             // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
             var targetVerseEnumerators = eachTargetVerses.Select(i => (IEnumerator<Verse>)i.GetEnumerator()).ToList();
 
@@ -203,11 +199,9 @@ namespace Bible2PPT.PPT
                         eachVerse.Add(i.Current);
                         moved[i] = false;
                     }
-                    targetEachVerses.Add(eachVerse);
+                    yield return eachVerse;
                 }
             }
-
-            return targetEachVerses;
         }
 
         public void OpenTemplate()
