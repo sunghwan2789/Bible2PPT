@@ -16,7 +16,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
 {
-    class Builder : JobsManager
+    class Builder : JobManager
     {
         private static PowerPoint.Application POWERPNT;
 

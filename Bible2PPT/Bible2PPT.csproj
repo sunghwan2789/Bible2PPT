@@ -141,7 +141,7 @@
     <Compile Include="PPT\JobCompletedEventArgs.cs" />
     <Compile Include="PPT\JobQueuedEventArgs.cs" />
     <Compile Include="PPT\JobProgressEventArgs.cs" />
-    <Compile Include="PPT\JobsManager.cs" />
+    <Compile Include="PPT\JobManager.cs" />
     <Compile Include="PPT\PPTManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
