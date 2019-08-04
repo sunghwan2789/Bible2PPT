@@ -230,11 +230,12 @@ namespace Bible2PPT.PPT
             // (targetEachVerses, mainBook, mainChapter)
             var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
 
+            var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
+            var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
+            OnJobProgress(e);
+
             var produce = TaskEx.Run(async () =>
             {
-                var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
-                var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
-
                 var eachBooks = await GetEachBooksAsync(job.Bibles, token);
 
                 foreach (var query in queries)
@@ -295,6 +296,8 @@ namespace Bible2PPT.PPT
                 }
             });
 
+            var chaptersDone = 0;
+
             if (job.SplitChaptersIntoFiles)
             {
                 while (queue.Any()
@@ -312,7 +315,7 @@ namespace Bible2PPT.PPT
                             ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
                             ppt.Save();
                         }
-
+                        OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                     }
                 }
             }
@@ -329,6 +332,7 @@ namespace Bible2PPT.PPT
                             var mainBook = item.Item2;
                             var mainChapter = item.Item3;
                             ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                         }
                     }
                     ppt.Save();
