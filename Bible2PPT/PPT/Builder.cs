@@ -229,6 +229,7 @@ namespace Bible2PPT.PPT
 
             // (targetEachVerses, mainBook, mainChapter)
             var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
+            var goRelease = false;
 
             var produce = TaskEx.Run(async () =>
             {
@@ -293,11 +294,13 @@ namespace Bible2PPT.PPT
                 PROGRESS_QUERY:
                     e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone + 1, e.Queries, e.ChaptersDone, e.Chapters);
                 }
+
+                goRelease = true;
             });
 
             if (job.SplitChaptersIntoFiles)
             {
-                while (!produce.IsCompleted)
+                while ((!produce.IsCompleted && !goRelease) || queue.Any())
                 {
                     if (queue.TryDequeue(out var item))
                     {
@@ -319,7 +322,7 @@ namespace Bible2PPT.PPT
             {
                 using (var ppt = new PPTManager(POWERPNT, job, job.OutputDestination))
                 {
-                    while (!produce.IsCompleted)
+                    while ((!produce.IsCompleted && !goRelease) || queue.Any())
                     {
                         if (queue.TryDequeue(out var item))
                         {
