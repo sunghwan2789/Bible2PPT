@@ -78,7 +78,7 @@ namespace Bible2PPT
             }
             
             FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = 
-                $"{e.Progress.ToString("d")}% {e.Chapters}장 중 {e.ChaptersDone}장";
+                $"{e.Progress.ToString("p")} {e.Chapters}장 중 {e.ChaptersDone}장";
         }
 
         private void Builder_JobCompleted(object sender, JobCompletedEventArgs e)
