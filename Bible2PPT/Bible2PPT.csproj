@@ -90,12 +90,6 @@
     <Compile Include="Bibles\Sources\Source.cs" />
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
-    <Compile Include="Controls\BuildResultControl.xaml.cs">
-      <DependentUpon>BuildResultControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BuildProgressControl.xaml.cs">
-      <DependentUpon>BuildProgressControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Data\BibleContext.cs" />
     <Compile Include="Data\BibleContextDbConfiguration.cs" />
     <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
@@ -134,8 +128,6 @@
     </Compile>
     <Compile Include="Controls\MultiPanelPagesCollection.cs" />
     <Compile Include="PPT\Builder.cs" />
-    <Compile Include="PPT\BuildProgress.cs" />
-    <Compile Include="PPT\BuildResult.cs" />
     <Compile Include="PPT\Job.cs" />
     <Compile Include="PPT\JobBible.cs" />
     <Compile Include="PPT\JobCompletedEventArgs.cs" />
@@ -230,16 +222,6 @@
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.111</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\BuildResultControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\BuildProgressControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

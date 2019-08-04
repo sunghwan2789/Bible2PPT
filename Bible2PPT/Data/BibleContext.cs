@@ -59,8 +59,6 @@ namespace Bible2PPT.Data
 
             modelBuilder.Entity<JobBible>().HasRequired(e => e.Job).WithMany(e => e.JobBibles);
             modelBuilder.Entity<JobBible>().HasRequired(e => e.Bible).WithMany();
-
-            modelBuilder.Entity<Job>().HasOptional(e => e.Result).WithRequired();
         }
     }
 }
