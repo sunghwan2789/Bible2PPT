@@ -41,10 +41,11 @@ namespace Bible2PPT.PPT
 
             TaskEx.Run(async () =>
             {
+                var acquired = false;
                 try
                 {
-                    Semaphore.Wait();
-
+                    Semaphore.Wait(JobCancellations[job].Token);
+                    acquired = true;
                     await ProcessAsync(job, JobCancellations[job].Token);
                 }
                 catch (Exception ex)
@@ -55,7 +56,10 @@ namespace Bible2PPT.PPT
                 {
                     JobCancellations.TryRemove(job, out var cts);
                     cts.Dispose();
-                    Semaphore.Release();
+                    if (acquired)
+                    {
+                        Semaphore.Release();
+                    }
                 }
             });
         }
