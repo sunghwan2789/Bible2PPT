@@ -53,7 +53,6 @@ namespace Bible2PPT.PPT
         {
             TemplateSlide?.Delete();
             WorkingPPT?.Save();
-            WorkingPPT?.Close();
         }
 
         public void QuitAndCleanup()
