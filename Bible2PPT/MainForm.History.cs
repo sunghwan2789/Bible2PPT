@@ -24,9 +24,6 @@ namespace Bible2PPT
             historyCreatedAtColumn.DataPropertyName = nameof(Job.CreatedAt);
             historyBiblesColumn.DataPropertyName = nameof(Job.Bibles);
             historyQueryStringColumn.DataPropertyName = nameof(Job.QueryString);
-            historyTemplateBookNameColumn.DataPropertyName = nameof(Job.TemplateBookNameOption);
-            historyTemplateBookAbbrColumn.DataPropertyName = nameof(Job.TemplateBookAbbrOption);
-            historyTemplateChapterNumberColumn.DataPropertyName = nameof(Job.TemplateChapterNumberOption);
             historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Job.SplitChaptersIntoFiles);
 
             List<Job> works;
@@ -47,29 +44,11 @@ namespace Bible2PPT
             switch (e.Value)
             {
                 case List<Bible> bibles:
-                    {
-                        e.Value = string.Join("\n", bibles.Select(i => $"{i.Source?.Name} - {i.Version}"));
-                        e.FormattingApplied = true;
-                        break;
-                    }
-                case TemplateTextOptions textOptions:
-                    {
-                        string value;
-                        switch (textOptions)
-                        {
-                            case TemplateTextOptions.Always:
-                                value = "항상 보이기";
-                                break;
-                            case TemplateTextOptions.FirstVerseOfChapter:
-                                value = "각 장의 첫 절에만 보이기";
-                                break;
-                            default:
-                                throw new NotImplementedException();
-                        }
-                        e.Value = value;
-                        e.FormattingApplied = true;
-                        break;
-                    }
+                {
+                    e.Value = string.Join(", ", bibles.Select(i => $"{i.Version}({i.Source?.Name})"));
+                    e.FormattingApplied = true;
+                    break;
+                }
             }
         }
 
