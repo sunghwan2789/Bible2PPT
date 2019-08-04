@@ -45,23 +45,15 @@ namespace Bible2PPT
             builder.JobCompleted += Builder_JobCompleted;
         }
 
-        private readonly Dictionary<Job, DataGridViewRow> jobRow = new Dictionary<Job, DataGridViewRow>();
-
         private DataGridViewRow FindHistoryDataGridViewRow(Job job)
         {
-            if (jobRow.TryGetValue(job, out var rowCached))
-            {
-                return rowCached;
-            }
-
             foreach (DataGridViewRow row in historyDataGridView.Rows)
             {
                 if (row.DataBoundItem == job)
                 {
-                    return jobRow[job] = row;
+                    return row;
                 }
             }
-
             return null;
         }
 
@@ -103,7 +95,6 @@ namespace Bible2PPT
             if (e.IsCancelled)
             {
                 jobHistory.RemoveAt(FindHistoryDataGridViewRow(e.Job).Index);
-                jobRow.Remove(e.Job);
             }
             else if (e.IsFaulted)
             {
@@ -183,7 +174,6 @@ namespace Bible2PPT
             if (FindHistoryDataGridViewRow(job).Tag == null)
             {
                 jobHistory.RemoveAt(FindHistoryDataGridViewRow(job).Index);
-                jobRow.Remove(job);
             }
             // 취소 가능하면 취소로 제거
             else
