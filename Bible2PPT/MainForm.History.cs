@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -135,18 +136,33 @@ namespace Bible2PPT
         private void HistoryOpenResultButton_Click(object sender, EventArgs e)
         {
             // 선택한 기록이 없으면 아무 작업도 안함
-            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job history))
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
             {
+                return;
+            }
+
+            // 작업 중이면 무시
+            if (FindHistoryDataGridViewRow(job).Tag != null)
+            {
+                MessageBox.Show("PPT 제작 중입니다. 기다려주세요.", "성경2PPT");
                 return;
             }
 
             // 실패한 기록은 다시 만들기 또는
             // 파일을 삭제했을 때도 다시 만들기 => 중점으로
+            if (!(File.Exists(job.OutputDestination) || Directory.Exists(job.OutputDestination)))
+            {
+                if (DialogResult.Yes == MessageBox.Show("PPT 파일이 없습니다. 다시 만들까요?", "성경2PPT", MessageBoxButtons.YesNo))
+                {
+                    historyLoadButton.PerformClick();
+                }
+                return;
+            }
 
             // 성공한 기록은 바로 파일 열기
             Process.Start(new ProcessStartInfo
             {
-                FileName = history.OutputDestination,
+                FileName = job.OutputDestination,
                 UseShellExecute = true,
             });
         }
