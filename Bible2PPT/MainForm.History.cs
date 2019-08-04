@@ -165,9 +165,12 @@ namespace Bible2PPT
 
             using (var db = new BibleContext())
             {
-                db.Jobs.Attach(job);
-                db.Jobs.Remove(job);
-                db.SaveChanges();
+                if (db.Jobs.Any(i => i.Id == job.Id))
+                {
+                    db.Jobs.Attach(job);
+                    db.Jobs.Remove(job);
+                    db.SaveChanges();
+                }
             }
 
             // 취소 불가능하면 바로 제거
