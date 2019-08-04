@@ -506,14 +506,23 @@ namespace Bible2PPT
 
             // 장별로 PPT 나누기 경로 설정
             string destination;
-            using (var fd = new FolderBrowserDialog())
+            if (AppConfig.Context.SeperateByChapter)
             {
-                fd.Description = "PPT를 저장할 폴더를 선택하세요.";
-                if (AppConfig.Context.SeperateByChapter && fd.ShowDialog() != DialogResult.OK)
+                using (var fd = new FolderBrowserDialog
                 {
-                    return;
+                    Description = "PPT를 저장할 폴더를 선택하세요.",
+                })
+                {
+                    if (fd.ShowDialog() != DialogResult.OK)
+                    {
+                        return;
+                    }
+                    destination = fd.SelectedPath;
                 }
-                destination = fd.SelectedPath;
+            }
+            else
+            {
+                destination = Path.GetTempFileName() + ".pptx";
             }
 
             var job = new Job
@@ -527,37 +536,6 @@ namespace Bible2PPT
                 TemplateBookAbbrOption = AppConfig.Context.ShowShortTitle,
                 TemplateChapterNumberOption = AppConfig.Context.ShowChapterNumber,
             };
-
-            var onEnd = new Progress<BuildResult>(result =>
-            {
-                builderToolStripStatusLabel.Text = "준비";
-
-                // 토큰 정리
-                buildButton.Tag = null;
-
-                // 주요 컨트롤 활성화
-                ToggleCriticalControls(true);
-                buildButton.Text = "PPT 만들기";
-
-                // 오류 발생으로 작업 실패
-                if (!result.IsCompleted)
-                {
-                    result.QuitAndCleanup();
-                    MessageBox.Show(result.Exception?.ToString(), "PPT 만들기 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // 작업을 성공하였으면 PPT 열기
-                result.Save();
-                if (job.SplitChaptersIntoFiles)
-                {
-                    Process.Start(job.OutputDestination);
-                }
-                else
-                {
-                    Process.Start(result.Output);
-                }
-            });
 
             // PPT 만들기
             builder.Queue(job);

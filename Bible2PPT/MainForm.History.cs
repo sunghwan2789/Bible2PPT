@@ -18,6 +18,8 @@ namespace Bible2PPT
 {
     partial class MainForm
     {
+        private readonly BindingList<Job> jobHistory = new BindingList<Job>();
+
         private void InitializeHistoryComponent()
         {
             historyDataGridView.AutoGenerateColumns = false;
@@ -26,17 +28,94 @@ namespace Bible2PPT
             historyQueryStringColumn.DataPropertyName = nameof(Job.QueryString);
             historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Job.SplitChaptersIntoFiles);
 
-            List<Job> works;
             using (var db = new BibleContext())
             {
-                works = db.Jobs
+                foreach (var job in db.Jobs
                     .Include(w => w.JobBibles.Select(wb => wb.Bible))
-                    .Include(w => w.Result)
-                    .OrderByDescending(w => w.Id)
-                    .ToList();
-                works.ForEach(i => i.Bibles.ForEach(j => j.Source = Source.AvailableSources.First(k => k.Id == j.SourceId)));
+                    .ToList())
+                {
+                    job.Bibles.ForEach(bible => bible.Source = Source.AvailableSources.FirstOrDefault(source => source.Id == bible.SourceId));
+                    jobHistory.Insert(0, job);
+                }
             }
-            historyDataGridView.DataSource = works;
+            historyDataGridView.DataSource = jobHistory;
+
+            builder.JobQueued += Builder_JobQueued;
+            builder.JobProgress += Builder_JobProgress;
+            builder.JobCompleted += Builder_JobCompleted;
+        }
+
+        private readonly Dictionary<Job, DataGridViewRow> jobRow = new Dictionary<Job, DataGridViewRow>();
+
+        private DataGridViewRow FindHistoryDataGridViewRow(Job job)
+        {
+            if (jobRow.TryGetValue(job, out var rowCached))
+            {
+                return rowCached;
+            }
+
+            foreach (DataGridViewRow row in historyDataGridView.Rows)
+            {
+                if (row.DataBoundItem == job)
+                {
+                    return jobRow[job] = row;
+                }
+            }
+
+            return null;
+        }
+
+        private void Builder_JobQueued(object sender, JobQueuedEventArgs e)
+        {
+            if (FindHistoryDataGridViewRow(e.Job) == null)
+            {
+                jobHistory.Insert(0, e.Job);
+            }
+
+            FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = "대기 중";
+        }
+
+        private void Builder_JobProgress(object sender, JobProgressEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(() => Builder_JobProgress(sender, e)));
+                return;
+            }
+            
+            FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = 
+                $"{e.Progress.ToString("d")}% {e.Chapters}장 중 {e.ChaptersDone}장";
+        }
+
+        private void Builder_JobCompleted(object sender, JobCompletedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(() => Builder_JobCompleted(sender, e)));
+                return;
+            }
+
+            if (e.IsCancelled)
+            {
+                jobHistory.RemoveAt(FindHistoryDataGridViewRow(e.Job).Index);
+                jobRow.Remove(e.Job);
+            }
+            else if (e.IsFaulted)
+            {
+                FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = e.Exception.ToString();
+            }
+            else
+            {
+                FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = "완료";
+                if (autoOpenCheckBox.Checked)
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = e.Job.OutputDestination,
+                        UseShellExecute = true,
+                    });
+                }
+            }
         }
 
         private void HistoryDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -52,6 +131,11 @@ namespace Bible2PPT
             }
         }
 
+        private void AutoOpenCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // TODO: 저장
+        }
+
         private void HistoryOpenResultButton_Click(object sender, EventArgs e)
         {
             // 선택한 기록이 없으면 아무 작업도 안함
@@ -60,36 +144,15 @@ namespace Bible2PPT
                 return;
             }
 
-            // 이미 열기 요청을 했으면 경고
-            if (workCts.TryGetValue(history.Id, out CancellationTokenSource cts))
-            {
-                return;
-            }
-
             // 실패한 기록은 다시 만들기 또는
             // 파일을 삭제했을 때도 다시 만들기 => 중점으로
-            if (history.Result?.IsCompleted != true)
-            {
-                return;
-            }
 
             // 성공한 기록은 바로 파일 열기
-            if (history.SplitChaptersIntoFiles)
+            Process.Start(new ProcessStartInfo
             {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = history.OutputDestination,
-                    UseShellExecute = true,
-                });
-            }
-            else
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = history.Result.Output,
-                    UseShellExecute = true,
-                });
-            }
+                FileName = history.OutputDestination,
+                UseShellExecute = true,
+            });
         }
 
         private void HistoryLoadButton_Click(object sender, EventArgs e)
@@ -99,7 +162,26 @@ namespace Bible2PPT
 
         private void HistoryDeleteButton_Click(object sender, EventArgs e)
         {
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
+            {
+                return;
+            }
 
+            using (var db = new BibleContext())
+            {
+                db.Jobs.Remove(job);
+                db.SaveChanges();
+            }
+
+            if (!jobRow.ContainsKey(job))
+            {
+                jobHistory.RemoveAt(FindHistoryDataGridViewRow(job).Index);
+                jobRow.Remove(job);
+            }
+            else
+            {
+                builder.Cancel(job);
+            }
         }
     }
 }
