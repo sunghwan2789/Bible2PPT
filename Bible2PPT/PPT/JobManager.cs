@@ -47,6 +47,7 @@ namespace Bible2PPT.PPT
                     Semaphore.Wait(JobCancellations[job].Token);
                     acquired = true;
                     await ProcessAsync(job, JobCancellations[job].Token);
+                    OnJobCompleted(new JobCompletedEventArgs(job, null));
                 }
                 catch (Exception ex)
                 {
