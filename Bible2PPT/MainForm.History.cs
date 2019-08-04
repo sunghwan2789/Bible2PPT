@@ -73,6 +73,8 @@ namespace Bible2PPT
             }
 
             FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = "대기 중";
+            // 취소 가능한지 나타냄
+            FindHistoryDataGridViewRow(e.Job).Tag = true;
         }
 
         private void Builder_JobProgress(object sender, JobProgressEventArgs e)
@@ -94,6 +96,9 @@ namespace Bible2PPT
                 Invoke(new MethodInvoker(() => Builder_JobCompleted(sender, e)));
                 return;
             }
+
+            // 취소 불가능함을 표시
+            FindHistoryDataGridViewRow(e.Job).Tag = null;
 
             if (e.IsCancelled)
             {
@@ -169,15 +174,18 @@ namespace Bible2PPT
 
             using (var db = new BibleContext())
             {
+                db.Jobs.Attach(job);
                 db.Jobs.Remove(job);
                 db.SaveChanges();
             }
 
-            if (!jobRow.ContainsKey(job))
+            // 취소 불가능하면 바로 제거
+            if (FindHistoryDataGridViewRow(job).Tag == null)
             {
                 jobHistory.RemoveAt(FindHistoryDataGridViewRow(job).Index);
                 jobRow.Remove(job);
             }
+            // 취소 가능하면 취소로 제거
             else
             {
                 builder.Cancel(job);
