@@ -227,11 +227,14 @@ namespace Bible2PPT.PPT
         {
             await base.ProcessAsync(job, token);
 
-            var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
-            var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
+            // (targetEachVerses, mainBook, mainChapter)
+            var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
 
-            using (var manager = !job.SplitChaptersIntoFiles ? new PPTManager(POWERPNT, job) : null)
+            var produce = TaskEx.Run(async () =>
             {
+                var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
+                var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
+
                 var eachBooks = await GetEachBooksAsync(job.Bibles, token);
 
                 foreach (var query in queries)
@@ -268,14 +271,6 @@ namespace Bible2PPT.PPT
 
                         e = new JobProgressEventArgs(job, mainChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters);
 
-                        if (job.SplitChaptersIntoFiles)
-                        {
-                            result?.Save();
-                            var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
-                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            result = Prepare(job, output);
-                        }
-
                         var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
                         var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
 
@@ -289,7 +284,7 @@ namespace Bible2PPT.PPT
                             .ToList();
 
                         var targetEachVerses = Inverse(eachTargetVerses);
-                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                        queue.Enqueue(Tuple.Create(targetEachVerses, mainBook, mainChapter));
 
                     PROGRESS_CHAPTER:
                         e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone + 1, e.Chapters);
@@ -298,7 +293,44 @@ namespace Bible2PPT.PPT
                 PROGRESS_QUERY:
                     e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone + 1, e.Queries, e.ChaptersDone, e.Chapters);
                 }
+            });
+
+            if (job.SplitChaptersIntoFiles)
+            {
+                while (!produce.IsCompleted)
+                {
+                    if (queue.TryDequeue(out var item))
+                    {
+                        var targetEachVerses = item.Item1;
+                        var mainBook = item.Item2;
+                        var mainChapter = item.Item3;
+                        var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString(@"000\.pptx"));
+                        CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                        using (var ppt = new PPTManager(POWERPNT, job, output))
+                        {
+                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                        }
+
+                    }
+                }
             }
+            else
+            {
+                using (var ppt = new PPTManager(POWERPNT, job))
+                {
+                    while (!produce.IsCompleted)
+                    {
+                        if (queue.TryDequeue(out var item))
+                        {
+                            var targetEachVerses = item.Item1;
+                            var mainBook = item.Item2;
+                            var mainChapter = item.Item3;
+                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                        }
+                    }
+                }
+            }
+            await produce;
         }
 
         private static void CreateDirectoryIfNotExists(string path)
