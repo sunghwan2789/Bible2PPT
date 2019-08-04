@@ -309,6 +309,7 @@ namespace Bible2PPT.PPT
                         using (var ppt = new PPTManager(POWERPNT, job, output))
                         {
                             ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            ppt.Save();
                         }
 
                     }
@@ -316,7 +317,7 @@ namespace Bible2PPT.PPT
             }
             else
             {
-                using (var ppt = new PPTManager(POWERPNT, job))
+                using (var ppt = new PPTManager(POWERPNT, job, job.OutputDestination))
                 {
                     while (!produce.IsCompleted)
                     {
@@ -328,6 +329,7 @@ namespace Bible2PPT.PPT
                             ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
                         }
                     }
+                    ppt.Save();
                 }
             }
             await produce;

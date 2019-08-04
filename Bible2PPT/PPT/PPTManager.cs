@@ -48,6 +48,7 @@ namespace Bible2PPT.PPT
                 ms.CopyTo(fs);
             }
         }
+
         public void Save()
         {
             TemplateSlide?.Delete();
@@ -136,6 +137,7 @@ namespace Bible2PPT.PPT
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
+                    WorkingPPT?.Close();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
