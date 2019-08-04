@@ -498,13 +498,6 @@ namespace Bible2PPT
         /// </summary>
         private async void BuildButton_Click(object sender, EventArgs e)
         {
-            // 지금 만드는 중인 PPT 작업을 취소하고 대기
-            if (buildButton.Tag is CancellationTokenSource previousCts)
-            {
-                previousCts.Cancel();
-                return;
-            }
-
             // TODO: 빌드 대상 성경이 없으면 아무 작업도 안함
             //if (!biblesToBuild.Any())
             //{
@@ -523,15 +516,6 @@ namespace Bible2PPT
                 destination = fd.SelectedPath;
             }
 
-            // PPT를 완성하기 전까지 주요 컨트롤 비활성화
-            ToggleCriticalControls(false, buildButton);
-            buildButton.Text = "PPT 만드는 중...";
-
-
-            // 작업을 취소하기 위한 토큰 생성 및 연결
-            var cts = new CancellationTokenSource();
-            buildButton.Tag = cts;
-
             var job = new Job
             {
                 Bibles = biblesToBuild.ToList(),
@@ -543,14 +527,6 @@ namespace Bible2PPT
                 TemplateBookAbbrOption = AppConfig.Context.ShowShortTitle,
                 TemplateChapterNumberOption = AppConfig.Context.ShowChapterNumber,
             };
-
-            var onProgress = new Progress<BuildProgress>(progress =>
-            {
-                var elapsedTime = DateTime.UtcNow.Subtract(progress.Job.CreatedAt);
-                var timeStamp = $"{((int)elapsedTime.TotalMinutes).ToString("00")}:{elapsedTime.Seconds.ToString("00")}";
-                builderToolStripStatusLabel.Text = $"({progress.ItemsLeft}개 대기) [{timeStamp}] {progress.Job.QueryString}"
-                    + $" - {progress.CurrentChapter.Book.Title} {progress.CurrentChapter.Number}장 추가 중";
-            });
 
             var onEnd = new Progress<BuildResult>(result =>
             {
@@ -584,7 +560,9 @@ namespace Bible2PPT
             });
 
             // PPT 만들기
-            builder.Push(job, cts.Token, onProgress, onEnd);
+            builder.Queue(job);
+
+            historyNav.PerformClick();
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)
