@@ -229,6 +229,7 @@ namespace Bible2PPT.PPT
 
             // (targetEachVerses, mainBook, mainChapter)
             var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
+            var sync = new AutoResetEvent(false);
 
             var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
             var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
@@ -286,6 +287,7 @@ namespace Bible2PPT.PPT
 
                         var targetEachVerses = Inverse(eachTargetVerses);
                         queue.Enqueue(Tuple.Create(targetEachVerses, mainBook, mainChapter));
+                        sync.WaitOne();
 
                     PROGRESS_CHAPTER:
                         e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone + 1, e.Chapters);
@@ -305,6 +307,7 @@ namespace Bible2PPT.PPT
                 {
                     if (queue.TryDequeue(out var item))
                     {
+                        sync.Set();
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
@@ -328,6 +331,7 @@ namespace Bible2PPT.PPT
                     {
                         if (queue.TryDequeue(out var item))
                         {
+                            sync.Set();
                             var targetEachVerses = item.Item1;
                             var mainBook = item.Item2;
                             var mainChapter = item.Item3;
