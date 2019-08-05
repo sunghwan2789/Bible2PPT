@@ -169,6 +169,25 @@ namespace Bible2PPT
 
         private void HistoryLoadButton_Click(object sender, EventArgs e)
         {
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
+            {
+                return;
+            }
+
+            biblesToBuild.Clear();
+            foreach (var bible in job.Bibles)
+            {
+                biblesToBuild.Add(bible);
+            }
+
+            versesTextBox.Text = job.QueryString;
+            buildFragmentCheckBox.Checked = job.SplitChaptersIntoFiles;
+            templateBookNameComboBox.SelectedItem = (int)job.TemplateBookNameOption;
+            templateBookAbbrComboBox.SelectedItem = (int)job.TemplateBookAbbrOption;
+            templateChaperNumberComboBox.SelectedItem = (int)job.TemplateChapterNumberOption;
+
+            buildNav.PerformClick();
+            versesTextBox.Focus();
 
         }
 

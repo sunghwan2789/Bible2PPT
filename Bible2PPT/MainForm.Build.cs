@@ -529,12 +529,12 @@ namespace Bible2PPT
             {
                 Bibles = biblesToBuild.ToList(),
                 CreatedAt = DateTime.UtcNow,
-                SplitChaptersIntoFiles = AppConfig.Context.SeperateByChapter,
+                SplitChaptersIntoFiles = buildFragmentCheckBox.Checked,
                 OutputDestination = destination,
                 QueryString = Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " "),
-                TemplateBookNameOption = AppConfig.Context.ShowLongTitle,
-                TemplateBookAbbrOption = AppConfig.Context.ShowShortTitle,
-                TemplateChapterNumberOption = AppConfig.Context.ShowChapterNumber,
+                TemplateBookNameOption = (TemplateTextOptions)templateBookNameComboBox.SelectedIndex,
+                TemplateBookAbbrOption = (TemplateTextOptions)templateBookAbbrComboBox.SelectedIndex,
+                TemplateChapterNumberOption = (TemplateTextOptions)templateChaperNumberComboBox.SelectedIndex,
             };
 
             // PPT 만들기
