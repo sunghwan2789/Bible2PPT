@@ -94,7 +94,7 @@
 ## 실행 요구 사항
 
 ### .NET Framework 4 Client Profile 이상
-**성경2PPT**를 실행하는 데 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받아서 설치하시고, [여기](http://go.microsoft.com/fwlink/?linkid=221217)에서 업데이트를 설치하세요.
+**성경2PPT**를 실행하는 데 필요한 프레임워크입니다. [여기](http://go.microsoft.com/fwlink/?LinkId=181012)에서 내려받아서 설치하시고, [여기](http://go.microsoft.com/fwlink/?linkid=221217)에서 업데이트를 설치하세요. ([관련 이슈](https://github.com/sunghwan2789/Bible2PPT/pull/21))
 
 ### Microsoft PowerPoint 2007 이상
 PPT를 만들고 보는 데 필요한 프로그램입니다. 프로그램 구성 요소로 *Office 공유 기능* - *Visual Basic for Applications*를 설치해야 합니다.
