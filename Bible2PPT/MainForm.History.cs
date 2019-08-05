@@ -77,8 +77,8 @@ namespace Bible2PPT
                 Invoke(new MethodInvoker(() => Builder_JobProgress(sender, e)));
                 return;
             }
-            
-            FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = 
+
+            FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value =
                 $"{e.Progress.ToString("p")} {e.Chapters}장 중 {e.ChaptersDone}장";
         }
 
