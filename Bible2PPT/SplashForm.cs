@@ -15,6 +15,7 @@ namespace Bible2PPT
         public SplashForm()
         {
             InitializeComponent();
+            BackgroundImage = Image.FromStream(Resources.GetStream("Icon.png"));
         }
     }
 }
