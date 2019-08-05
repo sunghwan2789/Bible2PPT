@@ -7,18 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Bible2PPT.Bibles;
+using Bible2PPT.Data;
 using Microsoft;
 using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
 {
-    using Element = Tuple<Work, CancellationToken, IProgress<BuildProgress>>;
-
-    class Builder : IDisposable
+    class Builder : JobManager
     {
-
         private static PowerPoint.Application POWERPNT;
 
         public Builder()
@@ -34,82 +33,39 @@ namespace Bible2PPT.PPT
             }
         }
 
-        private readonly ConcurrentQueue<Element> Queue = new ConcurrentQueue<Element>();
-
-        private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-
-        public void Push(Work work, CancellationToken cancellationToken, IProgress<BuildProgress> progress, IProgress<BuildResult> end)
-        {
-            Queue.Enqueue(Tuple.Create(work, cancellationToken, progress));
-            TaskEx.Run(async () =>
-            {
-                try
-                {
-                    semaphore.Wait(cancellationToken);
-                    while (Queue.TryDequeue(out var item))
-                    {
-                        if (item.Item2.IsCancellationRequested)
-                        {
-                            end.Report(new BuildResult
-                            {
-                                Work = item.Item1,
-                            });
-                            continue;
-                        }
-
-                        end.Report(await DoWorkAsync(item.Item1, item.Item2, item.Item3));
-                        break;
-                    }
-                }
-                catch { }
-                finally
-                {
-                    semaphore.Release();
-                }
-            });
-        }
-
-        private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken cancellationToken)
+        private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken token)
         {
         RETRY:
             try
             {
-                return (await TaskEx.WhenAll(bibles
+                return await TaskEx.WhenAll(bibles
                     .Select(bible => bible.Source.GetBooksAsync(bible))
-                    .ToList()));
+                    .ToList());
             }
-            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            // 취소할 때까지 계속 재시도
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                // TODO: UI와 계속 진행 여부 통신
-                if (!false)
-                {
-                    throw;
-                }
-
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
 
-        private static async Task<IEnumerable<IEnumerable<Chapter>>> GetEachChaptersAsync(IEnumerable<Book> books, CancellationToken cancellationToken)
+        private static async Task<IEnumerable<IEnumerable<Chapter>>> GetEachChaptersAsync(IEnumerable<Book> books, CancellationToken token)
         {
         RETRY:
             try
             {
                 // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
-                return (await TaskEx.WhenAll(books
+                return await TaskEx.WhenAll(books
                     .Select(book =>
                         book?.Source.GetChaptersAsync(book)
                         ?? TaskEx.FromResult(new List<Chapter>()))
-                    .ToList()));
+                    .ToList());
             }
-            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            // 취소할 때까지 계속 재시도
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                // TODO: UI와 계속 진행 여부 통신
-                if (!false)
-                {
-                    throw;
-                }
-
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
@@ -117,7 +73,6 @@ namespace Bible2PPT.PPT
         private static IEnumerable<IEnumerable<Chapter>> Inverse(IEnumerable<IEnumerable<Chapter>> eachTargetChapters)
         {
             // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
-            var targetEachChapters = new List<IEnumerable<Chapter>>();
             // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
             var targetChapterEnumerators = eachTargetChapters.Select(i => (IEnumerator<Chapter>)i.GetEnumerator()).ToList();
 
@@ -168,39 +123,32 @@ namespace Bible2PPT.PPT
                         eachChapter.Add(i.Current);
                         moved[i] = false;
                     }
-                    targetEachChapters.Add(eachChapter);
+                    yield return eachChapter;
                 }
             }
-
-            return targetEachChapters;
         }
 
-        private static async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken cancellationToken)
+        private static async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken token)
         {
         RETRY:
             try
             {
-                return (await TaskEx.WhenAll(chapters
+                return await TaskEx.WhenAll(chapters
                     .Select(chapter =>
                         chapter?.Source.GetVersesAsync(chapter)
                         ?? TaskEx.FromResult(new List<Verse>()))
-                    .ToList()));
+                    .ToList());
             }
-            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            // 취소할 때까지 계속 재시도
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                // TODO: UI와 계속 진행 여부 통신
-                if (!false)
-                {
-                    throw;
-                }
-
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
 
         private static IEnumerable<IEnumerable<Verse>> Inverse(IEnumerable<IEnumerable<Verse>> eachTargetVerses)
         {
-            var targetEachVerses = new List<IEnumerable<Verse>>();
             // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
             var targetVerseEnumerators = eachTargetVerses.Select(i => (IEnumerator<Verse>)i.GetEnumerator()).ToList();
 
@@ -251,63 +199,46 @@ namespace Bible2PPT.PPT
                         eachVerse.Add(i.Current);
                         moved[i] = false;
                     }
-                    targetEachVerses.Add(eachVerse);
+                    yield return eachVerse;
                 }
-            }
-
-            return targetEachVerses;
-        }
-
-        private static void ExtractTemplate()
-        {
-            if (File.Exists(AppConfig.TemplatePath))
-            {
-                return;
-            }
-
-            using (var ms = new MemoryStream(Properties.Resources.Template))
-            using (var fs = File.OpenWrite(AppConfig.TemplatePath))
-            {
-                ms.CopyTo(fs);
             }
         }
 
         public void OpenTemplate()
         {
-            ExtractTemplate();
-            Process.Start(AppConfig.TemplatePath);
-        }
-
-        private BuildResult Prepare(Work work) => Prepare(work, Path.GetTempFileName() + ".pptx");
-
-        private BuildResult Prepare(Work work, string output)
-        {
-            ExtractTemplate();
-            File.Copy(AppConfig.TemplatePath, output, true);
-
-            var workingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
-            return new BuildResult
+            void ExtractTemplate()
             {
-                Work = work,
-                Output = output,
-                WorkingPPT = workingPPT,
-                TemplateSlide = workingPPT.Slides[1],
-            };
-        }
-
-        private async Task<BuildResult> DoWorkAsync(Work work, CancellationToken cancellationToken, IProgress<BuildProgress> progress)
-        {
-            BuildResult result = null;
-            try
-            {
-                if (!work.SplitChaptersIntoFiles)
+                if (File.Exists(AppConfig.TemplatePath))
                 {
-                    result = Prepare(work);
+                    return;
                 }
 
-                var eachBooks = await GetEachBooksAsync(work.Bibles, cancellationToken);
+                using (var ms = new MemoryStream(Properties.Resources.Template))
+                using (var fs = File.OpenWrite(AppConfig.TemplatePath))
+                {
+                    ms.CopyTo(fs);
+                }
+            }
+            ExtractTemplate();
+            System.Diagnostics.Process.Start(AppConfig.TemplatePath);
+        }
 
-                foreach (var query in work.QueryString.Split().Select(BibleQuery.ParseQuery).ToList())
+        protected override async Task ProcessAsync(Job job, CancellationToken token)
+        {
+            await base.ProcessAsync(job, token);
+
+            // (targetEachVerses, mainBook, mainChapter)
+            var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
+
+            var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
+            var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
+            OnJobProgress(e);
+
+            var produce = TaskEx.Run(async () =>
+            {
+                var eachBooks = await GetEachBooksAsync(job.Bibles, token);
+
+                foreach (var query in queries)
                 {
                     var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
 
@@ -315,98 +246,99 @@ namespace Bible2PPT.PPT
                     var mainBook = targetEachBook.FirstOrDefault(i => i != null);
                     if (mainBook == null)
                     {
-                        continue;
+                        goto PROGRESS_QUERY;
                     }
 
-                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, cancellationToken))
+                    var eachTargetChapters = (await GetEachChaptersAsync(targetEachBook, token))
                         .Select(chapters => chapters
                             .Where(chapter =>
-                                (query.EndChapterNumber != null)
-                                ? (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
-                                : (chapter.Number >= query.StartChapterNumber))
+                                (query.EndChapterNumber == null)
+                                ? (chapter.Number >= query.StartChapterNumber)
+                                : (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber))
                             .ToList())
                         .ToList();
 
                     // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
                     var targetEachChapters = Inverse(eachTargetChapters);
+                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters + targetEachChapters.Count());
                     foreach (var targetEachChapter in targetEachChapters)
                     {
                         // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
                         var mainChapter = targetEachChapter.FirstOrDefault(i => i != null);
                         if (mainChapter == null)
                         {
-                            continue;
+                            goto PROGRESS_CHAPTER;
                         }
 
-                        // TODO: NO INTERACT 
-                        progress.Report(new BuildProgress
-                        {
-                            ItemsLeft = Queue.Count,
-                            Work = work,
-                            CurrentChapter = mainChapter,
-                        });
-
-                        if (work.SplitChaptersIntoFiles)
-                        {
-                            result?.Save();
-                            var output = Path.Combine(work.OutputDestination, mainBook.Title, mainChapter.Number.ToString("000\\.pptx"));
-                            CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                            result = Prepare(work, output);
-                        }
+                        e = new JobProgressEventArgs(job, mainChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters);
 
                         var startVerseNumber = (mainChapter.Number == query.StartChapterNumber) ? query.StartVerseNumber : 1;
                         var endVerseNumber = (mainChapter.Number == query.EndChapterNumber) ? query.EndVerseNumber : null;
 
-                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, cancellationToken))
+                        var eachTargetVerses = (await GetEachVersesAsync(targetEachChapter, token))
                             .Select(verses => verses
                                 .Where(verse =>
-                                    (endVerseNumber != null)
-                                    ? (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber)
-                                    : (verse.Number >= startVerseNumber))
+                                    (endVerseNumber == null)
+                                    ? (verse.Number >= startVerseNumber)
+                                    : (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber))
                                 .ToList())
                             .ToList();
 
                         var targetEachVerses = Inverse(eachTargetVerses);
-                        result.AppendChapter(targetEachVerses, mainBook, mainChapter, cancellationToken);
+                        queue.Enqueue(Tuple.Create(targetEachVerses, mainBook, mainChapter));
+
+                    PROGRESS_CHAPTER:
+                        e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone + 1, e.Chapters);
+                    }
+
+                PROGRESS_QUERY:
+                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone + 1, e.Queries, e.ChaptersDone, e.Chapters);
+                }
+            });
+
+            var chaptersDone = 0;
+
+            if (job.SplitChaptersIntoFiles)
+            {
+                while (queue.Any()
+                    || !(produce.IsCompleted || (produce.Status == TaskStatus.RanToCompletion)))
+                {
+                    if (queue.TryDequeue(out var item))
+                    {
+                        var targetEachVerses = item.Item1;
+                        var mainBook = item.Item2;
+                        var mainChapter = item.Item3;
+                        var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString(@"000\.pptx"));
+                        CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
+                        using (var ppt = new PPTManager(POWERPNT, job, output))
+                        {
+                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            ppt.Save();
+                        }
+                        OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                     }
                 }
             }
-            // 올바른 작업 취소 요청 시 오류 무시
-            //catch (OperationCanceledException) { }
-            // 작업 실패 시 작업 중지
-            catch (Exception ex)
-            {
-                // 작업을 시작하기 전에 오류
-                if (result == null)
-                {
-                    return new BuildResult
-                    {
-                        Work = work,
-                        Exception = ex,
-                    };
-                }
-                // 작업 중에 오류
-                else
-                {
-                    result.Exception = ex;
-                    return result;
-                }
-            }
-
-            // 작업을 시작하지 않음 :: 지금은 도달 불가능
-            if (result == null)
-            {
-                return new BuildResult
-                {
-                    Work = work,
-                };
-            }
-            // 작업을 성공적으로 끝냄
             else
             {
-                result.IsCompleted = true;
-                return result;
+                using (var ppt = new PPTManager(POWERPNT, job, job.OutputDestination))
+                {
+                    while (queue.Any()
+                        || !(produce.IsCompleted || (produce.Status == TaskStatus.RanToCompletion)))
+                    {
+                        if (queue.TryDequeue(out var item))
+                        {
+                            var targetEachVerses = item.Item1;
+                            var mainBook = item.Item2;
+                            var mainChapter = item.Item3;
+                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
+                        }
+                    }
+                    ppt.Save();
+                }
             }
+            await produce;
         }
 
         private static void CreateDirectoryIfNotExists(string path)
@@ -420,7 +352,7 @@ namespace Bible2PPT.PPT
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -443,21 +375,7 @@ namespace Bible2PPT.PPT
 
                 disposedValue = true;
             }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~PPTBuilder() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            base.Dispose(disposing);
         }
         #endregion
     }

@@ -64,15 +64,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyIconForm.cs">
+    <Compile Include="Controls\AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Bibles\BibleBase.cs" />
@@ -88,6 +93,7 @@
     <Compile Include="BinaryConfig.cs" />
     <Compile Include="Data\BibleContext.cs" />
     <Compile Include="Data\BibleContextDbConfiguration.cs" />
+    <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,17 +121,21 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MultiPanel.cs">
+    <Compile Include="Controls\MultiPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MultiPanelPage.cs">
+    <Compile Include="Controls\MultiPanelPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MultiPanelPagesCollection.cs" />
+    <Compile Include="Controls\MultiPanelPagesCollection.cs" />
     <Compile Include="PPT\Builder.cs" />
-    <Compile Include="PPT\BuildProgress.cs" />
-    <Compile Include="PPT\BuildResult.cs" />
-    <Compile Include="PPT\Work.cs" />
+    <Compile Include="PPT\Job.cs" />
+    <Compile Include="PPT\JobBible.cs" />
+    <Compile Include="PPT\JobCompletedEventArgs.cs" />
+    <Compile Include="PPT\JobQueuedEventArgs.cs" />
+    <Compile Include="PPT\JobProgressEventArgs.cs" />
+    <Compile Include="PPT\JobManager.cs" />
+    <Compile Include="PPT\PPTManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BibleQuery.cs" />

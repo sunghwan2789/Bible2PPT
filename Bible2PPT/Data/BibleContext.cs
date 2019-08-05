@@ -1,12 +1,12 @@
-﻿using Bible2PPT.Bibles;
-using Bible2PPT.PPT;
-using SQLite.CodeFirst;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using Bible2PPT.Bibles;
+using Bible2PPT.PPT;
+using SQLite.CodeFirst;
 
 namespace Bible2PPT.Data
 {
@@ -16,6 +16,7 @@ namespace Bible2PPT.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Verse> Verses { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         public BibleContext() : this("Data Source=./bible.db") { }
 
@@ -55,6 +56,9 @@ namespace Bible2PPT.Data
 
             modelBuilder.Entity<Verse>().HasIndex(e => e.SourceId);
             modelBuilder.Entity<Verse>().HasIndex(e => e.ChapterId);
+
+            modelBuilder.Entity<JobBible>().HasRequired(e => e.Job).WithMany(e => e.JobBibles);
+            modelBuilder.Entity<JobBible>().HasRequired(e => e.Bible).WithMany();
         }
     }
 }

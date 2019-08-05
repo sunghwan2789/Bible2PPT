@@ -1,7 +1,5 @@
-﻿using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
-using Bible2PPT.PPT;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,12 +8,18 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Bible2PPT.Bibles;
+using Bible2PPT.Bibles.Sources;
+using Bible2PPT.Controls;
+using Bible2PPT.PPT;
 
 namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
-        private Builder builder;
+        private readonly Builder builder;
+
+        private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
         public MainForm()
         {

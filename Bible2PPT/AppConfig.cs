@@ -79,16 +79,16 @@ namespace Bible2PPT
         /// </summary>
         public int[] BibleToBuild { get; set; } = new int[9];
 
-        public AppConfig() : base(ConfigPath, ConfigSize) {}
+        public AppConfig() : base(ConfigPath, ConfigSize) { }
 
         protected override byte[] Serialize()
         {
             var b = new byte[ConfigSize];
-            b[0] = (byte) (int) ShowLongTitle;
-            b[0] |= (byte) ((int) ShowShortTitle << 1);
-            b[0] |= (byte) ((int) ShowChapterNumber << 2);
-            b[0] |= (byte) (SeperateByChapter ? 16 : 0);
-            b[0] |= (byte) (UseCache ? 32 : 0);
+            b[0] = (byte)(int)ShowLongTitle;
+            b[0] |= (byte)((int)ShowShortTitle << 1);
+            b[0] |= (byte)((int)ShowChapterNumber << 2);
+            b[0] |= (byte)(SeperateByChapter ? 16 : 0);
+            b[0] |= (byte)(UseCache ? 32 : 0);
             BitConverter.GetBytes(BibleSourceId).CopyTo(b, 1);
             BitConverter.GetBytes(BibleVersionId).CopyTo(b, 165);
             for (var i = 0; i < 9; i++)
@@ -100,9 +100,9 @@ namespace Bible2PPT
 
         protected override void Deserialize(byte[] s)
         {
-            ShowLongTitle = (TemplateTextOptions) (s[0] & 1);
-            ShowShortTitle = (TemplateTextOptions) ((s[0] & 2) >> 1);
-            ShowChapterNumber = (TemplateTextOptions) ((s[0] & 4) >> 2);
+            ShowLongTitle = (TemplateTextOptions)(s[0] & 1);
+            ShowShortTitle = (TemplateTextOptions)((s[0] & 2) >> 1);
+            ShowChapterNumber = (TemplateTextOptions)((s[0] & 4) >> 2);
             SeperateByChapter = (s[0] & 16) == 16;
             //UseCache = (s[0] & 32) == 32;
             BibleSourceId = BitConverter.ToInt32(s, 1);

@@ -1,18 +1,26 @@
-﻿using Bible2PPT.Bibles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using Bible2PPT.Bibles;
 
 namespace Bible2PPT.PPT
 {
-    class Work
+    class Job
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public List<Bible> Bibles { get; set; }
+        public virtual ICollection<JobBible> JobBibles { get; set; }
+
+        [NotMapped]
+        public List<Bible> Bibles
+        {
+            get => JobBibles.Select(i => i.Bible).ToList();
+            set => JobBibles = value.Select(i => new JobBible { Bible = i, }).ToList();
+        }
+
         public TemplateTextOptions TemplateBookNameOption { get; set; }
         public TemplateTextOptions TemplateBookAbbrOption { get; set; }
         public TemplateTextOptions TemplateChapterNumberOption { get; set; }
