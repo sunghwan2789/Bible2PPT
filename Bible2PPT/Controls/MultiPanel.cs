@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Bible2PPT
+namespace Bible2PPT.Controls
 {
     public class MultiPanel : Panel
     {
@@ -17,7 +17,7 @@ namespace Bible2PPT
                 {
                     foreach (Control child in Controls)
                     {
-                        if (object.ReferenceEquals(child, _selectedPage))
+                        if (ReferenceEquals(child, _selectedPage))
                             child.Visible = true;
                         else
                             child.Visible = false;
@@ -38,9 +38,9 @@ namespace Bible2PPT
         {
             base.OnPaint(e);
 
-            Graphics g = e.Graphics;
+            var g = e.Graphics;
 
-            using (SolidBrush br = new SolidBrush(BackColor))
+            using (var br = new SolidBrush(BackColor))
                 g.FillRectangle(br, ClientRectangle);
         }
 

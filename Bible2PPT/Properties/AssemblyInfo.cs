@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Resources;
+using System.Runtime.InteropServices;
 
 // 어셈블리의 일반 정보는 다음 특성 집합을 통해 제어됩니다.
 // 어셈블리와 관련된 정보를 수정하려면
@@ -33,6 +33,6 @@ using System.Resources;
 // 지정되도록 할 수 있습니다.
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.3.1")]
-[assembly: AssemblyFileVersion("1.3.1")]
+[assembly: AssemblyVersion("1.3.2")]
+[assembly: AssemblyFileVersion("1.3.2")]
 [assembly: NeutralResourcesLanguageAttribute("ko-KR")]

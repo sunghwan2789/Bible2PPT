@@ -6,8 +6,7 @@ namespace Bible2PPT.Bibles
 {
     class Book : BibleBase
     {
-        [IndexKey(Name = nameof(BibleId))]
-        public Guid BibleId { get; set; }
+        public int BibleId { get; set; }
         public virtual Bible Bible { get; set; }
 
         public string OnlineId { get; set; }

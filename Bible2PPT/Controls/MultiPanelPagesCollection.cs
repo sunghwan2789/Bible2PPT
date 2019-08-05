@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Bible2PPT
+namespace Bible2PPT.Controls
 {
     public class MultiPanelPagesCollection : Control.ControlCollection
     {
@@ -23,7 +23,7 @@ namespace Bible2PPT
         {
             if (value == null)
                 throw new ArgumentNullException("value", "Tried to add a null value to the MultiPanelPagesCollection.");
-            MultiPanelPage p = value as MultiPanelPage;
+            var p = value as MultiPanelPage;
             if (p == null)
                 throw new ArgumentException("Tried to add a non-MultiPanelPage control to the MultiPanelPagesCollection", "value");
             p.SendToBack();
@@ -43,7 +43,7 @@ namespace Bible2PPT
 
         public override int IndexOfKey(string key)
         {
-            Control ctrl = base[key];
+            var ctrl = base[key];
             return GetChildIndex(ctrl);
         }
 

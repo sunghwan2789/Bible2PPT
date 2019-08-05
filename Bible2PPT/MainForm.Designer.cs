@@ -34,8 +34,8 @@
             System.Windows.Forms.StatusStrip builderStatusStrip;
             System.Windows.Forms.TableLayoutPanel biblesTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel biblesButtonTableLayoutPanel;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.TableLayoutPanel bibleTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox bibleIconPictureBox;
             System.Windows.Forms.Label bibleLabel;
@@ -58,14 +58,17 @@
             System.Windows.Forms.TableLayoutPanel versesTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox versesIconPictureBox;
             System.Windows.Forms.Label versesLabel;
+            System.Windows.Forms.TableLayoutPanel historyTableLayoutPanel;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.FlowLayoutPanel historyFlowLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
             this.buildNav = new FontAwesome.Sharp.IconButton();
             this.historyNav = new FontAwesome.Sharp.IconButton();
             this.templatesNav = new FontAwesome.Sharp.IconButton();
             this.builderToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.builderToolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.mainMultiPanel = new Bible2PPT.MultiPanel();
-            this.buildMultiPanelPage = new Bible2PPT.MultiPanelPage();
+            this.mainMultiPanel = new Bible2PPT.Controls.MultiPanel();
+            this.buildMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
             this.buildSplitContainer = new System.Windows.Forms.SplitContainer();
             this.buildLeftTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.biblesUpIconButton = new FontAwesome.Sharp.IconButton();
@@ -88,14 +91,23 @@
             this.booksSearchTextBox = new System.Windows.Forms.TextBox();
             this.booksListView = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.templatesMultiPanelPage = new Bible2PPT.MultiPanelPage();
-            this.historyMultiPanelPage = new Bible2PPT.MultiPanelPage();
-            this.settingsMultiPanelPage = new Bible2PPT.MultiPanelPage();
-            this.btnGithub = new FontAwesome.Sharp.IconButton();
-            this.chkUseCache = new System.Windows.Forms.CheckBox();
+            this.historyMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
+            this.historyDataGridView = new System.Windows.Forms.DataGridView();
+            this.historyCreatedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyQueryStringColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyBiblesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historySplitChaptersIntoFileColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.historyJobProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historyOpenResultButton = new System.Windows.Forms.Button();
+            this.historyLoadButton = new System.Windows.Forms.Button();
+            this.historyDeleteButton = new System.Windows.Forms.Button();
+            this.templatesMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
+            this.settingsMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
+            this.updateButton = new System.Windows.Forms.Button();
+            this.cleanCacheButton = new System.Windows.Forms.Button();
             this.settingsNav = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.biblesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.autoOpenCheckBox = new System.Windows.Forms.CheckBox();
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             navTopFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             builderStatusStrip = new System.Windows.Forms.StatusStrip();
@@ -123,6 +135,8 @@
             versesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             versesIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
             versesLabel = new System.Windows.Forms.Label();
+            historyTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            historyFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             navBottomFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             mainTableLayoutPanel.SuspendLayout();
             navTopFlowLayoutPanel.SuspendLayout();
@@ -152,9 +166,12 @@
             ((System.ComponentModel.ISupportInitialize)(booksSearchIconPictureBox)).BeginInit();
             versesTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).BeginInit();
+            this.historyMultiPanelPage.SuspendLayout();
+            historyTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.historyDataGridView)).BeginInit();
+            historyFlowLayoutPanel.SuspendLayout();
             this.settingsMultiPanelPage.SuspendLayout();
             navBottomFlowLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).BeginInit();
             this.SuspendLayout();
             //
             // mainTableLayoutPanel
@@ -233,7 +250,6 @@
             this.historyNav.TabIndex = 2;
             this.toolTip.SetToolTip(this.historyNav, "PPT 제작 기록");
             this.historyNav.UseVisualStyleBackColor = false;
-            this.historyNav.Visible = false;
             this.historyNav.Click += new System.EventHandler(this.Nav_Click);
             //
             // templatesNav
@@ -289,15 +305,15 @@
             // mainMultiPanel
             //
             this.mainMultiPanel.Controls.Add(this.buildMultiPanelPage);
-            this.mainMultiPanel.Controls.Add(this.templatesMultiPanelPage);
             this.mainMultiPanel.Controls.Add(this.historyMultiPanelPage);
+            this.mainMultiPanel.Controls.Add(this.templatesMultiPanelPage);
             this.mainMultiPanel.Controls.Add(this.settingsMultiPanelPage);
             this.mainMultiPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainMultiPanel.Location = new System.Drawing.Point(48, 0);
             this.mainMultiPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mainMultiPanel.Name = "mainMultiPanel";
             mainTableLayoutPanel.SetRowSpan(this.mainMultiPanel, 2);
-            this.mainMultiPanel.SelectedPage = this.buildMultiPanelPage;
+            this.mainMultiPanel.SelectedPage = this.historyMultiPanelPage;
             this.mainMultiPanel.Size = new System.Drawing.Size(461, 312);
             this.mainMultiPanel.TabIndex = 2;
             this.mainMultiPanel.SelectedPanelChanged += new System.EventHandler(this.MainMultiPanel_SelectedPanelChanged);
@@ -479,14 +495,6 @@
             this.biblesDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.biblesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.biblesDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.biblesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.biblesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.biblesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.biblesSourceDataGridViewColumn,
             this.biblesBibleDataGridViewColumn});
@@ -495,15 +503,15 @@
             this.biblesDataGridView.Location = new System.Drawing.Point(1, 26);
             this.biblesDataGridView.Margin = new System.Windows.Forms.Padding(0);
             this.biblesDataGridView.MultiSelect = false;
-            this.biblesDataGridView.Name = "biblesDataGridView";
             this.biblesDataGridView.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.biblesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.biblesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.biblesDataGridView.RowHeadersWidth = 30;
             this.biblesDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.biblesDataGridView.RowTemplate.Height = 18;
@@ -1021,6 +1029,153 @@
             versesLabel.TabIndex = 0;
             versesLabel.Text = "성경 구절";
             //
+            // historyMultiPanelPage
+            //
+            this.historyMultiPanelPage.Controls.Add(historyTableLayoutPanel);
+            this.historyMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyMultiPanelPage.Location = new System.Drawing.Point(0, 0);
+            this.historyMultiPanelPage.Name = "historyMultiPanelPage";
+            this.historyMultiPanelPage.Size = new System.Drawing.Size(461, 312);
+            this.historyMultiPanelPage.TabIndex = 0;
+            this.historyMultiPanelPage.Text = "PPT 제작 기록";
+            //
+            // historyTableLayoutPanel
+            //
+            historyTableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            historyTableLayoutPanel.ColumnCount = 1;
+            historyTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            historyTableLayoutPanel.Controls.Add(this.historyDataGridView, 0, 1);
+            historyTableLayoutPanel.Controls.Add(historyFlowLayoutPanel, 0, 0);
+            historyTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            historyTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            historyTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            historyTableLayoutPanel.Name = "historyTableLayoutPanel";
+            historyTableLayoutPanel.Padding = new System.Windows.Forms.Padding(13, 10, 13, 10);
+            historyTableLayoutPanel.RowCount = 2;
+            historyTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            historyTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            historyTableLayoutPanel.Size = new System.Drawing.Size(461, 312);
+            historyTableLayoutPanel.TabIndex = 0;
+            //
+            // historyDataGridView
+            //
+            this.historyDataGridView.AllowUserToAddRows = false;
+            this.historyDataGridView.AllowUserToDeleteRows = false;
+            this.historyDataGridView.AllowUserToOrderColumns = true;
+            this.historyDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.historyDataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.historyDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.historyDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.historyDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.historyDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.historyCreatedAtColumn,
+            this.historyQueryStringColumn,
+            this.historyBiblesColumn,
+            this.historySplitChaptersIntoFileColumn,
+            this.historyJobProgress});
+            this.historyDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyDataGridView.Location = new System.Drawing.Point(14, 36);
+            this.historyDataGridView.Margin = new System.Windows.Forms.Padding(0);
+            this.historyDataGridView.Name = "historyDataGridView";
+            this.historyDataGridView.ReadOnly = true;
+            this.historyDataGridView.RowHeadersVisible = false;
+            this.historyDataGridView.RowTemplate.Height = 23;
+            this.historyDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.historyDataGridView.Size = new System.Drawing.Size(433, 265);
+            this.historyDataGridView.StandardTab = true;
+            this.historyDataGridView.TabIndex = 0;
+            this.historyDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.HistoryDataGridView_CellFormatting);
+            //
+            // historyCreatedAtColumn
+            //
+            this.historyCreatedAtColumn.HeaderText = "만든 날짜";
+            this.historyCreatedAtColumn.Name = "historyCreatedAtColumn";
+            this.historyCreatedAtColumn.ReadOnly = true;
+            this.historyCreatedAtColumn.Width = 80;
+            //
+            // historyQueryStringColumn
+            //
+            this.historyQueryStringColumn.HeaderText = "구절";
+            this.historyQueryStringColumn.Name = "historyQueryStringColumn";
+            this.historyQueryStringColumn.ReadOnly = true;
+            this.historyQueryStringColumn.Width = 70;
+            //
+            // historyBiblesColumn
+            //
+            this.historyBiblesColumn.HeaderText = "성경";
+            this.historyBiblesColumn.Name = "historyBiblesColumn";
+            this.historyBiblesColumn.ReadOnly = true;
+            this.historyBiblesColumn.Width = 130;
+            //
+            // historySplitChaptersIntoFileColumn
+            //
+            this.historySplitChaptersIntoFileColumn.HeaderText = "장별로 나누기";
+            this.historySplitChaptersIntoFileColumn.Name = "historySplitChaptersIntoFileColumn";
+            this.historySplitChaptersIntoFileColumn.ReadOnly = true;
+            this.historySplitChaptersIntoFileColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.historySplitChaptersIntoFileColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.historySplitChaptersIntoFileColumn.Width = 24;
+            //
+            // historyJobProgress
+            //
+            this.historyJobProgress.HeaderText = "상태";
+            this.historyJobProgress.Name = "historyJobProgress";
+            this.historyJobProgress.ReadOnly = true;
+            //
+            // historyFlowLayoutPanel
+            //
+            historyFlowLayoutPanel.Controls.Add(this.historyDeleteButton);
+            historyFlowLayoutPanel.Controls.Add(this.historyLoadButton);
+            historyFlowLayoutPanel.Controls.Add(this.historyOpenResultButton);
+            historyFlowLayoutPanel.Controls.Add(this.autoOpenCheckBox);
+            historyFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            historyFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            historyFlowLayoutPanel.Location = new System.Drawing.Point(14, 11);
+            historyFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            historyFlowLayoutPanel.Name = "historyFlowLayoutPanel";
+            historyFlowLayoutPanel.Size = new System.Drawing.Size(433, 24);
+            historyFlowLayoutPanel.TabIndex = 1;
+            //
+            // historyOpenResultButton
+            //
+            this.historyOpenResultButton.Location = new System.Drawing.Point(208, 0);
+            this.historyOpenResultButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyOpenResultButton.Name = "historyOpenResultButton";
+            this.historyOpenResultButton.Size = new System.Drawing.Size(75, 23);
+            this.historyOpenResultButton.TabIndex = 0;
+            this.historyOpenResultButton.Text = "열기";
+            this.historyOpenResultButton.UseVisualStyleBackColor = true;
+            this.historyOpenResultButton.Click += new System.EventHandler(this.HistoryOpenResultButton_Click);
+            //
+            // historyLoadButton
+            //
+            this.historyLoadButton.Location = new System.Drawing.Point(283, 0);
+            this.historyLoadButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyLoadButton.Name = "historyLoadButton";
+            this.historyLoadButton.Size = new System.Drawing.Size(75, 23);
+            this.historyLoadButton.TabIndex = 1;
+            this.historyLoadButton.Text = "불러오기";
+            this.historyLoadButton.UseVisualStyleBackColor = true;
+            this.historyLoadButton.Click += new System.EventHandler(this.HistoryLoadButton_Click);
+            //
+            // historyDeleteButton
+            //
+            this.historyDeleteButton.Location = new System.Drawing.Point(358, 0);
+            this.historyDeleteButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyDeleteButton.Name = "historyDeleteButton";
+            this.historyDeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.historyDeleteButton.TabIndex = 2;
+            this.historyDeleteButton.Text = "삭제";
+            this.historyDeleteButton.UseVisualStyleBackColor = true;
+            this.historyDeleteButton.Click += new System.EventHandler(this.HistoryDeleteButton_Click);
+            //
             // templatesMultiPanelPage
             //
             this.templatesMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1030,19 +1185,10 @@
             this.templatesMultiPanelPage.TabIndex = 0;
             this.templatesMultiPanelPage.Text = "템플릿 관리";
             //
-            // historyMultiPanelPage
-            //
-            this.historyMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.historyMultiPanelPage.Location = new System.Drawing.Point(0, 0);
-            this.historyMultiPanelPage.Name = "historyMultiPanelPage";
-            this.historyMultiPanelPage.Size = new System.Drawing.Size(461, 312);
-            this.historyMultiPanelPage.TabIndex = 0;
-            this.historyMultiPanelPage.Text = "PPT 제작 기록";
-            //
             // settingsMultiPanelPage
             //
-            this.settingsMultiPanelPage.Controls.Add(this.btnGithub);
-            this.settingsMultiPanelPage.Controls.Add(this.chkUseCache);
+            this.settingsMultiPanelPage.Controls.Add(this.updateButton);
+            this.settingsMultiPanelPage.Controls.Add(this.cleanCacheButton);
             this.settingsMultiPanelPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsMultiPanelPage.Location = new System.Drawing.Point(0, 0);
             this.settingsMultiPanelPage.Name = "settingsMultiPanelPage";
@@ -1050,31 +1196,25 @@
             this.settingsMultiPanelPage.TabIndex = 0;
             this.settingsMultiPanelPage.Text = "설정";
             //
-            // btnGithub
+            // updateButton
             //
-            this.btnGithub.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btnGithub.IconChar = FontAwesome.Sharp.IconChar.Github;
-            this.btnGithub.IconColor = System.Drawing.Color.Black;
-            this.btnGithub.IconSize = 24;
-            this.btnGithub.Location = new System.Drawing.Point(417, 24);
-            this.btnGithub.Name = "btnGithub";
-            this.btnGithub.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btnGithub.Rotation = 0D;
-            this.btnGithub.Size = new System.Drawing.Size(32, 32);
-            this.btnGithub.TabIndex = 2;
-            this.btnGithub.UseVisualStyleBackColor = true;
-            this.btnGithub.Click += new System.EventHandler(this.btnGithub_Click);
+            this.updateButton.Location = new System.Drawing.Point(25, 72);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(102, 35);
+            this.updateButton.TabIndex = 4;
+            this.updateButton.Text = "업데이트 확인";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             //
-            // chkUseCache
+            // cleanCacheButton
             //
-            this.chkUseCache.AutoSize = true;
-            this.chkUseCache.Location = new System.Drawing.Point(33, 33);
-            this.chkUseCache.Name = "chkUseCache";
-            this.chkUseCache.Size = new System.Drawing.Size(128, 16);
-            this.chkUseCache.TabIndex = 1;
-            this.chkUseCache.Text = "오프라인 캐시 사용";
-            this.chkUseCache.UseVisualStyleBackColor = true;
-            this.chkUseCache.CheckedChanged += new System.EventHandler(this.chkUseCache_CheckedChanged);
+            this.cleanCacheButton.Location = new System.Drawing.Point(25, 24);
+            this.cleanCacheButton.Name = "cleanCacheButton";
+            this.cleanCacheButton.Size = new System.Drawing.Size(102, 34);
+            this.cleanCacheButton.TabIndex = 3;
+            this.cleanCacheButton.Text = "캐시 지우기";
+            this.cleanCacheButton.UseVisualStyleBackColor = true;
+            this.cleanCacheButton.Click += new System.EventHandler(this.CleanCacheButton_Click);
             //
             // navBottomFlowLayoutPanel
             //
@@ -1109,6 +1249,19 @@
             this.toolTip.SetToolTip(this.settingsNav, "설정");
             this.settingsNav.UseVisualStyleBackColor = false;
             this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
+            //
+            // autoOpenCheckBox
+            //
+            this.autoOpenCheckBox.AutoSize = true;
+            this.autoOpenCheckBox.Checked = true;
+            this.autoOpenCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoOpenCheckBox.Location = new System.Drawing.Point(85, 3);
+            this.autoOpenCheckBox.Name = "autoOpenCheckBox";
+            this.autoOpenCheckBox.Size = new System.Drawing.Size(120, 16);
+            this.autoOpenCheckBox.TabIndex = 3;
+            this.autoOpenCheckBox.Text = "완료 후 자동 열기";
+            this.autoOpenCheckBox.UseVisualStyleBackColor = true;
+            this.autoOpenCheckBox.CheckedChanged += new System.EventHandler(this.AutoOpenCheckBox_CheckedChanged);
             //
             // MainForm
             //
@@ -1159,10 +1312,13 @@
             versesTableLayoutPanel.ResumeLayout(false);
             versesTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(versesIconPictureBox)).EndInit();
+            this.historyMultiPanelPage.ResumeLayout(false);
+            historyTableLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.historyDataGridView)).EndInit();
+            historyFlowLayoutPanel.ResumeLayout(false);
+            historyFlowLayoutPanel.PerformLayout();
             this.settingsMultiPanelPage.ResumeLayout(false);
-            this.settingsMultiPanelPage.PerformLayout();
             navBottomFlowLayoutPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.biblesBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1181,16 +1337,15 @@
         private System.Windows.Forms.CheckBox buildFragmentCheckBox;
         private System.Windows.Forms.ComboBox sourceComboBox;
         private System.Windows.Forms.ComboBox bibleComboBox;
-        private System.Windows.Forms.CheckBox chkUseCache;
         private FontAwesome.Sharp.IconButton buildNav;
-        private MultiPanel mainMultiPanel;
-        private MultiPanelPage historyMultiPanelPage;
-        private MultiPanelPage templatesMultiPanelPage;
-        private MultiPanelPage settingsMultiPanelPage;
+        private Bible2PPT.Controls.MultiPanel mainMultiPanel;
+        private Bible2PPT.Controls.MultiPanelPage historyMultiPanelPage;
+        private Bible2PPT.Controls.MultiPanelPage templatesMultiPanelPage;
+        private Bible2PPT.Controls.MultiPanelPage settingsMultiPanelPage;
         private FontAwesome.Sharp.IconButton historyNav;
         private FontAwesome.Sharp.IconButton settingsNav;
         private FontAwesome.Sharp.IconButton templatesNav;
-        private MultiPanelPage buildMultiPanelPage;
+        private Bible2PPT.Controls.MultiPanelPage buildMultiPanelPage;
         private FontAwesome.Sharp.IconButton biblesRemoveIconButton;
         private FontAwesome.Sharp.IconButton biblesAddIconButton;
         private FontAwesome.Sharp.IconButton biblesDownIconButton;
@@ -1200,12 +1355,22 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripStatusLabel builderToolStripStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar builderToolStripProgressBar;
-        private FontAwesome.Sharp.IconButton btnGithub;
         private System.Windows.Forms.SplitContainer buildSplitContainer;
         private System.Windows.Forms.DataGridView biblesDataGridView;
-        private System.Windows.Forms.BindingSource biblesBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn biblesSourceDataGridViewColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn biblesBibleDataGridViewColumn;
+        private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.Button cleanCacheButton;
+        private System.Windows.Forms.DataGridView historyDataGridView;
+        private System.Windows.Forms.Button historyOpenResultButton;
+        private System.Windows.Forms.Button historyLoadButton;
+        private System.Windows.Forms.Button historyDeleteButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyCreatedAtColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyQueryStringColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyBiblesColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn historySplitChaptersIntoFileColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn historyJobProgress;
+        private System.Windows.Forms.CheckBox autoOpenCheckBox;
     }
 }
 

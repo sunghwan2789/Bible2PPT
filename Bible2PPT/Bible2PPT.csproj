@@ -64,18 +64,23 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyIconForm.cs">
+    <Compile Include="Controls\AssemblyIconForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BibleDb.cs" />
     <Compile Include="Bibles\BibleBase.cs" />
     <Compile Include="Bibles\Bible.cs" />
     <Compile Include="Bibles\BookAliases.cs" />
@@ -87,6 +92,9 @@
     <Compile Include="Bibles\Sources\Source.cs" />
     <Compile Include="Bibles\Sources\GoodtvBible.cs" />
     <Compile Include="BinaryConfig.cs" />
+    <Compile Include="Data\BibleContext.cs" />
+    <Compile Include="Data\BibleContextDbConfiguration.cs" />
+    <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,7 +106,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IndexKeyAttribute.cs" />
     <Compile Include="MainForm.Build.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
@@ -115,15 +122,21 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MultiPanel.cs">
+    <Compile Include="Controls\MultiPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MultiPanelPage.cs">
+    <Compile Include="Controls\MultiPanelPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MultiPanelPagesCollection.cs" />
-    <Compile Include="PPTBuilder.cs" />
-    <Compile Include="PPTBuilderWork.cs" />
+    <Compile Include="Controls\MultiPanelPagesCollection.cs" />
+    <Compile Include="PPT\Builder.cs" />
+    <Compile Include="PPT\Job.cs" />
+    <Compile Include="PPT\JobBible.cs" />
+    <Compile Include="PPT\JobCompletedEventArgs.cs" />
+    <Compile Include="PPT\JobQueuedEventArgs.cs" />
+    <Compile Include="PPT\JobProgressEventArgs.cs" />
+    <Compile Include="PPT\JobManager.cs" />
+    <Compile Include="PPT\PPTManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BibleQuery.cs" />
@@ -131,6 +144,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SplashForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplashForm.Designer.cs">
+      <DependentUpon>SplashForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TemplateTextOptions.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -140,6 +159,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplashForm.resx">
+      <DependentUpon>SplashForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Template.pptx" />
   </ItemGroup>
@@ -202,12 +225,18 @@
     <PackageReference Include="Microsoft.Bcl.Async">
       <Version>1.0.168</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Database.Isam">
-      <Version>1.9.4</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
     </PackageReference>
+    <PackageReference Include="SQLite.CodeFirst">
+      <Version>1.5.2.28</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.111</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

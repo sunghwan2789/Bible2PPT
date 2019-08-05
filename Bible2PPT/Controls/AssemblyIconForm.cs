@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Bible2PPT
+namespace Bible2PPT.Controls
 {
     public class AssemblyIconForm : Form
     {
