@@ -13,15 +13,11 @@ namespace Bible2PPT.PPT
 {
     class PPTManager : IDisposable
     {
-        private readonly PowerPoint.Application POWERPNT;
-
         public Job Job { get; }
         public string Output { get; }
 
         private readonly PowerPoint.Presentation WorkingPPT;
         private readonly PowerPoint.Slide TemplateSlide;
-
-        public PPTManager(PowerPoint.Application POWERPNT, Job job) : this(POWERPNT, job, Path.GetTempFileName() + ".pptx") { }
 
         public PPTManager(PowerPoint.Application POWERPNT, Job job, string output)
         {
