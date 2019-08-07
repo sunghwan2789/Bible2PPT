@@ -62,9 +62,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.FlowLayoutPanel historyFlowLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
-            this.buildNav = new FontAwesome.Sharp.IconButton();
-            this.historyNav = new FontAwesome.Sharp.IconButton();
-            this.templatesNav = new FontAwesome.Sharp.IconButton();
+            this.buildNavButton = new FontAwesome.Sharp.IconButton();
+            this.historyNavButton = new FontAwesome.Sharp.IconButton();
+            this.templatesNavButton = new FontAwesome.Sharp.IconButton();
             this.builderToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.builderToolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.mainMultiPanel = new Bible2PPT.Controls.MultiPanel();
@@ -81,11 +81,11 @@
             this.bibleComboBox = new System.Windows.Forms.ComboBox();
             this.sourceComboBox = new System.Windows.Forms.ComboBox();
             this.templateBookAbbrComboBox = new System.Windows.Forms.ComboBox();
-            this.templateChaperNumberComboBox = new System.Windows.Forms.ComboBox();
+            this.templateChapterNumberComboBox = new System.Windows.Forms.ComboBox();
             this.templateEditButton = new System.Windows.Forms.Button();
             this.templateBookNameComboBox = new System.Windows.Forms.ComboBox();
             this.buildRightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.buildFragmentCheckBox = new System.Windows.Forms.CheckBox();
+            this.buildSplitChaptersIntoFilesCheckBox = new System.Windows.Forms.CheckBox();
             this.buildButton = new System.Windows.Forms.Button();
             this.versesTextBox = new System.Windows.Forms.TextBox();
             this.booksSearchTextBox = new System.Windows.Forms.TextBox();
@@ -105,7 +105,7 @@
             this.settingsMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
             this.updateButton = new System.Windows.Forms.Button();
             this.cleanCacheButton = new System.Windows.Forms.Button();
-            this.settingsNav = new FontAwesome.Sharp.IconButton();
+            this.settingsNavButton = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.autoOpenCheckBox = new System.Windows.Forms.CheckBox();
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -197,9 +197,9 @@
             // navTopFlowLayoutPanel
             // 
             navTopFlowLayoutPanel.BackColor = System.Drawing.SystemColors.MenuBar;
-            navTopFlowLayoutPanel.Controls.Add(this.buildNav);
-            navTopFlowLayoutPanel.Controls.Add(this.historyNav);
-            navTopFlowLayoutPanel.Controls.Add(this.templatesNav);
+            navTopFlowLayoutPanel.Controls.Add(this.buildNavButton);
+            navTopFlowLayoutPanel.Controls.Add(this.historyNavButton);
+            navTopFlowLayoutPanel.Controls.Add(this.templatesNavButton);
             navTopFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             navTopFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             navTopFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
@@ -208,72 +208,72 @@
             navTopFlowLayoutPanel.Size = new System.Drawing.Size(48, 264);
             navTopFlowLayoutPanel.TabIndex = 0;
             // 
-            // buildNav
+            // buildNavButton
             // 
-            this.buildNav.BackColor = System.Drawing.SystemColors.Menu;
-            this.buildNav.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buildNav.FlatAppearance.BorderSize = 0;
-            this.buildNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buildNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.buildNav.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.buildNav.IconChar = FontAwesome.Sharp.IconChar.Desktop;
-            this.buildNav.IconColor = System.Drawing.SystemColors.MenuText;
-            this.buildNav.IconSize = 36;
-            this.buildNav.Location = new System.Drawing.Point(0, 0);
-            this.buildNav.Margin = new System.Windows.Forms.Padding(0);
-            this.buildNav.Name = "buildNav";
-            this.buildNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.buildNav.Rotation = 0D;
-            this.buildNav.Size = new System.Drawing.Size(48, 48);
-            this.buildNav.TabIndex = 1;
-            this.toolTip.SetToolTip(this.buildNav, "PPT 만들기");
-            this.buildNav.UseVisualStyleBackColor = false;
-            this.buildNav.Click += new System.EventHandler(this.Nav_Click);
+            this.buildNavButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.buildNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buildNavButton.FlatAppearance.BorderSize = 0;
+            this.buildNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buildNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.buildNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.buildNavButton.IconChar = FontAwesome.Sharp.IconChar.Desktop;
+            this.buildNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.buildNavButton.IconSize = 36;
+            this.buildNavButton.Location = new System.Drawing.Point(0, 0);
+            this.buildNavButton.Margin = new System.Windows.Forms.Padding(0);
+            this.buildNavButton.Name = "buildNavButton";
+            this.buildNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.buildNavButton.Rotation = 0D;
+            this.buildNavButton.Size = new System.Drawing.Size(48, 48);
+            this.buildNavButton.TabIndex = 1;
+            this.toolTip.SetToolTip(this.buildNavButton, "PPT 만들기");
+            this.buildNavButton.UseVisualStyleBackColor = false;
+            this.buildNavButton.Click += new System.EventHandler(this.Nav_Click);
             // 
-            // historyNav
+            // historyNavButton
             // 
-            this.historyNav.BackColor = System.Drawing.SystemColors.Menu;
-            this.historyNav.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.historyNav.FlatAppearance.BorderSize = 0;
-            this.historyNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.historyNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.historyNav.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.historyNav.IconChar = FontAwesome.Sharp.IconChar.History;
-            this.historyNav.IconColor = System.Drawing.SystemColors.MenuText;
-            this.historyNav.IconSize = 36;
-            this.historyNav.Location = new System.Drawing.Point(0, 48);
-            this.historyNav.Margin = new System.Windows.Forms.Padding(0);
-            this.historyNav.Name = "historyNav";
-            this.historyNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.historyNav.Rotation = 0D;
-            this.historyNav.Size = new System.Drawing.Size(48, 48);
-            this.historyNav.TabIndex = 2;
-            this.toolTip.SetToolTip(this.historyNav, "PPT 제작 기록");
-            this.historyNav.UseVisualStyleBackColor = false;
-            this.historyNav.Click += new System.EventHandler(this.Nav_Click);
+            this.historyNavButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.historyNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.historyNavButton.FlatAppearance.BorderSize = 0;
+            this.historyNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.historyNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.historyNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.historyNavButton.IconChar = FontAwesome.Sharp.IconChar.History;
+            this.historyNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.historyNavButton.IconSize = 36;
+            this.historyNavButton.Location = new System.Drawing.Point(0, 48);
+            this.historyNavButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyNavButton.Name = "historyNavButton";
+            this.historyNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.historyNavButton.Rotation = 0D;
+            this.historyNavButton.Size = new System.Drawing.Size(48, 48);
+            this.historyNavButton.TabIndex = 2;
+            this.toolTip.SetToolTip(this.historyNavButton, "PPT 제작 기록");
+            this.historyNavButton.UseVisualStyleBackColor = false;
+            this.historyNavButton.Click += new System.EventHandler(this.Nav_Click);
             // 
-            // templatesNav
+            // templatesNavButton
             // 
-            this.templatesNav.BackColor = System.Drawing.SystemColors.Menu;
-            this.templatesNav.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.templatesNav.FlatAppearance.BorderSize = 0;
-            this.templatesNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.templatesNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.templatesNav.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.templatesNav.IconChar = FontAwesome.Sharp.IconChar.Images;
-            this.templatesNav.IconColor = System.Drawing.SystemColors.MenuText;
-            this.templatesNav.IconSize = 36;
-            this.templatesNav.Location = new System.Drawing.Point(0, 96);
-            this.templatesNav.Margin = new System.Windows.Forms.Padding(0);
-            this.templatesNav.Name = "templatesNav";
-            this.templatesNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.templatesNav.Rotation = 0D;
-            this.templatesNav.Size = new System.Drawing.Size(48, 48);
-            this.templatesNav.TabIndex = 3;
-            this.toolTip.SetToolTip(this.templatesNav, "템플릿 관리");
-            this.templatesNav.UseVisualStyleBackColor = false;
-            this.templatesNav.Visible = false;
-            this.templatesNav.Click += new System.EventHandler(this.Nav_Click);
+            this.templatesNavButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.templatesNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.templatesNavButton.FlatAppearance.BorderSize = 0;
+            this.templatesNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.templatesNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.templatesNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.templatesNavButton.IconChar = FontAwesome.Sharp.IconChar.Images;
+            this.templatesNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.templatesNavButton.IconSize = 36;
+            this.templatesNavButton.Location = new System.Drawing.Point(0, 96);
+            this.templatesNavButton.Margin = new System.Windows.Forms.Padding(0);
+            this.templatesNavButton.Name = "templatesNavButton";
+            this.templatesNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.templatesNavButton.Rotation = 0D;
+            this.templatesNavButton.Size = new System.Drawing.Size(48, 48);
+            this.templatesNavButton.TabIndex = 3;
+            this.toolTip.SetToolTip(this.templatesNavButton, "템플릿 관리");
+            this.templatesNavButton.UseVisualStyleBackColor = false;
+            this.templatesNavButton.Visible = false;
+            this.templatesNavButton.Click += new System.EventHandler(this.Nav_Click);
             // 
             // builderStatusStrip
             // 
@@ -710,7 +710,7 @@
             templateChaperNumberTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             templateChaperNumberTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             templateChaperNumberTableLayoutPanel.Controls.Add(templateChaperNumberLabel, 0, 0);
-            templateChaperNumberTableLayoutPanel.Controls.Add(this.templateChaperNumberComboBox, 1, 0);
+            templateChaperNumberTableLayoutPanel.Controls.Add(this.templateChapterNumberComboBox, 1, 0);
             templateChaperNumberTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             templateChaperNumberTableLayoutPanel.Location = new System.Drawing.Point(0, 271);
             templateChaperNumberTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -730,20 +730,20 @@
             templateChaperNumberLabel.TabIndex = 0;
             templateChaperNumberLabel.Text = "장 번호";
             // 
-            // templateChaperNumberComboBox
+            // templateChapterNumberComboBox
             // 
-            this.templateChaperNumberComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.templateChaperNumberComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.templateChaperNumberComboBox.Items.AddRange(new object[] {
+            this.templateChapterNumberComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templateChapterNumberComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.templateChapterNumberComboBox.Items.AddRange(new object[] {
             "항상 보이기",
             "각 장의 첫 절에만 보이기"});
-            this.templateChaperNumberComboBox.Location = new System.Drawing.Point(60, 0);
-            this.templateChaperNumberComboBox.Margin = new System.Windows.Forms.Padding(0);
-            this.templateChaperNumberComboBox.Name = "templateChaperNumberComboBox";
-            this.templateChaperNumberComboBox.Size = new System.Drawing.Size(178, 20);
-            this.templateChaperNumberComboBox.TabIndex = 1;
-            this.toolTip.SetToolTip(this.templateChaperNumberComboBox, "장 번호 표시 설정");
-            this.templateChaperNumberComboBox.SelectedIndexChanged += new System.EventHandler(this.TemplateChapterNumberComboBox_SelectedIndexChanged);
+            this.templateChapterNumberComboBox.Location = new System.Drawing.Point(60, 0);
+            this.templateChapterNumberComboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.templateChapterNumberComboBox.Name = "templateChapterNumberComboBox";
+            this.templateChapterNumberComboBox.Size = new System.Drawing.Size(178, 20);
+            this.templateChapterNumberComboBox.TabIndex = 1;
+            this.toolTip.SetToolTip(this.templateChapterNumberComboBox, "장 번호 표시 설정");
+            this.templateChapterNumberComboBox.SelectedIndexChanged += new System.EventHandler(this.TemplateChapterNumberComboBox_SelectedIndexChanged);
             // 
             // templateTableLayoutPanel
             // 
@@ -848,7 +848,7 @@
             // 
             this.buildRightTableLayoutPanel.ColumnCount = 1;
             this.buildRightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.buildRightTableLayoutPanel.Controls.Add(this.buildFragmentCheckBox, 0, 5);
+            this.buildRightTableLayoutPanel.Controls.Add(this.buildSplitChaptersIntoFilesCheckBox, 0, 5);
             this.buildRightTableLayoutPanel.Controls.Add(this.buildButton, 0, 6);
             this.buildRightTableLayoutPanel.Controls.Add(this.versesTextBox, 0, 3);
             this.buildRightTableLayoutPanel.Controls.Add(booksTableLayoutPanel, 0, 0);
@@ -868,16 +868,16 @@
             this.buildRightTableLayoutPanel.Size = new System.Drawing.Size(184, 292);
             this.buildRightTableLayoutPanel.TabIndex = 0;
             // 
-            // buildFragmentCheckBox
+            // buildSplitChaptersIntoFilesCheckBox
             // 
-            this.buildFragmentCheckBox.AutoSize = true;
-            this.buildFragmentCheckBox.Location = new System.Drawing.Point(3, 244);
-            this.buildFragmentCheckBox.Name = "buildFragmentCheckBox";
-            this.buildFragmentCheckBox.Size = new System.Drawing.Size(128, 16);
-            this.buildFragmentCheckBox.TabIndex = 2;
-            this.buildFragmentCheckBox.Text = "장별로 PPT 나누기";
-            this.buildFragmentCheckBox.UseVisualStyleBackColor = true;
-            this.buildFragmentCheckBox.CheckedChanged += new System.EventHandler(this.BuildFragmentCheckBox_CheckedChanged);
+            this.buildSplitChaptersIntoFilesCheckBox.AutoSize = true;
+            this.buildSplitChaptersIntoFilesCheckBox.Location = new System.Drawing.Point(3, 244);
+            this.buildSplitChaptersIntoFilesCheckBox.Name = "buildSplitChaptersIntoFilesCheckBox";
+            this.buildSplitChaptersIntoFilesCheckBox.Size = new System.Drawing.Size(128, 16);
+            this.buildSplitChaptersIntoFilesCheckBox.TabIndex = 2;
+            this.buildSplitChaptersIntoFilesCheckBox.Text = "장별로 PPT 나누기";
+            this.buildSplitChaptersIntoFilesCheckBox.UseVisualStyleBackColor = true;
+            this.buildSplitChaptersIntoFilesCheckBox.CheckedChanged += new System.EventHandler(this.BuildFragmentCheckBox_CheckedChanged);
             // 
             // buildButton
             // 
@@ -1235,7 +1235,7 @@
             // navBottomFlowLayoutPanel
             // 
             navBottomFlowLayoutPanel.BackColor = System.Drawing.SystemColors.MenuBar;
-            navBottomFlowLayoutPanel.Controls.Add(this.settingsNav);
+            navBottomFlowLayoutPanel.Controls.Add(this.settingsNavButton);
             navBottomFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             navBottomFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
             navBottomFlowLayoutPanel.Location = new System.Drawing.Point(0, 264);
@@ -1244,27 +1244,27 @@
             navBottomFlowLayoutPanel.Size = new System.Drawing.Size(48, 48);
             navBottomFlowLayoutPanel.TabIndex = 1;
             // 
-            // settingsNav
+            // settingsNavButton
             // 
-            this.settingsNav.BackColor = System.Drawing.SystemColors.Menu;
-            this.settingsNav.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.settingsNav.FlatAppearance.BorderSize = 0;
-            this.settingsNav.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsNav.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.settingsNav.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.settingsNav.IconChar = FontAwesome.Sharp.IconChar.Cog;
-            this.settingsNav.IconColor = System.Drawing.SystemColors.MenuText;
-            this.settingsNav.IconSize = 36;
-            this.settingsNav.Location = new System.Drawing.Point(0, 0);
-            this.settingsNav.Margin = new System.Windows.Forms.Padding(0);
-            this.settingsNav.Name = "settingsNav";
-            this.settingsNav.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.settingsNav.Rotation = 0D;
-            this.settingsNav.Size = new System.Drawing.Size(48, 48);
-            this.settingsNav.TabIndex = 0;
-            this.toolTip.SetToolTip(this.settingsNav, "설정");
-            this.settingsNav.UseVisualStyleBackColor = false;
-            this.settingsNav.Click += new System.EventHandler(this.Nav_Click);
+            this.settingsNavButton.BackColor = System.Drawing.SystemColors.Menu;
+            this.settingsNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.settingsNavButton.FlatAppearance.BorderSize = 0;
+            this.settingsNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settingsNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.settingsNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.settingsNavButton.IconChar = FontAwesome.Sharp.IconChar.Cog;
+            this.settingsNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.settingsNavButton.IconSize = 36;
+            this.settingsNavButton.Location = new System.Drawing.Point(0, 0);
+            this.settingsNavButton.Margin = new System.Windows.Forms.Padding(0);
+            this.settingsNavButton.Name = "settingsNavButton";
+            this.settingsNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.settingsNavButton.Rotation = 0D;
+            this.settingsNavButton.Size = new System.Drawing.Size(48, 48);
+            this.settingsNavButton.TabIndex = 0;
+            this.toolTip.SetToolTip(this.settingsNavButton, "설정");
+            this.settingsNavButton.UseVisualStyleBackColor = false;
+            this.settingsNavButton.Click += new System.EventHandler(this.Nav_Click);
             // 
             // autoOpenCheckBox
             // 
@@ -1345,22 +1345,22 @@
         private System.Windows.Forms.ComboBox templateBookAbbrComboBox;
         private System.Windows.Forms.Button templateEditButton;
         private System.Windows.Forms.TextBox versesTextBox;
-        private System.Windows.Forms.ComboBox templateChaperNumberComboBox;
+        private System.Windows.Forms.ComboBox templateChapterNumberComboBox;
         private System.Windows.Forms.Button buildButton;
         private System.Windows.Forms.ComboBox templateBookNameComboBox;
         private System.Windows.Forms.ListView booksListView;
         private System.Windows.Forms.TextBox booksSearchTextBox;
-        private System.Windows.Forms.CheckBox buildFragmentCheckBox;
+        private System.Windows.Forms.CheckBox buildSplitChaptersIntoFilesCheckBox;
         private System.Windows.Forms.ComboBox sourceComboBox;
         private System.Windows.Forms.ComboBox bibleComboBox;
-        private FontAwesome.Sharp.IconButton buildNav;
+        private FontAwesome.Sharp.IconButton buildNavButton;
         private Bible2PPT.Controls.MultiPanel mainMultiPanel;
         private Bible2PPT.Controls.MultiPanelPage historyMultiPanelPage;
         private Bible2PPT.Controls.MultiPanelPage templatesMultiPanelPage;
         private Bible2PPT.Controls.MultiPanelPage settingsMultiPanelPage;
-        private FontAwesome.Sharp.IconButton historyNav;
-        private FontAwesome.Sharp.IconButton settingsNav;
-        private FontAwesome.Sharp.IconButton templatesNav;
+        private FontAwesome.Sharp.IconButton historyNavButton;
+        private FontAwesome.Sharp.IconButton settingsNavButton;
+        private FontAwesome.Sharp.IconButton templatesNavButton;
         private Bible2PPT.Controls.MultiPanelPage buildMultiPanelPage;
         private FontAwesome.Sharp.IconButton biblesRemoveIconButton;
         private FontAwesome.Sharp.IconButton biblesAddIconButton;

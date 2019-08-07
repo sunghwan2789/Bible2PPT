@@ -30,12 +30,12 @@ namespace Bible2PPT.Bibles.Sources
             new Bible
             {
                 OnlineId = "rvsn",
-                Version = "개역개정",
+                Name = "개역개정",
             },
             new Bible
             {
                 OnlineId = "ezsn",
-                Version = "쉬운성경",
+                Name = "쉬운성경",
             },
         };
 
@@ -46,8 +46,8 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(match => new Book
             {
                 OnlineId = match.Groups[1].Value,
-                Title = match.Groups[3].Value,
-                ShortTitle = match.Groups[1].Value,
+                Name = match.Groups[3].Value,
+                Abbreviation = match.Groups[1].Value,
                 ChapterCount = int.Parse(match.Groups[2].Value),
             }).ToList();
         }

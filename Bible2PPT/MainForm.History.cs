@@ -121,7 +121,7 @@ namespace Bible2PPT
             {
                 case List<Bible> bibles:
                 {
-                    e.Value = string.Join(", ", bibles.Select(i => $"{i.Version}({i.Source?.Name})"));
+                    e.Value = string.Join(", ", bibles.Select(i => $"{i.Name}({i.Source?.Name})"));
                     e.FormattingApplied = true;
                     break;
                 }
@@ -181,12 +181,12 @@ namespace Bible2PPT
             }
 
             versesTextBox.Text = job.QueryString;
-            buildFragmentCheckBox.Checked = job.SplitChaptersIntoFiles;
+            buildSplitChaptersIntoFilesCheckBox.Checked = job.SplitChaptersIntoFiles;
             templateBookNameComboBox.SelectedItem = (int)job.TemplateBookNameOption;
             templateBookAbbrComboBox.SelectedItem = (int)job.TemplateBookAbbrOption;
-            templateChaperNumberComboBox.SelectedItem = (int)job.TemplateChapterNumberOption;
+            templateChapterNumberComboBox.SelectedItem = (int)job.TemplateChapterNumberOption;
 
-            buildNav.PerformClick();
+            buildNavButton.PerformClick();
             versesTextBox.Focus();
 
         }

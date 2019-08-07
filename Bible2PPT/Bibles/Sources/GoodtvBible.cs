@@ -30,7 +30,7 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(i => new Bible
             {
                 OnlineId = i.Groups[1].Value,
-                Version = i.Groups[2].Value,
+                Name = i.Groups[2].Value,
             }).ToList();
         }
 
@@ -60,7 +60,7 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(i => new Book
             {
                 OnlineId = i.Groups[1].Value,
-                Title = i.Groups[2].Value,
+                Name = i.Groups[2].Value,
                 ChapterCount = int.Parse(i.Groups[3].Value),
             }).ToList();
         }

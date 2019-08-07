@@ -241,7 +241,7 @@ namespace Bible2PPT.PPT
 
                 foreach (var query in queries)
                 {
-                    var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.ShortTitle == query.BibleId)).ToList();
+                    var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.Abbreviation == query.BibleId)).ToList();
 
                     // 해당 책이 있는 성경에서 해당 책을 대표로 사용
                     var mainBook = targetEachBook.FirstOrDefault(i => i != null);
@@ -311,7 +311,7 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
-                        var output = Path.Combine(job.OutputDestination, mainBook.Title, mainChapter.Number.ToString(@"000\.pptx"));
+                        var output = Path.Combine(job.OutputDestination, mainBook.Name, mainChapter.Number.ToString(@"000\.pptx"));
                         CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                         using (var ppt = new PPTManager(POWERPNT, job, output))
                         {

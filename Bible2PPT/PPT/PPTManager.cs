@@ -84,8 +84,8 @@ namespace Bible2PPT.PPT
                 {
                     var text = textShape.Text;
                     text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
-                    text = AddSuffix(text, "STITLE", book.ShortTitle, Job.TemplateBookAbbrOption);
-                    text = AddSuffix(text, "TITLE", book.Title, Job.TemplateBookNameOption);
+                    text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
+                    text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
                     //text = text.Replace("[CPAS]", $"{startVerseNumber}");
                     //text = text.Replace("[CPAE]", $"{endVerseNumber}");
                     text = text.Replace("[PARA]", $"{mainVerse.Number}");
