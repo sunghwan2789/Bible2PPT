@@ -6,25 +6,26 @@ using System.Text.RegularExpressions;
 
 namespace Bible2PPT
 {
-    class BibleQuery
+    class VerseQuery
     {
-        public string BibleId { get; set; }
+        public string BookAbbreviation { get; set; }
         public int StartChapterNumber { get; set; } = 1;
         public int StartVerseNumber { get; set; } = 1;
         public int? EndChapterNumber { get; set; }
         public int? EndVerseNumber { get; set; }
 
-        public static BibleQuery ParseQuery(string s)
+        public static VerseQuery Parse(string s)
         {
-            var m = Regex.Match(s, @"(?<bible>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?<chapTo>\d+)(?::(?<paraTo>\d+))?)?)?");
-            if (!m.Success)
+            // TODO: 대표 책 이름 약자 수정 기능
+            var m = Regex.Match(s, @"(?<book>[가-힣]+)(?<range>(?<chapFrom>\d+)(?::(?<paraFrom>\d+))?(?:-(?<chapTo>\d+)(?::(?<paraTo>\d+))?)?)?");
+            if (!m.Success || m.Value != s)
             {
                 throw new FormatException($@"""{s}""은 잘못된 형식입니다.");
             }
 
-            var q = new BibleQuery
+            var q = new VerseQuery
             {
-                BibleId = m.Groups["bible"].Value
+                BookAbbreviation = m.Groups["book"].Value
             };
 
             // PPT 범위를 전체로 설정했을 때

@@ -231,7 +231,7 @@ namespace Bible2PPT.PPT
             var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
             var sync = new AutoResetEvent(false);
 
-            var queries = job.QueryString.Split().Select(BibleQuery.ParseQuery).ToList();
+            var queries = job.QueryString.Split().Select(VerseQuery.Parse).ToList();
             var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
             OnJobProgress(e);
 
@@ -241,7 +241,7 @@ namespace Bible2PPT.PPT
 
                 foreach (var query in queries)
                 {
-                    var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.Abbreviation == query.BibleId)).ToList();
+                    var targetEachBook = eachBooks.Select(books => books.FirstOrDefault(book => book.Abbreviation == query.BookAbbreviation)).ToList();
 
                     // 해당 책이 있는 성경에서 해당 책을 대표로 사용
                     var mainBook = targetEachBook.FirstOrDefault(i => i != null);
