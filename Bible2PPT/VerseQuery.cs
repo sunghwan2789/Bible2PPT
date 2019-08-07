@@ -37,7 +37,8 @@ namespace Bible2PPT
 
             // PPT 범위를 한 장으로 설정했을 때
             // 예) 창1       = 창세기 1장 전체
-            q.EndChapterNumber = q.StartChapterNumber = Convert.ToInt32(m.Groups["chapFrom"].Value);
+            q.StartChapterNumber = int.Parse(m.Groups["chapFrom"].Value);
+            q.EndChapterNumber = q.StartChapterNumber;
             if (string.IsNullOrEmpty(m.Groups["paraFrom"].Value))
             {
                 if (string.IsNullOrEmpty(m.Groups["chapTo"].Value))
@@ -47,7 +48,7 @@ namespace Bible2PPT
 
                 // PPT 범위를 여러 장으로 설정했을 때
                 // 예) 롬1-3     = 로마서 1장 1절 - 3장 전체
-                q.EndChapterNumber = Convert.ToInt32(m.Groups["chapTo"].Value);
+                q.EndChapterNumber = int.Parse(m.Groups["chapTo"].Value);
                 if (string.IsNullOrEmpty(m.Groups["paraTo"].Value))
                 {
                     return q;
@@ -55,13 +56,14 @@ namespace Bible2PPT
 
                 // PPT 범위를 여러 장과 여러 절을 설정했을 때
                 // 예) 레1-3:9   = 레위기 1장 1절 - 3장 9절
-                q.EndVerseNumber = Convert.ToInt32(m.Groups["paraTo"].Value);
+                q.EndVerseNumber = int.Parse(m.Groups["paraTo"].Value);
                 return q;
             }
 
             // PPT 범위를 한 절로 설정했을 때
             // 예) 전1:3     = 전도서 1장 3절
-            q.EndVerseNumber = q.StartVerseNumber = Convert.ToInt32(m.Groups["paraFrom"].Value);
+            q.StartVerseNumber = int.Parse(m.Groups["paraFrom"].Value);
+            q.EndVerseNumber = q.StartVerseNumber;
             if (string.IsNullOrEmpty(m.Groups["chapTo"].Value))
             {
                 return q;
@@ -71,14 +73,14 @@ namespace Bible2PPT
             // 예) 스1:3-9   = 에스라 1장 3절 - 1장 9절
             if (string.IsNullOrEmpty(m.Groups["paraTo"].Value))
             {
-                q.EndVerseNumber = Convert.ToInt32(m.Groups["chapTo"].Value);
+                q.EndVerseNumber = int.Parse(m.Groups["chapTo"].Value);
                 return q;
             }
 
             // PPT 범위를 여러 장에 여러 절로 설정했을 때
             // 예) 사1:3-3:9 = 이사야 1장 3절 - 3장 9절
-            q.EndChapterNumber = Convert.ToInt32(m.Groups["chapTo"].Value);
-            q.EndVerseNumber = Convert.ToInt32(m.Groups["paraTo"].Value);
+            q.EndChapterNumber = int.Parse(m.Groups["chapTo"].Value);
+            q.EndVerseNumber = int.Parse(m.Groups["paraTo"].Value);
             return q;
         }
     }
