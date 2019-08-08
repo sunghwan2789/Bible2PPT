@@ -65,13 +65,13 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
-            Enumerable.Range(1, book.ChapterCount)
+        protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
+            TaskEx.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
                     OnlineId = $"{i}",
                     Number = i,
-                }).ToList();
+                }).ToList());
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
