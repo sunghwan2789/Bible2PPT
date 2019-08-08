@@ -29,19 +29,15 @@ namespace Bible2PPT
             // SplitContainer의 특성에 따라 값 다시 설정
             buildSplitContainer.SplitterWidth = 13;
 
+            // 이전에 선택한 성경 중에서 성경 소스가 살아있는 성경만 불러오기
             using (var db = new BibleContext())
             {
                 foreach (var bibleId in AppConfig.Context.BibleToBuild)
                 {
                     var bible = db.Bibles.Find(bibleId);
-                    if (bible != null)
+                    if (bible != null && bible.Source != null)
                     {
-                        var source = Source.AvailableSources.FirstOrDefault(i => i.Id == bible.SourceId);
-                        if (source != null)
-                        {
-                            bible.Source = source;
-                            biblesToBuild.Add(bible);
-                        }
+                        biblesToBuild.Add(bible);
                     }
                 }
             }

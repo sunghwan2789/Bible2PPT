@@ -35,7 +35,6 @@ namespace Bible2PPT
                     .Include(w => w.JobBibles.Select(wb => wb.Bible))
                     .ToList())
                 {
-                    job.Bibles.ForEach(bible => bible.Source = Source.AvailableSources.FirstOrDefault(source => source.Id == bible.SourceId));
                     jobHistory.Insert(0, job);
                 }
             }
