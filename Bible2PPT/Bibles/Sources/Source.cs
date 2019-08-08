@@ -125,16 +125,8 @@ namespace Bible2PPT.Bibles.Sources
 
         public async Task<List<Bible>> GetBiblesAsync()
         {
-            List<Bible> bibles;
-            // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
-            if (!AppConfig.Context.UseCache)
-            {
-                bibles = await GetBiblesOnlineAsync();
-                bibles.ForEach(LinkForeigns);
-                return bibles;
-            }
             // 캐시가 있으면 사용
-            bibles = GetBiblesCached();
+            var bibles = GetBiblesCached();
             bibles.ForEach(LinkForeigns);
             if (bibles.Any())
             {
@@ -149,16 +141,8 @@ namespace Bible2PPT.Bibles.Sources
 
         public async Task<List<Book>> GetBooksAsync(Bible bible)
         {
-            List<Book> books;
-            // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
-            if (!AppConfig.Context.UseCache)
-            {
-                books = await GetBooksOnlineAsync(bible);
-                books.ForEach(book => LinkForeigns(book, bible));
-                return books;
-            }
             // 캐시가 있으면 사용
-            books = GetBooksCached(bible);
+            var books = GetBooksCached(bible);
             books.ForEach(book => LinkForeigns(book, bible));
             if (books.Any())
             {
@@ -173,17 +157,8 @@ namespace Bible2PPT.Bibles.Sources
 
         public async Task<List<Chapter>> GetChaptersAsync(Book book)
         {
-            List<Chapter> chapters;
-            // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
-            if (!AppConfig.Context.UseCache)
-            {
-                chapters = await GetChaptersOnlineAsync(book);
-                chapters.ForEach(chapter => LinkForeigns(chapter, book));
-                chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
-                return chapters;
-            }
             // 캐시가 있으면 사용
-            chapters = GetChaptersCached(book);
+            var chapters = GetChaptersCached(book);
             chapters.ForEach(chapter => LinkForeigns(chapter, book));
             chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
             if (chapters.Any())
@@ -200,17 +175,8 @@ namespace Bible2PPT.Bibles.Sources
 
         public async Task<List<Verse>> GetVersesAsync(Chapter chapter)
         {
-            List<Verse> verses;
-            // 오프라인 캐시 미사용 시 온라인 데이터 가져오기
-            if (!AppConfig.Context.UseCache)
-            {
-                verses = await GetVersesOnlineAsync(chapter);
-                verses.ForEach(verse => LinkForeigns(verse, chapter));
-                verses.Sort((a, b) => a.Number.CompareTo(b.Number));
-                return verses;
-            }
             // 캐시가 있으면 사용
-            verses = GetVersesCached(chapter);
+            var verses = GetVersesCached(chapter);
             verses.ForEach(verse => LinkForeigns(verse, chapter));
             verses.Sort((a, b) => a.Number.CompareTo(b.Number));
             if (verses.Any())
