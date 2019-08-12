@@ -94,6 +94,7 @@
     <Compile Include="Data\BibleContext.cs" />
     <Compile Include="Data\BibleContextDbConfiguration.cs" />
     <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
+    <Compile Include="Extensions\HttpClientExtension.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
