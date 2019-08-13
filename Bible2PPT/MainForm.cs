@@ -50,10 +50,10 @@ namespace Bible2PPT
 
         private Button[] Navs => new[]
         {
-            buildNav,
-            historyNav,
-            templatesNav,
-            settingsNav,
+            buildNavButton,
+            historyNavButton,
+            templatesNavButton,
+            settingsNavButton,
         };
 
         private void MainMultiPanel_SelectedPanelChanged(object sender, EventArgs e)
@@ -65,16 +65,16 @@ namespace Bible2PPT
             switch (mainMultiPanel.SelectedPage.Name)
             {
                 case nameof(buildMultiPanelPage):
-                    target = buildNav;
+                    target = buildNavButton;
                     break;
                 case nameof(historyMultiPanelPage):
-                    target = historyNav;
+                    target = historyNavButton;
                     break;
                 case nameof(templatesMultiPanelPage):
-                    target = templatesNav;
+                    target = templatesNavButton;
                     break;
                 case nameof(settingsMultiPanelPage):
-                    target = settingsNav;
+                    target = settingsNavButton;
                     break;
                 default:
                     throw new NotImplementedException(mainMultiPanel.SelectedPage.Name);
@@ -93,16 +93,16 @@ namespace Bible2PPT
             MultiPanelPage target;
             switch ((sender as Control).Name)
             {
-                case nameof(buildNav):
+                case nameof(buildNavButton):
                     target = buildMultiPanelPage;
                     break;
-                case nameof(historyNav):
+                case nameof(historyNavButton):
                     target = historyMultiPanelPage;
                     break;
-                case nameof(templatesNav):
+                case nameof(templatesNavButton):
                     target = templatesMultiPanelPage;
                     break;
-                case nameof(settingsNav):
+                case nameof(settingsNavButton):
                     target = settingsMultiPanelPage;
                     break;
                 default:

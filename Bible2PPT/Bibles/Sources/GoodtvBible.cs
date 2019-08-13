@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Bible2PPT.Extensions;
 
 namespace Bible2PPT.Bibles.Sources
 {
@@ -30,54 +31,49 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(i => new Bible
             {
                 OnlineId = i.Groups[1].Value,
-                Version = i.Groups[2].Value,
+                Name = i.Groups[2].Value,
             }).ToList();
         }
 
         protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
+            // TODO: WhenAll?
             var tasks = new[]
             {
-                client.PostAsync("/bible_otnt_exc.asp", new FormUrlEncodedContent(new[]
+                client.PostAndGetStringAsync("/bible_otnt_exc.asp", new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("bible_idx", "1"),
                     new KeyValuePair<string, string>("otnt", "1"),
                 })),
-                client.PostAsync("/bible_otnt_exc.asp", new FormUrlEncodedContent(new[]
+                client.PostAndGetStringAsync("/bible_otnt_exc.asp", new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("bible_idx", "1"),
                     new KeyValuePair<string, string>("otnt", "2"),
                 })),
             };
-            var data = "";
-            foreach (var task in tasks)
-            {
-                var response = await task;
-                response.EnsureSuccessStatusCode();
-                data += await response.Content.ReadAsStringAsync();
-            }
+            var data = string.Join("", await TaskEx.WhenAll(tasks));
             var matches = Regex.Matches(data, @"""idx"":(\d+).+?""bible_name"":""(.+?)"".+?""max_jang"":(\d+)");
             return matches.Cast<Match>().Select(i => new Book
             {
                 OnlineId = i.Groups[1].Value,
-                Title = i.Groups[2].Value,
+                Name = i.Groups[2].Value,
                 ChapterCount = int.Parse(i.Groups[3].Value),
             }).ToList();
         }
 
-        protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
-            Enumerable.Range(1, book.ChapterCount)
+        protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
+            TaskEx.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
                     OnlineId = $"{i}",
                     Number = i,
-                }).ToList();
+                }).ToList());
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
         protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var response = await client.PostAsync("/bible.asp", new FormUrlEncodedContent(new[]
+            var data = await client.PostAndGetStringAsync("/bible.asp", new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("bible_idx", chapter.Book.OnlineId),
                 new KeyValuePair<string, string>("jang_idx", chapter.OnlineId),
@@ -86,8 +82,6 @@ namespace Bible2PPT.Bibles.Sources
                 new KeyValuePair<string, string>("bible_version_3", "0"),
                 new KeyValuePair<string, string>("count", "1"),
             }));
-            response.EnsureSuccessStatusCode();
-            var data = await response.Content.ReadAsStringAsync();
             data = Regex.Match(data, @"<p id=""one_jang""><b>([\s\S]+?)</b></p>").Groups[1].Value;
             var matches = Regex.Matches(data, @"<b>(\d+).*?</b>(.*?)<br>");
             return matches.Cast<Match>().Select(i => new Verse

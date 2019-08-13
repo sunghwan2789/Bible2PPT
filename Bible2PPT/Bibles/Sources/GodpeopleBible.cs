@@ -25,19 +25,20 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피플 성경";
         }
 
-        protected override async Task<List<Bible>> GetBiblesOnlineAsync() => new List<Bible>
-        {
-            new Bible
+        protected override Task<List<Bible>> GetBiblesOnlineAsync() =>
+            TaskEx.FromResult(new List<Bible>
             {
-                OnlineId = "rvsn",
-                Version = "개역개정",
-            },
-            new Bible
-            {
-                OnlineId = "ezsn",
-                Version = "쉬운성경",
-            },
-        };
+                new Bible
+                {
+                    OnlineId = "rvsn",
+                    Name = "개역개정",
+                },
+                new Bible
+                {
+                    OnlineId = "ezsn",
+                    Name = "쉬운성경",
+                },
+            });
 
         protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
@@ -46,8 +47,8 @@ namespace Bible2PPT.Bibles.Sources
             return matches.Cast<Match>().Select(match => new Book
             {
                 OnlineId = match.Groups[1].Value,
-                Title = match.Groups[3].Value,
-                ShortTitle = match.Groups[1].Value,
+                Name = match.Groups[3].Value,
+                Abbreviation = match.Groups[1].Value,
                 ChapterCount = int.Parse(match.Groups[2].Value),
             }).ToList();
         }
@@ -55,13 +56,13 @@ namespace Bible2PPT.Bibles.Sources
         private static string EncodeString(string s) =>
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
 
-        protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
-            Enumerable.Range(1, book.ChapterCount)
+        protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
+            TaskEx.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
                     OnlineId = $"{i}",
                     Number = i,
-                }).ToList();
+                }).ToList());
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline);
 

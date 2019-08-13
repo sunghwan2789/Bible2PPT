@@ -21,24 +21,6 @@ namespace Bible2PPT
 {
     partial class MainForm
     {
-        private Control[] CriticalControls => new Control[]
-        {
-            sourceComboBox,
-            bibleComboBox,
-            biblesUpIconButton,
-            biblesDownIconButton,
-            biblesAddIconButton,
-            biblesRemoveIconButton,
-            biblesDataGridView,
-            templateBookNameComboBox,
-            templateBookAbbrComboBox,
-            templateChaperNumberComboBox,
-            booksSearchTextBox,
-            booksListView,
-            versesTextBox,
-            buildFragmentCheckBox,
-        };
-
         private readonly BindingList<Bible> biblesToBuild = new BindingList<Bible>();
 
         private void InitializeBuildComponent()
@@ -47,19 +29,15 @@ namespace Bible2PPT
             // SplitContainer의 특성에 따라 값 다시 설정
             buildSplitContainer.SplitterWidth = 13;
 
+            // 이전에 선택한 성경 중에서 성경 소스가 살아있는 성경만 불러오기
             using (var db = new BibleContext())
             {
                 foreach (var bibleId in AppConfig.Context.BibleToBuild)
                 {
                     var bible = db.Bibles.Find(bibleId);
-                    if (bible != null)
+                    if (bible != null && bible.Source != null)
                     {
-                        var source = Source.AvailableSources.FirstOrDefault(i => i.Id == bible.SourceId);
-                        if (source != null)
-                        {
-                            bible.Source = source;
-                            biblesToBuild.Add(bible);
-                        }
+                        biblesToBuild.Add(bible);
                     }
                 }
             }
@@ -72,19 +50,19 @@ namespace Bible2PPT
 
             bibleComboBox.SelectedValueChanged -= BibleComboBox_SelectedValueChanged;
             bibleComboBox.ValueMember = nameof(Bible.Id);
-            bibleComboBox.DisplayMember = nameof(Bible.Version);
+            bibleComboBox.DisplayMember = nameof(Bible.Name);
             bibleComboBox.SelectedValueChanged += BibleComboBox_SelectedValueChanged;
 
             biblesDataGridView.AutoGenerateColumns = false;
             biblesSourceDataGridViewColumn.DataPropertyName = nameof(Bible.Source);
-            biblesBibleDataGridViewColumn.DataPropertyName = nameof(Bible.Version);
+            biblesBibleDataGridViewColumn.DataPropertyName = nameof(Bible.Name);
             biblesDataGridView.DataSource = biblesToBuild;
 
             // 불러오기
             templateBookNameComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
             templateBookAbbrComboBox.SelectedIndex = (int)AppConfig.Context.ShowShortTitle;
-            templateChaperNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
-            buildFragmentCheckBox.Checked = AppConfig.Context.SeperateByChapter;
+            templateChapterNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
+            buildSplitChaptersIntoFilesCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
             // 소스 목록 초기화
             sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
@@ -366,8 +344,8 @@ namespace Bible2PPT
             booksListView.Items.Clear();
             foreach (var book in books)
             {
-                var item = booksListView.Items.Add(book.Title);
-                item.SubItems.Add(book.ShortTitle);
+                var item = booksListView.Items.Add(book.Name);
+                item.SubItems.Add(book.Abbreviation);
                 item.Tag = book;
             }
             // 책 목록 컨트롤 활성화
@@ -485,12 +463,12 @@ namespace Bible2PPT
 
         private void TemplateChapterNumberComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.ShowChapterNumber = (TemplateTextOptions)templateChaperNumberComboBox.SelectedIndex;
+            AppConfig.Context.ShowChapterNumber = (TemplateTextOptions)templateChapterNumberComboBox.SelectedIndex;
         }
 
         private void BuildFragmentCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            AppConfig.Context.SeperateByChapter = buildFragmentCheckBox.Checked;
+            AppConfig.Context.SeperateByChapter = buildSplitChaptersIntoFilesCheckBox.Checked;
         }
 
         /// <summary>
@@ -529,18 +507,18 @@ namespace Bible2PPT
             {
                 Bibles = biblesToBuild.ToList(),
                 CreatedAt = DateTime.UtcNow,
-                SplitChaptersIntoFiles = buildFragmentCheckBox.Checked,
+                SplitChaptersIntoFiles = buildSplitChaptersIntoFilesCheckBox.Checked,
                 OutputDestination = destination,
                 QueryString = Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " "),
                 TemplateBookNameOption = (TemplateTextOptions)templateBookNameComboBox.SelectedIndex,
                 TemplateBookAbbrOption = (TemplateTextOptions)templateBookAbbrComboBox.SelectedIndex,
-                TemplateChapterNumberOption = (TemplateTextOptions)templateChaperNumberComboBox.SelectedIndex,
+                TemplateChapterNumberOption = (TemplateTextOptions)templateChapterNumberComboBox.SelectedIndex,
             };
 
             // PPT 만들기
             builder.Queue(job);
 
-            historyNav.PerformClick();
+            historyNavButton.PerformClick();
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)

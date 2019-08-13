@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Bible2PPT
 {

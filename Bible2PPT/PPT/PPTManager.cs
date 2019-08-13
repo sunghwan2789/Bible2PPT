@@ -13,15 +13,11 @@ namespace Bible2PPT.PPT
 {
     class PPTManager : IDisposable
     {
-        private readonly PowerPoint.Application POWERPNT;
-
         public Job Job { get; }
         public string Output { get; }
 
         private readonly PowerPoint.Presentation WorkingPPT;
         private readonly PowerPoint.Slide TemplateSlide;
-
-        public PPTManager(PowerPoint.Application POWERPNT, Job job) : this(POWERPNT, job, Path.GetTempFileName() + ".pptx") { }
 
         public PPTManager(PowerPoint.Application POWERPNT, Job job, string output)
         {
@@ -88,8 +84,8 @@ namespace Bible2PPT.PPT
                 {
                     var text = textShape.Text;
                     text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
-                    text = AddSuffix(text, "STITLE", book.ShortTitle, Job.TemplateBookAbbrOption);
-                    text = AddSuffix(text, "TITLE", book.Title, Job.TemplateBookNameOption);
+                    text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
+                    text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
                     //text = text.Replace("[CPAS]", $"{startVerseNumber}");
                     //text = text.Replace("[CPAE]", $"{endVerseNumber}");
                     text = text.Replace("[PARA]", $"{mainVerse.Number}");

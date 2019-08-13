@@ -10,12 +10,12 @@ namespace Bible2PPT.Bibles
         public virtual Bible Bible { get; set; }
 
         public string OnlineId { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         private string shortTitle;
-        public string ShortTitle
+        public string Abbreviation
         {
-            get => shortTitle ?? BookAliases.Map.FirstOrDefault(i => i.Any(a => a == OnlineId || a == Title))?.First() ?? "";
+            get => shortTitle ?? BookAliases.Map.FirstOrDefault(i => i.Any(a => a == OnlineId || a == Name))?.First() ?? "";
             set => shortTitle = value;
         }
 
