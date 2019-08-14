@@ -71,6 +71,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -222,12 +223,6 @@
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp">
       <Version>5.8.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Bcl.Async">
-      <Version>1.0.168</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Net.Http">
-      <Version>2.2.29</Version>
     </PackageReference>
     <PackageReference Include="SQLite.CodeFirst">
       <Version>1.5.2.28</Version>
