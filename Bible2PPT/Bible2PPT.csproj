@@ -93,6 +93,7 @@
     <Compile Include="BinaryConfig.cs" />
     <Compile Include="Data\BibleContext.cs" />
     <Compile Include="Data\BibleContextDbConfiguration.cs" />
+    <Compile Include="Engine\TokenNode.cs" />
     <Compile Include="Extensions\CancellationTokenSourceExtension.cs" />
     <Compile Include="Extensions\HttpClientExtension.cs" />
     <Compile Include="MainForm.cs">
@@ -139,6 +140,7 @@
     <Compile Include="PPT\PPTManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Engine\TemplateEngine.cs" />
     <Compile Include="VerseQuery.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

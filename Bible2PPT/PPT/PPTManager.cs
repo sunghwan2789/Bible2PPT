@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Bible2PPT.Bibles;
+using Bible2PPT.Engine;
 using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -62,8 +63,14 @@ namespace Bible2PPT.PPT
 
         private bool isFirstVerseOfChapter;
 
-        public void AppendChapter(IEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, CancellationToken token)
+        public void AppendChapter(IEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, VerseQuery query, CancellationToken token)
         {
+            var engine = new TemplateEngine();
+            engine.Register("QCHS", query.StartChapterNumber.ToString());
+            engine.Register("QVSS", query.StartVerseNumber.ToString());
+            engine.Register("QCHE", query.EndChapterNumber?.ToString());
+            engine.Register("QVSE", query.EndVerseNumber?.ToString());
+
             isFirstVerseOfChapter = true;
             foreach (var eachVerse in eachVerses)
             {
@@ -75,6 +82,18 @@ namespace Bible2PPT.PPT
                     continue;
                 }
 
+                engine.Register("CHAP", ShouldPrint(Job.TemplateChapterNumberOption) ? $"{chapter.Number}" : null);
+                engine.Register("STITLE", ShouldPrint(Job.TemplateBookAbbrOption) ? book.Abbreviation : null);
+                engine.Register("TITLE", ShouldPrint(Job.TemplateBookNameOption) ? book.Name : null);
+                engine.Register("PARA", mainVerse.Number.ToString());
+                engine.Register("BODY", eachVerse.First()?.Text);
+                var verseEnumerator = eachVerse.GetEnumerator();
+                for (var i = 1; i <= 9; i++)
+                {
+                    var verse = verseEnumerator.MoveNext() ? verseEnumerator.Current : null;
+                    engine.Register($"BODY{i}", verse?.Text);
+                }
+
                 var slide = TemplateSlide.Duplicate();
                 slide.MoveTo(WorkingPPT.Slides.Count);
                 foreach (var textShape in
@@ -82,23 +101,7 @@ namespace Bible2PPT.PPT
                         .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
                         .Select(i => i.TextFrame.TextRange))
                 {
-                    var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
-                    text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
-                    text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
-                    //text = text.Replace("[CPAS]", $"{startVerseNumber}");
-                    //text = text.Replace("[CPAE]", $"{endVerseNumber}");
-                    text = text.Replace("[PARA]", $"{mainVerse.Number}");
-                    text = text.Replace("[BODY]", eachVerse.First()?.Text);
-
-                    var verseEnumerator = eachVerse.GetEnumerator();
-                    for (var i = 1; i <= 9; i++)
-                    {
-                        var verse = verseEnumerator.MoveNext() ? verseEnumerator.Current : null;
-                        text = text.Replace($"[BODY{i}]", verse?.Text);
-                    }
-
-                    textShape.Text = text;
+                    textShape.Text = engine.Process(textShape.Text);
                 }
                 isFirstVerseOfChapter = false;
             }
@@ -115,11 +118,6 @@ namespace Bible2PPT.PPT
                 default:
                     throw new NotImplementedException();
             }
-        }
-
-        private string AddSuffix(string str, string toFind, string replace, TemplateTextOptions templateOption)
-        {
-            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", ShouldPrint(templateOption) ? replace + "$1" : "");
         }
 
         #region IDisposable Support

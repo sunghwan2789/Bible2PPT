@@ -227,8 +227,8 @@ namespace Bible2PPT.PPT
         {
             await base.ProcessAsync(job, token);
 
-            // (targetEachVerses, mainBook, mainChapter)
-            var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter>>();
+            // (targetEachVerses, mainBook, mainChapter, query)
+            var queue = new ConcurrentQueue<Tuple<IEnumerable<IEnumerable<Verse>>, Book, Chapter, VerseQuery>>();
             var sync = new AutoResetEvent(false);
 
             var queries = job.QueryString.Split().Select(VerseQuery.Parse).ToList();
@@ -286,7 +286,7 @@ namespace Bible2PPT.PPT
                             .ToList();
 
                         var targetEachVerses = Inverse(eachTargetVerses);
-                        queue.Enqueue(Tuple.Create(targetEachVerses, mainBook, mainChapter));
+                        queue.Enqueue(Tuple.Create(targetEachVerses, mainBook, mainChapter, query));
                         sync.WaitOne();
 
                     PROGRESS_CHAPTER:
@@ -311,11 +311,12 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
+                        var query = item.Item4;
                         var output = Path.Combine(job.OutputDestination, mainBook.Name, mainChapter.Number.ToString(@"000\.pptx"));
                         CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                         using (var ppt = new PPTManager(POWERPNT, job, output))
                         {
-                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, query, token);
                             ppt.Save();
                         }
                         OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
@@ -335,7 +336,8 @@ namespace Bible2PPT.PPT
                             var targetEachVerses = item.Item1;
                             var mainBook = item.Item2;
                             var mainChapter = item.Item3;
-                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            var query = item.Item4;
+                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, query, token);
                             OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                         }
                     }
