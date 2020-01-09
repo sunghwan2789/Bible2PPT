@@ -25,6 +25,7 @@
     "electron": "^7.1.7",
     "parcel": "^1.12.4",
     "prettier": "^1.19.1",
+    "sass": "^1.24.3",
     "typescript": "^3.7.4"
   },
   "repository": {
