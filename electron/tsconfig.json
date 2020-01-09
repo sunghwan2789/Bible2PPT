@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "ES6",
     "target": "ES2019",
     "jsx": "react",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "~*": ["./*"]
+      "*": ["node_modules/*"],
+      "~/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "build", ".cache"],
+  "include": ["src/**/*"]
 }
