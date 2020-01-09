@@ -1,0 +1,23 @@
+{
+  "name": "bible2ppt",
+  "version": "2.0.0",
+  "author": {
+    "name": "Sunghwan Bang"
+  },
+  "license": "MIT",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^7.1.7",
+    "typescript": "^3.7.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunghwan2789/Bible2PPT.git"
+  }
+}
