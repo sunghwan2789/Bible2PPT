@@ -4,13 +4,10 @@
     "module": "ES6",
     "target": "ES2019",
     "jsx": "react",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    },
-    "outDir": "dist"
+      "~*": ["./*"]
+    }
   },
   "include": [
     "src/**/*"

@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'" />
-    <title>Bible2PPT</title>
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ws:" /> -->
+    <title>성경2PPT</title>
 </head>
 <body>
-    <script src="./dist/renderer.js"></script>
+    <div id="root"></div>
+    <script src="index.tsx"></script>
 </body>
 </html>
