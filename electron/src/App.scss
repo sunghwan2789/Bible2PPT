@@ -1,0 +1,24 @@
+.app {
+  display: flex;
+  flex-direction: row;
+
+  .activity-bar {
+    width: 3rem;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .composite {
+      flex: 1;
+    }
+
+    .global {
+    }
+  }
+}
