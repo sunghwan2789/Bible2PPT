@@ -14,7 +14,12 @@
     "start": "concurrently \"npm:parcel:watch\" \"electron .\""
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
     "electron-is-dev": "^1.1.0",
+    "material-colors": "^1.2.6",
+    "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2"
@@ -27,7 +32,7 @@
     "electron": "^7.1.7",
     "parcel": "^1.12.4",
     "prettier": "^1.19.1",
-    "sass": "^1.24.3",
+    "sass": "^1.24.4",
     "typescript": "^3.7.4"
   },
   "repository": {

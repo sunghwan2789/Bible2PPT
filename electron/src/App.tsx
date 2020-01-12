@@ -1,5 +1,16 @@
 import * as React from 'react';
-import { MemoryRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  NavLink,
+  Route,
+  Switch,
+} from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
+import {
+  faDesktop,
+  faHistory,
+  faCog,
+} from '@fortawesome/free-solid-svg-icons/index';
 import './App.scss';
 
 export default () => (
@@ -7,11 +18,33 @@ export default () => (
     <div className="app">
       <nav className="activity-bar">
         <div className="composite">
-          <Link to="/">build</Link>
-          <Link to="/history">history</Link>
+          <NavLink
+            to="/"
+            exact
+            className="item"
+            activeClassName="active"
+            title="PPT 만들기"
+          >
+            <FontAwesomeIcon icon={faDesktop} />
+          </NavLink>
+          <NavLink
+            to="/history"
+            className="item"
+            activeClassName="active"
+            title="PPT 제작 기록"
+          >
+            <FontAwesomeIcon icon={faHistory} />
+          </NavLink>
         </div>
         <div className="global">
-          <Link to="/settings">settings</Link>
+          <NavLink
+            to="/settings"
+            className="item"
+            activeClassName="active"
+            title="설정"
+          >
+            <FontAwesomeIcon icon={faCog} />
+          </NavLink>
         </div>
       </nav>
       <Switch>

@@ -1,24 +1,57 @@
+@import './colors.scss';
+
 .app {
   display: flex;
   flex-direction: row;
 
   .activity-bar {
-    width: 3rem;
     height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    > * {
-      display: flex;
-      flex-direction: column;
-    }
+    background: $primary;
 
     .composite {
       flex: 1;
     }
 
     .global {
+    }
+
+    > * {
+      display: flex;
+      flex-direction: column;
+
+      .item {
+        $size: 3rem;
+
+        width: $size;
+        height: $size;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $size / 2;
+        position: relative;
+
+        color: $md-light-text-disabled;
+
+        &.active,
+        &:hover {
+          color: $md-light-text-primary;
+        }
+
+        /* active indicator */
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          width: 0.1em;
+          height: 100%;
+        }
+        &.active::before {
+          background: $md-light-text-primary;
+        }
+      }
     }
   }
 }
