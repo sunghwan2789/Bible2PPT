@@ -1,11 +1,11 @@
 @import 'material-colors/dist/colors.scss';
 
-$primary: $md-deep-orange-500;
-$primary-dark: $md-deep-orange-700;
-$primary-light: $md-deep-orange-200;
-$secondary: $md-blue-200;
+$color-primary: $md-deep-orange-500;
+$color-primary--dark: $md-deep-orange-700;
+$color-primary--light: $md-deep-orange-200;
+$color-secondary: $md-blue-200;
 
-$light-background: #ffffff;
-$light-error: #b00002;
-$dark-background: #121212;
-$dark-error: #cf6679;
+$color-background--light: #ffffff;
+$color-error--light: #b00002;
+$color-background--dark: #121212;
+$color-error--dark: #cf6679;
