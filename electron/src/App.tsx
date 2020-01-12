@@ -1,16 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import {
   MemoryRouter as Router,
   NavLink,
   Route,
   Switch,
 } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
-import {
-  faDesktop,
-  faHistory,
-  faCog,
-} from '@fortawesome/free-solid-svg-icons/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDesktop, faHistory, faCog } from '@fortawesome/free-solid-svg-icons';
 import './App.scss';
 
 export default () => (
