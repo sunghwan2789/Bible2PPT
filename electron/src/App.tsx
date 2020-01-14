@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faHistory, faCog } from '@fortawesome/free-solid-svg-icons';
-import './App.scss';
 
 export default () => (
   <Router>
