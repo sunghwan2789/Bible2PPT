@@ -22,17 +22,18 @@
     "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "styled-components": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "@types/react-router-dom": "^5.1.3",
+    "@types/styled-components": "^4.4.2",
     "concurrently": "^5.0.2",
     "electron": "^7.1.7",
     "parcel": "^1.12.4",
     "prettier": "^1.19.1",
-    "sass": "^1.24.4",
     "typescript": "^3.7.4"
   },
   "repository": {

@@ -9,33 +9,89 @@ import {
 import Build from './pages/Build';
 import History from './pages/History';
 import Settings from './pages/Settings';
+import styled from 'styled-components';
+
+const App = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ActivityBar = styled.nav`
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary);
+`;
+
+const ActivityGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  &.composite {
+    flex: 1;
+  }
+
+  &.global {
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  --size: 3rem;
+
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--size) / 2);
+  position: relative;
+
+  color: var(--color-text--disabled);
+
+  &.active,
+  &:hover {
+    color: var(--color-text);
+  }
+
+  /* active indicator */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 0.1em;
+    height: 100%;
+  }
+  &.active::before {
+    background: var(--color-text);
+  }
+`;
 
 export default () => (
   <Router>
-    <div className="app">
-      <nav className="activity-bar">
+    <App>
+      <ActivityBar>
         {Object.entries({
           composite: [Build, History],
           global: [Settings],
         }).map((kv, i) => {
           const [group, pages] = kv;
           return (
-            <div key={i} className={group}>
+            <ActivityGroup key={i} className={group}>
               {pages.map((page, j) => (
-                <NavLink
+                <StyledNavLink
                   key={j}
-                  className="item"
                   activeClassName="active"
                   to={page.path}
                   title={page.title}
                 >
-                  {page.icon}
-                </NavLink>
+                  <page.icon />
+                </StyledNavLink>
               ))}
-            </div>
+            </ActivityGroup>
           );
         })}
-      </nav>
+      </ActivityBar>
       <Switch>
         {/* 로드 후 PPT 만들기로 자동 전환 */}
         <Route path="/" exact>
@@ -48,6 +104,6 @@ export default () => (
         </Route>
         <Route>404</Route>
       </Switch>
-    </div>
+    </App>
   </Router>
 );

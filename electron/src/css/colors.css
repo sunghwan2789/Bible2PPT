@@ -1,0 +1,14 @@
+:root {
+  --color-primary: var(--md-deep-orange-500);
+  --color-primary--dark: var(--md-deep-orange-700);
+  --color-primary--light: var(--md-deep-orange-200);
+  --color-secondary: var(--md-blue-200);
+
+  --color-background--light: #ffffff;
+  --color-error--light: #b00002;
+  --color-background--dark: #121212;
+  --color-error--dark: #cf6679;
+
+  --color-text: var(--md-light-text-primary);
+  --color-text--disabled: var(--md-light-text-disabled);
+}
