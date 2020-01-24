@@ -99,9 +99,7 @@ export default () => (
         </Route>
         <Route path={Build.path}>{Build.component}</Route>
         <Route path={History.path}>{History.component}</Route>
-        <Route path="/settings">
-          <p>settings</p>
-        </Route>
+        <Route path={Settings.path}>{Settings.component}</Route>
         <Route>404</Route>
       </Switch>
     </App>
