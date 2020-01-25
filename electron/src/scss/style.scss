@@ -1,0 +1,44 @@
+@import '../../node_modules/normalize.css/normalize.css';
+@import '../../node_modules/material-colors/dist/colors.scss';
+
+@mixin light-theme {
+  --color-background: #ffffff;
+  --color--error: #b00002;
+
+  --color-text: #{$md-dark-text-primary};
+  --color-text--disabled: #{$md-dark-text-disabled};
+}
+
+@mixin dark-theme {
+  --color-background: #121212;
+  --color-error: #cf6679;
+
+  --color-text: #{$md-light-text-primary};
+  --color-text--disabled: #{$md-light-text-disabled};
+}
+
+:root {
+  --color-primary: #{$md-deep-orange-900};
+  --color-primary--dark: #{$md-deep-orange-700};
+  --color-primary--light: #{$md-deep-orange-200};
+  --color-secondary: #{$md-blue-200};
+
+  @include light-theme();
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark-theme();
+  }
+}
+
+.light-theme {
+  @include light-theme();
+}
+.dark-theme {
+  @include dark-theme();
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-background);
+}

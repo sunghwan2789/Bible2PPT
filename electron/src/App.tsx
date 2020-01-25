@@ -1,3 +1,4 @@
+import './scss/style.scss';
 import React from 'react';
 import {
   MemoryRouter as Router,
@@ -47,11 +48,11 @@ const StyledNavLink = styled(NavLink)`
   font-size: calc(var(--size) / 2);
   position: relative;
 
-  color: var(--color-text--disabled);
+  color: rgba(255, 255, 255, 0.5);
 
   &.active,
   &:hover {
-    color: var(--color-text);
+    color: #fff;
   }
 
   /* active indicator */
@@ -63,7 +64,7 @@ const StyledNavLink = styled(NavLink)`
     height: 100%;
   }
   &.active::before {
-    background: var(--color-text);
+    background: #fff;
   }
 `;
 
