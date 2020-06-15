@@ -39,7 +39,7 @@ namespace Bible2PPT.PPT
             JobCancellations[job] = new CancellationTokenSource();
             OnJobQueued(new JobQueuedEventArgs(job));
 
-            Task.Run(async () =>
+            TaskEx.Run(async () =>
             {
                 var acquired = false;
                 try

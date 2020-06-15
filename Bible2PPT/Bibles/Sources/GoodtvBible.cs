@@ -51,7 +51,7 @@ namespace Bible2PPT.Bibles.Sources
                     new KeyValuePair<string, string>("otnt", "2"),
                 })),
             };
-            var data = string.Join("", await Task.WhenAll(tasks));
+            var data = string.Join("", await TaskEx.WhenAll(tasks));
             var matches = Regex.Matches(data, @"""idx"":(\d+).+?""bible_name"":""(.+?)"".+?""max_jang"":(\d+)");
             return matches.Cast<Match>().Select(i => new Book
             {
@@ -62,7 +62,7 @@ namespace Bible2PPT.Bibles.Sources
         }
 
         protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
-            Task.FromResult(Enumerable.Range(1, book.ChapterCount)
+            TaskEx.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
                     OnlineId = $"{i}",
