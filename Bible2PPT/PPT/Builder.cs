@@ -38,14 +38,14 @@ namespace Bible2PPT.PPT
         RETRY:
             try
             {
-                return await Task.WhenAll(bibles
+                return await TaskEx.WhenAll(bibles
                     .Select(bible => bible.Source.GetBooksAsync(bible))
                     .ToList());
             }
             // 취소할 때까지 계속 재시도
             catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                await Task.Delay(3000);
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
@@ -56,16 +56,16 @@ namespace Bible2PPT.PPT
             try
             {
                 // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
-                return await Task.WhenAll(books
+                return await TaskEx.WhenAll(books
                     .Select(book =>
                         book?.Source.GetChaptersAsync(book)
-                        ?? Task.FromResult(new List<Chapter>()))
+                        ?? TaskEx.FromResult(new List<Chapter>()))
                     .ToList());
             }
             // 취소할 때까지 계속 재시도
             catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                await Task.Delay(3000);
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
@@ -133,16 +133,16 @@ namespace Bible2PPT.PPT
         RETRY:
             try
             {
-                return await Task.WhenAll(chapters
+                return await TaskEx.WhenAll(chapters
                     .Select(chapter =>
                         chapter?.Source.GetVersesAsync(chapter)
-                        ?? Task.FromResult(new List<Verse>()))
+                        ?? TaskEx.FromResult(new List<Verse>()))
                     .ToList());
             }
             // 취소할 때까지 계속 재시도
             catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                await Task.Delay(3000);
+                await TaskEx.Delay(3000);
                 goto RETRY;
             }
         }
@@ -235,7 +235,7 @@ namespace Bible2PPT.PPT
             var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
             OnJobProgress(e);
 
-            var produce = Task.Run(async () =>
+            var produce = TaskEx.Run(async () =>
             {
                 var eachBooks = await GetEachBooksAsync(job.Bibles, token);
 
