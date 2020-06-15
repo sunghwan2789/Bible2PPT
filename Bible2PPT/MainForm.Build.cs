@@ -263,7 +263,7 @@ namespace Bible2PPT
                     e.InheritedRowStyle.Font,
                     brush,
                     e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
-                    e.RowBounds.Location.Y + ((e.RowBounds.Height - e.InheritedRowStyle.Font.Height) / 2),
+                    e.RowBounds.Location.Y + 4,
                     new StringFormat(StringFormatFlags.DirectionRightToLeft));
             }
         }
