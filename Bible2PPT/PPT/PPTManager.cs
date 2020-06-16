@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Bible2PPT.Bibles;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
@@ -81,10 +83,12 @@ namespace Bible2PPT.PPT
             }
         }
 
-        public void AppendVerse(IEnumerable<Verse> eachVerse, Verse mainVerse, Book book, Chapter chapter, CancellationToken token)
+        public void AppendVerse(IEnumerable<Verse> eachVerse, Verse mainVerse, Book book, Chapter chapter, CancellationToken token) =>
+            AppendVerse(eachVerse.Select(verse => verse.Text), mainVerse, book, chapter, token);
+
+        private void AppendVerse(IEnumerable<string> eachVerseText, Verse mainVerse, Book book, Chapter chapter, CancellationToken token)
         {
-            var slide = TemplateSlide.Duplicate();
-            slide.MoveTo(WorkingPPT.Slides.Count);
+            var slide = AppendTemplateSlide();
             foreach (var textShape in
                 slide.Shapes.Cast<PowerPoint.Shape>()
                     .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
@@ -98,17 +102,24 @@ namespace Bible2PPT.PPT
                 //text = text.Replace("[CPAS]", $"{startVerseNumber}");
                 //text = text.Replace("[CPAE]", $"{endVerseNumber}");
                 text = text.Replace("[PARA]", $"{mainVerse.Number}");
-                text = text.Replace("[BODY]", eachVerse.First()?.Text);
+                text = text.Replace("[BODY]", eachVerseText.First());
 
-                var verseEnumerator = eachVerse.GetEnumerator();
+                var verseEnumerator = eachVerseText.GetEnumerator();
                 for (var i = 1; i <= 9; i++)
                 {
                     var verse = verseEnumerator.MoveNext() ? verseEnumerator.Current : null;
-                    text = text.Replace($"[BODY{i}]", verse?.Text);
+                    text = text.Replace($"[BODY{i}]", verse);
                 }
 
                 textShape.Text = text;
             }
+        }
+
+        private SlideRange AppendTemplateSlide()
+        {
+            var slide = TemplateSlide.Duplicate();
+            slide.MoveTo(WorkingPPT.Slides.Count);
+            return slide;
         }
 
         private bool ShouldPrint(TemplateTextOptions templateOption)
