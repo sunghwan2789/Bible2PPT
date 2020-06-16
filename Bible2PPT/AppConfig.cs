@@ -103,7 +103,7 @@ namespace Bible2PPT
             {
                 BitConverter.GetBytes(BibleToBuild[i]).CopyTo(b, 169 + 4 * i);
             }
-            b[0] |= (byte)NumberOfVerseLinesPerSlide;
+            BitConverter.GetBytes(NumberOfVerseLinesPerSlide).CopyTo(b, 205);
             return b;
         }
 
@@ -120,7 +120,7 @@ namespace Bible2PPT
             {
                 BibleToBuild[i] = BitConverter.ToInt32(s, 169 + 4 * i);
             }
-            NumberOfVerseLinesPerSlide = s[205];
+            NumberOfVerseLinesPerSlide = BitConverter.ToInt32(s, 205);
         }
     }
 }
