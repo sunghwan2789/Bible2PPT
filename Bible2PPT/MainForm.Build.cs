@@ -62,6 +62,7 @@ namespace Bible2PPT
             templateBookNameComboBox.SelectedIndex = (int)AppConfig.Context.ShowLongTitle;
             templateBookAbbrComboBox.SelectedIndex = (int)AppConfig.Context.ShowShortTitle;
             templateChapterNumberComboBox.SelectedIndex = (int)AppConfig.Context.ShowChapterNumber;
+            numberOfVerseLinesPerSlideComboBox.SelectedIndex = AppConfig.Context.NumberOfVerseLinesPerSlide;
             buildSplitChaptersIntoFilesCheckBox.Checked = AppConfig.Context.SeperateByChapter;
 
             // 소스 목록 초기화
@@ -279,7 +280,7 @@ namespace Bible2PPT
             }
         }
 
-        #endregion
+        #endregion 빌드 대상 성경 관리
 
         #region 책 목록 관리
 
@@ -400,6 +401,7 @@ namespace Bible2PPT
                         }
                     }
                     break;
+
                 case Keys.Down:
                     e.SuppressKeyPress = true;
                     try
@@ -430,7 +432,7 @@ namespace Bible2PPT
             booksSearchTextBox.Text = @"책 검색...";
         }
 
-        #endregion
+        #endregion 책 목록 관리
 
         private void VersesTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -464,6 +466,11 @@ namespace Bible2PPT
         private void TemplateChapterNumberComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             AppConfig.Context.ShowChapterNumber = (TemplateTextOptions)templateChapterNumberComboBox.SelectedIndex;
+        }
+
+        private void NumberOfVerseLinesPerSlideComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AppConfig.Context.NumberOfVerseLinesPerSlide = numberOfVerseLinesPerSlideComboBox.SelectedIndex;
         }
 
         private void BuildFragmentCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -513,6 +520,7 @@ namespace Bible2PPT
                 TemplateBookNameOption = (TemplateTextOptions)templateBookNameComboBox.SelectedIndex,
                 TemplateBookAbbrOption = (TemplateTextOptions)templateBookAbbrComboBox.SelectedIndex,
                 TemplateChapterNumberOption = (TemplateTextOptions)templateChapterNumberComboBox.SelectedIndex,
+                NumberOfVerseLinesPerSlide = numberOfVerseLinesPerSlideComboBox.SelectedIndex,
             };
 
             // PPT 만들기
@@ -525,7 +533,6 @@ namespace Bible2PPT
         {
             builder.OpenTemplate();
         }
-
 
         private void TemplateEditButton_MouseHover(object sender, EventArgs e)
         {
