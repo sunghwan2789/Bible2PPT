@@ -32,10 +32,12 @@
             System.Windows.Forms.TableLayoutPanel mainTableLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel navTopFlowLayoutPanel;
             System.Windows.Forms.StatusStrip builderStatusStrip;
+            System.Windows.Forms.TableLayoutPanel numberOfVerseLinesPerSlideTableLayoutPanel;
+            System.Windows.Forms.Label numberOfVerseLinesPerSlideLabel;
             System.Windows.Forms.TableLayoutPanel biblesTableLayoutPanel;
             System.Windows.Forms.TableLayoutPanel biblesButtonTableLayoutPanel;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.TableLayoutPanel bibleTableLayoutPanel;
             FontAwesome.Sharp.IconPictureBox bibleIconPictureBox;
             System.Windows.Forms.Label bibleLabel;
@@ -59,7 +61,7 @@
             FontAwesome.Sharp.IconPictureBox versesIconPictureBox;
             System.Windows.Forms.Label versesLabel;
             System.Windows.Forms.TableLayoutPanel historyTableLayoutPanel;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.FlowLayoutPanel historyFlowLayoutPanel;
             System.Windows.Forms.FlowLayoutPanel navBottomFlowLayoutPanel;
             this.buildNavButton = new FontAwesome.Sharp.IconButton();
@@ -71,6 +73,7 @@
             this.buildMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
             this.buildSplitContainer = new System.Windows.Forms.SplitContainer();
             this.buildLeftTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.numberOfVerseLinesPerSlideComboBox = new System.Windows.Forms.ComboBox();
             this.biblesUpIconButton = new FontAwesome.Sharp.IconButton();
             this.biblesDownIconButton = new FontAwesome.Sharp.IconButton();
             this.biblesAddIconButton = new FontAwesome.Sharp.IconButton();
@@ -98,19 +101,21 @@
             this.historyBiblesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.historySplitChaptersIntoFileColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.historyJobProgress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.historyOpenResultButton = new System.Windows.Forms.Button();
-            this.historyLoadButton = new System.Windows.Forms.Button();
             this.historyDeleteButton = new System.Windows.Forms.Button();
+            this.historyLoadButton = new System.Windows.Forms.Button();
+            this.historyOpenResultButton = new System.Windows.Forms.Button();
+            this.autoOpenCheckBox = new System.Windows.Forms.CheckBox();
             this.templatesMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
             this.settingsMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
             this.updateButton = new System.Windows.Forms.Button();
             this.cleanCacheButton = new System.Windows.Forms.Button();
             this.settingsNavButton = new FontAwesome.Sharp.IconButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.autoOpenCheckBox = new System.Windows.Forms.CheckBox();
             mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             navTopFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             builderStatusStrip = new System.Windows.Forms.StatusStrip();
+            numberOfVerseLinesPerSlideTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            numberOfVerseLinesPerSlideLabel = new System.Windows.Forms.Label();
             biblesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             biblesButtonTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             bibleTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -148,6 +153,7 @@
             this.buildSplitContainer.Panel2.SuspendLayout();
             this.buildSplitContainer.SuspendLayout();
             this.buildLeftTableLayoutPanel.SuspendLayout();
+            numberOfVerseLinesPerSlideTableLayoutPanel.SuspendLayout();
             biblesTableLayoutPanel.SuspendLayout();
             biblesButtonTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.biblesDataGridView)).BeginInit();
@@ -313,7 +319,7 @@
             this.mainMultiPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mainMultiPanel.Name = "mainMultiPanel";
             mainTableLayoutPanel.SetRowSpan(this.mainMultiPanel, 2);
-            this.mainMultiPanel.SelectedPage = this.historyMultiPanelPage;
+            this.mainMultiPanel.SelectedPage = this.buildMultiPanelPage;
             this.mainMultiPanel.Size = new System.Drawing.Size(461, 312);
             this.mainMultiPanel.TabIndex = 2;
             this.mainMultiPanel.SelectedPanelChanged += new System.EventHandler(this.MainMultiPanel_SelectedPanelChanged);
@@ -354,6 +360,7 @@
             // 
             this.buildLeftTableLayoutPanel.ColumnCount = 1;
             this.buildLeftTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.buildLeftTableLayoutPanel.Controls.Add(numberOfVerseLinesPerSlideTableLayoutPanel, 0, 14);
             this.buildLeftTableLayoutPanel.Controls.Add(biblesTableLayoutPanel, 0, 4);
             this.buildLeftTableLayoutPanel.Controls.Add(bibleTableLayoutPanel, 0, 2);
             this.buildLeftTableLayoutPanel.Controls.Add(sourceTableLayoutPanel, 0, 0);
@@ -365,7 +372,7 @@
             this.buildLeftTableLayoutPanel.Location = new System.Drawing.Point(13, 10);
             this.buildLeftTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.buildLeftTableLayoutPanel.Name = "buildLeftTableLayoutPanel";
-            this.buildLeftTableLayoutPanel.RowCount = 13;
+            this.buildLeftTableLayoutPanel.RowCount = 15;
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 3F));
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
@@ -379,9 +386,58 @@
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 4F));
+            this.buildLeftTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.buildLeftTableLayoutPanel.Size = new System.Drawing.Size(238, 292);
             this.buildLeftTableLayoutPanel.TabIndex = 0;
+            // 
+            // numberOfVerseLinesPerSlideTableLayoutPanel
+            // 
+            numberOfVerseLinesPerSlideTableLayoutPanel.ColumnCount = 2;
+            numberOfVerseLinesPerSlideTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            numberOfVerseLinesPerSlideTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            numberOfVerseLinesPerSlideTableLayoutPanel.Controls.Add(numberOfVerseLinesPerSlideLabel, 0, 0);
+            numberOfVerseLinesPerSlideTableLayoutPanel.Controls.Add(this.numberOfVerseLinesPerSlideComboBox, 1, 0);
+            numberOfVerseLinesPerSlideTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            numberOfVerseLinesPerSlideTableLayoutPanel.Location = new System.Drawing.Point(0, 271);
+            numberOfVerseLinesPerSlideTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            numberOfVerseLinesPerSlideTableLayoutPanel.Name = "numberOfVerseLinesPerSlideTableLayoutPanel";
+            numberOfVerseLinesPerSlideTableLayoutPanel.RowCount = 1;
+            numberOfVerseLinesPerSlideTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            numberOfVerseLinesPerSlideTableLayoutPanel.Size = new System.Drawing.Size(238, 21);
+            numberOfVerseLinesPerSlideTableLayoutPanel.TabIndex = 7;
+            // 
+            // numberOfVerseLinesPerSlideLabel
+            // 
+            numberOfVerseLinesPerSlideLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            numberOfVerseLinesPerSlideLabel.AutoSize = true;
+            numberOfVerseLinesPerSlideLabel.Location = new System.Drawing.Point(3, 4);
+            numberOfVerseLinesPerSlideLabel.Name = "numberOfVerseLinesPerSlideLabel";
+            numberOfVerseLinesPerSlideLabel.Size = new System.Drawing.Size(153, 12);
+            numberOfVerseLinesPerSlideLabel.TabIndex = 0;
+            numberOfVerseLinesPerSlideLabel.Text = "슬라이드당 성경 구절 줄 수";
+            // 
+            // numberOfVerseLinesPerSlideComboBox
+            // 
+            this.numberOfVerseLinesPerSlideComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numberOfVerseLinesPerSlideComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.numberOfVerseLinesPerSlideComboBox.Items.AddRange(new object[] {
+            "제한 없음",
+            "1줄",
+            "2줄",
+            "3줄",
+            "4줄",
+            "5줄",
+            "6줄",
+            "7줄",
+            "8줄",
+            "9줄"});
+            this.numberOfVerseLinesPerSlideComboBox.Location = new System.Drawing.Point(160, 0);
+            this.numberOfVerseLinesPerSlideComboBox.Margin = new System.Windows.Forms.Padding(0);
+            this.numberOfVerseLinesPerSlideComboBox.Name = "numberOfVerseLinesPerSlideComboBox";
+            this.numberOfVerseLinesPerSlideComboBox.Size = new System.Drawing.Size(78, 20);
+            this.numberOfVerseLinesPerSlideComboBox.TabIndex = 1;
+            this.toolTip.SetToolTip(this.numberOfVerseLinesPerSlideComboBox, "성경 구절 줄 수 설정");
             // 
             // biblesTableLayoutPanel
             // 
@@ -398,7 +454,7 @@
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             biblesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            biblesTableLayoutPanel.Size = new System.Drawing.Size(238, 129);
+            biblesTableLayoutPanel.Size = new System.Drawing.Size(238, 104);
             biblesTableLayoutPanel.TabIndex = 2;
             // 
             // biblesButtonTableLayoutPanel
@@ -495,14 +551,14 @@
             this.biblesDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.biblesDataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.biblesDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.biblesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.biblesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.biblesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.biblesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.biblesSourceDataGridViewColumn,
@@ -514,20 +570,20 @@
             this.biblesDataGridView.MultiSelect = false;
             this.biblesDataGridView.Name = "biblesDataGridView";
             this.biblesDataGridView.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.biblesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.biblesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.biblesDataGridView.RowHeadersWidth = 30;
             this.biblesDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.biblesDataGridView.RowTemplate.Height = 18;
             this.biblesDataGridView.RowTemplate.ReadOnly = true;
             this.biblesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.biblesDataGridView.Size = new System.Drawing.Size(236, 102);
+            this.biblesDataGridView.Size = new System.Drawing.Size(236, 77);
             this.biblesDataGridView.StandardTab = true;
             this.biblesDataGridView.TabIndex = 1;
             this.biblesDataGridView.CurrentCellChanged += new System.EventHandler(this.BiblesDataGridView_CurrentCellChanged);
@@ -671,7 +727,7 @@
             templateBookAbbrTableLayoutPanel.Controls.Add(templateBookAbbrLabel, 0, 0);
             templateBookAbbrTableLayoutPanel.Controls.Add(this.templateBookAbbrComboBox, 1, 0);
             templateBookAbbrTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateBookAbbrTableLayoutPanel.Location = new System.Drawing.Point(0, 246);
+            templateBookAbbrTableLayoutPanel.Location = new System.Drawing.Point(0, 221);
             templateBookAbbrTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateBookAbbrTableLayoutPanel.Name = "templateBookAbbrTableLayoutPanel";
             templateBookAbbrTableLayoutPanel.RowCount = 1;
@@ -712,7 +768,7 @@
             templateChaperNumberTableLayoutPanel.Controls.Add(templateChaperNumberLabel, 0, 0);
             templateChaperNumberTableLayoutPanel.Controls.Add(this.templateChapterNumberComboBox, 1, 0);
             templateChaperNumberTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateChaperNumberTableLayoutPanel.Location = new System.Drawing.Point(0, 271);
+            templateChaperNumberTableLayoutPanel.Location = new System.Drawing.Point(0, 246);
             templateChaperNumberTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateChaperNumberTableLayoutPanel.Name = "templateChaperNumberTableLayoutPanel";
             templateChaperNumberTableLayoutPanel.RowCount = 1;
@@ -755,7 +811,7 @@
             templateTableLayoutPanel.Controls.Add(templateIconPictureBox, 0, 0);
             templateTableLayoutPanel.Controls.Add(this.templateEditButton, 2, 0);
             templateTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateTableLayoutPanel.Location = new System.Drawing.Point(0, 194);
+            templateTableLayoutPanel.Location = new System.Drawing.Point(0, 169);
             templateTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateTableLayoutPanel.Name = "templateTableLayoutPanel";
             templateTableLayoutPanel.RowCount = 1;
@@ -811,7 +867,7 @@
             templateBookNameTableLayoutPanel.Controls.Add(templateBookNameLabel, 0, 0);
             templateBookNameTableLayoutPanel.Controls.Add(this.templateBookNameComboBox, 1, 0);
             templateBookNameTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            templateBookNameTableLayoutPanel.Location = new System.Drawing.Point(0, 221);
+            templateBookNameTableLayoutPanel.Location = new System.Drawing.Point(0, 196);
             templateBookNameTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             templateBookNameTableLayoutPanel.Name = "templateBookNameTableLayoutPanel";
             templateBookNameTableLayoutPanel.RowCount = 1;
@@ -1081,14 +1137,14 @@
             this.historyDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.historyDataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
             this.historyDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.historyDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.historyDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.historyDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.historyDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.historyCreatedAtColumn,
@@ -1159,16 +1215,16 @@
             historyFlowLayoutPanel.Size = new System.Drawing.Size(433, 24);
             historyFlowLayoutPanel.TabIndex = 1;
             // 
-            // historyOpenResultButton
+            // historyDeleteButton
             // 
-            this.historyOpenResultButton.Location = new System.Drawing.Point(208, 0);
-            this.historyOpenResultButton.Margin = new System.Windows.Forms.Padding(0);
-            this.historyOpenResultButton.Name = "historyOpenResultButton";
-            this.historyOpenResultButton.Size = new System.Drawing.Size(75, 23);
-            this.historyOpenResultButton.TabIndex = 0;
-            this.historyOpenResultButton.Text = "열기";
-            this.historyOpenResultButton.UseVisualStyleBackColor = true;
-            this.historyOpenResultButton.Click += new System.EventHandler(this.HistoryOpenResultButton_Click);
+            this.historyDeleteButton.Location = new System.Drawing.Point(358, 0);
+            this.historyDeleteButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyDeleteButton.Name = "historyDeleteButton";
+            this.historyDeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.historyDeleteButton.TabIndex = 2;
+            this.historyDeleteButton.Text = "삭제";
+            this.historyDeleteButton.UseVisualStyleBackColor = true;
+            this.historyDeleteButton.Click += new System.EventHandler(this.HistoryDeleteButton_Click);
             // 
             // historyLoadButton
             // 
@@ -1181,16 +1237,29 @@
             this.historyLoadButton.UseVisualStyleBackColor = true;
             this.historyLoadButton.Click += new System.EventHandler(this.HistoryLoadButton_Click);
             // 
-            // historyDeleteButton
+            // historyOpenResultButton
             // 
-            this.historyDeleteButton.Location = new System.Drawing.Point(358, 0);
-            this.historyDeleteButton.Margin = new System.Windows.Forms.Padding(0);
-            this.historyDeleteButton.Name = "historyDeleteButton";
-            this.historyDeleteButton.Size = new System.Drawing.Size(75, 23);
-            this.historyDeleteButton.TabIndex = 2;
-            this.historyDeleteButton.Text = "삭제";
-            this.historyDeleteButton.UseVisualStyleBackColor = true;
-            this.historyDeleteButton.Click += new System.EventHandler(this.HistoryDeleteButton_Click);
+            this.historyOpenResultButton.Location = new System.Drawing.Point(208, 0);
+            this.historyOpenResultButton.Margin = new System.Windows.Forms.Padding(0);
+            this.historyOpenResultButton.Name = "historyOpenResultButton";
+            this.historyOpenResultButton.Size = new System.Drawing.Size(75, 23);
+            this.historyOpenResultButton.TabIndex = 0;
+            this.historyOpenResultButton.Text = "열기";
+            this.historyOpenResultButton.UseVisualStyleBackColor = true;
+            this.historyOpenResultButton.Click += new System.EventHandler(this.HistoryOpenResultButton_Click);
+            // 
+            // autoOpenCheckBox
+            // 
+            this.autoOpenCheckBox.AutoSize = true;
+            this.autoOpenCheckBox.Checked = true;
+            this.autoOpenCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoOpenCheckBox.Location = new System.Drawing.Point(85, 3);
+            this.autoOpenCheckBox.Name = "autoOpenCheckBox";
+            this.autoOpenCheckBox.Size = new System.Drawing.Size(120, 16);
+            this.autoOpenCheckBox.TabIndex = 3;
+            this.autoOpenCheckBox.Text = "완료 후 자동 열기";
+            this.autoOpenCheckBox.UseVisualStyleBackColor = true;
+            this.autoOpenCheckBox.CheckedChanged += new System.EventHandler(this.AutoOpenCheckBox_CheckedChanged);
             // 
             // templatesMultiPanelPage
             // 
@@ -1266,19 +1335,6 @@
             this.settingsNavButton.UseVisualStyleBackColor = false;
             this.settingsNavButton.Click += new System.EventHandler(this.Nav_Click);
             // 
-            // autoOpenCheckBox
-            // 
-            this.autoOpenCheckBox.AutoSize = true;
-            this.autoOpenCheckBox.Checked = true;
-            this.autoOpenCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoOpenCheckBox.Location = new System.Drawing.Point(85, 3);
-            this.autoOpenCheckBox.Name = "autoOpenCheckBox";
-            this.autoOpenCheckBox.Size = new System.Drawing.Size(120, 16);
-            this.autoOpenCheckBox.TabIndex = 3;
-            this.autoOpenCheckBox.Text = "완료 후 자동 열기";
-            this.autoOpenCheckBox.UseVisualStyleBackColor = true;
-            this.autoOpenCheckBox.CheckedChanged += new System.EventHandler(this.AutoOpenCheckBox_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1301,6 +1357,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.buildSplitContainer)).EndInit();
             this.buildSplitContainer.ResumeLayout(false);
             this.buildLeftTableLayoutPanel.ResumeLayout(false);
+            numberOfVerseLinesPerSlideTableLayoutPanel.ResumeLayout(false);
+            numberOfVerseLinesPerSlideTableLayoutPanel.PerformLayout();
             biblesTableLayoutPanel.ResumeLayout(false);
             biblesButtonTableLayoutPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.biblesDataGridView)).EndInit();
@@ -1387,6 +1445,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn historySplitChaptersIntoFileColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn historyJobProgress;
         private System.Windows.Forms.CheckBox autoOpenCheckBox;
+        private System.Windows.Forms.ComboBox numberOfVerseLinesPerSlideComboBox;
     }
 }
 
