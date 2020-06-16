@@ -11,7 +11,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
 {
-    class PPTManager : IDisposable
+    internal class PPTManager : IDisposable
     {
         public Job Job { get; }
         public string Output { get; }
@@ -75,32 +75,39 @@ namespace Bible2PPT.PPT
                     continue;
                 }
 
-                var slide = TemplateSlide.Duplicate();
-                slide.MoveTo(WorkingPPT.Slides.Count);
-                foreach (var textShape in
-                    slide.Shapes.Cast<PowerPoint.Shape>()
-                        .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
-                        .Select(i => i.TextFrame.TextRange))
-                {
-                    var text = textShape.Text;
-                    text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
-                    text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
-                    text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
-                    //text = text.Replace("[CPAS]", $"{startVerseNumber}");
-                    //text = text.Replace("[CPAE]", $"{endVerseNumber}");
-                    text = text.Replace("[PARA]", $"{mainVerse.Number}");
-                    text = text.Replace("[BODY]", eachVerse.First()?.Text);
+                AppendVerse(eachVerse, mainVerse, book, chapter, token);
 
-                    var verseEnumerator = eachVerse.GetEnumerator();
-                    for (var i = 1; i <= 9; i++)
-                    {
-                        var verse = verseEnumerator.MoveNext() ? verseEnumerator.Current : null;
-                        text = text.Replace($"[BODY{i}]", verse?.Text);
-                    }
-
-                    textShape.Text = text;
-                }
                 isFirstVerseOfChapter = false;
+            }
+        }
+
+        public void AppendVerse(IEnumerable<Verse> eachVerse, Verse mainVerse, Book book, Chapter chapter, CancellationToken token)
+        {
+            var slide = TemplateSlide.Duplicate();
+            slide.MoveTo(WorkingPPT.Slides.Count);
+            foreach (var textShape in
+                slide.Shapes.Cast<PowerPoint.Shape>()
+                    .Where(i => i.HasTextFrame == MsoTriState.msoTrue)
+                    .Select(i => i.TextFrame.TextRange))
+            {
+                var text = textShape.Text;
+
+                text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
+                text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
+                text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
+                //text = text.Replace("[CPAS]", $"{startVerseNumber}");
+                //text = text.Replace("[CPAE]", $"{endVerseNumber}");
+                text = text.Replace("[PARA]", $"{mainVerse.Number}");
+                text = text.Replace("[BODY]", eachVerse.First()?.Text);
+
+                var verseEnumerator = eachVerse.GetEnumerator();
+                for (var i = 1; i <= 9; i++)
+                {
+                    var verse = verseEnumerator.MoveNext() ? verseEnumerator.Current : null;
+                    text = text.Replace($"[BODY{i}]", verse?.Text);
+                }
+
+                textShape.Text = text;
             }
         }
 
@@ -110,8 +117,10 @@ namespace Bible2PPT.PPT
             {
                 case TemplateTextOptions.Always:
                     return true;
+
                 case TemplateTextOptions.FirstVerseOfChapter:
                     return isFirstVerseOfChapter;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -123,6 +132,7 @@ namespace Bible2PPT.PPT
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -157,6 +167,7 @@ namespace Bible2PPT.PPT
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }
