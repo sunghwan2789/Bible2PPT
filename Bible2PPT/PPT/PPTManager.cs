@@ -138,13 +138,13 @@ namespace Bible2PPT.PPT
                 textShape.Text = replacedText;
 
                 // 슬라이드 분할 기능을 사용하지 않으면 이대로 종료
-                if (Job.NumberOfLinesPerSlide < 1)
+                if (Job.NumberOfVerseLinesPerSlide < 1)
                 {
                     return;
                 }
 
                 // 설정한 줄 수를 초과하지 않게 뒷 부분을 잘라냄
-                var trimmedText = textShape.Lines(Length: lineCount + Job.NumberOfLinesPerSlide).Text;
+                var trimmedText = textShape.Lines(Length: lineCount + Job.NumberOfVerseLinesPerSlide).Text;
                 textShape.Text = trimmedText;
 
                 // 잘라낸 뒷 부분을 새 슬라이드로 추가하도록 저장

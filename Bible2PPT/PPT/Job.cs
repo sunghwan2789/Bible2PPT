@@ -24,7 +24,7 @@ namespace Bible2PPT.PPT
         public TemplateTextOptions TemplateBookNameOption { get; set; }
         public TemplateTextOptions TemplateBookAbbrOption { get; set; }
         public TemplateTextOptions TemplateChapterNumberOption { get; set; }
-        public int NumberOfLinesPerSlide { get; set; }
+        public int NumberOfVerseLinesPerSlide { get; set; }
         public string QueryString { get; set; }
         public bool SplitChaptersIntoFiles { get; set; }
         public string OutputDestination { get; set; }

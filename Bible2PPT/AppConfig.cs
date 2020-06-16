@@ -83,7 +83,7 @@ namespace Bible2PPT
         /// Offset: 205,
         /// Length: 4,
         /// </summary>
-        public int NumberOfLinesPerSlide { get; set; } = 6;
+        public int NumberOfVerseLinesPerSlide { get; set; } = 6;
 
         public AppConfig() : base(ConfigPath, ConfigSize)
         {
@@ -103,7 +103,7 @@ namespace Bible2PPT
             {
                 BitConverter.GetBytes(BibleToBuild[i]).CopyTo(b, 169 + 4 * i);
             }
-            b[0] |= (byte)NumberOfLinesPerSlide;
+            b[0] |= (byte)NumberOfVerseLinesPerSlide;
             return b;
         }
 
@@ -120,7 +120,7 @@ namespace Bible2PPT
             {
                 BibleToBuild[i] = BitConverter.ToInt32(s, 169 + 4 * i);
             }
-            NumberOfLinesPerSlide = s[205];
+            NumberOfVerseLinesPerSlide = s[205];
         }
     }
 }
