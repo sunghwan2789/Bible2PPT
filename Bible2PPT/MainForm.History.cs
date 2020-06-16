@@ -184,10 +184,10 @@ namespace Bible2PPT
             templateBookNameComboBox.SelectedItem = (int)job.TemplateBookNameOption;
             templateBookAbbrComboBox.SelectedItem = (int)job.TemplateBookAbbrOption;
             templateChapterNumberComboBox.SelectedItem = (int)job.TemplateChapterNumberOption;
+            numberOfVerseLinesPerSlideComboBox.SelectedIndex = job.NumberOfVerseLinesPerSlide;
 
             buildNavButton.PerformClick();
             versesTextBox.Focus();
-
         }
 
         private void HistoryDeleteButton_Click(object sender, EventArgs e)
