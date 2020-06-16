@@ -506,7 +506,7 @@ namespace Bible2PPT
             var job = new Job
             {
                 Bibles = biblesToBuild.ToList(),
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 SplitChaptersIntoFiles = buildSplitChaptersIntoFilesCheckBox.Checked,
                 OutputDestination = destination,
                 QueryString = Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " "),
