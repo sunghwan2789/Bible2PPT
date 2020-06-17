@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace Bible2PPT
 {
-    class AppConfig : BinaryConfig
+    internal class AppConfig : BinaryConfig
     {
-        public const int ConfigSize = 1 + 4 + 16 + 16 * 9 + 4 + 4 * 9;
+        public const int ConfigSize = 1 + 4 + 16 + (16 * 9) + 4 + (4 * 9) + 4;
         public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
         public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
         public static string DatabaseWorkingDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar;
@@ -79,7 +79,15 @@ namespace Bible2PPT
         /// </summary>
         public int[] BibleToBuild { get; set; } = new int[9];
 
-        public AppConfig() : base(ConfigPath, ConfigSize) { }
+        /// <summary>
+        /// Offset: 205,
+        /// Length: 4,
+        /// </summary>
+        public int NumberOfVerseLinesPerSlide { get; set; } = 6;
+
+        public AppConfig() : base(ConfigPath, ConfigSize)
+        {
+        }
 
         protected override byte[] Serialize()
         {
@@ -95,6 +103,7 @@ namespace Bible2PPT
             {
                 BitConverter.GetBytes(BibleToBuild[i]).CopyTo(b, 169 + 4 * i);
             }
+            BitConverter.GetBytes(NumberOfVerseLinesPerSlide).CopyTo(b, 205);
             return b;
         }
 
@@ -111,6 +120,7 @@ namespace Bible2PPT
             {
                 BibleToBuild[i] = BitConverter.ToInt32(s, 169 + 4 * i);
             }
+            NumberOfVerseLinesPerSlide = BitConverter.ToInt32(s, 205);
         }
     }
 }

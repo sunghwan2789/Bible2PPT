@@ -7,7 +7,7 @@ using Bible2PPT.Bibles;
 
 namespace Bible2PPT.PPT
 {
-    class Job
+    internal class Job
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -24,6 +24,7 @@ namespace Bible2PPT.PPT
         public TemplateTextOptions TemplateBookNameOption { get; set; }
         public TemplateTextOptions TemplateBookAbbrOption { get; set; }
         public TemplateTextOptions TemplateChapterNumberOption { get; set; }
+        public int NumberOfVerseLinesPerSlide { get; set; }
         public string QueryString { get; set; }
         public bool SplitChaptersIntoFiles { get; set; }
         public string OutputDestination { get; set; }
