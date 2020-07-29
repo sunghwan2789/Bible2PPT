@@ -220,7 +220,11 @@ namespace Bible2PPT.PPT
                 }
             }
             ExtractTemplate();
-            System.Diagnostics.Process.Start(AppConfig.TemplatePath);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = AppConfig.TemplatePath,
+                UseShellExecute = true,
+            });
         }
 
         protected override async Task ProcessAsync(Job job, CancellationToken token)
