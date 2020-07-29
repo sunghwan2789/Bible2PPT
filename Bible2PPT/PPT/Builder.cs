@@ -213,14 +213,18 @@ namespace Bible2PPT.PPT
                     return;
                 }
 
-                using (var ms = new MemoryStream(Properties.Resources.Template))
+                using (var ms = Resources.GetStream(@"Template.pptx"))
                 using (var fs = File.OpenWrite(AppConfig.TemplatePath))
                 {
                     ms.CopyTo(fs);
                 }
             }
             ExtractTemplate();
-            System.Diagnostics.Process.Start(AppConfig.TemplatePath);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = AppConfig.TemplatePath,
+                UseShellExecute = true,
+            });
         }
 
         protected override async Task ProcessAsync(Job job, CancellationToken token)
