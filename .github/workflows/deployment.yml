@@ -1,0 +1,59 @@
+name: Deployment
+# By listening release event, variables are set as:
+#
+# * `${{ github.ref }}`: '/refs/tags/v1.0.0'
+# * `${{ github.events }}`: See https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#release
+#
+# See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#release
+on:
+  release:
+    types: [released]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    
+    env:
+      PACKAGE_DIRECTORY: Bible2PPT/bin/Release 
+
+    steps:
+      - uses: microsoft/setup-msbuild@v1.0.0
+
+      - uses: actions/checkout@v2
+
+      - name: Parse semantic version
+        id: parse-version
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: ${{ github.ref }}
+          version_extractor_regex: '\/v(.*)$'
+
+      - name: Restore
+        run: msbuild -restore
+
+      - name: Build
+        run: msbuild -p:Version=${env:VERSION} -p:Configuration=Release
+        env:
+          VERSION: ${{ steps.parse-version.outputs.fullversion }}
+
+      - name: Package
+        id: package
+        run: |
+          Get-ChildItem | foreach {
+            $filename = Bible2PPT-${env:VERSION}-windows-${_}.zip
+            Compress-Archive -Path ${_}/* -DestinationPath ${filename}
+            Write-Host ::set-output name=filename::${filename}
+          }
+        env:
+          VERSION: ${{ steps.parse-version.outputs.fullversion }}
+        working-directory: ${{ env.PACKAGE_DIRECTORY }}
+      
+      - name: Upload
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.PACKAGE_DIRECTORY }}/${{ steps.package.outputs.filename }}
+          asset_name: ${{ steps.package.outputs.filename }}
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
