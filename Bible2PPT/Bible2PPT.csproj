@@ -12,8 +12,8 @@
     <Company>BloodCat</Company>
     <Product>Bible2PPT</Product>
     <Copyright>BloodCat 2015-2020</Copyright>
-    <Version>1.4.0</Version>
-    <FileVersion>1.4.0</FileVersion>
+    <Version Condition=" '$(Version)' == '' ">0.0.0</Version>
+    <FileVersion>$(Version)</FileVersion>
     <NeutralLanguage>ko-KR</NeutralLanguage>
 
     <NoWin32Manifest>true</NoWin32Manifest>
