@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <RootNamespace>Bible2PPT</RootNamespace>
     <AssemblyName>Bible2PPT</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
@@ -18,7 +18,7 @@
 
     <NoWin32Manifest>true</NoWin32Manifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,8 +63,6 @@
 
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="5.13.0" />
-    <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
-    <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="SQLite.CodeFirst" Version="1.6.0.30" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.1" />
   </ItemGroup>

@@ -26,7 +26,7 @@ namespace Bible2PPT.Bibles.Sources
         }
 
         protected override Task<List<Bible>> GetBiblesOnlineAsync() =>
-            TaskEx.FromResult(new List<Bible>
+            Task.FromResult(new List<Bible>
             {
                 new Bible
                 {
@@ -57,7 +57,7 @@ namespace Bible2PPT.Bibles.Sources
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
 
         protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
-            TaskEx.FromResult(Enumerable.Range(1, book.ChapterCount)
+            Task.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
                     OnlineId = $"{i}",
