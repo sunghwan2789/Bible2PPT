@@ -16,7 +16,7 @@
     <FileVersion>$(Version)</FileVersion>
     <NeutralLanguage>ko-KR</NeutralLanguage>
 
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
