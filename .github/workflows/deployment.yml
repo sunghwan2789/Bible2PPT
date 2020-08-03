@@ -40,7 +40,7 @@ jobs:
         id: package
         run: |
           Get-ChildItem | foreach {
-            $filename = "Bible2PPT-${env:VERSION}-windows-${_}.zip"
+            $filename = "Bible2PPT-${env:VERSION}-win-${_}.zip"
             Compress-Archive -Path ${_}/* -DestinationPath ${filename}
             Write-Host ::set-output name=filename::${filename}
           }
