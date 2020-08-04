@@ -213,11 +213,9 @@ namespace Bible2PPT.PPT
                     return;
                 }
 
-                using (var ms = Resources.GetStream(@"Template.pptx"))
-                using (var fs = File.OpenWrite(AppConfig.TemplatePath))
-                {
-                    ms.CopyTo(fs);
-                }
+                using var ms = Resources.GetStream(@"Template.pptx");
+                using var fs = File.OpenWrite(AppConfig.TemplatePath);
+                ms.CopyTo(fs);
             }
             ExtractTemplate();
             Process.Start(new ProcessStartInfo
@@ -328,23 +326,21 @@ namespace Bible2PPT.PPT
             }
             else
             {
-                using (var ppt = new PPTManager(POWERPNT, job, job.OutputDestination))
+                using var ppt = new PPTManager(POWERPNT, job, job.OutputDestination);
+                while (queue.Any()
+                    || !(produce.IsCompleted || (produce.Status == TaskStatus.RanToCompletion)))
                 {
-                    while (queue.Any()
-                        || !(produce.IsCompleted || (produce.Status == TaskStatus.RanToCompletion)))
+                    if (queue.TryDequeue(out var item))
                     {
-                        if (queue.TryDequeue(out var item))
-                        {
-                            sync.Set();
-                            var targetEachVerses = item.Item1;
-                            var mainBook = item.Item2;
-                            var mainChapter = item.Item3;
-                            ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
-                            OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
-                        }
+                        sync.Set();
+                        var targetEachVerses = item.Item1;
+                        var mainBook = item.Item2;
+                        var mainChapter = item.Item3;
+                        ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                        OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                     }
-                    ppt.Save();
                 }
+                ppt.Save();
             }
             await produce;
         }

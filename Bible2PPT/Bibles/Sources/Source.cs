@@ -46,19 +46,15 @@ namespace Bible2PPT.Bibles.Sources
 
             List<Bible> GetCached()
             {
-                using (var db = new BibleContext())
-                {
-                    return db.Bibles.Where(i => i.SourceId == Id).ToList();
-                }
+                using var db = new BibleContext();
+                return db.Bibles.Where(i => i.SourceId == Id).ToList();
             }
 
             void Cache()
             {
-                using (var db = new BibleContext())
-                {
-                    db.Bibles.AddRange(bibles);
-                    db.SaveChanges();
-                }
+                using var db = new BibleContext();
+                db.Bibles.AddRange(bibles);
+                db.SaveChanges();
             }
         }
 
@@ -78,12 +74,10 @@ namespace Bible2PPT.Bibles.Sources
 
             List<Book> GetCached()
             {
-                using (var db = new BibleContext())
-                {
-                    return db.Books.Where(i => i.BibleId == bible.Id)
-                        .Include(book => book.Bible)
-                        .ToList();
-                }
+                using var db = new BibleContext();
+                return db.Books.Where(i => i.BibleId == bible.Id)
+                    .Include(book => book.Bible)
+                    .ToList();
             }
 
             void LinkForeigns(Book book)
@@ -95,12 +89,10 @@ namespace Bible2PPT.Bibles.Sources
 
             void Cache()
             {
-                using (var db = new BibleContext())
-                {
-                    db.Bibles.Attach(books.First().Bible);
-                    db.Books.AddRange(books);
-                    db.SaveChanges();
-                }
+                using var db = new BibleContext();
+                db.Bibles.Attach(books.First().Bible);
+                db.Books.AddRange(books);
+                db.SaveChanges();
             }
         }
 
@@ -121,12 +113,10 @@ namespace Bible2PPT.Bibles.Sources
 
             List<Chapter> GetCached()
             {
-                using (var db = new BibleContext())
-                {
-                    return db.Chapters.Where(i => i.BookId == book.Id)
-                        .Include(chapter => chapter.Book.Bible)
-                        .ToList();
-                }
+                using var db = new BibleContext();
+                return db.Chapters.Where(i => i.BookId == book.Id)
+                    .Include(chapter => chapter.Book.Bible)
+                    .ToList();
             }
 
             void LinkForeigns(Chapter chapter)
@@ -138,12 +128,10 @@ namespace Bible2PPT.Bibles.Sources
 
             void Cache()
             {
-                using (var db = new BibleContext())
-                {
-                    db.Books.Attach(chapters.First().Book);
-                    db.Chapters.AddRange(chapters);
-                    db.SaveChanges();
-                }
+                using var db = new BibleContext();
+                db.Books.Attach(chapters.First().Book);
+                db.Chapters.AddRange(chapters);
+                db.SaveChanges();
             }
         }
 
@@ -164,12 +152,10 @@ namespace Bible2PPT.Bibles.Sources
 
             List<Verse> GetCached()
             {
-                using (var db = new BibleContext())
-                {
-                    return db.Verses.Where(i => i.ChapterId == chapter.Id)
-                        .Include(verse => verse.Chapter.Book.Bible)
-                        .ToList();
-                }
+                using var db = new BibleContext();
+                return db.Verses.Where(i => i.ChapterId == chapter.Id)
+                    .Include(verse => verse.Chapter.Book.Bible)
+                    .ToList();
             }
 
             void LinkForeigns(Verse verse)
@@ -181,12 +167,10 @@ namespace Bible2PPT.Bibles.Sources
 
             void Cache()
             {
-                using (var db = new BibleContext())
-                {
-                    db.Chapters.Attach(verses.First().Chapter);
-                    db.Verses.AddRange(verses);
-                    db.SaveChanges();
-                }
+                using var db = new BibleContext();
+                db.Chapters.Attach(verses.First().Chapter);
+                db.Verses.AddRange(verses);
+                db.SaveChanges();
             }
         }
 

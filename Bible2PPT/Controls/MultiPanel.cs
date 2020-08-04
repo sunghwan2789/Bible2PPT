@@ -40,8 +40,8 @@ namespace Bible2PPT.Controls
 
             var g = e.Graphics;
 
-            using (var br = new SolidBrush(BackColor))
-                g.FillRectangle(br, ClientRectangle);
+            using var br = new SolidBrush(BackColor);
+            g.FillRectangle(br, ClientRectangle);
         }
 
         protected override ControlCollection CreateControlsInstance()

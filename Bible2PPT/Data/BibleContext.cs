@@ -27,11 +27,9 @@ namespace Bible2PPT.Data
             {
                 connection.Open();
 
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText = "PRAGMA journal_mode=WAL;";
-                    cmd.ExecuteNonQuery();
-                }
+                using var cmd = connection.CreateCommand();
+                cmd.CommandText = "PRAGMA journal_mode=WAL;";
+                cmd.ExecuteNonQuery();
             }
             catch
             {
