@@ -11,10 +11,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Data;
 using Bible2PPT.Extensions;
 using Bible2PPT.PPT;
+using Bible2PPT.Sources;
 using Microsoft;
 
 namespace Bible2PPT
@@ -44,8 +44,8 @@ namespace Bible2PPT
 
             // DataSource 사용을 위한 기초 설정
             sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
-            sourceComboBox.ValueMember = nameof(Source.Id);
-            sourceComboBox.DisplayMember = nameof(Source.Name);
+            sourceComboBox.ValueMember = nameof(BibleSource.Id);
+            sourceComboBox.DisplayMember = nameof(BibleSource.Name);
             sourceComboBox.SelectedValueChanged += SourceComboBox_SelectedValueChanged;
 
             bibleComboBox.SelectedValueChanged -= BibleComboBox_SelectedValueChanged;
@@ -67,7 +67,7 @@ namespace Bible2PPT
 
             // 소스 목록 초기화
             sourceComboBox.SelectedValueChanged -= SourceComboBox_SelectedValueChanged;
-            sourceComboBox.DataSource = Source.AvailableSources;
+            sourceComboBox.DataSource = BibleSource.AvailableSources;
             sourceComboBox.SelectedItem = null;
             sourceComboBox.SelectedValueChanged += SourceComboBox_SelectedValueChanged;
             // 마지막으로 선택한 소스 불러오기
@@ -92,7 +92,7 @@ namespace Bible2PPT
             }
 
             // 소스를 선택하지 않았으면 아무 작업도 안함
-            if (!(sourceComboBox.SelectedItem is Source source))
+            if (!(sourceComboBox.SelectedItem is BibleSource source))
             {
                 return;
             }

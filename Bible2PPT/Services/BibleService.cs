@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Data;
+using Bible2PPT.Sources;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT.Services
@@ -20,7 +20,7 @@ namespace Bible2PPT.Services
             ScopeFactory = scopeFactory;
         }
 
-        private void LinkSource(BibleBase target, Source source)
+        private void LinkSource(BibleBase target, BibleSource source)
         {
             if (target == null) new ArgumentNullException(nameof(target));
             if (source == null) new ArgumentNullException(nameof(source));
@@ -37,7 +37,7 @@ namespace Bible2PPT.Services
             LinkSource(target, source.Source);
         }
 
-        public async Task<List<Bible>> GetBiblesAsync(Source source)
+        public async Task<List<Bible>> GetBiblesAsync(BibleSource source)
         {
             if (source == null)
             {
