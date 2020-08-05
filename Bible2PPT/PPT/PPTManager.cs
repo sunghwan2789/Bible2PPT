@@ -40,11 +40,9 @@ namespace Bible2PPT.PPT
                 return;
             }
 
-            using (var ms = Resources.GetStream(@"Template.pptx"))
-            using (var fs = File.OpenWrite(AppConfig.TemplatePath))
-            {
-                ms.CopyTo(fs);
-            }
+            using var ms = Resources.GetStream(@"Template.pptx");
+            using var fs = File.OpenWrite(AppConfig.TemplatePath);
+            ms.CopyTo(fs);
         }
 
         public void Save()

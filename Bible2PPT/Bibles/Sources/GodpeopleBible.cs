@@ -54,7 +54,7 @@ namespace Bible2PPT.Bibles.Sources
         }
 
         private static string EncodeString(string s) =>
-            string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b.ToString("X")}"));
+            string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b:X}"));
 
         protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
             Task.FromResult(Enumerable.Range(1, book.ChapterCount)

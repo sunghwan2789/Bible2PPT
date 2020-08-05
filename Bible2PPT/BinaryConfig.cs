@@ -18,10 +18,8 @@ namespace Bible2PPT
         {
             try
             {
-                using (var fs = File.OpenWrite(path))
-                {
-                    fs.Write(Serialize(), 0, size);
-                }
+                using var fs = File.OpenWrite(path);
+                fs.Write(Serialize(), 0, size);
             }
             catch { }
         }
@@ -30,12 +28,10 @@ namespace Bible2PPT
         {
             try
             {
-                using (var fs = File.OpenRead(path))
-                {
-                    var data = new byte[size];
-                    fs.Read(data, 0, size);
-                    Deserialize(data);
-                }
+                using var fs = File.OpenRead(path);
+                var data = new byte[size];
+                fs.Read(data, 0, size);
+                Deserialize(data);
             }
             catch { }
         }

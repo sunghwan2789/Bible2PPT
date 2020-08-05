@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
+    <LangVersion>8.0</LangVersion>
     <RootNamespace>Bible2PPT</RootNamespace>
     <AssemblyName>Bible2PPT</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>

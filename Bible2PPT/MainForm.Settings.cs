@@ -30,15 +30,13 @@ namespace Bible2PPT
         {
             if (DialogResult.Yes == MessageBox.Show("진행 중인 작업을 취소하고 프로그램을 다시 시작할까요?", Text, MessageBoxButtons.YesNo))
             {
-                using (var db = new BibleContext())
-                {
-                    db.Database.ExecuteSqlCommand(@"
+                using var db = new BibleContext();
+                db.Database.ExecuteSqlCommand(@"
                         PRAGMA writable_schema = 1;
                         DELETE FROM sqlite_master WHERE type IN ('table', 'index', 'trigger');
                         PRAGMA writable_schema = 0;
                     ");
-                    Application.Restart();
-                }
+                Application.Restart();
             }
         }
     }

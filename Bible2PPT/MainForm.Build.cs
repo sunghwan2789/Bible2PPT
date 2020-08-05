@@ -257,16 +257,14 @@ namespace Bible2PPT
 
         private void BiblesDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            using (var brush = new SolidBrush(biblesDataGridView.RowHeadersDefaultCellStyle.ForeColor))
-            {
-                e.Graphics.DrawString(
-                    $"{e.RowIndex + 1}",
-                    e.InheritedRowStyle.Font,
-                    brush,
-                    e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
-                    e.RowBounds.Location.Y + ((e.RowBounds.Height - e.InheritedRowStyle.Font.Height) / 2),
-                    new StringFormat(StringFormatFlags.DirectionRightToLeft));
-            }
+            using var brush = new SolidBrush(biblesDataGridView.RowHeadersDefaultCellStyle.ForeColor);
+            e.Graphics.DrawString(
+                $"{e.RowIndex + 1}",
+                e.InheritedRowStyle.Font,
+                brush,
+                e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
+                e.RowBounds.Location.Y + ((e.RowBounds.Height - e.InheritedRowStyle.Font.Height) / 2),
+                new StringFormat(StringFormatFlags.DirectionRightToLeft));
         }
 
         private void BiblesToBuild_Changed()
@@ -493,17 +491,15 @@ namespace Bible2PPT
             string destination;
             if (AppConfig.Context.SeperateByChapter)
             {
-                using (var fd = new FolderBrowserDialog
+                using var fd = new FolderBrowserDialog
                 {
                     Description = "PPT를 저장할 폴더를 선택하세요.",
-                })
+                };
+                if (fd.ShowDialog() != DialogResult.OK)
                 {
-                    if (fd.ShowDialog() != DialogResult.OK)
-                    {
-                        return;
-                    }
-                    destination = fd.SelectedPath;
+                    return;
                 }
+                destination = fd.SelectedPath;
             }
             else
             {

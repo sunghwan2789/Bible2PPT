@@ -12,14 +12,12 @@ namespace Bible2PPT.Bibles
 
         static BookAliases()
         {
-            using (var s = Resources.GetStream(@"BibleBookAliases.csv"))
-            using (var reader = new StreamReader(s))
+            using var s = Resources.GetStream(@"BibleBookAliases.csv");
+            using var reader = new StreamReader(s);
+            string line;
+            while ((line = reader.ReadLine()) != null)
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    Map.Add(line.Split(',').ToList());
-                }
+                Map.Add(line.Split(',').ToList());
             }
         }
     }
