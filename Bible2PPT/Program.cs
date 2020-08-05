@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using Bible2PPT.PPT;
+using Bible2PPT.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic.ApplicationServices;
 
@@ -24,6 +26,23 @@ namespace Bible2PPT
 
             services.AddTransient<SplashForm>();
             services.AddTransient<MainForm>();
+            services.AddSingleton<HiddenPowerPoint>(_ =>
+            {
+                try
+                {
+                    return new HiddenPowerPoint();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"마이크로소프트 파워포인트가 설치되어 있나요?\n\n자세한 오류: {ex}",
+                        @"프로그램 초기화 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // TODO: GitHub로 오류 포스팅하도록 안내하기 (전역 예외 처리기 사용)
+                    Environment.Exit(0);
+                    throw;
+                }
+            });
+            services.AddTransient<Builder>();
 
             ServiceProvider = services.BuildServiceProvider();
         }

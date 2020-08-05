@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
+using Bible2PPT.Services;
 using Microsoft;
 using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -18,19 +19,11 @@ namespace Bible2PPT.PPT
 {
     class Builder : JobManager
     {
-        private static PowerPoint.Application POWERPNT;
+        private HiddenPowerPoint PowerPoint { get; set; }
 
-        public Builder()
+        public Builder(HiddenPowerPoint ppt)
         {
-            if (POWERPNT == null)
-            {
-                POWERPNT = new PowerPoint.Application();
-                try
-                {
-                    POWERPNT.Visible = MsoTriState.msoFalse;
-                }
-                catch { }
-            }
+            PowerPoint = ppt;
         }
 
         private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken token)
@@ -315,7 +308,7 @@ namespace Bible2PPT.PPT
                         var mainChapter = item.Item3;
                         var output = Path.Combine(job.OutputDestination, mainBook.Name, mainChapter.Number.ToString(@"000\.pptx"));
                         CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
-                        using (var ppt = new PPTManager(POWERPNT, job, output))
+                        using (var ppt = new PPTManager(PowerPoint.Instance, job, output))
                         {
                             ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
                             ppt.Save();
@@ -326,7 +319,7 @@ namespace Bible2PPT.PPT
             }
             else
             {
-                using var ppt = new PPTManager(POWERPNT, job, job.OutputDestination);
+                using var ppt = new PPTManager(PowerPoint.Instance, job, job.OutputDestination);
                 while (queue.Any()
                     || !(produce.IsCompleted || (produce.Status == TaskStatus.RanToCompletion)))
                 {
@@ -352,35 +345,5 @@ namespace Bible2PPT.PPT
                 Directory.CreateDirectory(path);
             }
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                    try
-                    {
-                        if (POWERPNT != null && POWERPNT.Presentations.Count == 0)
-                        {
-                            POWERPNT.Quit();
-                            POWERPNT = null;
-                        }
-                    }
-                    catch { }
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
-            base.Dispose(disposing);
-        }
-        #endregion
     }
 }
