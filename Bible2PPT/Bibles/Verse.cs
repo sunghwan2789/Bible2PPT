@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bible2PPT.Bibles
+﻿namespace Bible2PPT.Bibles
 {
     class Verse : BibleBase
     {

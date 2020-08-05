@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Data;
 using Bible2PPT.PPT;
 

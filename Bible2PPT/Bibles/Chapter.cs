@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Bible2PPT.Bibles
+﻿namespace Bible2PPT.Bibles
 {
     class Chapter : BibleBase
     {
