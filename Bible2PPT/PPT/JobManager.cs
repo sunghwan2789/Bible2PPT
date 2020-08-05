@@ -10,13 +10,11 @@ namespace Bible2PPT.PPT
 {
     class JobManager : IDisposable
     {
-        public event EventHandler<JobQueuedEventArgs> JobQueued;
-        public event EventHandler<JobProgressEventArgs> JobProgress;
-        public event EventHandler<JobCompletedEventArgs> JobCompleted;
+        public IProgress<EventArgs> JobProgress { get; set; }
 
-        protected virtual void OnJobQueued(JobQueuedEventArgs e) => JobQueued?.Invoke(this, e);
-        protected virtual void OnJobProgress(JobProgressEventArgs e) => JobProgress?.Invoke(this, e);
-        protected virtual void OnJobCompleted(JobCompletedEventArgs e) => JobCompleted?.Invoke(this, e);
+        protected virtual void OnJobQueued(JobQueuedEventArgs e) => JobProgress?.Report(e);
+        protected virtual void OnJobProgress(JobProgressEventArgs e) => JobProgress?.Report(e);
+        protected virtual void OnJobCompleted(JobCompletedEventArgs e) => JobProgress?.Report(e);
 
 
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1, 1);

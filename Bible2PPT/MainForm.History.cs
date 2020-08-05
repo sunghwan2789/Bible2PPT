@@ -35,9 +35,7 @@ namespace Bible2PPT
             }
             historyDataGridView.DataSource = jobHistory;
 
-            Builder.JobQueued += Builder_JobQueued;
-            Builder.JobProgress += Builder_JobProgress;
-            Builder.JobCompleted += Builder_JobCompleted;
+            Builder.JobProgress = new Progress<EventArgs>(Builder_JobProgressChanged);
         }
 
         private DataGridViewRow FindHistoryDataGridViewRow(Job job)
@@ -52,7 +50,25 @@ namespace Bible2PPT
             return null;
         }
 
-        private void Builder_JobQueued(object sender, JobQueuedEventArgs e)
+        private void Builder_JobProgressChanged(EventArgs e)
+        {
+            switch (e)
+            {
+                case JobQueuedEventArgs jobQueuedEventArgs:
+                    Builder_JobQueued(jobQueuedEventArgs);
+                    break;
+                case JobProgressEventArgs jobProgressEventArgs:
+                    Builder_JobProgress(jobProgressEventArgs);
+                    break;
+                case JobCompletedEventArgs jobCompletedEventArgs:
+                    Builder_JobCompleted(jobCompletedEventArgs);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private void Builder_JobQueued(JobQueuedEventArgs e)
         {
             if (FindHistoryDataGridViewRow(e.Job) == null)
             {
@@ -64,26 +80,14 @@ namespace Bible2PPT
             FindHistoryDataGridViewRow(e.Job).Tag = true;
         }
 
-        private void Builder_JobProgress(object sender, JobProgressEventArgs e)
+        private void Builder_JobProgress(JobProgressEventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new MethodInvoker(() => Builder_JobProgress(sender, e)));
-                return;
-            }
-
             FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value =
                 $"{e.Progress:p} {e.Chapters}장 중 {e.ChaptersDone}장";
         }
 
-        private void Builder_JobCompleted(object sender, JobCompletedEventArgs e)
+        private void Builder_JobCompleted(JobCompletedEventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new MethodInvoker(() => Builder_JobCompleted(sender, e)));
-                return;
-            }
-
             // 취소 불가능함을 표시
             FindHistoryDataGridViewRow(e.Job).Tag = null;
 
