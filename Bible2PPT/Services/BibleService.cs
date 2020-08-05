@@ -50,7 +50,7 @@ namespace Bible2PPT.Services
                 return bibles;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            bibles = await source.GetBiblesOnlineAsync();
+            bibles = await source.GetBiblesOnlineAsync().ConfigureAwait(false);
             bibles.ForEach(bible => LinkSource(bible, source));
             Cache();
             return bibles;
@@ -85,7 +85,7 @@ namespace Bible2PPT.Services
                 return books;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            books = await bible.Source.GetBooksOnlineAsync(bible);
+            books = await bible.Source.GetBooksOnlineAsync(bible).ConfigureAwait(false);
             books.ForEach(LinkForeigns);
             Cache();
             return books;
@@ -130,7 +130,7 @@ namespace Bible2PPT.Services
                 return chapters;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            chapters = await book.Source.GetChaptersOnlineAsync(book);
+            chapters = await book.Source.GetChaptersOnlineAsync(book).ConfigureAwait(false);
             chapters.ForEach(LinkForeigns);
             chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
             Cache();
@@ -176,7 +176,7 @@ namespace Bible2PPT.Services
                 return verses;
             }
             // 캐시가 없으면 온라인에서 가져와서 저장
-            verses = await chapter.Source.GetVersesOnlineAsync(chapter);
+            verses = await chapter.Source.GetVersesOnlineAsync(chapter).ConfigureAwait(false);
             verses.ForEach(LinkForeigns);
             verses.Sort((a, b) => a.Number.CompareTo(b.Number));
             Cache();

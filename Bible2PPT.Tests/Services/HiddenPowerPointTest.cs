@@ -37,7 +37,7 @@ namespace Bible2PPT.Tests.Services
             // 10번까지 3초마다 파워포인트가 끝났는지 확인
             foreach (var _ in Enumerable.Range(0, 10))
             {
-                await Task.Delay(3000);
+                await Task.Delay(3000).ConfigureAwait(false);
                 if (!IsPowerPointRunning())
                 {
                     break;

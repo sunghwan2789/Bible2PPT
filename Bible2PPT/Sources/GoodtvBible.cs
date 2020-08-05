@@ -26,7 +26,7 @@ namespace Bible2PPT.Sources
 
         public override async Task<List<Bible>> GetBiblesOnlineAsync()
         {
-            var data = await client.GetStringAsync("/bible.asp");
+            var data = await client.GetStringAsync("/bible.asp").ConfigureAwait(false);
             var matches = Regex.Matches(data, @"bible_check"".+?value=""(\d+)""[\s\S]+?<span.+?>(.+?)<");
             return matches.Cast<Match>().Select(i => new Bible
             {
@@ -51,7 +51,7 @@ namespace Bible2PPT.Sources
                     new KeyValuePair<string, string>("otnt", "2"),
                 })),
             };
-            var data = string.Join("", await Task.WhenAll(tasks));
+            var data = string.Join("", await Task.WhenAll(tasks).ConfigureAwait(false));
             var matches = Regex.Matches(data, @"""idx"":(\d+).+?""bible_name"":""(.+?)"".+?""max_jang"":(\d+)");
             return matches.Cast<Match>().Select(i => new Book
             {
@@ -81,7 +81,7 @@ namespace Bible2PPT.Sources
                 new KeyValuePair<string, string>("bible_version_2", "0"),
                 new KeyValuePair<string, string>("bible_version_3", "0"),
                 new KeyValuePair<string, string>("count", "1"),
-            }));
+            })).ConfigureAwait(false);
             data = Regex.Match(data, @"<p id=""one_jang""><b>([\s\S]+?)</b></p>").Groups[1].Value;
             var matches = Regex.Matches(data, @"<b>(\d+).*?</b>(.*?)<br>");
             return matches.Cast<Match>().Select(i => new Verse

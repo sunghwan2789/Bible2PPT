@@ -31,7 +31,7 @@ namespace Bible2PPT
             }
 
             var buffer = new byte[stream.Length];
-            await stream.ReadAsync(buffer, 0, buffer.Length);
+            await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
             return buffer;
         }
 
