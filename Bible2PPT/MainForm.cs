@@ -12,18 +12,21 @@ using Bible2PPT.Bibles;
 using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Controls;
 using Bible2PPT.PPT;
+using Bible2PPT.Services;
 
 namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
         private Builder Builder { get; set; }
+        private BibleService BibleService { get; set; }
 
         private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
-        public MainForm(Builder builder)
+        public MainForm(Builder builder, BibleService bibleService)
         {
             Builder = builder;
+            BibleService = bibleService;
 
             InitializeComponent();
             InitializeBuildComponent();

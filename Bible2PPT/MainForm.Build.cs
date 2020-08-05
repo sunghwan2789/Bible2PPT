@@ -106,7 +106,7 @@ namespace Bible2PPT
         GET_BIBLES:
             try
             {
-                bibles = await source.GetBiblesAsync();
+                bibles = await BibleService.GetBiblesAsync(source);
 
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();
@@ -315,7 +315,7 @@ namespace Bible2PPT
         GET_BOOKS:
             try
             {
-                books = await bible.Source.GetBooksAsync(bible);
+                books = await BibleService.GetBooksAsync(bible);
 
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();

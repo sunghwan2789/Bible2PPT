@@ -20,19 +20,21 @@ namespace Bible2PPT.PPT
     class Builder : JobManager
     {
         private HiddenPowerPoint PowerPoint { get; set; }
+        private BibleService BibleService { get; set; }
 
-        public Builder(HiddenPowerPoint ppt)
+        public Builder(HiddenPowerPoint ppt, BibleService bibleService)
         {
             PowerPoint = ppt;
+            BibleService = bibleService;
         }
 
-        private static async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken token)
+        private async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken token)
         {
         RETRY:
             try
             {
                 return await Task.WhenAll(bibles
-                    .Select(bible => bible.Source.GetBooksAsync(bible))
+                    .Select(BibleService.GetBooksAsync)
                     .ToList());
             }
             // 취소할 때까지 계속 재시도
@@ -43,16 +45,14 @@ namespace Bible2PPT.PPT
             }
         }
 
-        private static async Task<IEnumerable<IEnumerable<Chapter>>> GetEachChaptersAsync(IEnumerable<Book> books, CancellationToken token)
+        private async Task<IEnumerable<IEnumerable<Chapter>>> GetEachChaptersAsync(IEnumerable<Book> books, CancellationToken token)
         {
         RETRY:
             try
             {
                 // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
                 return await Task.WhenAll(books
-                    .Select(book =>
-                        book?.Source.GetChaptersAsync(book)
-                        ?? Task.FromResult(new List<Chapter>()))
+                    .Select(BibleService.GetChaptersAsync)
                     .ToList());
             }
             // 취소할 때까지 계속 재시도
@@ -121,15 +121,13 @@ namespace Bible2PPT.PPT
             }
         }
 
-        private static async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken token)
+        private async Task<IEnumerable<IEnumerable<Verse>>> GetEachVersesAsync(IEnumerable<Chapter> chapters, CancellationToken token)
         {
         RETRY:
             try
             {
                 return await Task.WhenAll(chapters
-                    .Select(chapter =>
-                        chapter?.Source.GetVersesAsync(chapter)
-                        ?? Task.FromResult(new List<Verse>()))
+                    .Select(BibleService.GetVersesAsync)
                     .ToList());
             }
             // 취소할 때까지 계속 재시도
