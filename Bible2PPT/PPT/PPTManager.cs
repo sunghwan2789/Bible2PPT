@@ -161,20 +161,12 @@ namespace Bible2PPT.PPT
             return slide;
         }
 
-        private bool ShouldPrint(TemplateTextOptions templateOption)
+        private bool ShouldPrint(TemplateTextOptions templateOption) => templateOption switch
         {
-            switch (templateOption)
-            {
-                case TemplateTextOptions.Always:
-                    return true;
-
-                case TemplateTextOptions.FirstVerseOfChapter:
-                    return isFirstVerseOfChapter;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+            TemplateTextOptions.Always => true,
+            TemplateTextOptions.FirstVerseOfChapter => isFirstVerseOfChapter,
+            _ => throw new NotImplementedException(),
+        };
 
         private string AddSuffix(string str, string toFind, string replace, TemplateTextOptions templateOption)
         {
