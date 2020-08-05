@@ -17,21 +17,13 @@ namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
-        private readonly Builder builder;
+        private Builder Builder { get; set; }
 
         private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
-        public MainForm()
+        public MainForm(Builder builder)
         {
-            try
-            {
-                builder = new Builder();
-            }
-            catch
-            {
-                MessageBox.Show(@"마이크로소프트 파워포인트가 설치되어 있나요?", @"프로그램 초기화 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(0);
-            }
+            Builder = builder;
 
             InitializeComponent();
             InitializeBuildComponent();

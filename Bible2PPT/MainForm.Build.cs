@@ -520,14 +520,14 @@ namespace Bible2PPT
             };
 
             // PPT 만들기
-            builder.Queue(job);
+            Builder.Queue(job);
 
             historyNavButton.PerformClick();
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)
         {
-            builder.OpenTemplate();
+            Builder.OpenTemplate();
         }
 
         private void TemplateEditButton_MouseHover(object sender, EventArgs e)

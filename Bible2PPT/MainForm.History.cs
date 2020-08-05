@@ -40,9 +40,9 @@ namespace Bible2PPT
             }
             historyDataGridView.DataSource = jobHistory;
 
-            builder.JobQueued += Builder_JobQueued;
-            builder.JobProgress += Builder_JobProgress;
-            builder.JobCompleted += Builder_JobCompleted;
+            Builder.JobQueued += Builder_JobQueued;
+            Builder.JobProgress += Builder_JobProgress;
+            Builder.JobCompleted += Builder_JobCompleted;
         }
 
         private DataGridViewRow FindHistoryDataGridViewRow(Job job)
@@ -215,7 +215,7 @@ namespace Bible2PPT
             // 취소 가능하면 취소로 제거
             else
             {
-                builder.Cancel(job);
+                Builder.Cancel(job);
             }
         }
     }
