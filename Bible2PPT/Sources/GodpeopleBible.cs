@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,14 +43,14 @@ namespace Bible2PPT.Sources
 
         public override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
-            var data = ENCODING.GetString(await client.GetByteArrayAsync("/?page=bidx"));
+            var data = ENCODING.GetString(await client.GetByteArrayAsync("/?page=bidx").ConfigureAwait(false));
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
             return matches.Cast<Match>().Select(match => new Book
             {
                 OnlineId = match.Groups[1].Value,
                 Name = match.Groups[3].Value,
                 Abbreviation = match.Groups[1].Value,
-                ChapterCount = int.Parse(match.Groups[2].Value),
+                ChapterCount = int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
             }).ToList();
         }
 
@@ -69,11 +69,11 @@ namespace Bible2PPT.Sources
 
         public override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
-            var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.OnlineId}&vers={chapter.Book.Bible.OnlineId}"));
+            var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.OnlineId}&vers={chapter.Book.Bible.OnlineId}").ConfigureAwait(false));
             var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+)[\s\S]+?bidx_listTd_phrase.+?>(.+?)</td");
             return matches.Cast<Match>().Select(i => new Verse
             {
-                Number = int.Parse(i.Groups[1].Value),
+                Number = int.Parse(i.Groups[1].Value, CultureInfo.InvariantCulture),
                 Text = StripHtmlTags(i.Groups[2].Value),
             }).ToList();
         }

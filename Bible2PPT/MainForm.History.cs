@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Data;
 using Bible2PPT.PPT;
 
@@ -98,7 +93,7 @@ namespace Bible2PPT
             }
             else if (e.IsFaulted)
             {
-                FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = e.Exception.ToString();
+                FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = $"{e.Exception}";
             }
             else
             {

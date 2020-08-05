@@ -7,8 +7,6 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.DependencyResolution;
 using System.Data.SQLite;
 using System.Data.SQLite.EF6;
-using System.Linq;
-using System.Text;
 
 namespace Bible2PPT.Data
 {

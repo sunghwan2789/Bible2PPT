@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using Bible2PPT.Bibles;
-using Bible2PPT.Data;
 using Bible2PPT.Services;
-using Microsoft;
-using Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
@@ -51,11 +45,11 @@ namespace Bible2PPT.PPT
 
         protected override async Task ProcessAsync(Job job, CancellationToken token)
         {
-            await base.ProcessAsync(job, token);
+            await base.ProcessAsync(job, token).ConfigureAwait(false);
 
             // (targetEachVerses, mainBook, mainChapter)
             var queue = new ConcurrentQueue<(IAsyncEnumerable<IEnumerable<Verse>>, Book, Chapter)>();
-            var sync = new AutoResetEvent(false);
+            using var sync = new AutoResetEvent(false);
 
             var queries = job.QueryString.Split().Select(VerseQuery.Parse).ToList();
             var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
@@ -63,7 +57,7 @@ namespace Bible2PPT.PPT
 
             var produce = Task.Run(async () =>
             {
-                var eachBooks = await ZippedBibleService.GetEachBooksAsync(job.Bibles, token);
+                var eachBooks = await ZippedBibleService.GetEachBooksAsync(job.Bibles, token).ConfigureAwait(false);
 
                 List<Book> LookupEachBook(VerseQuery query)
                 {
@@ -90,7 +84,7 @@ namespace Bible2PPT.PPT
                             ? (chapter.Number >= query.StartChapterNumber)
                             : (chapter.Number >= query.StartChapterNumber) && (chapter.Number <= query.EndChapterNumber)
                         ));
-                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters + (await targetEachChapters.ToListAsync()).Count());
+                    e = new JobProgressEventArgs(job, e.CurrentChapter, e.QueriesDone, e.Queries, e.ChaptersDone, e.Chapters + (await targetEachChapters.ToListAsync().ConfigureAwait(false)).Count());
                     await foreach (var targetEachChapter in targetEachChapters)
                     {
                         // 해당 장이 있는 성경의 책에서 해당 장을 대표로 사용
@@ -136,11 +130,11 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
-                        var output = Path.Combine(job.OutputDestination, mainBook.Name, mainChapter.Number.ToString(@"000\.pptx"));
+                        var output = Path.Combine(job.OutputDestination, mainBook.Name, $"{mainChapter.Number:000}.pptx");
                         CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                         using (var ppt = new PPTManager(PowerPoint.Instance, job, output))
                         {
-                            await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                            await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token).ConfigureAwait(false);
                             ppt.Save();
                         }
                         OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
@@ -159,13 +153,13 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
-                        await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token);
+                        await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token).ConfigureAwait(false);
                         OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                     }
                 }
                 ppt.Save();
             }
-            await produce;
+            await produce.ConfigureAwait(false);
         }
 
         private static void CreateDirectoryIfNotExists(string path)

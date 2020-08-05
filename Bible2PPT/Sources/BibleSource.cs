@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bible2PPT.Bibles;
-using Bible2PPT.Data;
 
 namespace Bible2PPT.Sources
 {

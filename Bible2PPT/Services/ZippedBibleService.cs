@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bible2PPT.Bibles;
@@ -25,12 +24,12 @@ namespace Bible2PPT.Services
             {
                 return await Task.WhenAll(bibles
                     .Select(BibleService.GetBooksAsync)
-                    .ToList());
+                    .ToList()).ConfigureAwait(false);
             }
             // 취소할 때까지 계속 재시도
             catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                await Task.Delay(3000);
+                await Task.Delay(3000).ConfigureAwait(false);
                 goto RETRY;
             }
         }
@@ -43,19 +42,19 @@ namespace Bible2PPT.Services
                 // 해당 책이 없는 성경도 있으므로 주의해서 장 정보 가져오기
                 return await Task.WhenAll(books
                     .Select(BibleService.GetChaptersAsync)
-                    .ToList());
+                    .ToList()).ConfigureAwait(false);
             }
             // 취소할 때까지 계속 재시도
             catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                await Task.Delay(3000);
+                await Task.Delay(3000).ConfigureAwait(false);
                 goto RETRY;
             }
         }
 
         public async IAsyncEnumerable<IEnumerable<Chapter>> GetChaptersAsync(IEnumerable<Book> targetEachBook, [EnumeratorCancellation] CancellationToken token)
         {
-            var eachTargetChapters = await GetEachChaptersAsync(targetEachBook, token);
+            var eachTargetChapters = await GetEachChaptersAsync(targetEachBook, token).ConfigureAwait(false);
 
             // 장 번호를 기준으로 각 성경의 책을 순회하도록 관리
             // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
@@ -120,19 +119,19 @@ namespace Bible2PPT.Services
             {
                 return await Task.WhenAll(chapters
                     .Select(BibleService.GetVersesAsync)
-                    .ToList());
+                    .ToList()).ConfigureAwait(false);
             }
             // 취소할 때까지 계속 재시도
             catch (OperationCanceledException) when (!token.IsCancellationRequested)
             {
-                await Task.Delay(3000);
+                await Task.Delay(3000).ConfigureAwait(false);
                 goto RETRY;
             }
         }
 
         public async IAsyncEnumerable<IEnumerable<Verse>> GetVersesAsync(IEnumerable<Chapter> targetEachChapter, [EnumeratorCancellation] CancellationToken token)
         {
-            var eachTargetVerses = await GetEachVersesAsync(targetEachChapter, token);
+            var eachTargetVerses = await GetEachVersesAsync(targetEachChapter, token).ConfigureAwait(false);
 
             // GetEnumerator() 반환형이 struct라 값 복사로 무한 반복되기를 예방하기 위해 캐스팅
             var targetVerseEnumerators = eachTargetVerses.Select(i => (IEnumerator<Verse>)i.GetEnumerator()).ToList();

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Bible2PPT.Data;
@@ -24,6 +22,7 @@ namespace Bible2PPT.PPT
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1, 1);
         private readonly ConcurrentDictionary<Job, CancellationTokenSource> JobCancellations = new ConcurrentDictionary<Job, CancellationTokenSource>();
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "just log")]
         public void Queue(Job job)
         {
             using (var db = new BibleContext())
@@ -46,7 +45,7 @@ namespace Bible2PPT.PPT
                 {
                     Semaphore.Wait(JobCancellations[job].Token);
                     acquired = true;
-                    await ProcessAsync(job, JobCancellations[job].Token);
+                    await ProcessAsync(job, JobCancellations[job].Token).ConfigureAwait(false);
                     OnJobCompleted(new JobCompletedEventArgs(job, null));
                 }
                 catch (Exception ex)
@@ -73,9 +72,10 @@ namespace Bible2PPT.PPT
             }
         }
 
-        protected virtual async Task ProcessAsync(Job job, CancellationToken token)
+        protected virtual Task ProcessAsync(Job job, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
+            return Task.CompletedTask;
         }
 
         #region IDisposable Support

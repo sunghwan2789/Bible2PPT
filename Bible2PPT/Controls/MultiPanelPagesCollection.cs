@@ -1,8 +1,5 @@
 ﻿// https://github.com/ennerperez/multipanelcontrol/blob/master/MultiPanelControl/MultiPanelPagesCollection.cs
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Bible2PPT.Controls

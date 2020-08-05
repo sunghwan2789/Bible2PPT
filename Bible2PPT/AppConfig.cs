@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Bible2PPT
@@ -9,10 +7,10 @@ namespace Bible2PPT
     internal class AppConfig : BinaryConfig
     {
         public const int ConfigSize = 1 + 4 + 16 + (16 * 9) + 4 + (4 * 9) + 4;
-        public static string ConfigPath { get; } = Application.ExecutablePath + ".cfg";
-        public static string TemplatePath { get; } = Application.ExecutablePath + ".pptx";
-        public static string DatabaseWorkingDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath) + Path.DirectorySeparatorChar;
-        public static string DatabasePath { get; } = Application.ExecutablePath + ".edb";
+        public static string ConfigPath { get; } = $"{Application.ExecutablePath}.cfg";
+        public static string TemplatePath { get; } = $"{Application.ExecutablePath}.pptx";
+        public static string DatabaseWorkingDirectory { get; } = $"{Path.GetDirectoryName(Application.ExecutablePath)}{Path.DirectorySeparatorChar}";
+        public static string DatabasePath { get; } = $"{Application.ExecutablePath}.edb";
         public static string ContactUrl { get; } = "https://github.com/sunghwan2789/Bible2PPT";
 
         public static AppConfig Context { get; } = new AppConfig();

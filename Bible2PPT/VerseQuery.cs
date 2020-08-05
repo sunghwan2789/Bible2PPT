@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Bible2PPT
@@ -37,7 +35,7 @@ namespace Bible2PPT
 
             // PPT 범위를 한 장으로 설정했을 때
             // 예) 창1       = 창세기 1장 전체
-            q.StartChapterNumber = int.Parse(m.Groups["chapFrom"].Value);
+            q.StartChapterNumber = int.Parse(m.Groups["chapFrom"].Value, CultureInfo.InvariantCulture);
             q.EndChapterNumber = q.StartChapterNumber;
             if (string.IsNullOrEmpty(m.Groups["versFrom"].Value))
             {
@@ -48,7 +46,7 @@ namespace Bible2PPT
 
                 // PPT 범위를 여러 장으로 설정했을 때
                 // 예) 롬1-3     = 로마서 1장 1절 - 3장 전체
-                q.EndChapterNumber = int.Parse(m.Groups["chapTo"].Value);
+                q.EndChapterNumber = int.Parse(m.Groups["chapTo"].Value, CultureInfo.InvariantCulture);
                 if (string.IsNullOrEmpty(m.Groups["versTo"].Value))
                 {
                     return q;
@@ -56,13 +54,13 @@ namespace Bible2PPT
 
                 // PPT 범위를 여러 장과 여러 절을 설정했을 때
                 // 예) 레1-3:9   = 레위기 1장 1절 - 3장 9절
-                q.EndVerseNumber = int.Parse(m.Groups["versTo"].Value);
+                q.EndVerseNumber = int.Parse(m.Groups["versTo"].Value, CultureInfo.InvariantCulture);
                 return q;
             }
 
             // PPT 범위를 한 절로 설정했을 때
             // 예) 전1:3     = 전도서 1장 3절
-            q.StartVerseNumber = int.Parse(m.Groups["versFrom"].Value);
+            q.StartVerseNumber = int.Parse(m.Groups["versFrom"].Value, CultureInfo.InvariantCulture);
             q.EndVerseNumber = q.StartVerseNumber;
             if (string.IsNullOrEmpty(m.Groups["chapTo"].Value))
             {
@@ -73,14 +71,14 @@ namespace Bible2PPT
             // 예) 스1:3-9   = 에스라 1장 3절 - 1장 9절
             if (string.IsNullOrEmpty(m.Groups["versTo"].Value))
             {
-                q.EndVerseNumber = int.Parse(m.Groups["chapTo"].Value);
+                q.EndVerseNumber = int.Parse(m.Groups["chapTo"].Value, CultureInfo.InvariantCulture);
                 return q;
             }
 
             // PPT 범위를 여러 장에 여러 절로 설정했을 때
             // 예) 사1:3-3:9 = 이사야 1장 3절 - 3장 9절
-            q.EndChapterNumber = int.Parse(m.Groups["chapTo"].Value);
-            q.EndVerseNumber = int.Parse(m.Groups["versTo"].Value);
+            q.EndChapterNumber = int.Parse(m.Groups["chapTo"].Value, CultureInfo.InvariantCulture);
+            q.EndVerseNumber = int.Parse(m.Groups["versTo"].Value, CultureInfo.InvariantCulture);
             return q;
         }
     }

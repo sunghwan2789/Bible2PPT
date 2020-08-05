@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -162,24 +161,16 @@ namespace Bible2PPT.PPT
             return slide;
         }
 
-        private bool ShouldPrint(TemplateTextOptions templateOption)
+        private bool ShouldPrint(TemplateTextOptions templateOption) => templateOption switch
         {
-            switch (templateOption)
-            {
-                case TemplateTextOptions.Always:
-                    return true;
-
-                case TemplateTextOptions.FirstVerseOfChapter:
-                    return isFirstVerseOfChapter;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+            TemplateTextOptions.Always => true,
+            TemplateTextOptions.FirstVerseOfChapter => isFirstVerseOfChapter,
+            _ => throw new NotImplementedException(),
+        };
 
         private string AddSuffix(string str, string toFind, string replace, TemplateTextOptions templateOption)
         {
-            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", ShouldPrint(templateOption) ? replace + "$1" : "");
+            return Regex.Replace(str, $@"\[{toFind}(?::(.*?))?\]", ShouldPrint(templateOption) ? $"{replace}$1" : "");
         }
 
         #region IDisposable Support

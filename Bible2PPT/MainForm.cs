@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Bible2PPT.Bibles;
-using Bible2PPT.Bibles.Sources;
 using Bible2PPT.Controls;
 using Bible2PPT.PPT;
 using Bible2PPT.Services;
@@ -55,56 +47,34 @@ namespace Bible2PPT
         {
             // 제목 표시줄에 페이지 제목 추가
             Text = $"{mainMultiPanel.SelectedPage.Text} - 성경2PPT";
-            // 현재 페이지와 연결된 Nav를 찾고
-            Button target;
-            switch (mainMultiPanel.SelectedPage.Name)
+            var targetButton = mainMultiPanel.SelectedPage.Name switch
             {
-                case nameof(buildMultiPanelPage):
-                    target = buildNavButton;
-                    break;
-                case nameof(historyMultiPanelPage):
-                    target = historyNavButton;
-                    break;
-                case nameof(templatesMultiPanelPage):
-                    target = templatesNavButton;
-                    break;
-                case nameof(settingsMultiPanelPage):
-                    target = settingsNavButton;
-                    break;
-                default:
-                    throw new NotImplementedException(mainMultiPanel.SelectedPage.Name);
-            }
+                nameof(buildMultiPanelPage) => buildNavButton,
+                nameof(historyMultiPanelPage) => historyNavButton,
+                nameof(templatesMultiPanelPage) => templatesNavButton,
+                nameof(settingsMultiPanelPage) => settingsNavButton,
+                _ => throw new NotImplementedException(mainMultiPanel.SelectedPage.Name),
+            };
             // 연결된 Nav만 비활성화
             foreach (var nav in Navs)
             {
                 nav.Enabled = true;
             }
-            target.Enabled = false;
+            targetButton.Enabled = false;
         }
 
         private void Nav_Click(object sender, EventArgs e)
         {
-            // 해당 Nav와 연결된 페이지를 찾고
-            MultiPanelPage target;
-            switch ((sender as Control).Name)
+            var targetPage = (sender as Control).Name switch
             {
-                case nameof(buildNavButton):
-                    target = buildMultiPanelPage;
-                    break;
-                case nameof(historyNavButton):
-                    target = historyMultiPanelPage;
-                    break;
-                case nameof(templatesNavButton):
-                    target = templatesMultiPanelPage;
-                    break;
-                case nameof(settingsNavButton):
-                    target = settingsMultiPanelPage;
-                    break;
-                default:
-                    throw new NotImplementedException((sender as Control).Name);
-            }
+                nameof(buildNavButton) => buildMultiPanelPage,
+                nameof(historyNavButton) => historyMultiPanelPage,
+                nameof(templatesNavButton) => templatesMultiPanelPage,
+                nameof(settingsNavButton) => settingsMultiPanelPage,
+                _ => throw new NotImplementedException((sender as Control).Name),
+            };
             // 연결된 페이지 활성화
-            mainMultiPanel.SelectedPage = target;
+            mainMultiPanel.SelectedPage = targetPage;
         }
     }
 }

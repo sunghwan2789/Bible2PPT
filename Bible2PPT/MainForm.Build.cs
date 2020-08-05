@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
 using Bible2PPT.Extensions;
 using Bible2PPT.PPT;
 using Bible2PPT.Sources;
-using Microsoft;
 
 namespace Bible2PPT
 {
@@ -106,7 +102,7 @@ namespace Bible2PPT
         GET_BIBLES:
             try
             {
-                bibles = await BibleService.GetBiblesAsync(source);
+                bibles = await BibleService.GetBiblesAsync(source).ConfigureAwait(true);
 
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();
@@ -258,13 +254,14 @@ namespace Bible2PPT
         private void BiblesDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             using var brush = new SolidBrush(biblesDataGridView.RowHeadersDefaultCellStyle.ForeColor);
+            using var stringFormat = new StringFormat(StringFormatFlags.DirectionRightToLeft);
             e.Graphics.DrawString(
                 $"{e.RowIndex + 1}",
                 e.InheritedRowStyle.Font,
                 brush,
                 e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
                 e.RowBounds.Location.Y + ((e.RowBounds.Height - e.InheritedRowStyle.Font.Height) / 2),
-                new StringFormat(StringFormatFlags.DirectionRightToLeft));
+                stringFormat);
         }
 
         private void BiblesToBuild_Changed()
@@ -315,7 +312,7 @@ namespace Bible2PPT
         GET_BOOKS:
             try
             {
-                books = await BibleService.GetBooksAsync(bible);
+                books = await BibleService.GetBooksAsync(bible).ConfigureAwait(true);
 
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();
@@ -479,7 +476,7 @@ namespace Bible2PPT
         /// <summary>
         /// 빌드 대상 성경과 구절로 PPT를 만든다.
         /// </summary>
-        private async void BuildButton_Click(object sender, EventArgs e)
+        private void BuildButton_Click(object sender, EventArgs e)
         {
             // TODO: 빌드 대상 성경이 없으면 아무 작업도 안함
             //if (!biblesToBuild.Any())
@@ -503,7 +500,7 @@ namespace Bible2PPT
             }
             else
             {
-                destination = Path.GetTempFileName() + ".pptx";
+                destination = $"{Path.GetTempFileName()}.pptx";
             }
 
             var job = new Job
