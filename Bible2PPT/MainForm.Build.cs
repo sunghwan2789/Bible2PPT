@@ -254,13 +254,14 @@ namespace Bible2PPT
         private void BiblesDataGridView_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             using var brush = new SolidBrush(biblesDataGridView.RowHeadersDefaultCellStyle.ForeColor);
+            using var stringFormat = new StringFormat(StringFormatFlags.DirectionRightToLeft);
             e.Graphics.DrawString(
                 $"{e.RowIndex + 1}",
                 e.InheritedRowStyle.Font,
                 brush,
                 e.RowBounds.Location.X + biblesDataGridView.RowHeadersWidth - 3,
                 e.RowBounds.Location.Y + ((e.RowBounds.Height - e.InheritedRowStyle.Font.Height) / 2),
-                new StringFormat(StringFormatFlags.DirectionRightToLeft));
+                stringFormat);
         }
 
         private void BiblesToBuild_Changed()

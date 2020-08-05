@@ -49,7 +49,7 @@ namespace Bible2PPT.PPT
 
             // (targetEachVerses, mainBook, mainChapter)
             var queue = new ConcurrentQueue<(IAsyncEnumerable<IEnumerable<Verse>>, Book, Chapter)>();
-            var sync = new AutoResetEvent(false);
+            using var sync = new AutoResetEvent(false);
 
             var queries = job.QueryString.Split().Select(VerseQuery.Parse).ToList();
             var e = new JobProgressEventArgs(job, null, 0, queries.Count, 0, 0);
