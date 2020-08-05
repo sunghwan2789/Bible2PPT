@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Bible2PPT.Data;
@@ -21,6 +22,7 @@ namespace Bible2PPT.PPT
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1, 1);
         private readonly ConcurrentDictionary<Job, CancellationTokenSource> JobCancellations = new ConcurrentDictionary<Job, CancellationTokenSource>();
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "just log")]
         public void Queue(Job job)
         {
             using (var db = new BibleContext())

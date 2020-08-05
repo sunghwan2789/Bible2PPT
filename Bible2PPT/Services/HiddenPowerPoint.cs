@@ -11,11 +11,6 @@ namespace Bible2PPT.Services
         public HiddenPowerPoint()
         {
             Instance = new Application();
-            try
-            {
-                Instance.Visible = MsoTriState.msoFalse;
-            }
-            catch { }
         }
 
         #region IDisposable Support
@@ -28,15 +23,11 @@ namespace Bible2PPT.Services
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
-                    try
+                    if (Instance?.Presentations.Count == 0)
                     {
-                        if (Instance?.Presentations.Count == 0)
-                        {
-                            Instance.Quit();
-                            Instance = null;
-                        }
+                        Instance.Quit();
+                        Instance = null;
                     }
-                    catch { }
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

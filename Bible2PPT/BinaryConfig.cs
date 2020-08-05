@@ -16,12 +16,8 @@ namespace Bible2PPT
 
         public void Save()
         {
-            try
-            {
-                using var fs = File.OpenWrite(path);
-                fs.Write(Serialize(), 0, size);
-            }
-            catch { }
+            using var fs = File.OpenWrite(path);
+            fs.Write(Serialize(), 0, size);
         }
 
         public void Reload()
@@ -33,7 +29,10 @@ namespace Bible2PPT
                 fs.Read(data, 0, size);
                 Deserialize(data);
             }
-            catch { }
+            catch (FileNotFoundException)
+            {
+                // noop
+            }
         }
 
         protected abstract byte[] Serialize();
