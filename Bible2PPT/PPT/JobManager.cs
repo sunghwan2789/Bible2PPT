@@ -72,9 +72,10 @@ namespace Bible2PPT.PPT
             }
         }
 
-        protected virtual async Task ProcessAsync(Job job, CancellationToken token)
+        protected virtual Task ProcessAsync(Job job, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
+            return Task.CompletedTask;
         }
 
         #region IDisposable Support

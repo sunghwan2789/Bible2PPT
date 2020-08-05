@@ -475,7 +475,7 @@ namespace Bible2PPT
         /// <summary>
         /// 빌드 대상 성경과 구절로 PPT를 만든다.
         /// </summary>
-        private async void BuildButton_Click(object sender, EventArgs e)
+        private void BuildButton_Click(object sender, EventArgs e)
         {
             // TODO: 빌드 대상 성경이 없으면 아무 작업도 안함
             //if (!biblesToBuild.Any())
