@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Bible2PPT.Bibles;
 using Bible2PPT.Data;
 
-namespace Bible2PPT.Bibles.Sources
+namespace Bible2PPT.Sources
 {
-    abstract class Source
+    abstract class BibleSource
     {
-        public static Source[] AvailableSources = new Source[]
+        public static BibleSource[] AvailableSources = new BibleSource[]
         {
             new GodpeopleBible { Id = 0 },
             new GodpiaBible { Id = 1 },

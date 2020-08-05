@@ -5,10 +5,11 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Bible2PPT.Bibles;
 
-namespace Bible2PPT.Bibles.Sources
+namespace Bible2PPT.Sources
 {
-    class GodpiaBible : Source
+    class GodpiaBible : BibleSource
     {
         private const string BASE_URL = "http://bible.godpia.com";
 

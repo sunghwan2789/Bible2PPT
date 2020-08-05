@@ -5,11 +5,12 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Bible2PPT.Bibles;
 using Bible2PPT.Extensions;
 
-namespace Bible2PPT.Bibles.Sources
+namespace Bible2PPT.Sources
 {
-    class GoodtvBible : Source
+    class GoodtvBible : BibleSource
     {
         private const string BASE_URL = "http://goodtvbible.goodtv.co.kr";
 

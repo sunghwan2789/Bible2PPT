@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Bible2PPT.Sources;
 
 namespace Bible2PPT.Bibles
 {
@@ -8,11 +9,11 @@ namespace Bible2PPT.Bibles
     {
         public int SourceId { get; set; }
 
-        private Sources.Source source = null;
+        private BibleSource source = null;
         [NotMapped]
-        public Sources.Source Source
+        public BibleSource Source
         {
-            get => source ?? Sources.Source.AvailableSources.FirstOrDefault(source => source.Id == SourceId);
+            get => source ?? BibleSource.AvailableSources.FirstOrDefault(source => source.Id == SourceId);
             set => source = value;
         }
 
