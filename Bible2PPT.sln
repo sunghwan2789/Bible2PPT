@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bible2PPT", "Bible2PPT\Bible2PPT.csproj", "{140D4564-A6FF-47DE-93E3-726C7824DA20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT", "Bible2PPT\Bible2PPT.csproj", "{140D4564-A6FF-47DE-93E3-726C7824DA20}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F07E742-E57A-4966-8414-59CFA0A55910}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bible2PPT.Tests", "Bible2PPT.Tests\Bible2PPT.Tests.csproj", "{3F1A829F-CC87-4CA3-9926-290156473740}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +22,10 @@ Global
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1A829F-CC87-4CA3-9926-290156473740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1A829F-CC87-4CA3-9926-290156473740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1A829F-CC87-4CA3-9926-290156473740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1A829F-CC87-4CA3-9926-290156473740}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
