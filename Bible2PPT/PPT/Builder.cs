@@ -130,7 +130,7 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
-                        var output = Path.Combine(job.OutputDestination, mainBook.Name, mainChapter.Number.ToString(@"000\.pptx"));
+                        var output = Path.Combine(job.OutputDestination, mainBook.Name, $"{mainChapter.Number:000}.pptx");
                         CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                         using (var ppt = new PPTManager(PowerPoint.Instance, job, output))
                         {

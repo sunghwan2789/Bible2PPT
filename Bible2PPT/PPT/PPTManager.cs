@@ -178,7 +178,7 @@ namespace Bible2PPT.PPT
 
         private string AddSuffix(string str, string toFind, string replace, TemplateTextOptions templateOption)
         {
-            return Regex.Replace(str, @"\[" + toFind + @"(?::(.*?))?\]", ShouldPrint(templateOption) ? replace + "$1" : "");
+            return Regex.Replace(str, $@"\[{toFind}(?::(.*?))?\]", ShouldPrint(templateOption) ? $"{replace}$1" : "");
         }
 
         #region IDisposable Support

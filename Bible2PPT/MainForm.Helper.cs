@@ -10,7 +10,7 @@ namespace Bible2PPT
             if (booksListView.SelectedItems.Count > 0)
             {
                 var book = booksListView.SelectedItems[0].Tag as Book;
-                versesTextBox.AppendText((versesTextBox.Text.Length > 0 ? " " : "") + book.Abbreviation);
+                versesTextBox.AppendText($"{(versesTextBox.Text.Length > 0 ? " " : "")}{book.Abbreviation}");
                 versesTextBox.Focus();
             }
         }

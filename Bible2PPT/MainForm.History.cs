@@ -93,7 +93,7 @@ namespace Bible2PPT
             }
             else if (e.IsFaulted)
             {
-                FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = e.Exception.ToString();
+                FindHistoryDataGridViewRow(e.Job).Cells[historyJobProgress.Name].Value = $"{e.Exception}";
             }
             else
             {

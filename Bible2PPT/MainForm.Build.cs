@@ -499,7 +499,7 @@ namespace Bible2PPT
             }
             else
             {
-                destination = Path.GetTempFileName() + ".pptx";
+                destination = $"{Path.GetTempFileName()}.pptx";
             }
 
             var job = new Job
