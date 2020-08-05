@@ -21,8 +21,8 @@ namespace Bible2PPT.Services
 
         private void LinkSource(BibleBase target, BibleSource source)
         {
-            if (target == null) new ArgumentNullException(nameof(target));
-            if (source == null) new ArgumentNullException(nameof(source));
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             target.Source = source;
             target.SourceId = source.Id;
@@ -30,8 +30,8 @@ namespace Bible2PPT.Services
 
         private void LinkSource(BibleBase target, BibleBase source)
         {
-            if (target == null) new ArgumentNullException(nameof(target));
-            if (source == null) new ArgumentNullException(nameof(source));
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             LinkSource(target, source.Source);
         }
