@@ -24,7 +24,7 @@ namespace Bible2PPT.Bibles.Sources
             Name = "GOODTV 성경";
         }
 
-        protected override async Task<List<Bible>> GetBiblesOnlineAsync()
+        public override async Task<List<Bible>> GetBiblesOnlineAsync()
         {
             var data = await client.GetStringAsync("/bible.asp");
             var matches = Regex.Matches(data, @"bible_check"".+?value=""(\d+)""[\s\S]+?<span.+?>(.+?)<");
@@ -35,7 +35,7 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
+        public override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
             // TODO: WhenAll?
             var tasks = new[]
@@ -61,7 +61,7 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
+        public override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
             Task.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
@@ -71,7 +71,7 @@ namespace Bible2PPT.Bibles.Sources
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
+        public override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
             var data = await client.PostAndGetStringAsync("/bible.asp", new FormUrlEncodedContent(new[]
             {

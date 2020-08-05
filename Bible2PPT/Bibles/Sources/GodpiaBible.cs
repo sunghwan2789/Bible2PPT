@@ -23,7 +23,7 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피아 성경";
         }
 
-        protected override async Task<List<Bible>> GetBiblesOnlineAsync()
+        public override async Task<List<Bible>> GetBiblesOnlineAsync()
         {
             var data = await client.GetStringAsync($"/index.asp");
             var matches = Regex.Matches(data, @"#(.+?)"" class=""clickReadBible"">(.+?)</");
@@ -34,7 +34,7 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
+        public override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
             var data = await client.GetStringAsync($"/read/reading.asp?ver={bible.OnlineId}");
             data = string.Join("", Regex.Matches(data, @"<select id=""selectBibleSub[12]"".+?</select>", RegexOptions.Singleline).Cast<Match>().Select(i => i.Groups[0].Value));
@@ -46,7 +46,7 @@ namespace Bible2PPT.Bibles.Sources
             }).ToList();
         }
 
-        protected override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book)
+        public override async Task<List<Chapter>> GetChaptersOnlineAsync(Book book)
         {
             var data = await client.GetStringAsync($"/read/reading.asp?ver={book.Bible.OnlineId}&vol={book.OnlineId}");
             data = Regex.Match(data, @"<select id=""selectBibleSub3"".+?</select>", RegexOptions.Singleline).Groups[0].Value;
@@ -60,7 +60,7 @@ namespace Bible2PPT.Bibles.Sources
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<.+?>", "", RegexOptions.Singleline);
 
-        protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
+        public override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
             var data = await client.GetStringAsync($"/read/reading.asp?ver={chapter.Book.Bible.OnlineId}&vol={chapter.Book.OnlineId}&chap={chapter.OnlineId}");
             var matches = Regex.Matches(data, @"class=""num"">(\d+).*?</span>(.*?)</p>");

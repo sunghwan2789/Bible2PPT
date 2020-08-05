@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Bible2PPT.Data;
 using Bible2PPT.PPT;
 using Bible2PPT.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,6 +44,10 @@ namespace Bible2PPT
                 }
             });
             services.AddTransient<Builder>();
+            // TODO: EF Core 사용하면 AddDbContextPool로 바꾸기
+            services.AddScoped<BibleContext>();
+            services.AddTransient<BibleService>();
+            services.AddTransient<ZippedBibleService>();
 
             ServiceProvider = services.BuildServiceProvider();
         }

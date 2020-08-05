@@ -25,7 +25,7 @@ namespace Bible2PPT.Bibles.Sources
             Name = "갓피플 성경";
         }
 
-        protected override Task<List<Bible>> GetBiblesOnlineAsync() =>
+        public override Task<List<Bible>> GetBiblesOnlineAsync() =>
             Task.FromResult(new List<Bible>
             {
                 new Bible
@@ -40,7 +40,7 @@ namespace Bible2PPT.Bibles.Sources
                 },
             });
 
-        protected override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
+        public override async Task<List<Book>> GetBooksOnlineAsync(Bible bible)
         {
             var data = ENCODING.GetString(await client.GetByteArrayAsync("/?page=bidx"));
             var matches = Regex.Matches(data, @"option\s.+?'(.+?)'.+?(\d+).+?>(.+?)<");
@@ -56,7 +56,7 @@ namespace Bible2PPT.Bibles.Sources
         private static string EncodeString(string s) =>
             string.Join("", ENCODING.GetBytes(s).Select(b => $"%{b:X}"));
 
-        protected override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
+        public override Task<List<Chapter>> GetChaptersOnlineAsync(Book book) =>
             Task.FromResult(Enumerable.Range(1, book.ChapterCount)
                 .Select(i => new Chapter
                 {
@@ -66,7 +66,7 @@ namespace Bible2PPT.Bibles.Sources
 
         private static string StripHtmlTags(string s) => Regex.Replace(s, @"<u.+?u>|<.+?>", "", RegexOptions.Singleline);
 
-        protected override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
+        public override async Task<List<Verse>> GetVersesOnlineAsync(Chapter chapter)
         {
             var data = ENCODING.GetString(await client.GetByteArrayAsync($"/?page=bidx&kwrd={EncodeString(chapter.Book.OnlineId)}{chapter.OnlineId}&vers={chapter.Book.Bible.OnlineId}"));
             var matches = Regex.Matches(data, @"bidx_listTd_yak.+?>(\d+)[\s\S]+?bidx_listTd_phrase.+?>(.+?)</td");

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Bible2PPT.Bibles;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -62,10 +63,10 @@ namespace Bible2PPT.PPT
 
         private bool isFirstVerseOfChapter;
 
-        public void AppendChapter(IEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, CancellationToken token)
+        public async Task AppendChapter(IAsyncEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
-            foreach (var eachVerse in eachVerses)
+            await foreach (var eachVerse in eachVerses)
             {
                 token.ThrowIfCancellationRequested();
 
