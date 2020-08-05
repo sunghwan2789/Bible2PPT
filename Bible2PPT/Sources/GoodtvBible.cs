@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -55,7 +56,7 @@ namespace Bible2PPT.Sources
             {
                 OnlineId = i.Groups[1].Value,
                 Name = i.Groups[2].Value,
-                ChapterCount = int.Parse(i.Groups[3].Value),
+                ChapterCount = int.Parse(i.Groups[3].Value, CultureInfo.InvariantCulture),
             }).ToList();
         }
 
@@ -85,7 +86,7 @@ namespace Bible2PPT.Sources
             var matches = Regex.Matches(data, @"<b>(\d+).*?</b>(.*?)<br>");
             return matches.Cast<Match>().Select(i => new Verse
             {
-                Number = int.Parse(i.Groups[1].Value),
+                Number = int.Parse(i.Groups[1].Value, CultureInfo.InvariantCulture),
                 Text = StripHtmlTags(i.Groups[2].Value),
             }).ToList();
         }
