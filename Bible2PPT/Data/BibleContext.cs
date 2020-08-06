@@ -13,7 +13,10 @@ namespace Bible2PPT.Data
         public DbSet<Verse> Verses { get; set; }
         public DbSet<Job> Jobs { get; set; }
 
-        public BibleContext() : this("Data Source=./bible.db") { }
+        public BibleContext() : this("Data Source=:memory:")
+        {
+            // required for tooling (see https://wildermuth.com/2017/07/06/Program-cs-in-ASP-NET-Core-2-0).
+        }
 
         public BibleContext(string connectionString) : base(connectionString)
         {
