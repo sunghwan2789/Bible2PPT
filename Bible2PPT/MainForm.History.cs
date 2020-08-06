@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
 using Bible2PPT.PPT;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT
 {
@@ -24,8 +25,9 @@ namespace Bible2PPT
             historyQueryStringColumn.DataPropertyName = nameof(Job.QueryString);
             historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Job.SplitChaptersIntoFiles);
 
-            using (var db = new BibleContext())
+            using (var scope = ScopeFactory.CreateScope())
             {
+                var db = scope.ServiceProvider.GetService<BibleContext>();
                 foreach (var job in db.Jobs
                     .Include(w => w.JobBibles.Select(wb => wb.Bible))
                     .ToList())
@@ -196,8 +198,9 @@ namespace Bible2PPT
                 return;
             }
 
-            using (var db = new BibleContext())
+            using (var scope = ScopeFactory.CreateScope())
             {
+                var db = scope.ServiceProvider.GetService<BibleContext>();
                 if (db.Jobs.Any(i => i.Id == job.Id))
                 {
                     db.Jobs.Attach(job);

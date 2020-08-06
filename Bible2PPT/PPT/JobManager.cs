@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using Bible2PPT.Data;
 using Bible2PPT.Extensions;
 
 namespace Bible2PPT.PPT
@@ -23,16 +22,6 @@ namespace Bible2PPT.PPT
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "just log")]
         public void Queue(Job job)
         {
-            using (var db = new BibleContext())
-            {
-                foreach (var i in job.Bibles)
-                {
-                    db.Bibles.Attach(i);
-                }
-                db.Jobs.Add(job);
-                db.SaveChanges();
-            }
-
             JobCancellations[job] = new CancellationTokenSource();
             OnJobQueued(new JobQueuedEventArgs(job));
 

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Bible2PPT.Controls;
 using Bible2PPT.PPT;
 using Bible2PPT.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT
 {
@@ -12,13 +13,15 @@ namespace Bible2PPT
     {
         private Builder Builder { get; set; }
         private BibleService BibleService { get; set; }
+        private IServiceScopeFactory ScopeFactory { get; }
 
         private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
-        public MainForm(Builder builder, BibleService bibleService)
+        public MainForm(Builder builder, BibleService bibleService, IServiceScopeFactory scopeFactory)
         {
             Builder = builder;
             BibleService = bibleService;
+            ScopeFactory = scopeFactory;
 
             InitializeComponent();
             InitializeBuildComponent();
