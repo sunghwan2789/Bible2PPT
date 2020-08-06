@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Bible2PPT.Bibles;
 using Bible2PPT.Extensions;
 
 namespace Bible2PPT.Jobs
@@ -105,5 +106,54 @@ namespace Bible2PPT.Jobs
             GC.SuppressFinalize(this);
         }
         #endregion
+    }
+
+    class JobQueuedEventArgs : EventArgs
+    {
+        public Job Job { get; }
+
+        public JobQueuedEventArgs(Job job)
+        {
+            Job = job;
+        }
+    }
+
+    class JobProgressEventArgs : EventArgs
+    {
+        public Job Job { get; }
+        public Chapter CurrentChapter { get; }
+
+        public int QueriesDone { get; }
+        public int Queries { get; }
+        public int ChaptersDone { get; }
+        public int Chapters { get; }
+
+        public double Progress => (Chapters == 0)
+            ? (double)QueriesDone / Queries
+            : (double)Math.Min(QueriesDone + 1, Queries) / Queries * ChaptersDone / Chapters;
+
+        public JobProgressEventArgs(Job job, Chapter currentChapter, int queriesDone, int queries, int chaptersDone, int chapters)
+        {
+            Job = job;
+            CurrentChapter = currentChapter;
+            QueriesDone = queriesDone;
+            Queries = queries;
+            ChaptersDone = chaptersDone;
+            Chapters = chapters;
+        }
+    }
+
+    class JobCompletedEventArgs : EventArgs
+    {
+        public Job Job { get; }
+        public Exception Exception { get; }
+        public bool IsFaulted => Exception != null;
+        public bool IsCancelled => Exception is OperationCanceledException;
+
+        public JobCompletedEventArgs(Job job, Exception ex)
+        {
+            Job = job;
+            Exception = ex;
+        }
     }
 }
