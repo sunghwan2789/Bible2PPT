@@ -11,13 +11,13 @@ namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
-        private Builder Builder { get; }
+        private BibleJobWorker Builder { get; }
         private BibleService BibleService { get; }
         private IServiceScopeFactory ScopeFactory { get; }
 
         private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
-        public MainForm(Builder builder, BibleService bibleService, IServiceScopeFactory scopeFactory)
+        public MainForm(BibleJobWorker builder, BibleService bibleService, IServiceScopeFactory scopeFactory)
         {
             Builder = builder;
             BibleService = bibleService;

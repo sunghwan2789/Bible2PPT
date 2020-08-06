@@ -18,10 +18,10 @@ namespace Bible2PPT.Jobs
 
 
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1, 1);
-        private readonly ConcurrentDictionary<Job, CancellationTokenSource> JobCancellations = new ConcurrentDictionary<Job, CancellationTokenSource>();
+        private readonly ConcurrentDictionary<BibleJob, CancellationTokenSource> JobCancellations = new ConcurrentDictionary<BibleJob, CancellationTokenSource>();
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "just log")]
-        public void Queue(Job job)
+        public void Queue(BibleJob job)
         {
             JobCancellations[job] = new CancellationTokenSource();
             OnJobQueued(new JobQueuedEventArgs(job));
@@ -52,7 +52,7 @@ namespace Bible2PPT.Jobs
             });
         }
 
-        public void Cancel(Job job)
+        public void Cancel(BibleJob job)
         {
             if (JobCancellations.TryGetValue(job, out var cts))
             {
@@ -60,7 +60,7 @@ namespace Bible2PPT.Jobs
             }
         }
 
-        protected virtual Task ProcessAsync(Job job, CancellationToken token)
+        protected virtual Task ProcessAsync(BibleJob job, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             return Task.CompletedTask;
@@ -110,9 +110,9 @@ namespace Bible2PPT.Jobs
 
     class JobQueuedEventArgs : EventArgs
     {
-        public Job Job { get; }
+        public BibleJob Job { get; }
 
-        public JobQueuedEventArgs(Job job)
+        public JobQueuedEventArgs(BibleJob job)
         {
             Job = job;
         }
@@ -120,7 +120,7 @@ namespace Bible2PPT.Jobs
 
     class JobProgressEventArgs : EventArgs
     {
-        public Job Job { get; }
+        public BibleJob Job { get; }
         public Chapter CurrentChapter { get; }
 
         public int QueriesDone { get; }
@@ -132,7 +132,7 @@ namespace Bible2PPT.Jobs
             ? (double)QueriesDone / Queries
             : (double)Math.Min(QueriesDone + 1, Queries) / Queries * ChaptersDone / Chapters;
 
-        public JobProgressEventArgs(Job job, Chapter currentChapter, int queriesDone, int queries, int chaptersDone, int chapters)
+        public JobProgressEventArgs(BibleJob job, Chapter currentChapter, int queriesDone, int queries, int chaptersDone, int chapters)
         {
             Job = job;
             CurrentChapter = currentChapter;
@@ -145,12 +145,12 @@ namespace Bible2PPT.Jobs
 
     class JobCompletedEventArgs : EventArgs
     {
-        public Job Job { get; }
+        public BibleJob Job { get; }
         public Exception Exception { get; }
         public bool IsFaulted => Exception != null;
         public bool IsCancelled => Exception is OperationCanceledException;
 
-        public JobCompletedEventArgs(Job job, Exception ex)
+        public JobCompletedEventArgs(BibleJob job, Exception ex)
         {
             Job = job;
             Exception = ex;

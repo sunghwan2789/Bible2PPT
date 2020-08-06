@@ -15,13 +15,13 @@ namespace Bible2PPT.Jobs
 {
     internal class PPTManager : IDisposable
     {
-        public Job Job { get; }
+        public BibleJob Job { get; }
         public string Output { get; }
 
         private readonly PowerPoint.Presentation WorkingPPT;
         private readonly PowerPoint.Slide TemplateSlide;
 
-        public PPTManager(PowerPoint.Application POWERPNT, Job job, string output)
+        public PPTManager(PowerPoint.Application POWERPNT, BibleJob job, string output)
         {
             Job = job;
             Output = output;

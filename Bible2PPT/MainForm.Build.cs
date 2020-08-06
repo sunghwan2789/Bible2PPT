@@ -505,7 +505,7 @@ namespace Bible2PPT
                 destination = $"{Path.GetTempFileName()}.pptx";
             }
 
-            var job = new Job
+            var job = new BibleJob
             {
                 Bibles = biblesToBuild.ToList(),
                 CreatedAt = DateTime.Now,
