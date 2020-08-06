@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bible2PPT.Extensions;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     class JobManager : IDisposable
     {

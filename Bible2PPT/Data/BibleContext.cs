@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using Bible2PPT.Bibles;
-using Bible2PPT.PPT;
+using Bible2PPT.Jobs;
 using SQLite.CodeFirst;
 
 namespace Bible2PPT.Data

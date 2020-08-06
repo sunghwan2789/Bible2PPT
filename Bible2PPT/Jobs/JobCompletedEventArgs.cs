@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     class JobCompletedEventArgs : EventArgs
     {

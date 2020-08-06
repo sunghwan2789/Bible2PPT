@@ -11,7 +11,7 @@ using Bible2PPT.Services;
 using Microsoft.Extensions.DependencyInjection;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     class Builder : JobManager
     {

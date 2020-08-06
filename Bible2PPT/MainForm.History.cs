@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
-using Bible2PPT.PPT;
+using Bible2PPT.Jobs;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT

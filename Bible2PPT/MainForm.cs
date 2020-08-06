@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 using Bible2PPT.Controls;
-using Bible2PPT.PPT;
+using Bible2PPT.Jobs;
 using Bible2PPT.Services;
 using Microsoft.Extensions.DependencyInjection;
 

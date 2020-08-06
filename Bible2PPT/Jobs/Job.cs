@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Bible2PPT.Bibles;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     internal class Job
     {

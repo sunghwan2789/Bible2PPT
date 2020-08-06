@@ -1,7 +1,7 @@
 ﻿using System;
 using Bible2PPT.Bibles;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     class JobProgressEventArgs : EventArgs
     {

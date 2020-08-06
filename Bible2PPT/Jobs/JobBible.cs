@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Bible2PPT.Bibles;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     class JobBible
     {

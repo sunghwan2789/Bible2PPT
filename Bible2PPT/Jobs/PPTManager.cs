@@ -11,7 +11,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace Bible2PPT.PPT
+namespace Bible2PPT.Jobs
 {
     internal class PPTManager : IDisposable
     {
