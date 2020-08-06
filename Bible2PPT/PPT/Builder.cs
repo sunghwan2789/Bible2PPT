@@ -15,8 +15,8 @@ namespace Bible2PPT.PPT
 {
     class Builder : JobManager
     {
-        private HiddenPowerPoint PowerPoint { get; set; }
-        private ZippedBibleService ZippedBibleService { get; set; }
+        private HiddenPowerPoint PowerPoint { get; }
+        private ZippedBibleService ZippedBibleService { get; }
         private IServiceScopeFactory ScopeFactory { get; }
 
         public Builder(HiddenPowerPoint ppt, ZippedBibleService bibleService, IServiceScopeFactory scopeFactory)

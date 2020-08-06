@@ -12,7 +12,7 @@ namespace Bible2PPT.Services
 {
     class BibleService
     {
-        private IServiceScopeFactory ScopeFactory { get; set; }
+        private IServiceScopeFactory ScopeFactory { get; }
 
         public BibleService(IServiceScopeFactory scopeFactory)
         {
