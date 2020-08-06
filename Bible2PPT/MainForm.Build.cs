@@ -12,6 +12,7 @@ using Bible2PPT.Data;
 using Bible2PPT.Extensions;
 using Bible2PPT.PPT;
 using Bible2PPT.Sources;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT
 {
@@ -26,8 +27,9 @@ namespace Bible2PPT
             buildSplitContainer.SplitterWidth = 13;
 
             // 이전에 선택한 성경 중에서 성경 소스가 살아있는 성경만 불러오기
-            using (var db = new BibleContext())
+            using (var scope = ScopeFactory.CreateScope())
             {
+                var db = scope.ServiceProvider.GetService<BibleContext>();
                 foreach (var bibleId in AppConfig.Context.BibleToBuild)
                 {
                     var bible = db.Bibles.Find(bibleId);

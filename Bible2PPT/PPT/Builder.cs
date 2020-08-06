@@ -6,7 +6,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Bible2PPT.Bibles;
+using Bible2PPT.Data;
 using Bible2PPT.Services;
+using Microsoft.Extensions.DependencyInjection;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Bible2PPT.PPT
@@ -15,11 +17,13 @@ namespace Bible2PPT.PPT
     {
         private HiddenPowerPoint PowerPoint { get; set; }
         private ZippedBibleService ZippedBibleService { get; set; }
+        private IServiceScopeFactory ScopeFactory { get; }
 
-        public Builder(HiddenPowerPoint ppt, ZippedBibleService bibleService)
+        public Builder(HiddenPowerPoint ppt, ZippedBibleService bibleService, IServiceScopeFactory scopeFactory)
         {
             PowerPoint = ppt;
             ZippedBibleService = bibleService;
+            ScopeFactory = scopeFactory;
         }
 
         public void OpenTemplate()
@@ -168,6 +172,22 @@ namespace Bible2PPT.PPT
             {
                 Directory.CreateDirectory(path);
             }
+        }
+
+        public new void Queue(Job job)
+        {
+            using (var scope = ScopeFactory.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetService<BibleContext>();
+                foreach (var i in job.Bibles)
+                {
+                    db.Bibles.Attach(i);
+                }
+                db.Jobs.Add(job);
+                db.SaveChanges();
+            }
+
+            base.Queue(job);
         }
     }
 }
