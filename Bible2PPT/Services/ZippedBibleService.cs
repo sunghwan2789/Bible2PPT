@@ -10,7 +10,7 @@ namespace Bible2PPT.Services
 {
     class ZippedBibleService
     {
-        private BibleService BibleService { get; set; }
+        private BibleService BibleService { get; }
 
         public ZippedBibleService(BibleService bibleService)
         {
