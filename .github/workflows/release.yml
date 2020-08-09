@@ -1,6 +1,11 @@
 name: Release
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Whether to run semantic release in `dry-run` mode. It will override the dryRun attribute in your configuration file'
+        required: false
+        default: 'false'
 
 jobs:
   release:
@@ -20,5 +25,6 @@ jobs:
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
+          dry_run: ${{ github.event.inputs.dry_run }}
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
