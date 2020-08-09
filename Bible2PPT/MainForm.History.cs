@@ -8,22 +8,22 @@ using System.Linq;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
-using Bible2PPT.Jobs;
+using Bible2PPT.PPT;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT
 {
     partial class MainForm
     {
-        private readonly BindingList<BibleJob> jobHistory = new BindingList<BibleJob>();
+        private readonly BindingList<Job> jobHistory = new BindingList<Job>();
 
         private void InitializeHistoryComponent()
         {
             historyDataGridView.AutoGenerateColumns = false;
-            historyCreatedAtColumn.DataPropertyName = nameof(BibleJob.CreatedAt);
-            historyBiblesColumn.DataPropertyName = nameof(BibleJob.Bibles);
-            historyQueryStringColumn.DataPropertyName = nameof(BibleJob.QueryString);
-            historySplitChaptersIntoFileColumn.DataPropertyName = nameof(BibleJob.SplitChaptersIntoFiles);
+            historyCreatedAtColumn.DataPropertyName = nameof(Job.CreatedAt);
+            historyBiblesColumn.DataPropertyName = nameof(Job.Bibles);
+            historyQueryStringColumn.DataPropertyName = nameof(Job.QueryString);
+            historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Job.SplitChaptersIntoFiles);
 
             using (var scope = ScopeFactory.CreateScope())
             {
@@ -40,7 +40,7 @@ namespace Bible2PPT
             Builder.JobProgress = new Progress<EventArgs>(Builder_JobProgressChanged);
         }
 
-        private DataGridViewRow FindHistoryDataGridViewRow(BibleJob job)
+        private DataGridViewRow FindHistoryDataGridViewRow(Job job)
         {
             foreach (DataGridViewRow row in historyDataGridView.Rows)
             {
@@ -136,7 +136,7 @@ namespace Bible2PPT
         private void HistoryOpenResultButton_Click(object sender, EventArgs e)
         {
             // 선택한 기록이 없으면 아무 작업도 안함
-            if (!(historyDataGridView.CurrentRow?.DataBoundItem is BibleJob job))
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
             {
                 return;
             }
@@ -169,7 +169,7 @@ namespace Bible2PPT
 
         private void HistoryLoadButton_Click(object sender, EventArgs e)
         {
-            if (!(historyDataGridView.CurrentRow?.DataBoundItem is BibleJob job))
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
             {
                 return;
             }
@@ -193,7 +193,7 @@ namespace Bible2PPT
 
         private void HistoryDeleteButton_Click(object sender, EventArgs e)
         {
-            if (!(historyDataGridView.CurrentRow?.DataBoundItem is BibleJob job))
+            if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
             {
                 return;
             }

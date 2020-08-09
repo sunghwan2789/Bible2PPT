@@ -3,10 +3,9 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using Bible2PPT.Bibles;
 using Bible2PPT.Extensions;
 
-namespace Bible2PPT.Jobs
+namespace Bible2PPT.PPT
 {
     class JobManager : IDisposable
     {
@@ -18,10 +17,10 @@ namespace Bible2PPT.Jobs
 
 
         private readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1, 1);
-        private readonly ConcurrentDictionary<BibleJob, CancellationTokenSource> JobCancellations = new ConcurrentDictionary<BibleJob, CancellationTokenSource>();
+        private readonly ConcurrentDictionary<Job, CancellationTokenSource> JobCancellations = new ConcurrentDictionary<Job, CancellationTokenSource>();
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "just log")]
-        public void Queue(BibleJob job)
+        public void Queue(Job job)
         {
             JobCancellations[job] = new CancellationTokenSource();
             OnJobQueued(new JobQueuedEventArgs(job));
@@ -52,7 +51,7 @@ namespace Bible2PPT.Jobs
             });
         }
 
-        public void Cancel(BibleJob job)
+        public void Cancel(Job job)
         {
             if (JobCancellations.TryGetValue(job, out var cts))
             {
@@ -60,7 +59,7 @@ namespace Bible2PPT.Jobs
             }
         }
 
-        protected virtual Task ProcessAsync(BibleJob job, CancellationToken token)
+        protected virtual Task ProcessAsync(Job job, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             return Task.CompletedTask;
@@ -106,54 +105,5 @@ namespace Bible2PPT.Jobs
             GC.SuppressFinalize(this);
         }
         #endregion
-    }
-
-    class JobQueuedEventArgs : EventArgs
-    {
-        public BibleJob Job { get; }
-
-        public JobQueuedEventArgs(BibleJob job)
-        {
-            Job = job;
-        }
-    }
-
-    class JobProgressEventArgs : EventArgs
-    {
-        public BibleJob Job { get; }
-        public Chapter CurrentChapter { get; }
-
-        public int QueriesDone { get; }
-        public int Queries { get; }
-        public int ChaptersDone { get; }
-        public int Chapters { get; }
-
-        public double Progress => (Chapters == 0)
-            ? (double)QueriesDone / Queries
-            : (double)Math.Min(QueriesDone + 1, Queries) / Queries * ChaptersDone / Chapters;
-
-        public JobProgressEventArgs(BibleJob job, Chapter currentChapter, int queriesDone, int queries, int chaptersDone, int chapters)
-        {
-            Job = job;
-            CurrentChapter = currentChapter;
-            QueriesDone = queriesDone;
-            Queries = queries;
-            ChaptersDone = chaptersDone;
-            Chapters = chapters;
-        }
-    }
-
-    class JobCompletedEventArgs : EventArgs
-    {
-        public BibleJob Job { get; }
-        public Exception Exception { get; }
-        public bool IsFaulted => Exception != null;
-        public bool IsCancelled => Exception is OperationCanceledException;
-
-        public JobCompletedEventArgs(BibleJob job, Exception ex)
-        {
-            Job = job;
-            Exception = ex;
-        }
     }
 }

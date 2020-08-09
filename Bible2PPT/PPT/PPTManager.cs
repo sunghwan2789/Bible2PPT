@@ -11,17 +11,17 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace Bible2PPT.Jobs
+namespace Bible2PPT.PPT
 {
     internal class PPTManager : IDisposable
     {
-        public BibleJob Job { get; }
+        public Job Job { get; }
         public string Output { get; }
 
         private readonly PowerPoint.Presentation WorkingPPT;
         private readonly PowerPoint.Slide TemplateSlide;
 
-        public PPTManager(PowerPoint.Application POWERPNT, BibleJob job, string output)
+        public PPTManager(PowerPoint.Application POWERPNT, Job job, string output)
         {
             Job = job;
             Output = output;
