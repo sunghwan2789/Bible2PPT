@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 using Bible2PPT.Controls;
-using Bible2PPT.Jobs;
+using Bible2PPT.PPT;
 using Bible2PPT.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,13 +11,13 @@ namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
-        private BibleJobWorker Builder { get; }
+        private Builder Builder { get; }
         private BibleService BibleService { get; }
         private IServiceScopeFactory ScopeFactory { get; }
 
         private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
-        public MainForm(BibleJobWorker builder, BibleService bibleService, IServiceScopeFactory scopeFactory)
+        public MainForm(Builder builder, BibleService bibleService, IServiceScopeFactory scopeFactory)
         {
             Builder = builder;
             BibleService = bibleService;

@@ -11,15 +11,15 @@ using Bible2PPT.Services;
 using Microsoft.Extensions.DependencyInjection;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace Bible2PPT.Jobs
+namespace Bible2PPT.PPT
 {
-    class BibleJobWorker : JobManager
+    class Builder : JobManager
     {
         private HiddenPowerPoint PowerPoint { get; }
         private ZippedBibleService ZippedBibleService { get; }
         private IServiceScopeFactory ScopeFactory { get; }
 
-        public BibleJobWorker(HiddenPowerPoint ppt, ZippedBibleService bibleService, IServiceScopeFactory scopeFactory)
+        public Builder(HiddenPowerPoint ppt, ZippedBibleService bibleService, IServiceScopeFactory scopeFactory)
         {
             PowerPoint = ppt;
             ZippedBibleService = bibleService;
@@ -47,7 +47,7 @@ namespace Bible2PPT.Jobs
             });
         }
 
-        protected override async Task ProcessAsync(BibleJob job, CancellationToken token)
+        protected override async Task ProcessAsync(Job job, CancellationToken token)
         {
             await base.ProcessAsync(job, token).ConfigureAwait(false);
 
@@ -174,7 +174,7 @@ namespace Bible2PPT.Jobs
             }
         }
 
-        public new void Queue(BibleJob job)
+        public new void Queue(Job job)
         {
             using (var scope = ScopeFactory.CreateScope())
             {
