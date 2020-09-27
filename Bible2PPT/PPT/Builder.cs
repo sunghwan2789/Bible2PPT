@@ -51,8 +51,8 @@ namespace Bible2PPT.PPT
         {
             await base.ProcessAsync(job, token).ConfigureAwait(false);
 
-            // (targetEachVerses, mainBook, mainChapter)
-            var queue = new ConcurrentQueue<(IAsyncEnumerable<IEnumerable<Verse>>, Book, Chapter)>();
+            // (targetEachVerses, mainBook, mainChapter, startVerseNumber, endVerseNumber?)
+            var queue = new ConcurrentQueue<(IAsyncEnumerable<IEnumerable<Verse>>, Book, Chapter, int, int?)>();
             using var sync = new AutoResetEvent(false);
 
             var queries = job.QueryString.Split().Select(VerseQuery.Parse).ToList();
@@ -109,7 +109,7 @@ namespace Bible2PPT.PPT
                                 ? (verse.Number >= startVerseNumber)
                                 : (verse.Number >= startVerseNumber) && (verse.Number <= endVerseNumber)
                             ));
-                        queue.Enqueue((targetEachVerses, mainBook, mainChapter));
+                        queue.Enqueue((targetEachVerses, mainBook, mainChapter, startVerseNumber, endVerseNumber));
                         sync.WaitOne();
 
                     PROGRESS_CHAPTER:
@@ -134,11 +134,13 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
+                        var startVerseNumber = item.Item4;
+                        var endVerseNumber = item.Item5;
                         var output = Path.Combine(job.OutputDestination, mainBook.Name, $"{mainChapter.Number:000}.pptx");
                         CreateDirectoryIfNotExists(Path.GetDirectoryName(output));
                         using (var ppt = new PPTManager(PowerPoint.Instance, job, output))
                         {
-                            await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token).ConfigureAwait(false);
+                            await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, startVerseNumber, endVerseNumber, token).ConfigureAwait(false);
                             ppt.Save();
                         }
                         OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
@@ -157,7 +159,9 @@ namespace Bible2PPT.PPT
                         var targetEachVerses = item.Item1;
                         var mainBook = item.Item2;
                         var mainChapter = item.Item3;
-                        await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, token).ConfigureAwait(false);
+                        var startVerseNumber = item.Item4;
+                        var endVerseNumber = item.Item5;
+                        await ppt.AppendChapter(targetEachVerses, mainBook, mainChapter, startVerseNumber, endVerseNumber, token).ConfigureAwait(false);
                         OnJobProgress(new JobProgressEventArgs(job, null, e.QueriesDone, e.Queries, ++chaptersDone, e.Chapters));
                     }
                 }

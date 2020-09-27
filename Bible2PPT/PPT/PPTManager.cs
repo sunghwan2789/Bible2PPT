@@ -62,7 +62,7 @@ namespace Bible2PPT.PPT
 
         private bool isFirstVerseOfChapter;
 
-        public async Task AppendChapter(IAsyncEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, CancellationToken token)
+        public async Task AppendChapter(IAsyncEnumerable<IEnumerable<Verse>> eachVerses, Book book, Chapter chapter, int startVerseNumber, int? endVerseNumber, CancellationToken token)
         {
             isFirstVerseOfChapter = true;
             await foreach (var eachVerse in eachVerses)
@@ -75,16 +75,16 @@ namespace Bible2PPT.PPT
                     continue;
                 }
 
-                AppendVerse(eachVerse, mainVerse, book, chapter, token);
+                AppendVerse(eachVerse, mainVerse, book, chapter, startVerseNumber, endVerseNumber, token);
 
                 isFirstVerseOfChapter = false;
             }
         }
 
-        public void AppendVerse(IEnumerable<Verse> eachVerse, Verse mainVerse, Book book, Chapter chapter, CancellationToken token) =>
-            AppendVerse(eachVerse.Select(verse => verse?.Text).ToList(), mainVerse, book, chapter, token);
+        public void AppendVerse(IEnumerable<Verse> eachVerse, Verse mainVerse, Book book, Chapter chapter, int startVerseNumber, int? endVerseNumber, CancellationToken token) =>
+            AppendVerse(eachVerse.Select(verse => verse?.Text).ToList(), mainVerse, book, chapter, startVerseNumber, endVerseNumber, token);
 
-        private void AppendVerse(IEnumerable<string> eachVerseText, Verse mainVerse, Book book, Chapter chapter, CancellationToken token)
+        private void AppendVerse(IEnumerable<string> eachVerseText, Verse mainVerse, Book book, Chapter chapter, int startVerseNumber, int? endVerseNumber, CancellationToken token)
         {
             var slide = AppendTemplateSlide();
             var textShapes = slide.Shapes.Cast<PowerPoint.Shape>()
@@ -99,8 +99,8 @@ namespace Bible2PPT.PPT
                 text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
                 text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
                 text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
-                //text = text.Replace("[CPAS]", $"{startVerseNumber}");
-                //text = text.Replace("[CPAE]", $"{endVerseNumber}");
+                text = text.Replace("[CPAS]", $"{startVerseNumber}");
+                text = text.Replace("[CPAE]", $"{endVerseNumber}");
                 text = text.Replace("[PARA]", $"{mainVerse.Number}");
 
                 textShape.Text = text;
@@ -123,7 +123,7 @@ namespace Bible2PPT.PPT
 
             if (!overflowedEachVerseText.All(string.IsNullOrEmpty))
             {
-                AppendVerse(overflowedEachVerseText, mainVerse, book, chapter, token);
+                AppendVerse(overflowedEachVerseText, mainVerse, book, chapter, startVerseNumber, endVerseNumber, token);
             }
 
             void ReplaceVerseTextAndProcessOverflow(TextRange textShape, int? index, string text)
