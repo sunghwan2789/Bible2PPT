@@ -1,3 +1,27 @@
+# [2.0.0](https://github.com/sunghwan2789/Bible2PPT/compare/v1.4.0...v2.0.0) (2020-10-04)
+
+
+### Bug Fixes
+
+* 대상 프레임워크 .NET Framework 4.8로 변경 ([#66](https://github.com/sunghwan2789/Bible2PPT/issues/66)) ([b7d24e8](https://github.com/sunghwan2789/Bible2PPT/commit/b7d24e8c578e6da00abf3d0c05de966a633a85f9))
+* 성경 소스 응답 없을 때 자세한 오류 안내 ([#82](https://github.com/sunghwan2789/Bible2PPT/issues/82)) ([9d762a1](https://github.com/sunghwan2789/Bible2PPT/commit/9d762a113873050e5f4fa245389445c50f2deef1))
+* 코드 분석기 추가 및 권장 사항 적용 ([#74](https://github.com/sunghwan2789/Bible2PPT/issues/74)) ([d164237](https://github.com/sunghwan2789/Bible2PPT/commit/d164237d6dda885529ff87d714edc1b6a16b21fa))
+
+
+### Features
+
+* app.config으로 DB connection string 설정 지원 ([#76](https://github.com/sunghwan2789/Bible2PPT/issues/76)) ([85a6325](https://github.com/sunghwan2789/Bible2PPT/commit/85a632587a7604f8983ef76e8601e47c2b2a1f5e)), closes [#44](https://github.com/sunghwan2789/Bible2PPT/issues/44)
+* 장별 시작 절 번호 `[CPAS]`, 끝 번호 `[CPAE]` 치환자 활성화 ([#83](https://github.com/sunghwan2789/Bible2PPT/issues/83)) ([b022586](https://github.com/sunghwan2789/Bible2PPT/commit/b0225868b50f6a2361fc230d92326f53dbad81d8))
+
+
+### Reverts
+
+* Revert "refactor: Jobs 이름 변경 (#78)" (#79) ([437c09c](https://github.com/sunghwan2789/Bible2PPT/commit/437c09cbf825ec07c2a3bc5bdc1529497cc97f3e)), closes [#78](https://github.com/sunghwan2789/Bible2PPT/issues/78) [#79](https://github.com/sunghwan2789/Bible2PPT/issues/79)
+
+
+### BREAKING CHANGES
+
+* .NET Framework 4.8
 
 ## [1.4.0](https://github.com/sunghwan2789/Bible2PPT/compare/v1.3.2...v1.4.0) (2020-07-29)
 
@@ -101,4 +125,3 @@
 
 
 * 배포
-
