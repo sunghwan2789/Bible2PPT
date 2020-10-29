@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://user-images.githubusercontent.com/4927894/59970937-1377a600-95ad-11e9-93b4-66eed61dd932.png" alt="성경2PPT 스크린샷"></p>
 <p align="center">⬇️</p>
-<p align="center"><img src="https://user-images.githubusercontent.com/4927894/36557220-072f3588-184b-11e8-85b4-05845fbe76c1.png" alt="성경2PPT로 만든 PPT 스크린샷"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/4927894/97580541-caecba00-1a36-11eb-9135-979d7e68dc16.png" alt="성경2PPT로 만든 PPT 스크린샷"></p>
 
 
 ## 사용 성경 목록
