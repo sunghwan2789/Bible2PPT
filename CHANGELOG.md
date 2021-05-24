@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/sunghwan2789/Bible2PPT/compare/v2.0.0...v2.0.1) (2021-05-24)
+
+
+### Bug Fixes
+
+* PPT 만들기 후 화면 전환 기능 삭제 ([#85](https://github.com/sunghwan2789/Bible2PPT/issues/85)) ([fb3a905](https://github.com/sunghwan2789/Bible2PPT/commit/fb3a905ac85cf1b479a5ff46adef4516e71938fb))
+
 # [2.0.0](https://github.com/sunghwan2789/Bible2PPT/compare/v1.4.0...v2.0.0) (2020-10-04)
 
 
