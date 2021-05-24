@@ -1,4 +1,3 @@
-name: Deployment
 # By listening release event, variables are set as:
 #
 # * `${{ github.ref }}`: '/refs/tags/v1.0.0'
@@ -14,7 +13,8 @@ jobs:
     runs-on: self-hosted
     
     env:
-      PACKAGE_DIRECTORY: Bible2PPT/bin/Release 
+      PACKAGE_DIRECTORY: Bible2PPT/bin/Release
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
       - uses: microsoft/setup-msbuild@v1
