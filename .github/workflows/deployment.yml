@@ -17,7 +17,7 @@ jobs:
       PACKAGE_DIRECTORY: Bible2PPT/bin/Release 
 
     steps:
-      - uses: microsoft/setup-msbuild@v1.0.0
+      - uses: microsoft/setup-msbuild@v1
 
       - uses: actions/checkout@v2
 
