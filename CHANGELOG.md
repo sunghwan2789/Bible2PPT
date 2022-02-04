@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/sunghwan2789/Bible2PPT/compare/v2.0.2...v2.0.3) (2022-02-04)
+
+
+### Bug Fixes
+
+* 실행 파일이 네트워크 폴더에 있을 때 오류 없이 종료되는 현상 수정 ([d188f62](https://github.com/sunghwan2789/Bible2PPT/commit/d188f62f327780cc78a3d3b07c07649d101bec6f)), closes [#87](https://github.com/sunghwan2789/Bible2PPT/issues/87)
+
 ## [2.0.1](https://github.com/sunghwan2789/Bible2PPT/compare/v2.0.0...v2.0.1) (2021-05-24)
 
 
