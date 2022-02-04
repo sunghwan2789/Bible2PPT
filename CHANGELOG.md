@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/sunghwan2789/Bible2PPT/compare/v2.0.3...v2.0.4) (2022-02-04)
+
+
+### Bug Fixes
+
+* fixup d188f62f327780cc78a3d3b07c07649d101bec6f ([7c3ad4a](https://github.com/sunghwan2789/Bible2PPT/commit/7c3ad4a46d6dcb66b4d8c716987674805b67395b))
+
 ## [2.0.3](https://github.com/sunghwan2789/Bible2PPT/compare/v2.0.2...v2.0.3) (2022-02-04)
 
 
