@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Text;
 using System.Windows.Forms;
 using Bible2PPT.Data;
 using Bible2PPT.PPT;
@@ -16,6 +17,8 @@ namespace Bible2PPT
         [STAThread]
         static void Main(string[] args)
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Application.SetDefaultFont(new System.Drawing.Font("Gulim", 9));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ConfigureServices();
