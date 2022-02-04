@@ -93,7 +93,7 @@
             this.versesTextBox = new System.Windows.Forms.TextBox();
             this.booksSearchTextBox = new System.Windows.Forms.TextBox();
             this.booksListView = new System.Windows.Forms.ListView();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.historyMultiPanelPage = new Bible2PPT.Controls.MultiPanelPage();
             this.historyDataGridView = new System.Windows.Forms.DataGridView();
             this.historyCreatedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -136,7 +136,7 @@
             booksTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             booksSearchTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             booksSearchIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
-            columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            columnHeader4 = new System.Windows.Forms.ColumnHeader();
             versesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             versesIconPictureBox = new FontAwesome.Sharp.IconPictureBox();
             versesLabel = new System.Windows.Forms.Label();
@@ -220,16 +220,15 @@
             this.buildNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buildNavButton.FlatAppearance.BorderSize = 0;
             this.buildNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buildNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.buildNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
             this.buildNavButton.IconChar = FontAwesome.Sharp.IconChar.Desktop;
             this.buildNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.buildNavButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.buildNavButton.IconSize = 36;
             this.buildNavButton.Location = new System.Drawing.Point(0, 0);
             this.buildNavButton.Margin = new System.Windows.Forms.Padding(0);
             this.buildNavButton.Name = "buildNavButton";
             this.buildNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.buildNavButton.Rotation = 0D;
             this.buildNavButton.Size = new System.Drawing.Size(48, 48);
             this.buildNavButton.TabIndex = 1;
             this.toolTip.SetToolTip(this.buildNavButton, "PPT 만들기");
@@ -242,16 +241,15 @@
             this.historyNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.historyNavButton.FlatAppearance.BorderSize = 0;
             this.historyNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.historyNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.historyNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
             this.historyNavButton.IconChar = FontAwesome.Sharp.IconChar.History;
             this.historyNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.historyNavButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.historyNavButton.IconSize = 36;
             this.historyNavButton.Location = new System.Drawing.Point(0, 48);
             this.historyNavButton.Margin = new System.Windows.Forms.Padding(0);
             this.historyNavButton.Name = "historyNavButton";
             this.historyNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.historyNavButton.Rotation = 0D;
             this.historyNavButton.Size = new System.Drawing.Size(48, 48);
             this.historyNavButton.TabIndex = 2;
             this.toolTip.SetToolTip(this.historyNavButton, "PPT 제작 기록");
@@ -264,16 +262,15 @@
             this.templatesNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.templatesNavButton.FlatAppearance.BorderSize = 0;
             this.templatesNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.templatesNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.templatesNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
             this.templatesNavButton.IconChar = FontAwesome.Sharp.IconChar.Images;
             this.templatesNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.templatesNavButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.templatesNavButton.IconSize = 36;
             this.templatesNavButton.Location = new System.Drawing.Point(0, 96);
             this.templatesNavButton.Margin = new System.Windows.Forms.Padding(0);
             this.templatesNavButton.Name = "templatesNavButton";
             this.templatesNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.templatesNavButton.Rotation = 0D;
             this.templatesNavButton.Size = new System.Drawing.Size(48, 48);
             this.templatesNavButton.TabIndex = 3;
             this.toolTip.SetToolTip(this.templatesNavButton, "템플릿 관리");
@@ -411,9 +408,9 @@
             // 
             numberOfVerseLinesPerSlideLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             numberOfVerseLinesPerSlideLabel.AutoSize = true;
-            numberOfVerseLinesPerSlideLabel.Location = new System.Drawing.Point(3, 4);
+            numberOfVerseLinesPerSlideLabel.Location = new System.Drawing.Point(3, 0);
             numberOfVerseLinesPerSlideLabel.Name = "numberOfVerseLinesPerSlideLabel";
-            numberOfVerseLinesPerSlideLabel.Size = new System.Drawing.Size(153, 12);
+            numberOfVerseLinesPerSlideLabel.Size = new System.Drawing.Size(143, 21);
             numberOfVerseLinesPerSlideLabel.TabIndex = 0;
             numberOfVerseLinesPerSlideLabel.Text = "슬라이드당 성경 구절 줄 수";
             // 
@@ -435,7 +432,7 @@
             this.numberOfVerseLinesPerSlideComboBox.Location = new System.Drawing.Point(160, 0);
             this.numberOfVerseLinesPerSlideComboBox.Margin = new System.Windows.Forms.Padding(0);
             this.numberOfVerseLinesPerSlideComboBox.Name = "numberOfVerseLinesPerSlideComboBox";
-            this.numberOfVerseLinesPerSlideComboBox.Size = new System.Drawing.Size(78, 20);
+            this.numberOfVerseLinesPerSlideComboBox.Size = new System.Drawing.Size(78, 23);
             this.numberOfVerseLinesPerSlideComboBox.TabIndex = 1;
             this.toolTip.SetToolTip(this.numberOfVerseLinesPerSlideComboBox, "성경 구절 줄 수 설정");
             this.numberOfVerseLinesPerSlideComboBox.SelectedIndexChanged += new System.EventHandler(this.NumberOfVerseLinesPerSlideComboBox_SelectedIndexChanged);
@@ -481,15 +478,14 @@
             // 
             // biblesUpIconButton
             // 
-            this.biblesUpIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.biblesUpIconButton.IconChar = FontAwesome.Sharp.IconChar.AngleUp;
             this.biblesUpIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesUpIconButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.biblesUpIconButton.IconSize = 16;
             this.biblesUpIconButton.Location = new System.Drawing.Point(0, 0);
             this.biblesUpIconButton.Margin = new System.Windows.Forms.Padding(0);
             this.biblesUpIconButton.Name = "biblesUpIconButton";
             this.biblesUpIconButton.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.biblesUpIconButton.Rotation = 0D;
             this.biblesUpIconButton.Size = new System.Drawing.Size(24, 24);
             this.biblesUpIconButton.TabIndex = 0;
             this.biblesUpIconButton.UseVisualStyleBackColor = true;
@@ -497,15 +493,14 @@
             // 
             // biblesDownIconButton
             // 
-            this.biblesDownIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.biblesDownIconButton.IconChar = FontAwesome.Sharp.IconChar.AngleDown;
             this.biblesDownIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesDownIconButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.biblesDownIconButton.IconSize = 16;
             this.biblesDownIconButton.Location = new System.Drawing.Point(24, 0);
             this.biblesDownIconButton.Margin = new System.Windows.Forms.Padding(0);
             this.biblesDownIconButton.Name = "biblesDownIconButton";
             this.biblesDownIconButton.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.biblesDownIconButton.Rotation = 0D;
             this.biblesDownIconButton.Size = new System.Drawing.Size(24, 24);
             this.biblesDownIconButton.TabIndex = 1;
             this.biblesDownIconButton.UseVisualStyleBackColor = true;
@@ -513,15 +508,14 @@
             // 
             // biblesAddIconButton
             // 
-            this.biblesAddIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.biblesAddIconButton.IconChar = FontAwesome.Sharp.IconChar.Plus;
             this.biblesAddIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesAddIconButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.biblesAddIconButton.IconSize = 16;
             this.biblesAddIconButton.Location = new System.Drawing.Point(188, 0);
             this.biblesAddIconButton.Margin = new System.Windows.Forms.Padding(0);
             this.biblesAddIconButton.Name = "biblesAddIconButton";
             this.biblesAddIconButton.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.biblesAddIconButton.Rotation = 0D;
             this.biblesAddIconButton.Size = new System.Drawing.Size(24, 24);
             this.biblesAddIconButton.TabIndex = 2;
             this.biblesAddIconButton.UseVisualStyleBackColor = true;
@@ -529,15 +523,14 @@
             // 
             // biblesRemoveIconButton
             // 
-            this.biblesRemoveIconButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.biblesRemoveIconButton.IconChar = FontAwesome.Sharp.IconChar.Minus;
             this.biblesRemoveIconButton.IconColor = System.Drawing.SystemColors.ControlText;
+            this.biblesRemoveIconButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.biblesRemoveIconButton.IconSize = 16;
             this.biblesRemoveIconButton.Location = new System.Drawing.Point(212, 0);
             this.biblesRemoveIconButton.Margin = new System.Windows.Forms.Padding(0);
             this.biblesRemoveIconButton.Name = "biblesRemoveIconButton";
             this.biblesRemoveIconButton.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.biblesRemoveIconButton.Rotation = 0D;
             this.biblesRemoveIconButton.Size = new System.Drawing.Size(24, 24);
             this.biblesRemoveIconButton.TabIndex = 3;
             this.biblesRemoveIconButton.UseVisualStyleBackColor = true;
@@ -554,7 +547,7 @@
             this.biblesDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -573,7 +566,7 @@
             this.biblesDataGridView.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -625,7 +618,7 @@
             // 
             this.bibleComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bibleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.bibleComboBox.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.bibleComboBox.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.bibleComboBox.FormattingEnabled = true;
             this.bibleComboBox.Location = new System.Drawing.Point(64, 2);
             this.bibleComboBox.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
@@ -642,6 +635,7 @@
             bibleIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             bibleIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Bible;
             bibleIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            bibleIconPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             bibleIconPictureBox.IconSize = 24;
             bibleIconPictureBox.Location = new System.Drawing.Point(0, 0);
             bibleIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
@@ -655,10 +649,10 @@
             // 
             bibleLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             bibleLabel.AutoSize = true;
-            bibleLabel.Location = new System.Drawing.Point(24, 6);
+            bibleLabel.Location = new System.Drawing.Point(24, 4);
             bibleLabel.Margin = new System.Windows.Forms.Padding(0);
             bibleLabel.Name = "bibleLabel";
-            bibleLabel.Size = new System.Drawing.Size(29, 12);
+            bibleLabel.Size = new System.Drawing.Size(31, 15);
             bibleLabel.TabIndex = 0;
             bibleLabel.Text = "성경";
             // 
@@ -686,10 +680,10 @@
             // 
             sourceLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             sourceLabel.AutoSize = true;
-            sourceLabel.Location = new System.Drawing.Point(24, 6);
+            sourceLabel.Location = new System.Drawing.Point(24, 4);
             sourceLabel.Margin = new System.Windows.Forms.Padding(0);
             sourceLabel.Name = "sourceLabel";
-            sourceLabel.Size = new System.Drawing.Size(29, 12);
+            sourceLabel.Size = new System.Drawing.Size(31, 15);
             sourceLabel.TabIndex = 0;
             sourceLabel.Text = "소스";
             // 
@@ -700,7 +694,7 @@
             this.sourceComboBox.Location = new System.Drawing.Point(64, 2);
             this.sourceComboBox.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.sourceComboBox.Name = "sourceComboBox";
-            this.sourceComboBox.Size = new System.Drawing.Size(174, 20);
+            this.sourceComboBox.Size = new System.Drawing.Size(174, 23);
             this.sourceComboBox.TabIndex = 1;
             this.sourceComboBox.SelectedValueChanged += new System.EventHandler(this.SourceComboBox_SelectedValueChanged);
             // 
@@ -711,6 +705,7 @@
             sourceIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             sourceIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Database;
             sourceIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            sourceIconPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             sourceIconPictureBox.IconSize = 24;
             sourceIconPictureBox.Location = new System.Drawing.Point(0, 0);
             sourceIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
@@ -740,9 +735,9 @@
             // 
             templateBookAbbrLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             templateBookAbbrLabel.AutoSize = true;
-            templateBookAbbrLabel.Location = new System.Drawing.Point(3, 4);
+            templateBookAbbrLabel.Location = new System.Drawing.Point(3, 3);
             templateBookAbbrLabel.Name = "templateBookAbbrLabel";
-            templateBookAbbrLabel.Size = new System.Drawing.Size(29, 12);
+            templateBookAbbrLabel.Size = new System.Drawing.Size(31, 15);
             templateBookAbbrLabel.TabIndex = 0;
             templateBookAbbrLabel.Text = "약자";
             // 
@@ -756,7 +751,7 @@
             this.templateBookAbbrComboBox.Location = new System.Drawing.Point(60, 0);
             this.templateBookAbbrComboBox.Margin = new System.Windows.Forms.Padding(0);
             this.templateBookAbbrComboBox.Name = "templateBookAbbrComboBox";
-            this.templateBookAbbrComboBox.Size = new System.Drawing.Size(178, 20);
+            this.templateBookAbbrComboBox.Size = new System.Drawing.Size(178, 23);
             this.templateBookAbbrComboBox.TabIndex = 1;
             this.toolTip.SetToolTip(this.templateBookAbbrComboBox, "약자 표시 설정");
             this.templateBookAbbrComboBox.SelectedIndexChanged += new System.EventHandler(this.TemplateBookAbbrComboBox_SelectedIndexChanged);
@@ -781,9 +776,9 @@
             // 
             templateChaperNumberLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             templateChaperNumberLabel.AutoSize = true;
-            templateChaperNumberLabel.Location = new System.Drawing.Point(3, 4);
+            templateChaperNumberLabel.Location = new System.Drawing.Point(3, 3);
             templateChaperNumberLabel.Name = "templateChaperNumberLabel";
-            templateChaperNumberLabel.Size = new System.Drawing.Size(45, 12);
+            templateChaperNumberLabel.Size = new System.Drawing.Size(47, 15);
             templateChaperNumberLabel.TabIndex = 0;
             templateChaperNumberLabel.Text = "장 번호";
             // 
@@ -797,7 +792,7 @@
             this.templateChapterNumberComboBox.Location = new System.Drawing.Point(60, 0);
             this.templateChapterNumberComboBox.Margin = new System.Windows.Forms.Padding(0);
             this.templateChapterNumberComboBox.Name = "templateChapterNumberComboBox";
-            this.templateChapterNumberComboBox.Size = new System.Drawing.Size(178, 20);
+            this.templateChapterNumberComboBox.Size = new System.Drawing.Size(178, 23);
             this.templateChapterNumberComboBox.TabIndex = 1;
             this.toolTip.SetToolTip(this.templateChapterNumberComboBox, "장 번호 표시 설정");
             this.templateChapterNumberComboBox.SelectedIndexChanged += new System.EventHandler(this.TemplateChapterNumberComboBox_SelectedIndexChanged);
@@ -824,10 +819,10 @@
             // 
             templateLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             templateLabel.AutoSize = true;
-            templateLabel.Location = new System.Drawing.Point(24, 6);
+            templateLabel.Location = new System.Drawing.Point(24, 4);
             templateLabel.Margin = new System.Windows.Forms.Padding(0);
             templateLabel.Name = "templateLabel";
-            templateLabel.Size = new System.Drawing.Size(41, 12);
+            templateLabel.Size = new System.Drawing.Size(43, 15);
             templateLabel.TabIndex = 0;
             templateLabel.Text = "템플릿";
             // 
@@ -838,6 +833,7 @@
             templateIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             templateIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Image;
             templateIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            templateIconPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             templateIconPictureBox.IconSize = 24;
             templateIconPictureBox.Location = new System.Drawing.Point(0, 0);
             templateIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
@@ -880,9 +876,9 @@
             // 
             templateBookNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             templateBookNameLabel.AutoSize = true;
-            templateBookNameLabel.Location = new System.Drawing.Point(3, 4);
+            templateBookNameLabel.Location = new System.Drawing.Point(3, 3);
             templateBookNameLabel.Name = "templateBookNameLabel";
-            templateBookNameLabel.Size = new System.Drawing.Size(45, 12);
+            templateBookNameLabel.Size = new System.Drawing.Size(47, 15);
             templateBookNameLabel.TabIndex = 0;
             templateBookNameLabel.Text = "책 이름";
             // 
@@ -896,7 +892,7 @@
             this.templateBookNameComboBox.Location = new System.Drawing.Point(60, 0);
             this.templateBookNameComboBox.Margin = new System.Windows.Forms.Padding(0);
             this.templateBookNameComboBox.Name = "templateBookNameComboBox";
-            this.templateBookNameComboBox.Size = new System.Drawing.Size(178, 20);
+            this.templateBookNameComboBox.Size = new System.Drawing.Size(178, 23);
             this.templateBookNameComboBox.TabIndex = 1;
             this.toolTip.SetToolTip(this.templateBookNameComboBox, "책 이름 표시 설정");
             this.templateBookNameComboBox.SelectedIndexChanged += new System.EventHandler(this.TemplateBookNameComboBox_SelectedIndexChanged);
@@ -930,7 +926,7 @@
             this.buildSplitChaptersIntoFilesCheckBox.AutoSize = true;
             this.buildSplitChaptersIntoFilesCheckBox.Location = new System.Drawing.Point(3, 244);
             this.buildSplitChaptersIntoFilesCheckBox.Name = "buildSplitChaptersIntoFilesCheckBox";
-            this.buildSplitChaptersIntoFilesCheckBox.Size = new System.Drawing.Size(128, 16);
+            this.buildSplitChaptersIntoFilesCheckBox.Size = new System.Drawing.Size(126, 16);
             this.buildSplitChaptersIntoFilesCheckBox.TabIndex = 2;
             this.buildSplitChaptersIntoFilesCheckBox.Text = "장별로 PPT 나누기";
             this.buildSplitChaptersIntoFilesCheckBox.UseVisualStyleBackColor = true;
@@ -951,7 +947,7 @@
             // versesTextBox
             // 
             this.versesTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.versesTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.versesTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.versesTextBox.Location = new System.Drawing.Point(0, 202);
             this.versesTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.versesTextBox.Name = "versesTextBox";
@@ -999,7 +995,7 @@
             // 
             this.booksSearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.booksSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.booksSearchTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.booksSearchTextBox.Font = new System.Drawing.Font("Gulim", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.booksSearchTextBox.Location = new System.Drawing.Point(3, 1);
             this.booksSearchTextBox.Margin = new System.Windows.Forms.Padding(3, 1, 0, 0);
             this.booksSearchTextBox.Name = "booksSearchTextBox";
@@ -1019,6 +1015,7 @@
             booksSearchIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             booksSearchIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.Search;
             booksSearchIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            booksSearchIconPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             booksSearchIconPictureBox.IconSize = 24;
             booksSearchIconPictureBox.Location = new System.Drawing.Point(158, 0);
             booksSearchIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
@@ -1039,7 +1036,6 @@
             this.booksListView.FullRowSelect = true;
             this.booksListView.GridLines = true;
             this.booksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.booksListView.HideSelection = false;
             this.booksListView.Location = new System.Drawing.Point(1, 26);
             this.booksListView.Margin = new System.Windows.Forms.Padding(0);
             this.booksListView.Name = "booksListView";
@@ -1082,6 +1078,7 @@
             versesIconPictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             versesIconPictureBox.IconChar = FontAwesome.Sharp.IconChar.QuoteLeft;
             versesIconPictureBox.IconColor = System.Drawing.SystemColors.ControlText;
+            versesIconPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             versesIconPictureBox.IconSize = 24;
             versesIconPictureBox.Location = new System.Drawing.Point(0, 0);
             versesIconPictureBox.Margin = new System.Windows.Forms.Padding(0);
@@ -1095,10 +1092,10 @@
             // 
             versesLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             versesLabel.AutoSize = true;
-            versesLabel.Location = new System.Drawing.Point(24, 6);
+            versesLabel.Location = new System.Drawing.Point(24, 4);
             versesLabel.Margin = new System.Windows.Forms.Padding(0);
             versesLabel.Name = "versesLabel";
-            versesLabel.Size = new System.Drawing.Size(57, 12);
+            versesLabel.Size = new System.Drawing.Size(59, 15);
             versesLabel.TabIndex = 0;
             versesLabel.Text = "성경 구절";
             // 
@@ -1140,7 +1137,7 @@
             this.historyDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -1254,9 +1251,9 @@
             this.autoOpenCheckBox.AutoSize = true;
             this.autoOpenCheckBox.Checked = true;
             this.autoOpenCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoOpenCheckBox.Location = new System.Drawing.Point(85, 3);
+            this.autoOpenCheckBox.Location = new System.Drawing.Point(83, 3);
             this.autoOpenCheckBox.Name = "autoOpenCheckBox";
-            this.autoOpenCheckBox.Size = new System.Drawing.Size(120, 16);
+            this.autoOpenCheckBox.Size = new System.Drawing.Size(122, 19);
             this.autoOpenCheckBox.TabIndex = 3;
             this.autoOpenCheckBox.Text = "완료 후 자동 열기";
             this.autoOpenCheckBox.UseVisualStyleBackColor = true;
@@ -1320,16 +1317,15 @@
             this.settingsNavButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.settingsNavButton.FlatAppearance.BorderSize = 0;
             this.settingsNavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsNavButton.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.settingsNavButton.ForeColor = System.Drawing.SystemColors.MenuText;
             this.settingsNavButton.IconChar = FontAwesome.Sharp.IconChar.Cog;
             this.settingsNavButton.IconColor = System.Drawing.SystemColors.MenuText;
+            this.settingsNavButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.settingsNavButton.IconSize = 36;
             this.settingsNavButton.Location = new System.Drawing.Point(0, 0);
             this.settingsNavButton.Margin = new System.Windows.Forms.Padding(0);
             this.settingsNavButton.Name = "settingsNavButton";
             this.settingsNavButton.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.settingsNavButton.Rotation = 0D;
             this.settingsNavButton.Size = new System.Drawing.Size(48, 48);
             this.settingsNavButton.TabIndex = 0;
             this.toolTip.SetToolTip(this.settingsNavButton, "설정");

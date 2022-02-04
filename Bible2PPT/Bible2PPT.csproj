@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>Bible2PPT</RootNamespace>
     <AssemblyName>Bible2PPT</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
@@ -11,7 +11,7 @@
     <Description>성경이 궁금해</Description>
     <Company>BloodCat</Company>
     <Product>Bible2PPT</Product>
-    <Copyright>BloodCat 2015-2020</Copyright>
+    <Copyright>BloodCat 2014-2022</Copyright>
     <Version Condition=" '$(Version)' == '' ">0.0.0</Version>
     <FileVersion>$(Version)</FileVersion>
     <NeutralLanguage>ko-KR</NeutralLanguage>
@@ -36,12 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-
-  <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -63,7 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FontAwesome.Sharp" Version="5.13.0" />
+    <PackageReference Include="FontAwesome.Sharp" Version="5.15.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.1.635-beta">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -73,6 +67,7 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
     <PackageReference Include="System.Linq.Async" Version="4.1.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
