@@ -16,6 +16,8 @@ namespace Bible2PPT.Controls
                 {
                     ushort iconId = 0;
                     var iconHandle = Windows.Win32.PInvoke.ExtractAssociatedIcon(null, iconPath, &iconId);
+                    var success = false;
+                    iconHandle.DangerousAddRef(ref success);
                     _iconHandle = iconHandle.DangerousGetHandle();
                 }
             }
