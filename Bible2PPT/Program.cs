@@ -2,9 +2,10 @@
 using System.Configuration;
 using System.Text;
 using System.Windows.Forms;
-using Bible2PPT.Data;
 using Bible2PPT.PPT;
 using Bible2PPT.Services;
+using Bible2PPT.Services.BibleService;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic.ApplicationServices;
 
@@ -17,7 +18,6 @@ namespace Bible2PPT
         [STAThread]
         static void Main(string[] args)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Application.SetDefaultFont(new System.Drawing.Font("Gulim", 9));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -48,13 +48,13 @@ namespace Bible2PPT
                 }
             });
             services.AddTransient<Builder>();
-            // TODO: EF Core 사용하면 AddDbContextPool로 바꾸기
-            services.AddScoped<BibleContext>(_ =>
-                new BibleContext(ConfigurationManager.ConnectionStrings["BibleContext"].ConnectionString));
-            services.AddTransient<BibleService>();
-            services.AddTransient<ZippedBibleService>();
+            services.AddBibleService(
+                dbContextOptionsAction: options =>
+                    options.UseSqlite(ConfigurationManager.ConnectionStrings["BibleContext"].ConnectionString));
 
             ServiceProvider = services.BuildServiceProvider();
+
+            ServiceProvider.UseBibleService();
         }
 
         class Startup : WindowsFormsApplicationBase

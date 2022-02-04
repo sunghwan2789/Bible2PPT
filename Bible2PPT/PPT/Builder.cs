@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Bible2PPT.Bibles;
 using Bible2PPT.Data;
 using Bible2PPT.Services;
+using Bible2PPT.Services.BibleService;
 using Microsoft.Extensions.DependencyInjection;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 

@@ -28,16 +28,12 @@ namespace Bible2PPT
             buildSplitContainer.SplitterWidth = 13;
 
             // 이전에 선택한 성경 중에서 성경 소스가 살아있는 성경만 불러오기
-            using (var scope = ScopeFactory.CreateScope())
+            foreach (var bibleId in AppConfig.Context.BibleToBuild)
             {
-                var db = scope.ServiceProvider.GetService<BibleContext>();
-                foreach (var bibleId in AppConfig.Context.BibleToBuild)
+                var bible = _bibleService.FindBible(bibleId);
+                if (bible is { Source: not null })
                 {
-                    var bible = db.Bibles.Find(bibleId);
-                    if (bible != null && bible.Source != null)
-                    {
-                        biblesToBuild.Add(bible);
-                    }
+                    biblesToBuild.Add(bible);
                 }
             }
 
@@ -105,7 +101,7 @@ namespace Bible2PPT
         RETRY:
             try
             {
-                bibles = await BibleService.GetBiblesAsync(source).ConfigureAwait(true);
+                bibles = await _bibleService.GetBiblesAsync(source).ConfigureAwait(true);
 
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();
@@ -312,7 +308,7 @@ namespace Bible2PPT
         RETRY:
             try
             {
-                books = await BibleService.GetBooksAsync(bible).ConfigureAwait(true);
+                books = await _bibleService.GetBooksAsync(bible).ConfigureAwait(true);
 
                 // 작업 취소 요청 수리
                 cts.Token.ThrowIfCancellationRequested();
@@ -515,12 +511,12 @@ namespace Bible2PPT
             };
 
             // PPT 만들기
-            Builder.Queue(job);
+            _builder.Queue(job);
         }
 
         private void TemplateEditButton_Click(object sender, EventArgs e)
         {
-            Builder.OpenTemplate();
+            _builder.OpenTemplate();
         }
 
         private void TemplateEditButton_MouseHover(object sender, EventArgs e)

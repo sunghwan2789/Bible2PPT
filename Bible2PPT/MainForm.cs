@@ -4,24 +4,21 @@ using System.Threading;
 using System.Windows.Forms;
 using Bible2PPT.Controls;
 using Bible2PPT.PPT;
-using Bible2PPT.Services;
-using Microsoft.Extensions.DependencyInjection;
+using Bible2PPT.Services.BibleService;
 
 namespace Bible2PPT
 {
     internal partial class MainForm : AssemblyIconForm
     {
-        private Builder Builder { get; }
-        private BibleService BibleService { get; }
-        private IServiceScopeFactory ScopeFactory { get; }
+        private readonly Builder _builder;
+        private readonly BibleService _bibleService;
 
         private readonly Dictionary<int, CancellationTokenSource> workCts = new Dictionary<int, CancellationTokenSource>();
 
-        public MainForm(Builder builder, BibleService bibleService, IServiceScopeFactory scopeFactory)
+        public MainForm(Builder builder, BibleService bibleService)
         {
-            Builder = builder;
-            BibleService = bibleService;
-            ScopeFactory = scopeFactory;
+            _builder = builder;
+            _bibleService = bibleService;
 
             InitializeComponent();
             InitializeBuildComponent();

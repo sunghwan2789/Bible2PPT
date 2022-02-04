@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
-using Bible2PPT.Data;
 using Bible2PPT.PPT;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT
 {
@@ -37,7 +34,7 @@ namespace Bible2PPT
             }
             historyDataGridView.DataSource = jobHistory;
 
-            Builder.JobProgress = new Progress<EventArgs>(Builder_JobProgressChanged);
+            _builder.JobProgress = new Progress<EventArgs>(Builder_JobProgressChanged);
         }
 
         private DataGridViewRow FindHistoryDataGridViewRow(Job job)
@@ -217,7 +214,7 @@ namespace Bible2PPT
             // 취소 가능하면 취소로 제거
             else
             {
-                Builder.Cancel(job);
+                _builder.Cancel(job);
             }
         }
     }
