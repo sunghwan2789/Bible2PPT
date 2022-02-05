@@ -13,7 +13,6 @@ public class BibleContext : DbContext
     public DbSet<Book> Books => Set<Book>();
     public DbSet<Chapter> Chapters => Set<Chapter>();
     public DbSet<Verse> Verses => Set<Verse>();
-    // public DbSet<Job> Jobs => Set<Job>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,8 +31,5 @@ public class BibleContext : DbContext
         modelBuilder.Entity<Verse>().HasIndex(e => e.SourceId);
         modelBuilder.Entity<Verse>().HasIndex(e => e.ChapterId);
         modelBuilder.Entity<Verse>().Navigation(e => e.Chapter).AutoInclude();
-
-        // modelBuilder.Entity<JobBible>().HasRequired(e => e.Job).WithMany(e => e.JobBibles);
-        // modelBuilder.Entity<JobBible>().HasRequired(e => e.Bible).WithMany();
     }
 }

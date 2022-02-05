@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -22,19 +22,13 @@ namespace Bible2PPT
             historyQueryStringColumn.DataPropertyName = nameof(Job.QueryString);
             historySplitChaptersIntoFileColumn.DataPropertyName = nameof(Job.SplitChaptersIntoFiles);
 
-            using (var scope = ScopeFactory.CreateScope())
+            foreach (var job in _builder.GetJobs().OrderByDescending(x => x.Id))
             {
-                var db = scope.ServiceProvider.GetService<BibleContext>();
-                foreach (var job in db.Jobs
-                    .Include(w => w.JobBibles.Select(wb => wb.Bible))
-                    .ToList())
-                {
-                    jobHistory.Insert(0, job);
-                }
+                jobHistory.Add(job);
             }
             historyDataGridView.DataSource = jobHistory;
 
-            _builder.JobProgress = new Progress<EventArgs>(Builder_JobProgressChanged);
+            _builder.SubscribeJob(new Progress<EventArgs>(Builder_JobProgressChanged));
         }
 
         private DataGridViewRow FindHistoryDataGridViewRow(Job job)
@@ -116,7 +110,7 @@ namespace Bible2PPT
         {
             switch (e.Value)
             {
-                case List<Bible> bibles:
+                case IEnumerable<Bible> bibles:
                 {
                     e.Value = string.Join(", ", bibles.Select(i => $"{i.Name}({i.Source?.Name})"));
                     e.FormattingApplied = true;
@@ -188,33 +182,20 @@ namespace Bible2PPT
             versesTextBox.Focus();
         }
 
-        private void HistoryDeleteButton_Click(object sender, EventArgs e)
+        private async void HistoryDeleteButton_Click(object sender, EventArgs e)
         {
             if (!(historyDataGridView.CurrentRow?.DataBoundItem is Job job))
             {
                 return;
             }
 
-            using (var scope = ScopeFactory.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetService<BibleContext>();
-                if (db.Jobs.Any(i => i.Id == job.Id))
-                {
-                    db.Jobs.Attach(job);
-                    db.Jobs.Remove(job);
-                    db.SaveChanges();
-                }
-            }
+            await _builder.RemoveJobAsync(job);
+            // TODO: subscribe job removed event
 
             // 취소 불가능하면 바로 제거
-            if (FindHistoryDataGridViewRow(job).Tag == null)
+            if (FindHistoryDataGridViewRow(job) is { Tag: null })
             {
                 jobHistory.RemoveAt(FindHistoryDataGridViewRow(job).Index);
-            }
-            // 취소 가능하면 취소로 제거
-            else
-            {
-                _builder.Cancel(job);
             }
         }
     }
