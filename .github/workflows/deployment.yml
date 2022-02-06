@@ -9,50 +9,49 @@ on:
   release:
     types: [released]
 
+env:
+  PUBLISH_DIR: publish
+
 jobs:
   build:
     runs-on: self-hosted
-    
+    strategy:
+      matrix:
+        runtime: [win-x86, win-x64]
     env:
-      PACKAGE_DIRECTORY: Bible2PPT/bin/Release
-
+      PROJECT: Bible2PPT
+      RUNTIME: ${{ matrix.runtime }}
     steps:
       - uses: microsoft/setup-msbuild@v1.0.2
-
       - uses: actions/checkout@v2
-
       - name: Parse semantic version
         id: parse-version
         uses: booxmedialtd/ws-action-parse-semver@v1
         with:
           input_string: ${{ github.ref }}
           version_extractor_regex: '\/v(.*)$'
-
       - name: Restore
-        run: msbuild -restore
-
+        run: msbuild -restore -p:RuntimeIdentifier=${env:RUNTIME}
       - name: Build
-        run: msbuild -p:Version=${env:VERSION} -p:Configuration=Release
+        run: |
+          msbuild ${env:PROJECT} -p:Version=${env:VERSION} -p:Configuration=Release `
+            -t:publish -p:PublishDir=${env:PUBLISH_DIR} -p:ErrorOnDuplicatePublishOutputFiles=false `
+            -p:RuntimeIdentifier=${env:RUNTIME} -p:PublishSingleFile=true
         env:
           VERSION: ${{ steps.parse-version.outputs.fullversion }}
-
       - name: Package
         id: package
         run: |
-          Get-ChildItem | foreach {
-            $filename = "Bible2PPT-${env:VERSION}-win-${_}.zip"
-            Compress-Archive -Path ${_}/* -DestinationPath ${filename}
-            Write-Host ::set-output name=filename::${filename}
-          }
+          $filename = "Bible2PPT-${env:VERSION}-${env:RUNTIME}.zip"
+          Compress-Archive -Path ${env:PROJECT}/${env:PUBLISH_DIR}/* -DestinationPath ${filename}
+          Write-Host ::set-output name=filename::${filename}
         env:
           VERSION: ${{ steps.parse-version.outputs.fullversion }}
-        working-directory: ${{ env.PACKAGE_DIRECTORY }}
-      
       - name: Upload
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ env.PACKAGE_DIRECTORY }}/${{ steps.package.outputs.filename }}
+          asset_path: ${{ steps.package.outputs.filename }}
           asset_name: ${{ steps.package.outputs.filename }}
           asset_content_type: application/zip
         env:
