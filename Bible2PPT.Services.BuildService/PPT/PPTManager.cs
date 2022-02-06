@@ -20,23 +20,10 @@ public partial class PPTManager
         Output = output;
         Directory.CreateDirectory(Path.GetDirectoryName(output));
 
-        ExtractTemplate();
-        File.Copy(AppConfig.TemplatePath, Output, true);
+        File.Copy(job.Template.FileName, Output, true);
 
         WorkingPPT = POWERPNT.Presentations.Open(output, WithWindow: MsoTriState.msoFalse);
         TemplateSlide = WorkingPPT.Slides[1];
-    }
-
-    private static void ExtractTemplate()
-    {
-        if (File.Exists(AppConfig.TemplatePath))
-        {
-            return;
-        }
-
-        using var ms = Resources.GetStream(@"Template.pptx");
-        using var fs = File.OpenWrite(AppConfig.TemplatePath);
-        ms.CopyTo(fs);
     }
 
     public void Save()
@@ -90,9 +77,9 @@ public partial class PPTManager
         {
             var text = textShape.Text;
 
-            text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.TemplateChapterNumberOption);
-            text = AddSuffix(text, "STITLE", book.Abbreviation, Job.TemplateBookAbbrOption);
-            text = AddSuffix(text, "TITLE", book.Name, Job.TemplateBookNameOption);
+            text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.Template.ChapterNumberVisible);
+            text = AddSuffix(text, "STITLE", book.Abbreviation, Job.Template.BookAbbrVisible);
+            text = AddSuffix(text, "TITLE", book.Name, Job.Template.BookNameVisible);
             text = text.Replace("[CPAS]", $"{startVerseNumber}");
             text = text.Replace("[CPAE]", $"{endVerseNumber}");
             text = text.Replace("[PARA]", $"{mainVerse.Number}");
@@ -130,13 +117,13 @@ public partial class PPTManager
             textShape.Text = replacedText;
 
             // 슬라이드 분할 기능을 사용하지 않으면 이대로 종료
-            if (Job.NumberOfVerseLinesPerSlide < 1)
+            if (Job.Template.NumberOfVerseLinesPerSlide < 1)
             {
                 return;
             }
 
             // 설정한 줄 수를 초과하지 않게 뒷 부분을 잘라냄
-            var trimmedText = textShape.Lines(Length: lineCount + Job.NumberOfVerseLinesPerSlide).Text;
+            var trimmedText = textShape.Lines(Length: lineCount + Job.Template.NumberOfVerseLinesPerSlide).Text;
             textShape.Text = trimmedText;
 
             // 잘라낸 뒷 부분을 새 슬라이드로 추가하도록 저장

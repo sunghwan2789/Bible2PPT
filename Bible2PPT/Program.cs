@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Configuration;
 using System.Text;
 using System.Windows.Forms;
@@ -6,6 +6,7 @@ using Bible2PPT.PPT;
 using Bible2PPT.Services;
 using Bible2PPT.Services.BibleService;
 using Bible2PPT.Services.BuildService;
+using Bible2PPT.Services.TemplateService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -45,6 +46,7 @@ namespace Bible2PPT
                     // TODO: GitHub로 오류 포스팅하도록 안내하기 (전역 예외 처리기 사용)
                     Environment.Exit(0);
                 });
+            services.AddTemplateService();
 
             ServiceProvider = services.BuildServiceProvider();
 

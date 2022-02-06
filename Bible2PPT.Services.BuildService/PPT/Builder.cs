@@ -1,5 +1,4 @@
-using System.Diagnostics;
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 using Bible2PPT.Bibles;
 using Bible2PPT.Services;
 using Bible2PPT.Services.BibleService;
@@ -19,27 +18,6 @@ public class Builder : JobManager
         _powerPoint = ppt;
         _zippedBibleService = bibleService;
         _dbFactory = dbFactory;
-    }
-
-    public void OpenTemplate()
-    {
-        void ExtractTemplate()
-        {
-            if (File.Exists(AppConfig.TemplatePath))
-            {
-                return;
-            }
-
-            using var ms = Resources.GetStream(@"Template.pptx");
-            using var fs = File.OpenWrite(AppConfig.TemplatePath);
-            ms.CopyTo(fs);
-        }
-        ExtractTemplate();
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = AppConfig.TemplatePath,
-            UseShellExecute = true,
-        });
     }
 
     protected override async Task ProcessAsync(Job job, CancellationToken token)

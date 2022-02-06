@@ -23,5 +23,8 @@ public class BuildContext : DbContext
                 e.HasKey("Sequence");
             });
         modelBuilder.Entity<Job>().Navigation(e => e.Bibles).AutoInclude();
+
+        modelBuilder.Entity<Job>().OwnsOne(e => e.Template);
+        modelBuilder.Entity<Job>().Navigation(e => e.Template).AutoInclude();
     }
 }

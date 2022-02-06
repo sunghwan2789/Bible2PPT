@@ -173,10 +173,10 @@ namespace Bible2PPT
 
             versesTextBox.Text = job.QueryString;
             buildSplitChaptersIntoFilesCheckBox.Checked = job.SplitChaptersIntoFiles;
-            templateBookNameComboBox.SelectedItem = (int)job.TemplateBookNameOption;
-            templateBookAbbrComboBox.SelectedItem = (int)job.TemplateBookAbbrOption;
-            templateChapterNumberComboBox.SelectedItem = (int)job.TemplateChapterNumberOption;
-            numberOfVerseLinesPerSlideComboBox.SelectedIndex = job.NumberOfVerseLinesPerSlide;
+            templateBookNameComboBox.SelectedIndex = (int)job.Template.BookNameVisible;
+            templateBookAbbrComboBox.SelectedIndex = (int)job.Template.BookAbbrVisible;
+            templateChapterNumberComboBox.SelectedIndex = (int)job.Template.ChapterNumberVisible;
+            numberOfVerseLinesPerSlideComboBox.SelectedIndex = job.Template.NumberOfVerseLinesPerSlide;
 
             buildNavButton.PerformClick();
             versesTextBox.Focus();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,11 +10,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Bible2PPT.Bibles;
-using Bible2PPT.Data;
 using Bible2PPT.Extensions;
 using Bible2PPT.PPT;
+using Bible2PPT.Services.TemplateService;
 using Bible2PPT.Sources;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bible2PPT
 {
@@ -497,17 +497,23 @@ namespace Bible2PPT
                 destination = $"{Path.GetTempFileName()}.pptx";
             }
 
+            ExtractDefaultTemplate();
+
             var job = new Job
             {
                 Bibles = biblesToBuild.ToList(),
                 CreatedAt = DateTime.Now,
-                SplitChaptersIntoFiles = buildSplitChaptersIntoFilesCheckBox.Checked,
+                SplitChaptersIntoFiles = AppConfig.Context.SeperateByChapter,
                 OutputDestination = destination,
                 QueryString = Regex.Replace(versesTextBox.Text.Trim(), @"\s+", " "),
-                TemplateBookNameOption = (TemplateTextOptions)templateBookNameComboBox.SelectedIndex,
-                TemplateBookAbbrOption = (TemplateTextOptions)templateBookAbbrComboBox.SelectedIndex,
-                TemplateChapterNumberOption = (TemplateTextOptions)templateChapterNumberComboBox.SelectedIndex,
-                NumberOfVerseLinesPerSlide = numberOfVerseLinesPerSlideComboBox.SelectedIndex,
+                Template = new Template
+                {
+                    FileName = AppConfig.TemplatePath,
+                    BookNameVisible = AppConfig.Context.ShowLongTitle,
+                    BookAbbrVisible = AppConfig.Context.ShowShortTitle,
+                    ChapterNumberVisible = AppConfig.Context.ShowChapterNumber,
+                    NumberOfVerseLinesPerSlide = AppConfig.Context.NumberOfVerseLinesPerSlide,
+                },
             };
 
             // PPT 만들기
@@ -516,7 +522,24 @@ namespace Bible2PPT
 
         private void TemplateEditButton_Click(object sender, EventArgs e)
         {
-            _builder.OpenTemplate();
+            ExtractDefaultTemplate();
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = AppConfig.TemplatePath,
+                UseShellExecute = true,
+            });
+        }
+
+        private void ExtractDefaultTemplate()
+        {
+            if (File.Exists(AppConfig.TemplatePath))
+            {
+                return;
+            }
+
+            using var ms = Resources.GetStream(@"Template.pptx");
+            using var fs = File.OpenWrite(AppConfig.TemplatePath);
+            ms.CopyTo(fs);
         }
 
         private void TemplateEditButton_MouseHover(object sender, EventArgs e)

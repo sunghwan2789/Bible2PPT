@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Bible2PPT.Bibles;
+using Bible2PPT.Services.TemplateService;
 
 namespace Bible2PPT.PPT;
 
@@ -10,10 +11,8 @@ public class Job
 
     public ICollection<Bible> Bibles { get; set; } = null!;
 
-    public TemplateTextOptions TemplateBookNameOption { get; set; }
-    public TemplateTextOptions TemplateBookAbbrOption { get; set; }
-    public TemplateTextOptions TemplateChapterNumberOption { get; set; }
-    public int NumberOfVerseLinesPerSlide { get; set; }
+    public Template Template { get; set; } = null!;
+
     public string QueryString { get; set; } = null!;
     public bool SplitChaptersIntoFiles { get; set; }
     public string OutputDestination { get; set; } = null!;
