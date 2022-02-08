@@ -1,0 +1,75 @@
+namespace Bible2PPT.Services.BibleIndexService;
+
+internal static partial class BibleIndexSeed
+{
+    public static IEnumerable<BookInfo> SeedKoreanV2() =>
+        new CsvBibleIndexSeedBuilder("ko", "새번역 성경")
+            .Build($"""
+                {BookKey.Genesis},창세기,창
+                {BookKey.Exodus},출애굽기,출
+                {BookKey.Leviticus},레위기,레
+                {BookKey.Numbers},민수기,민
+                {BookKey.Deuteronomy},신명기,신
+                {BookKey.Joshua},여호수아,수
+                {BookKey.Judges},사사기,삿
+                {BookKey.Ruth},룻기,룻
+                {BookKey.ISamuel},사무엘상,삼상
+                {BookKey.IISamuel},사무엘하,삼하
+                {BookKey.IKings},열왕기상,왕상
+                {BookKey.IIKings},열왕기하,왕하
+                {BookKey.IChronicles},역대상,대상
+                {BookKey.IIChronicles},역대하,대하
+                {BookKey.Ezra},에스라,라
+                {BookKey.Nehemiah},느헤미야,느
+                {BookKey.Esther},에스더,더
+                {BookKey.Job},욥기,욥
+                {BookKey.Psalms},시편,시
+                {BookKey.Proverbs},잠언,잠
+                {BookKey.Ecclesiastes},전도서,전
+                {BookKey.SongOfSolomon},아가,아
+                {BookKey.Isaiah},이사야,사
+                {BookKey.Jeremiah},예레미야,렘
+                {BookKey.Lamentations},예레미야애가,애
+                {BookKey.Ezekiel},에스겔,겔
+                {BookKey.Daniel},다니엘,단
+                {BookKey.Hosea},호세아,호
+                {BookKey.Joel},요엘,욜
+                {BookKey.Amos},아모스,암
+                {BookKey.Obadiah},오바댜,옵
+                {BookKey.Jonah},요나,욘
+                {BookKey.Micah},미가,미
+                {BookKey.Nahum},나홈,나
+                {BookKey.Habakkuk},하박국,합
+                {BookKey.Zephaniah},스바냐,습
+                {BookKey.Haggai},학개,학
+                {BookKey.Zechariah},스가랴,슥
+                {BookKey.Malachi},말라기,말
+                {BookKey.Matthew},마태복음,마
+                {BookKey.Mark},마가복음,막
+                {BookKey.Luke},누가복음,눅
+                {BookKey.John},요한복음,요
+                {BookKey.Acts},사도행전,행
+                {BookKey.Romans},로마서,롬
+                {BookKey.ICorinthians},고린도전서,고전
+                {BookKey.IICorinthians},고린도후서,고후
+                {BookKey.Galatians},갈라디아서,갈
+                {BookKey.Ephesians},에베소서,엡
+                {BookKey.Philippians},빌립보서,빌
+                {BookKey.Colossians},골로새서,골
+                {BookKey.IThessalonians},데살로니가전서,살전
+                {BookKey.IIThessalonians},데살로니가후서,살후
+                {BookKey.ITimothy},디모데전서,딤전
+                {BookKey.IITimothy},디모데후서,딤후
+                {BookKey.Titus},디도서,딛
+                {BookKey.Philemon},빌레몬서,몬
+                {BookKey.Hebrews},히브리서,히
+                {BookKey.James},야고보서,약
+                {BookKey.IPeter},베드로전서,벧전
+                {BookKey.IIPeter},베드로후서,벧후
+                {BookKey.IJohn},요한일서,요일
+                {BookKey.IIJohn},요한이서,요이
+                {BookKey.IIIJohn},요한삼서,요삼
+                {BookKey.Jude},유다서,유
+                {BookKey.Revelation},요한계시록,계
+                """);
+}

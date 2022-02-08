@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using Bible2PPT.PPT;
 using Bible2PPT.Services;
+using Bible2PPT.Services.BibleIndexService;
 using Bible2PPT.Services.BibleService;
 using Bible2PPT.Services.BuildService;
 using Bible2PPT.Services.TemplateService;
@@ -33,6 +34,7 @@ namespace Bible2PPT
 
             services.AddTransient<SplashForm>();
             services.AddTransient<MainForm>();
+            services.AddBibleIndexService(options => options.UseSqlite("Data Source=bindex.db"));
             services.AddBibleService(
                 dbContextOptionsAction: options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["BibleContext"].ConnectionString));
@@ -50,6 +52,7 @@ namespace Bible2PPT
 
             ServiceProvider = services.BuildServiceProvider();
 
+            ServiceProvider.UseBibleIndexService();
             ServiceProvider.UseBibleService();
             ServiceProvider.UseBuildService();
         }

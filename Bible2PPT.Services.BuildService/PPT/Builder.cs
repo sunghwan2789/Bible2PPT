@@ -1,6 +1,7 @@
 ﻿using System.Threading.Channels;
 using Bible2PPT.Bibles;
 using Bible2PPT.Services;
+using Bible2PPT.Services.BibleIndexService;
 using Bible2PPT.Services.BibleService;
 using Bible2PPT.Services.BuildService;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,14 @@ public class Builder : JobManager
 {
     private readonly HiddenPowerPoint _powerPoint;
     private readonly ZippedBibleService _zippedBibleService;
+    private readonly VerseQueryParser _verseQueryParser;
     private readonly IDbContextFactory<BuildContext> _dbFactory;
 
-    public Builder(HiddenPowerPoint ppt, ZippedBibleService bibleService, IDbContextFactory<BuildContext> dbFactory)
+    public Builder(HiddenPowerPoint ppt, ZippedBibleService bibleService, VerseQueryParser verseQueryParser, IDbContextFactory<BuildContext> dbFactory)
     {
         _powerPoint = ppt;
         _zippedBibleService = bibleService;
+        _verseQueryParser = verseQueryParser;
         _dbFactory = dbFactory;
     }
 
@@ -29,9 +32,9 @@ public class Builder : JobManager
             FullMode = BoundedChannelFullMode.Wait,
         });
 
-        var queries = job.QueryString.Split().Select(VerseQuery.Parse).ToList();
+        var queries = _verseQueryParser.ParseVerseQueries(job.QueryString);
         var queriesDoneCount = 0;
-        var queriesCount = queries.Count;
+        var queriesCount = queries.Count();
         var chaptersDoneCount = 0;
         var chaptersCount = 0;
         OnJobProgress(new JobProgressEventArgs(job, null, queriesDoneCount, queriesCount, chaptersDoneCount, chaptersCount));
@@ -40,9 +43,7 @@ public class Builder : JobManager
         {
             foreach (var query in queries)
             {
-                bool LookupBook(Book book) => book.Abbreviation == query.BookAbbreviation;
-
-                var targetEachBook = await _zippedBibleService.FindBookAsync(job.Bibles, LookupBook, token).ConfigureAwait(false);
+                var targetEachBook = await _zippedBibleService.FindBookAsync(job.Bibles, query.BookKey, token).ConfigureAwait(false);
 
                 // 해당 책이 있는 성경에서 해당 책을 대표로 사용
                 var mainBook = targetEachBook.FirstOrDefault(i => i is not null);

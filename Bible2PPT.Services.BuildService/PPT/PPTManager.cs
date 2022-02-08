@@ -78,8 +78,8 @@ public partial class PPTManager
             var text = textShape.Text;
 
             text = AddSuffix(text, "CHAP", $"{chapter.Number}", Job.Template.ChapterNumberVisible);
-            text = AddSuffix(text, "STITLE", book.Abbreviation, Job.Template.BookAbbrVisible);
-            text = AddSuffix(text, "TITLE", book.Name, Job.Template.BookNameVisible);
+            text = AddSuffix(text, "STITLE", book.AbbreviationInfo, Job.Template.BookAbbrVisible);
+            text = AddSuffix(text, "TITLE", book.NameInfo, Job.Template.BookNameVisible);
             text = text.Replace("[CPAS]", $"{startVerseNumber}");
             text = text.Replace("[CPAE]", $"{endVerseNumber}");
             text = text.Replace("[PARA]", $"{mainVerse.Number}");

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using Bible2PPT.Bibles;
+using Bible2PPT.Services.BibleIndexService;
 
 namespace Bible2PPT.Sources;
 
@@ -28,11 +29,13 @@ public class GodpeopleBible : BibleSource
             {
                 OnlineId = "rvsn",
                 Name = "개역개정",
+                LanguageCode = "ko",
             },
             new Bible
             {
                 OnlineId = "ezsn",
                 Name = "쉬운성경",
+                LanguageCode = "ko",
             },
         });
 
@@ -46,7 +49,7 @@ public class GodpeopleBible : BibleSource
             Name = match.Groups[3].Value,
             Abbreviation = match.Groups[1].Value,
             ChapterCount = int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
-        }).ToList();
+        }).Select(x => x with { Key = GetBookKey(x) }).ToList();
     }
 
     private static string EncodeString(string s) =>
@@ -72,4 +75,75 @@ public class GodpeopleBible : BibleSource
             Text = StripHtmlTags(i.Groups[2].Value),
         }).ToList();
     }
+
+    private static BookKey GetBookKey(Book book) => book.OnlineId switch
+    {
+        "창" => BookKey.Genesis,
+        "출" => BookKey.Exodus,
+        "레" => BookKey.Leviticus,
+        "민" => BookKey.Numbers,
+        "신" => BookKey.Deuteronomy,
+        "수" => BookKey.Joshua,
+        "삿" => BookKey.Judges,
+        "룻" => BookKey.Ruth,
+        "삼상" => BookKey.ISamuel,
+        "삼하" => BookKey.IISamuel,
+        "왕상" => BookKey.IKings,
+        "왕하" => BookKey.IIKings,
+        "대상" => BookKey.IChronicles,
+        "대하" => BookKey.IIChronicles,
+        "스" => BookKey.Ezra,
+        "느" => BookKey.Nehemiah,
+        "에" => BookKey.Esther,
+        "욥" => BookKey.Job,
+        "시" => BookKey.Psalms,
+        "잠" => BookKey.Proverbs,
+        "전" => BookKey.Ecclesiastes,
+        "아" => BookKey.SongOfSolomon,
+        "사" => BookKey.Isaiah,
+        "렘" => BookKey.Jeremiah,
+        "애" => BookKey.Lamentations,
+        "겔" => BookKey.Ezekiel,
+        "단" => BookKey.Daniel,
+        "호" => BookKey.Hosea,
+        "욜" => BookKey.Joel,
+        "암" => BookKey.Amos,
+        "옵" => BookKey.Obadiah,
+        "욘" => BookKey.Jonah,
+        "미" => BookKey.Micah,
+        "나" => BookKey.Nahum,
+        "합" => BookKey.Habakkuk,
+        "습" => BookKey.Zephaniah,
+        "학" => BookKey.Haggai,
+        "슥" => BookKey.Zechariah,
+        "말" => BookKey.Malachi,
+        "마" => BookKey.Matthew,
+        "막" => BookKey.Mark,
+        "눅" => BookKey.Luke,
+        "요" => BookKey.John,
+        "행" => BookKey.Acts,
+        "롬" => BookKey.Romans,
+        "고전" => BookKey.ICorinthians,
+        "고후" => BookKey.IICorinthians,
+        "갈" => BookKey.Galatians,
+        "엡" => BookKey.Ephesians,
+        "빌" => BookKey.Philippians,
+        "골" => BookKey.Colossians,
+        "살전" => BookKey.IThessalonians,
+        "살후" => BookKey.IIThessalonians,
+        "딤전" => BookKey.ITimothy,
+        "딤후" => BookKey.IITimothy,
+        "딛" => BookKey.Titus,
+        "몬" => BookKey.Philemon,
+        "히" => BookKey.Hebrews,
+        "약" => BookKey.James,
+        "벧전" => BookKey.IPeter,
+        "벧후" => BookKey.IIPeter,
+        "요일" => BookKey.IJohn,
+        "요이" => BookKey.IIJohn,
+        "요삼" => BookKey.IIIJohn,
+        "유" => BookKey.Jude,
+        "계" => BookKey.Revelation,
+        _ => throw new NotImplementedException(),
+    };
 }

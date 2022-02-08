@@ -8,10 +8,12 @@ namespace Bible2PPT.Services.BibleService;
 public class BibleService
 {
     private readonly IDbContextFactory<BibleContext> _dbFactory;
+    private readonly BibleIndexService.BibleIndexService _bibleIndexService;
 
-    public BibleService(IDbContextFactory<BibleContext> dbFactory)
+    public BibleService(IDbContextFactory<BibleContext> dbFactory, BibleIndexService.BibleIndexService bibleIndexService)
     {
         _dbFactory = dbFactory;
+        _bibleIndexService = bibleIndexService;
     }
 
     public Bible? FindBible(int id)
@@ -71,12 +73,14 @@ public class BibleService
         var books = GetCached();
         if (books.Any())
         {
+            books.ForEach(LinkInfo);
             return books;
         }
         // 캐시가 없으면 온라인에서 가져와서 저장
         books = await bible.Source.GetBooksOnlineAsync(bible).ConfigureAwait(false);
         books.ForEach(LinkForeigns);
         Cache();
+        books.ForEach(LinkInfo);
         return books;
 
         List<Book> GetCached()
@@ -98,6 +102,12 @@ public class BibleService
             db.Bibles.Attach(bible);
             db.Books.AddRange(books);
             db.SaveChanges();
+        }
+
+        void LinkInfo(Book book)
+        {
+            book.NameInfo = _bibleIndexService.GetBookName(book.Key, bible.LanguageCode);
+            book.AbbreviationInfo = _bibleIndexService.GetBookAbbreviation(book.Key, bible.LanguageCode);
         }
     }
 

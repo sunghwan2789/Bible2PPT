@@ -1,6 +1,6 @@
 ﻿namespace Bible2PPT.Bibles;
 
-public class Verse : BibleBase
+public record Verse : BibleBase
 {
     public int ChapterId { get; set; }
     public Chapter Chapter { get; set; } = null!;

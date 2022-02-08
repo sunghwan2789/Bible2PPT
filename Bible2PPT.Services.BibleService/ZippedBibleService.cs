@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Bible2PPT.Bibles;
+using Bible2PPT.Services.BibleIndexService;
 
 namespace Bible2PPT.Services.BibleService;
 
@@ -12,11 +13,11 @@ public class ZippedBibleService
         _bibleService = bibleService;
     }
 
-    public async Task<IEnumerable<Book?>> FindBookAsync(IEnumerable<Bible> bibles, Func<Book, bool> predicate, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Book?>> FindBookAsync(IEnumerable<Bible> bibles, BookKey key, CancellationToken cancellationToken)
     {
         var eachBooks = await GetEachBooksAsync(bibles, cancellationToken).ConfigureAwait(false);
 
-        return eachBooks.Select(x => x.FirstOrDefault(predicate)).ToList();
+        return eachBooks.Select(x => x.FirstOrDefault(book => book.Key == key)).ToList();
     }
 
     private async Task<IEnumerable<IEnumerable<Book>>> GetEachBooksAsync(IEnumerable<Bible> bibles, CancellationToken token)
