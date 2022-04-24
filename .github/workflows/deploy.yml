@@ -1,4 +1,4 @@
-name: Deployment
+name: Deploy
 # By listening release event, variables are set as:
 #
 # * `${{ github.ref }}`: '/refs/tags/v1.0.0'
