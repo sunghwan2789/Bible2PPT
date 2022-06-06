@@ -34,12 +34,12 @@ namespace Bible2PPT
 
             services.AddTransient<SplashForm>();
             services.AddTransient<MainForm>();
-            services.AddBibleIndexService(options => options.UseSqlite("Data Source=bindex.db"));
+            services.AddBibleIndexService(options => options.UseSqlite("Data Source=bindex-v3.db"));
             services.AddBibleService(
                 dbContextOptionsAction: options =>
                     options.UseSqlite(ConfigurationManager.ConnectionStrings["BibleContext"].ConnectionString));
             services.AddBuildService(
-                dbContextOptionsAction: options => options.UseSqlite("Data Source=build.db"),
+                dbContextOptionsAction: options => options.UseSqlite("Data Source=build-v3.db"),
                 interopInitializeErrorAction: ex =>
                 {
                     MessageBox.Show(

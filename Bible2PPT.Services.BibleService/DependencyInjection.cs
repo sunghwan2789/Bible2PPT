@@ -28,6 +28,6 @@ public static class DependencyInjection
     private static void Migrate(IDbContextFactory<BibleContext> dbFactory)
     {
         using var db = dbFactory.CreateDbContext();
-        db.Database.EnsureCreated();
+        db.Database.Migrate();
     }
 }
