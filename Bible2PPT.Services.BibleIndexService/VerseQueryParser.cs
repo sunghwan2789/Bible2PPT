@@ -27,23 +27,34 @@ public class VerseQueryParser
             }
 
             var query = new VerseQuery { BookKey = abbrInfo.Key };
-            span = span[abbrInfo.Value.Length..];
+            span = span[abbrInfo.Value.Length..].TrimStart();
 
             // 구절 범위 추출
-            var rangeSpan = GetToken(span);
-            if (!VerseQueryRange.TryParse(rangeSpan.ToString(), CultureInfo.InvariantCulture, out var range))
+            var ranges = new Queue<VerseQueryRange>();
+            while (GetToken(span) is var rangeSpan
+                && VerseQueryRange.TryParse(rangeSpan.ToString(), CultureInfo.InvariantCulture, out var range))
             {
-                queries.Enqueue(query);
-                span = span.TrimStart();
-                continue;
+                ranges.Enqueue(range);
+                span = span[rangeSpan.Length..].TrimStart();
             }
 
-            query.StartChapterNumber = range.StartChapterNumber;
-            query.StartVerseNumber = range.StartVerseNumber;
-            query.EndChapterNumber = range.EndChapterNumber;
-            query.EndVerseNumber = range.EndVerseNumber;
-            queries.Enqueue(query);
-            span = span[rangeSpan.Length..].TrimStart();
+            // PPT 범위를 전체로 설정할 때
+            // 예) 창        = 창세기 전체
+            if (!ranges.Any())
+            {
+                ranges.Enqueue(new());
+            }
+
+            while (ranges.TryDequeue(out var range))
+            {
+                queries.Enqueue(query with
+                {
+                    StartChapterNumber = range.StartChapterNumber,
+                    StartVerseNumber = range.StartVerseNumber,
+                    EndChapterNumber = range.EndChapterNumber,
+                    EndVerseNumber = range.EndVerseNumber,
+                });
+            }
         }
 
         return queries.ToArray();

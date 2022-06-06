@@ -12,10 +12,12 @@ public class VerseQueryParserTest
     [InlineData(" 창", 1)]
     [InlineData(" 창 ", 1)]
     [InlineData("창1", 1)]
+    [InlineData("창 1", 1)]
     [InlineData("창 롬", 2)]
     [InlineData("창 롬1", 2)]
     [InlineData("창1 롬", 2)]
     [InlineData("창1 롬1", 2)]
+    [InlineData("창 1 2", 2)]
     public void Parse_Counts(string queryString, int count)
     {
         var parser = GetVerseQueryParser();

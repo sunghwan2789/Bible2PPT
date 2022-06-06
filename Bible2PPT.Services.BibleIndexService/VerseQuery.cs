@@ -2,7 +2,7 @@
 
 namespace Bible2PPT;
 
-public class VerseQuery
+public record VerseQuery
 {
     public BookKey BookKey { get; set; }
     public int StartChapterNumber { get; set; } = 1;

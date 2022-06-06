@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Bible2PPT.Services.BibleIndexService;
 
-public class VerseQueryRange //: IParsable<VerseQueryRange>
+public class VerseQueryRange //: ISpanParsable<VerseQueryRange>
 {
     private static readonly Regex _regex = new(@"^(?<chapFrom>\d+)(?::(?<versFrom>\d+))?(?:-(?<chapTo>\d+)(?::(?<versTo>\d+))?)?$", RegexOptions.Compiled);
 
@@ -12,18 +12,11 @@ public class VerseQueryRange //: IParsable<VerseQueryRange>
     public int? EndChapterNumber { get; set; }
     public int? EndVerseNumber { get; set; }
 
-    public static bool TryParse(string? s, IFormatProvider? provider, [NotNullWhen(true)] out VerseQueryRange? result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [NotNullWhen(true)] out VerseQueryRange? result)
     {
         result = new();
 
-        // PPT 범위를 전체로 설정할 때
-        // 예) 창        = 창세기 전체
-        if (string.IsNullOrEmpty(s))
-        {
-            return true;
-        }
-
-        var match = _regex.Match(s);
+        var match = _regex.Match(s.ToString());
         if (!match.Success)
         {
             return false;
