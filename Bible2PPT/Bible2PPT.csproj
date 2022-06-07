@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFrameworks>net6.0-maccatalyst</TargetFrameworks>
@@ -6,8 +6,9 @@
     <OutputType>Exe</OutputType>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <EnableDefaultCssItems>false</EnableDefaultCssItems>
 
     <!-- Display name -->
     <ApplicationTitle>Bible2PPT</ApplicationTitle>
@@ -17,8 +18,8 @@
     <ApplicationIdGuid>1A3FFBB5-0291-4EC9-95FF-3D93AE376613</ApplicationIdGuid>
 
     <!-- Versions -->
-    <ApplicationDisplayVersion Condition=" '$(Version)' == '' ">0.0.0</ApplicationDisplayVersion>
-    <ApplicationVersion Condition=" '$(Version)' == '' ">0.0.0</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
@@ -41,11 +42,6 @@
 
     <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Clancey.Comet" Version="0.3.464-beta" />
-    <PackageReference Include="Reloadify3000" Version="1.0.8" />
   </ItemGroup>
 
 </Project>
