@@ -1,4 +1,27 @@
-﻿#blazor-error-ui {
+﻿:root {
+    font-family: system-ui;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #bf3211;
+    color: #fff;
+}
+
+html, body, #app {
+    height: 100%;
+}
+
+#splash {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#blazor-error-ui {
     background: lightyellow;
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);

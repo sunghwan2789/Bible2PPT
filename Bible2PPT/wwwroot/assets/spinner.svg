@@ -1,0 +1,25 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" version="2.0"
+     width="50" height="50" viewBox="-5 -5 10 10">
+
+    <circle r="4" fill="none"
+            stroke="#eee" stroke-opacity="0.7" stroke-linecap="round"
+            pathLength="1" stroke-dasharray="0 1">
+        <animateTransform attributeName="transform"
+                          type="rotate"
+                          from="0"
+                          to="360"
+                          dur="2s"
+                          repeatCount="indefinite" />
+        <animate attributeName="stroke-dasharray"
+                 values="0 1;0.7 1;1 1"
+                 keyTimes="0;0.8;1"
+                 dur="2s"
+                 repeatCount="indefinite" />
+        <animate attributeName="stroke-dashoffset"
+                 values="0;-0.7;-1"
+                 keyTimes="0;0.8;1"
+                 dur="2s"
+                 repeatCount="indefinite" />
+    </circle>
+
+</svg>
