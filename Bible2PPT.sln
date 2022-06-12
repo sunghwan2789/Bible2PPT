@@ -14,13 +14,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT.Tests", "Bible2PP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT.Services.BibleService", "Bible2PPT.Services.BibleService\Bible2PPT.Services.BibleService.csproj", "{019E801B-5248-4233-AAF7-EDA3CCA98F5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bible2PPT.Services.BuildService", "Bible2PPT.Services.BuildService\Bible2PPT.Services.BuildService.csproj", "{682503DF-758D-4164-988E-C779DA2D4970}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT.Services.BuildService", "Bible2PPT.Services.BuildService\Bible2PPT.Services.BuildService.csproj", "{682503DF-758D-4164-988E-C779DA2D4970}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bible2PPT.Services.TemplateService", "Bible2PPT.Services.TemplateService\Bible2PPT.Services.TemplateService.csproj", "{0BF79A48-3D81-4F07-9AD0-C1B46D6B03D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT.Services.TemplateService", "Bible2PPT.Services.TemplateService\Bible2PPT.Services.TemplateService.csproj", "{0BF79A48-3D81-4F07-9AD0-C1B46D6B03D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bible2PPT.Services.BibleIndexService", "Bible2PPT.Services.BibleIndexService\Bible2PPT.Services.BibleIndexService.csproj", "{A19514EA-F240-4D24-A647-EF5EC371D788}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT.Services.BibleIndexService", "Bible2PPT.Services.BibleIndexService\Bible2PPT.Services.BibleIndexService.csproj", "{A19514EA-F240-4D24-A647-EF5EC371D788}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bible2PPT.Services.BibleIndexService.Tests", "Bible2PPT.Services.BibleIndexService.Tests\Bible2PPT.Services.BibleIndexService.Tests.csproj", "{7F0CAC37-E2D2-4748-A85E-AD954943FF88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bible2PPT.Services.BibleIndexService.Tests", "Bible2PPT.Services.BibleIndexService.Tests\Bible2PPT.Services.BibleIndexService.Tests.csproj", "{7F0CAC37-E2D2-4748-A85E-AD954943FF88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +30,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{140D4564-A6FF-47DE-93E3-726C7824DA20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F1A829F-CC87-4CA3-9926-290156473740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
