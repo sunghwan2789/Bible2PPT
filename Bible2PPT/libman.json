@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "defaultDestination": "wwwroot/lib",
+  "libraries": [
+    {
+      "provider": "jsdelivr",
+      "library": "@fluentui/svg-icons@1.1.172",
+      "destination": "wwwroot/lib/@fluentui/svg-icons"
+    }
+  ]
+}

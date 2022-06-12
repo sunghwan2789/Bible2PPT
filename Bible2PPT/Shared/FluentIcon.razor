@@ -1,0 +1,19 @@
+﻿<img src="@Src" width="@Size" height="@Size" />
+
+@code {
+    private static readonly string PackagePath = "/lib/@fluentui/svg-icons";
+
+    [Parameter]
+    public string Name { get; set; } = default!;
+
+    [Parameter]
+    public int Size { get; set; } = 24;
+
+    /// <summary>
+    /// regular or filled
+    /// </summary>
+    [Parameter]
+    public string Weight { get; set; } = "regular";
+
+    private string Src => $"{PackagePath}/icons/{Name}_24_{Weight}.svg";
+}

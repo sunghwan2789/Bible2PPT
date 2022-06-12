@@ -1,0 +1,24 @@
+﻿nav {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.top {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom {
+    background: #aaa;
+}
+
+a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    aspect-ratio: 1;
+}

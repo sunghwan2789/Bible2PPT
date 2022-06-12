@@ -44,4 +44,20 @@
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="libman.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="libman.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
