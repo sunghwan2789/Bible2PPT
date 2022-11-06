@@ -336,8 +336,8 @@ namespace Bible2PPT
             booksListView.Items.Clear();
             foreach (var book in books)
             {
-                var item = booksListView.Items.Add(book.Name);
-                item.SubItems.Add(book.Abbreviation);
+                var item = booksListView.Items.Add(book.NameInfo);
+                item.SubItems.Add(book.AbbreviationInfo);
                 item.Tag = book;
             }
             // 책 목록 컨트롤 활성화
